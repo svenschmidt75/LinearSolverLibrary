@@ -1,7 +1,12 @@
 /*
  * Name  : Vector
  * Path  : 
- * Use   : Implements a vector representation
+ * Use   : Implements a row-vector representation.
+ *         We are introducing a new type here, although
+ *         we could have worked with a std::vector. However,
+ *         when using operator overloading, for example for
+ *         a matrix-vector multiplication, it is advised
+ *         to create a separate vector type.
  * Author: Sven Schmidt
  * Date  : 07/28/2011
  */
