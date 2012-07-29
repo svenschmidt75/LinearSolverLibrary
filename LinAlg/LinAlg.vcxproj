@@ -141,12 +141,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="helper.cpp" />
+    <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
     <ClCompile Include="SparseMatrix2D.cpp" />
     <ClCompile Include="TransposeVector.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="internal\primitiveOperators.h" />
+    <ClInclude Include="internal\ScalarExpression.h" />
+    <ClInclude Include="internal\VectorBinaryExpression.h" />
+    <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="SparseMatrix2D.h" />
     <ClInclude Include="DeclSpec.h" />

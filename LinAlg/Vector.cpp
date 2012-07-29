@@ -37,6 +37,7 @@ Vector::operator=(Vector const & in) {
 
 Vector::Vector(Vector && in)
     :
+    dim_(in.dim_),
     data_(std::move(in.data_)) {}
 
 Vector &
@@ -57,6 +58,7 @@ Vector::operator=(Vector && in) {
 
 void
 Vector::swap(Vector const & in) {
+    dim_  = in.dim_;
     data_ = in.data_;
 }
 

@@ -19,6 +19,9 @@
 namespace LinAlg_NS {
 
     class TransposeVector {
+
+        friend class helper;
+
     public:
         typedef boost::uint64_t size_type;
 

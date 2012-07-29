@@ -19,9 +19,15 @@
 #include <boost/cstdint.hpp>
 
 
+#pragma warning(disable:4251)
+
+
 namespace LinAlg_NS {
 
-    class Vector {
+    class DECL_SYMBOLS Vector {
+
+        friend class helper;
+
     public:
         typedef boost::uint64_t size_type;
 
@@ -34,6 +40,15 @@ namespace LinAlg_NS {
         Vector(Vector && in);
         Vector & operator=(Vector && in);
 
+        template<typename EXPR>
+        Vector & operator=(EXPR const & in) {
+            data_.resize(in.size());
+
+            for (Vector::size_type i = 0; i < in.size(); ++i)
+                (*this)(i) = in(i);
+
+            return *this;
+        }
 
         double & operator()(size_type index);
         double   operator()(size_type index) const;
@@ -50,3 +65,5 @@ namespace LinAlg_NS {
     };
 
 } // namespace LinAlg_NS
+
+#pragma warning(default:4251)
