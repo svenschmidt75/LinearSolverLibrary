@@ -31,8 +31,8 @@ namespace LinAlg_NS {
         Vector & operator=(Vector const & in);
 
         // enable move semantics
-        Vector(Vector const && in);
-        Vector & operator=(Vector const && in);
+        Vector(Vector && in);
+        Vector & operator=(Vector && in);
 
 
         double & operator()(size_type index);

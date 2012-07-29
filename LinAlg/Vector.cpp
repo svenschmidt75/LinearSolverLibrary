@@ -35,12 +35,12 @@ Vector::operator=(Vector const & in) {
     return *this;
 }
 
-Vector::Vector(Vector const && in)
+Vector::Vector(Vector && in)
     :
     data_(std::move(in.data_)) {}
 
 Vector &
-Vector::operator=(Vector const && in) {
+Vector::operator=(Vector && in) {
     /* Strong exception safety: First, assign in to a temp
      * object. This way, in case an exception occurs, "this"
      * is not messed up.

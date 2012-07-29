@@ -43,7 +43,7 @@ Matrix2D::operator=(Matrix2D const & in) {
     return *this;
 }
 
-Matrix2D::Matrix2D(Matrix2D const && in)
+Matrix2D::Matrix2D(Matrix2D && in)
     :
     rows_(in.rows_),
     cols_(in.cols_),
@@ -51,7 +51,7 @@ Matrix2D::Matrix2D(Matrix2D const && in)
     
 
 Matrix2D &
-Matrix2D::operator=(Matrix2D const && in) {
+Matrix2D::operator=(Matrix2D && in) {
     /* Strong exception safety: First, assign in to a temp
      * object. This way, in case an exception occurs, "this"
      * is not messed up.

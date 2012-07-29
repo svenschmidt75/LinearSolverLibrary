@@ -28,8 +28,8 @@ namespace LinAlg_NS {
         Matrix2D & operator=(Matrix2D const & in);
 
         // enables move semantics
-        Matrix2D(Matrix2D const && in);
-        Matrix2D & operator=(Matrix2D const && in);
+        Matrix2D(Matrix2D && in);
+        Matrix2D & operator=(Matrix2D && in);
 
         // FROM IMatrix2D
         size_type getRows() const;

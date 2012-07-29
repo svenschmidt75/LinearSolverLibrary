@@ -28,8 +28,8 @@ namespace LinAlg_NS {
         TransposeVector & operator=(TransposeVector const & in);
 
         // enable move semantics
-        TransposeVector(TransposeVector const && in);
-        TransposeVector & operator=(TransposeVector const && in);
+        TransposeVector(TransposeVector && in);
+        TransposeVector & operator=(TransposeVector && in);
 
 
         double & operator()(size_type index);

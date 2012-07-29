@@ -41,7 +41,7 @@ SparseMatrix2D::operator=(SparseMatrix2D const & in) {
     return *this;
 }
 
-SparseMatrix2D::SparseMatrix2D(SparseMatrix2D const && in)
+SparseMatrix2D::SparseMatrix2D(SparseMatrix2D && in)
     :
     ncols_(in.ncols_),              // value semantics: no move necessary
     data_(std::move(in.data_)),
@@ -51,7 +51,7 @@ SparseMatrix2D::SparseMatrix2D(SparseMatrix2D const && in)
     nelements_(std::move(in.nelements_)) {}
 
 SparseMatrix2D &
-SparseMatrix2D::operator=(SparseMatrix2D const && in) {
+SparseMatrix2D::operator=(SparseMatrix2D && in) {
     /* Strong exception safety: First, assign in to a temp
      * object. This way, in case an exception occurs, "this"
      * is not messed up.

@@ -10,14 +10,11 @@ namespace LinAlg_NS {
 
 TransposeVector::TransposeVector(size_type dim)
     :
-    dim_(dim) {
-    data_.resize(dim);
-}
+    vector_(Vector(dim)) {}
 
 TransposeVector::TransposeVector(TransposeVector const & in)
     :
-    dim_(in.dim_),
-    data_(in.data_) {}
+    vector_(in.vector_) {}
 
 TransposeVector &
 TransposeVector::operator=(TransposeVector const & in) {
@@ -35,12 +32,12 @@ TransposeVector::operator=(TransposeVector const & in) {
     return *this;
 }
 
-TransposeVector::TransposeVector(TransposeVector const && in)
+TransposeVector::TransposeVector(TransposeVector && in)
     :
-    data_(std::move(in.data_)) {}
+    vector_(std::move(in.vector_)) {}
 
 TransposeVector &
-TransposeVector::operator=(TransposeVector const && in) {
+TransposeVector::operator=(TransposeVector && in) {
     /* Strong exception safety: First, assign in to a temp
      * object. This way, in case an exception occurs, "this"
      * is not messed up.
@@ -57,32 +54,22 @@ TransposeVector::operator=(TransposeVector const && in) {
 
 void
 TransposeVector::swap(TransposeVector const & in) {
-    data_ = in.data_;
+    vector_ = in.vector_;
 }
 
 double &
 TransposeVector::operator()(size_type index) {
-    bool assert_cond = index < data_.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("TransposeVector::operator(): Out of range error");
-
-    return data_[index];
+    return vector_(index);
 }
 
 double
 TransposeVector::operator()(size_type index) const {
-    bool assert_cond = index < data_.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("TransposeVector::operator(): Out of range error");
-
-    return data_[index];
+    return vector_(index);
 }
 
 TransposeVector::size_type
 TransposeVector::size() const {
-    return dim_;
+    return vector_.size();
 }
 
 } // namespace LinAlg_NS
