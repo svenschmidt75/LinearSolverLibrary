@@ -33,9 +33,9 @@ namespace LinAlg_NS {
     }
 
     // scalar * Vector Expression
-    template<typename EXPR>
-    static ScalarVectorBinaryExpr<EXPR, MUL<double>> operator*(double value, EXPR expr) {
-        return ScalarVectorBinaryExpr<EXPR, MUL<double>>(ScalarExpression(value), expr);
+    template<typename VECTOR_EXPR>
+    static ScalarVectorBinaryExpr<VECTOR_EXPR, MUL<double>> operator*(double value, VECTOR_EXPR const & expr) {
+        return ScalarVectorBinaryExpr<VECTOR_EXPR, MUL<double>>(ScalarExpression(value), expr);
     }
 
     // Vector + Vector
@@ -44,23 +44,32 @@ namespace LinAlg_NS {
     }
 
     // Vector + Vector Expression
-    template<typename EXPR>
-    static VectorBinaryExpr<Vector, EXPR, PLUS<double>> operator+(Vector const & lhs, EXPR rhs) {
+    template<typename VECTOR_EXPR>
+    static VectorBinaryExpr<Vector, VECTOR_EXPR, PLUS<double>> operator+(Vector const & lhs, VECTOR_EXPR const & rhs) {
         // expression must be a vector to be compatible
-        static_assert(typename expression_traits<EXPR>::is_vector_expression::value == std::true_type::value, "rhs is not a vector");
+        static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "rhs is not a vector");
 
-        return VectorBinaryExpr<Vector, EXPR, PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<Vector, VECTOR_EXPR, PLUS<double>>(lhs, rhs);
     }
 
     // Vector Expression + Vector
-    template<typename EXPR>
-    static VectorBinaryExpr<EXPR, Vector, PLUS<double>> operator+(EXPR lhs, Vector const & rhs) {
+    template<typename VECTOR_EXPR>
+    static VectorBinaryExpr<VECTOR_EXPR, Vector, PLUS<double>> operator+(VECTOR_EXPR const & lhs, Vector const & rhs) {
         // expression must be a vector to be compatible
-        static_assert(typename expression_traits<EXPR>::is_vector_expression::value == std::true_type::value, "lhs is not a vector");
+        static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "lhs is not a vector");
 
-        return VectorBinaryExpr<EXPR, Vector, PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<VECTOR_EXPR, Vector, PLUS<double>>(lhs, rhs);
     }
 
+    // Vector Expression + Vector Expression
+    template<typename VECTOR_EXPR1, typename VECTOR_EXPR2>
+    static VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, PLUS<double>> operator+(VECTOR_EXPR1 const & lhs, VECTOR_EXPR2 const & rhs) {
+        // expression must be a vector to be compatible
+        static_assert(typename expression_traits<VECTOR_EXPR1>::is_vector_expression::value == std::true_type::value, "lhs is not a vector");
+        static_assert(typename expression_traits<VECTOR_EXPR2>::is_vector_expression::value == std::true_type::value, "rhs is not a vector");
+
+        return VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, PLUS<double>>(lhs, rhs);
+    }
 
 
 

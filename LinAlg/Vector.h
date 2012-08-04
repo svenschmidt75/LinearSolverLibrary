@@ -14,6 +14,8 @@
 
 #include "DeclSpec.h"
 
+#include "internal/expression_traits.h"
+
 #include <vector>
 
 #include <boost/cstdint.hpp>
@@ -40,8 +42,10 @@ namespace LinAlg_NS {
         Vector(Vector && in);
         Vector & operator=(Vector && in);
 
-        template<typename EXPR>
-        Vector & operator=(EXPR const & in) {
+        template<typename VECTOR_EXPR>
+        Vector & operator=(VECTOR_EXPR const & in) {
+            static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "rhs is not a vector-like type");
+
             data_.resize(in.size());
 
             for (Vector::size_type i = 0; i < in.size(); ++i)

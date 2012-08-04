@@ -12,11 +12,21 @@
 
 namespace LinAlg_NS {
 
+    // forward-declarations
+    class Vector;
+
 namespace internal {
 
     // forward-declarations
     template<typename T1, typename T2, typename BINOP>
     class VectorBinaryExpr;
+
+    template<typename VECTOR_EXPR, typename BINOP>
+    class ScalarVectorExpr;
+
+    template<typename VECTOR_EXPR, typename BINOP>
+    class ScalarVectorBinaryExpr;
+
 
 
     template<typename T>
@@ -26,6 +36,16 @@ namespace internal {
 
     template<>
     struct expression_traits<Vector> {
+        typedef std::true_type is_vector_expression;
+    };
+
+    template<typename VECTOR_EXPR, typename BINOP>
+    struct expression_traits<ScalarVectorExpr<VECTOR_EXPR, BINOP>> {
+        typedef std::true_type is_vector_expression;
+    };
+
+    template<typename VECTOR_EXPR, typename BINOP>
+    struct expression_traits<ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP>> {
         typedef std::true_type is_vector_expression;
     };
 
