@@ -1,17 +1,15 @@
 /*
- * Name  : ScalarVectorExpr
+ * Name  : ScalarVectorBinaryExpr
  * Path  : 
  * Use   : Encapsulates a binary scalar-vector expression
  * Author: Sven Schmidt
- * Date  : 08/04/2012
+ * Date  : 08/04/2011
  */
 #pragma once
 
 #include "ScalarExpression.h"
 
-#include "internal/expression_traits.h"
-
-#include <type_traits>
+#include "expression_traits.h"
 
 #include <boost/assert.hpp>
 
@@ -21,17 +19,16 @@ namespace LinAlg_NS {
     namespace internal {
 
         template<typename VECTOR_EXPR, typename BINOP>
-        class ScalarVectorExpr {
+        class ScalarVectorBinaryExpr {
         public:
-            explicit ScalarVectorExpr(ScalarExpression const & lhs, VECTOR_EXPR const & rhs)
+            ScalarVectorBinaryExpr(ScalarExpression const & lhs, VECTOR_EXPR const & rhs)
                 :
                 op1_(lhs),
                 op2_(rhs) {
-					// ensure rhs is a vector expression
-					static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "rhs is not a vector-like type");
-				}
+					static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "rhs not a vector-like type");
+                }
 
-            ScalarVectorExpr(ScalarVectorExpr const & in)
+            ScalarVectorBinaryExpr(ScalarVectorBinaryExpr const & in)
                 :
                 op1_(in.op1_),
                 op2_(in.op2_) {}

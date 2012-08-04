@@ -1,5 +1,5 @@
 /*
- * Name  : VectorBinaryExpression
+ * Name  : VectorBinaryExpr
  * Path  : 
  * Use   : Encapsulates a binary vector expression
  * Author: Sven Schmidt
@@ -15,33 +15,33 @@ namespace LinAlg_NS {
     namespace internal {
 
         template<typename T1, typename T2, typename BINOP>
-        class VectorBinaryExpression {
+        class VectorBinaryExpr {
         public:
-            VectorBinaryExpression(T1 op1, T2 op2)
+            VectorBinaryExpr(T1 const & op1, T2 const & op2)
                 :
                 op1_(op1),
                 op2_(op2) {
                     BOOST_ASSERT_MSG(op1.size() == op2.size(), "VectorBinaryExpression: Vector size mismatch");
+					static_assert(typename expression_traits<T1>::is_vector_expression::value == std::true_type::value, "op1 not a vector-like type");
+					static_assert(typename expression_traits<T2>::is_vector_expression::value == std::true_type::value, "op2 not a vector-like type");
                 }
 
-            VectorBinaryExpression(VectorBinaryExpression const & in)
+            VectorBinaryExpr(VectorBinaryExpr const & in)
                 :
                 op1_(in.op1_),
-                op2_(in.op2_),
-                op_(in.op_) {}
+                op2_(in.op2_) {}
 
             Vector::size_type size() const {
                 return op1_.size();
             }
 
             double operator()(Vector::size_type index) const {
-                return op_(op1_(index), op2_(index));
+                return BINOP()(op1_(index), op2_(index));
             }
 
         private:
             T1    op1_;
             T2    op2_;
-            BINOP op_;
         };
 
 

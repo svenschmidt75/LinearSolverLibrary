@@ -9,7 +9,8 @@
 
 #include "DeclSpec.h"
 
-#include "internal/VectorBinaryExpression.h"
+#include "internal/VectorBinaryExpr.h"
+#include "internal/ScalarVectorBinaryExpr.h"
 #include "internal/ScalarVectorExpr.h"
 #include "internal/ScalarExpression.h"
 #include "internal/PrimitiveOperators.h"
@@ -32,33 +33,37 @@ namespace LinAlg_NS {
     }
 
     // scalar * Vector Expression
-//     template<typename EXPR>
-//     static VectorBinaryExpression<ScalarExpression, EXPR, MUL<double>> operator*(double value, EXPR expr) {
-//         return VectorBinaryExpression<ScalarExpression, EXPR, MUL<double>>(ScalarExpression(value, expr.size()), expr);
-//     }
-
-    // Vector + Vector
-    static VectorBinaryExpression<Vector, Vector, PLUS<double>> operator+(Vector const & lhs, Vector const & rhs) {
-        return VectorBinaryExpression<Vector, Vector, PLUS<double>>(lhs, rhs);
+    template<typename EXPR>
+    static ScalarVectorBinaryExpr<EXPR, MUL<double>> operator*(double value, EXPR expr) {
+        return ScalarVectorBinaryExpr<EXPR, MUL<double>>(ScalarExpression(value), expr);
     }
 
-    // Vector + Expression
+    // Vector + Vector
+    static VectorBinaryExpr<Vector, Vector, PLUS<double>> operator+(Vector const & lhs, Vector const & rhs) {
+        return VectorBinaryExpr<Vector, Vector, PLUS<double>>(lhs, rhs);
+    }
+
+    // Vector + Vector Expression
     template<typename EXPR>
-    static VectorBinaryExpression<Vector, EXPR, PLUS<double>> operator+(Vector const & lhs, EXPR rhs) {
+    static VectorBinaryExpr<Vector, EXPR, PLUS<double>> operator+(Vector const & lhs, EXPR rhs) {
         // expression must be a vector to be compatible
         static_assert(typename expression_traits<EXPR>::is_vector_expression::value == std::true_type::value, "rhs is not a vector");
 
-        return VectorBinaryExpression<Vector, EXPR, PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<Vector, EXPR, PLUS<double>>(lhs, rhs);
     }
 
-    // Expression + Vector
+    // Vector Expression + Vector
     template<typename EXPR>
-    static VectorBinaryExpression<EXPR, Vector, PLUS<double>> operator+(EXPR lhs, Vector const & rhs) {
+    static VectorBinaryExpr<EXPR, Vector, PLUS<double>> operator+(EXPR lhs, Vector const & rhs) {
         // expression must be a vector to be compatible
         static_assert(typename expression_traits<EXPR>::is_vector_expression::value == std::true_type::value, "lhs is not a vector");
 
-        return VectorBinaryExpression<EXPR, Vector, PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<EXPR, Vector, PLUS<double>>(lhs, rhs);
     }
+
+
+
+
 
     // dot product
 

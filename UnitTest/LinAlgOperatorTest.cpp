@@ -27,7 +27,7 @@ LinAlgOperatorTest::scalarVectorMulTest() {
     Vector v1 = createVector();
     Vector result(v1.size());
     result = 0.1 * v1;
-//    result = 0.1 * (v1 + v1);
+    result = 0.1 * (v1 + v1);
 //    result = (v1 + v1) + v1;
  //   result = (v1 + v1) + v1;
 }

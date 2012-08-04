@@ -158,8 +158,9 @@
     <ClInclude Include="internal\expression_traits.h" />
     <ClInclude Include="internal\primitiveOperators.h" />
     <ClInclude Include="internal\ScalarExpression.h" />
+    <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include="internal\ScalarVectorExpr.h" />
-    <ClInclude Include="internal\VectorBinaryExpression.h" />
+    <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="SparseMatrix2D.h" />

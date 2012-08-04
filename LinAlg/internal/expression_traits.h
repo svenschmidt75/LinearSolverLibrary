@@ -16,7 +16,7 @@ namespace internal {
 
     // forward-declarations
     template<typename T1, typename T2, typename BINOP>
-    class VectorBinaryExpression;
+    class VectorBinaryExpr;
 
 
     template<typename T>
@@ -30,7 +30,7 @@ namespace internal {
     };
 
 	template<typename T1, typename T2, typename BINOP>
-	struct expression_traits<VectorBinaryExpression<T1, T2, BINOP>> {
+	struct expression_traits<VectorBinaryExpr<T1, T2, BINOP>> {
 		typedef std::true_type is_vector_expression;
 	};
 
