@@ -27,7 +27,7 @@ namespace internal {
     template<typename VECTOR_EXPR, typename BINOP>
     class ScalarVectorBinaryExpr;
 
-
+    //////////////////////////////////////////////////////////////////////////////
 
     template<typename T>
     struct expression_traits {

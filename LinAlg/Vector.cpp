@@ -87,4 +87,24 @@ Vector::size() const {
     return dim_;
 }
 
+Vector::const_iterator
+Vector::cbegin() const {
+    return data_.cbegin();
+}
+
+Vector::const_iterator
+Vector::cend() const {
+    return data_.cend();
+}
+
+Vector::iterator
+Vector::begin() {
+    return data_.begin();
+}
+
+Vector::iterator
+Vector::end() {
+    return data_.end();
+}
+
 } // namespace LinAlg_NS

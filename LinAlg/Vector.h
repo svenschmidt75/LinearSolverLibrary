@@ -31,7 +31,9 @@ namespace LinAlg_NS {
         friend class helper;
 
     public:
-        typedef boost::uint64_t size_type;
+        typedef boost::uint64_t                     size_type;
+        typedef std::vector<double>::const_iterator const_iterator;
+        typedef std::vector<double>::iterator       iterator;
 
     public:
         Vector(size_type dim);
@@ -58,6 +60,11 @@ namespace LinAlg_NS {
         double   operator()(size_type index) const;
 
         size_type size() const;
+
+        const_iterator cbegin() const;
+        const_iterator cend() const;
+        iterator       begin();
+        iterator       end();
 
     private:
         // to provide exception-safe copy-assignment
