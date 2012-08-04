@@ -7,20 +7,13 @@ namespace LinAlg_NS {
 
 namespace internal {
 
-ScalarExpression::ScalarExpression(double value, Vector::size_type dim)
+ScalarExpression::ScalarExpression(double value)
     :
-    value_(value),
-    dim_(dim) {}
+    value_(value) {}
 
 ScalarExpression::ScalarExpression(ScalarExpression const & in)
     :
-    value_(in.value_),
-    dim_(in.dim_) {}
-
-Vector::size_type
-ScalarExpression::size() const {
-    return dim_;
-}
+    value_(in.value_) {}
 
 double
 ScalarExpression::operator()(Vector::size_type /*index*/) const {

@@ -1,7 +1,10 @@
 /*
  * Name  : ScalarExpression
  * Path  : 
- * Use   : Encapsulates a double
+ * Use   : Encapsulates a scalar value.
+ * 
+ *         Note: Because we provide an implementation in a cpp file,
+ *         the compiler cannot inline the methods!!!
  * Author: Sven Schmidt
  * Date  : 07/29/2011
  */
@@ -18,16 +21,13 @@ namespace LinAlg_NS {
 
         class DECL_SYMBOLS ScalarExpression {
         public:
-            ScalarExpression(double value, Vector::size_type dim);
+            ScalarExpression(double value);
             ScalarExpression(ScalarExpression const & in);
-
-            Vector::size_type size() const;
 
             double operator()(Vector::size_type index) const;
 
         private:
-            double            value_;
-            Vector::size_type dim_;
+            double value_;
         };
 
 
