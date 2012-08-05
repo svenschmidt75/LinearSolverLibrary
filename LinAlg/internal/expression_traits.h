@@ -30,6 +30,9 @@ namespace internal {
     template<typename VECTOR_EXPR, typename BINOP>
     class ScalarVectorBinaryExpr;
 
+    template<typename MATRIX_EXPR, typename BINOP>
+    class ScalarMatrixExpr;
+
     //////////////////////////////////////////////////////////////////////////////
 
     template<typename T>
@@ -66,6 +69,11 @@ namespace internal {
         static double get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
             return ::LinAlg_NS::helper::get_value(m, row, col);
         }
+    };
+
+    template<typename MATRIX_EXPR, typename BINOP>
+    struct expression_traits<ScalarMatrixExpr<MATRIX_EXPR, BINOP>> {
+        typedef std::true_type is_matrix_expression;
     };
 
 } // namespace internal

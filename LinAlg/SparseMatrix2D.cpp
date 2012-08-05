@@ -79,12 +79,12 @@ SparseMatrix2D::swap(SparseMatrix2D const & in) {
 
 SparseMatrix2D::size_type
 SparseMatrix2D::rows() const {
-    return 0;
+    return ncols_;
 }
 
 SparseMatrix2D::size_type
 SparseMatrix2D::cols() const {
-    return 0;
+    return ncols_;
 }
 
 double

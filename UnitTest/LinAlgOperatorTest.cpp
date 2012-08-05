@@ -21,6 +21,18 @@ namespace {
         Vector v(10);
         return v;
     }
+
+    Matrix2D createMatrix2D() {
+        Matrix2D m(3, 2);
+        m(0, 0) = 1;
+        m(0, 1) = 2;
+        m(1, 0) = 3;
+        m(1, 1) = 4;
+        m(2, 0) = 5;
+        m(2, 1) = 6;
+        return m;
+    }
+
 }
 
 void
@@ -74,4 +86,15 @@ LinAlgOperatorTest::vectorExprAddTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1143.8, result(0), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1159.3, result(5), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1171.7, result(9), 1E-10);
+}
+
+void
+LinAlgOperatorTest::scalarMatrixMulTest() {
+    Matrix2D m = createMatrix2D();
+    Matrix2D result(m.rows(), m.cols());
+
+    result = 0.1 * m;
+
+//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0), 1E-10);
+//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1.0, result(9), 1E-10);
 }
