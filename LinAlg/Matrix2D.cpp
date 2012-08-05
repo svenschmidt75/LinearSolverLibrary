@@ -75,12 +75,12 @@ Matrix2D::swap(Matrix2D const & in) {
 }
 
 Matrix2D::size_type
-Matrix2D::getRows() const {
+Matrix2D::rows() const {
     return rows_;
 }
 
 Matrix2D::size_type
-Matrix2D::getCols() const {
+Matrix2D::cols() const {
     return cols_;
 }
 
@@ -113,6 +113,7 @@ Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) {
 
 void
 Matrix2D::solve(Vector const & b, Vector & x) const {
+    // solve A b, return in x
     bool assert_cond = b.size() == cols_ && b.size() == x.size();
     BOOST_ASSERT_MSG(assert_cond, "Index range error");
     if (!assert_cond)

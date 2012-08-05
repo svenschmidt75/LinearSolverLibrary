@@ -40,8 +40,8 @@ namespace LinAlg_NS {
             }
 
         private:
-            T1    op1_;
-            T2    op2_;
+            T1 op1_;
+            T2 op2_;
         };
 
 

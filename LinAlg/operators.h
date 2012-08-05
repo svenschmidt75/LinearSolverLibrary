@@ -9,6 +9,9 @@
 
 #include "DeclSpec.h"
 
+#include "Matrix2D.h"
+
+#include "internal/ScalarMatrixExpr.h"
 #include "internal/VectorBinaryExpr.h"
 #include "internal/ScalarVectorBinaryExpr.h"
 #include "internal/ScalarVectorExpr.h"
@@ -69,6 +72,11 @@ namespace LinAlg_NS {
         static_assert(typename expression_traits<VECTOR_EXPR2>::is_vector_expression::value == std::true_type::value, "rhs is not a vector");
 
         return VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, PLUS<double>>(lhs, rhs);
+    }
+
+    // scalar * Matrix, dense matrix
+    static ScalarMatrixExpr<Matrix2D, MUL<double>> operator*(double value, Matrix2D const & m) {
+        return ScalarMatrixExpr<Matrix2D, MUL<double>>(ScalarExpression(value), m);
     }
 
 

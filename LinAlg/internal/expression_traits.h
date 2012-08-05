@@ -9,11 +9,14 @@
 
 #include <type_traits>
 
+#include "helper.h"
+
 
 namespace LinAlg_NS {
 
     // forward-declarations
     class Vector;
+    class Matrix2D;
 
 namespace internal {
 
@@ -54,6 +57,16 @@ namespace internal {
 		typedef std::true_type is_vector_expression;
 	};
 
+    //////////////////////////////////////////////////////////////////////////////
+
+    template<>
+    struct expression_traits<Matrix2D> {
+        typedef std::true_type is_matrix_expression;
+
+        static double get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
+            return ::LinAlg_NS::helper::get_value(m, row, col);
+        }
+    };
 
 } // namespace internal
 

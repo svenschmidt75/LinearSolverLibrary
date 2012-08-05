@@ -1,5 +1,9 @@
 #include "helper.h"
 
+#include "Vector.h"
+#include "TransposeVector.h"
+#include "Matrix2D.h"
+
 
 namespace LinAlg_NS {
 
@@ -15,6 +19,12 @@ helper::transpose(TransposeVector const & vec) {
     Vector tv(vec.vector_);
     return tv;
 
+}
+
+double
+helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
+    double value = m(row, col);
+    return value;
 }
 
 } // namespace LinAlg_NS

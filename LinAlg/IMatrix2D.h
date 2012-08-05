@@ -23,8 +23,8 @@ namespace LinAlg_NS {
         ~IMatrix2D() {}
 
         // Public matrix interface
-        virtual size_type getRows() const                     = 0;
-        virtual size_type getCols() const                     = 0;
+        virtual size_type rows() const                     = 0;
+        virtual size_type cols() const                     = 0;
         virtual double    operator()(size_type row, size_type col) const  = 0;
         virtual double &  operator()(size_type row, size_type col)        = 0;
         virtual void            solve(Vector const & b, Vector & x) const = 0;

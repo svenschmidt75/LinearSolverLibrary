@@ -43,8 +43,8 @@ namespace LinAlg_NS {
         SparseMatrix2D & operator=(SparseMatrix2D && in);
 
         // FROM IMatrix2D
-        size_type getRows() const;
-        size_type getCols() const;
+        size_type rows() const;
+        size_type cols() const;
         double    operator()(size_type row, size_type col) const;
         double &  operator()(size_type row, size_type col);
         void      solve(Vector const & b, Vector & x) const;
