@@ -95,6 +95,7 @@ LinAlgOperatorTest::scalarMatrixMulTest() {
 
     result = 0.1 * m;
 
-//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0), 1E-10);
-//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1.0, result(9), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.4, result(1, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.5, result(2, 0), 1E-10);
 }

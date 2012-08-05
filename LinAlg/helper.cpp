@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "TransposeVector.h"
 #include "Matrix2D.h"
+#include "SparseMatrix2D.h"
 
 
 namespace LinAlg_NS {
@@ -23,6 +24,12 @@ helper::transpose(TransposeVector const & vec) {
 
 double
 helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
+    double value = m(row, col);
+    return value;
+}
+
+double
+helper::get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
     double value = m(row, col);
     return value;
 }

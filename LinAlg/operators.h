@@ -10,6 +10,7 @@
 #include "DeclSpec.h"
 
 #include "Matrix2D.h"
+#include "SparseMatrix2D.h"
 
 #include "internal/ScalarMatrixExpr.h"
 #include "internal/VectorBinaryExpr.h"
@@ -79,6 +80,10 @@ namespace LinAlg_NS {
         return ScalarMatrixExpr<Matrix2D, MUL<double>>(ScalarExpression(value), m);
     }
 
+    // scalar * Matrix, sparse matrix
+    static ScalarMatrixExpr<SparseMatrix2D, MUL<double>> operator*(double value, SparseMatrix2D const & m) {
+        return ScalarMatrixExpr<SparseMatrix2D, MUL<double>>(ScalarExpression(value), m);
+    }
 
 
 
