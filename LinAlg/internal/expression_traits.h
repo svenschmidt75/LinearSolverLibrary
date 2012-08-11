@@ -33,6 +33,9 @@ namespace internal {
     template<typename MATRIX_EXPR, typename BINOP>
     class ScalarMatrixExpr;
 
+    template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+    class MatrixVectorExpr;
+
     //////////////////////////////////////////////////////////////////////////////
 
     template<typename T>
@@ -77,6 +80,11 @@ namespace internal {
         typedef std::true_type is_matrix_expression;
     };
 
+    template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+    struct expression_traits<MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR>> {
+        typedef std::true_type is_vector_expression;
+    };
+
     //////////////////////////////////////////////////////////////////////////////
 
     template<typename T>
@@ -84,6 +92,12 @@ namespace internal {
 
     template<>
     struct matrix_operation_traits<Matrix2D> {
+        template<typename VECTOR_EXPR>
+        struct apply {
+            static double op(Matrix2D const & m, VECTOR_EXPR const & v, IMatrix2D::size_type row) {
+                return LinAlg_NS::helper::matrix_vector_mul<VECTOR_EXPR>(m, v, row);
+            }
+        };
 
         static double get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
             return LinAlg_NS::helper::get_value(m, row, col);
@@ -92,12 +106,17 @@ namespace internal {
 
     template<>
     struct matrix_operation_traits<SparseMatrix2D> {
+        template<typename VECTOR_EXPR>
+        struct apply {
+            static double op(SparseMatrix2D const & m, VECTOR_EXPR const & v, IMatrix2D::size_type row) {
+                return LinAlg_NS::helper::matrix_vector_mul<VECTOR_EXPR>(m, v, row);
+            }
+        };
 
         static double get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
             return LinAlg_NS::helper::get_value(m, row, col);
         }
     };
-
 
 
 

@@ -12,6 +12,7 @@
 #include "Matrix2D.h"
 #include "SparseMatrix2D.h"
 
+#include "internal/MatrixVectorExpr.h"
 #include "internal/ScalarMatrixExpr.h"
 #include "internal/VectorBinaryExpr.h"
 #include "internal/ScalarVectorBinaryExpr.h"
@@ -83,6 +84,12 @@ namespace LinAlg_NS {
     // scalar * Matrix, sparse matrix
     static ScalarMatrixExpr<SparseMatrix2D, MUL<double>> operator*(double value, SparseMatrix2D const & m) {
         return ScalarMatrixExpr<SparseMatrix2D, MUL<double>>(ScalarExpression(value), m);
+    }
+
+    // Matrix * Vector
+    template<typename MATRIX_EXPR>
+    static MatrixVectorExpr<MATRIX_EXPR, Vector> operator*(MATRIX_EXPR const & m, Vector const & v) {
+        return MatrixVectorExpr<MATRIX_EXPR, Vector>(m, v);
     }
 
 

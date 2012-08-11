@@ -34,6 +34,7 @@ namespace LinAlg_NS {
     class DECL_SYMBOLS SparseMatrix2D : public IMatrix2D {
 
         friend struct LinearSolver;
+        friend class helper;
 
     public:
         SparseMatrix2D(size_type ncols);

@@ -19,8 +19,8 @@ LinAlgOperatorTest::tearDown() {}
 
 namespace {
     
-    Vector createVector() {
-        Vector v(10);
+    Vector createVector(int size) {
+        Vector v(size);
         return v;
     }
 
@@ -48,7 +48,7 @@ namespace {
 
 void
 LinAlgOperatorTest::scalarVectorMulTest() {
-    Vector v1 = createVector();
+    Vector v1 = createVector(10);
     Vector result(v1.size());
 
     std::iota(std::begin(v1), std::end(v1), 1);
@@ -61,8 +61,8 @@ LinAlgOperatorTest::scalarVectorMulTest() {
 
 void
 LinAlgOperatorTest::scalarVectorExprMulTest() {
-    Vector v1 = createVector();
-    Vector v2 = createVector();
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
     Vector result(v1.size());
 
     std::iota(std::begin(v1), std::end(v1), 1);
@@ -76,9 +76,9 @@ LinAlgOperatorTest::scalarVectorExprMulTest() {
 
 void
 LinAlgOperatorTest::vectorExprAddTest() {
-    Vector v1 = createVector();
-    Vector v2 = createVector();
-    Vector v3 = createVector();
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
+    Vector v3 = createVector(10);
     Vector result(v1.size());
 
     std::iota(std::begin(v1), std::end(v1), 1);
@@ -106,9 +106,9 @@ LinAlgOperatorTest::scalarMatrixMulTest() {
 
     result = 0.1 * m;
 
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0, 0), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.4, result(1, 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.5, result(2, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.4, result(1, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.5, result(2, 0), 1E-10);
 }
 
 void
@@ -118,13 +118,39 @@ LinAlgOperatorTest::scalarSparseMatrixMulTest() {
 
     result = 0.1 * sm;
 
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0, 0), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(0, 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(0, 2), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(1, 0), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.3, result(1, 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(1, 2), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(2, 0), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(2, 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.6, result(2, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(0, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(0, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(1, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.3, result(1, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(1, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(2, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(2, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.6, result(2, 2), 1E-10);
+}
+
+void
+LinAlgOperatorTest::matrixVectorMulTest() {
+    Matrix2D m = createMatrix2D();
+    Vector v = createVector(2);
+    Vector result(v.size());
+
+    std::iota(std::begin(v), std::end(v), 1);
+
+    result = m * v;
+
+    //    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
+}
+
+void
+LinAlgOperatorTest::sparseMatrixVectorMulTest() {
+    SparseMatrix2D sm = createSparseMatrix2D();
+    Vector v = createVector(3);
+    Vector result(v.size());
+
+    std::iota(std::begin(v), std::end(v), 1);
+
+    result = sm * v;
+
+//    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
 }

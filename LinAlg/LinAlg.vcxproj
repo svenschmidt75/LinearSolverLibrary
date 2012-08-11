@@ -162,6 +162,7 @@
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include="internal\ScalarVectorExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
+    <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="SparseMatrix2D.h" />
