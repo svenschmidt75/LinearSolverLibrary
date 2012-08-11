@@ -2,6 +2,8 @@
 
 #include "LinAlg/Vector.h"
 #include "LinAlg/operators.h"
+#include "LinAlg/Matrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
 
 #include <numeric>
 
@@ -30,6 +32,15 @@ namespace {
         m(1, 1) = 4;
         m(2, 0) = 5;
         m(2, 1) = 6;
+        return m;
+    }
+
+    SparseMatrix2D createSparseMatrix2D() {
+        SparseMatrix2D m(3);
+        m(0, 0) = 1;
+        m(1, 1) = 3;
+        m(2, 2) = 6;
+        m.finalize();
         return m;
     }
 
@@ -98,4 +109,22 @@ LinAlgOperatorTest::scalarMatrixMulTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0, 0), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.4, result(1, 1), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.5, result(2, 0), 1E-10);
+}
+
+void
+LinAlgOperatorTest::scalarSparseMatrixMulTest() {
+    SparseMatrix2D sm = createSparseMatrix2D();
+    Matrix2D result(sm.cols(), sm.cols());
+
+    result = 0.1 * sm;
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(0, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(0, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(1, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.3, result(1, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(1, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(2, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.0, result(2, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 0.6, result(2, 2), 1E-10);
 }

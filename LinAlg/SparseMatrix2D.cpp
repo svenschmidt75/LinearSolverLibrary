@@ -91,6 +91,33 @@ double
 SparseMatrix2D::operator()(SparseMatrix2D::size_type i, SparseMatrix2D::size_type j) const {
     // i: x, j: y
 
+    if (finalized_) {
+        // Number of non-zero columns for this row
+        size_type ncol = nelements_[i + 1] - nelements_[i];
+        size_type offset = nelements_[i];
+
+        // column has zero elements
+        if (!ncol)
+            return 0.0;
+
+        double value = 0.0;
+
+        // check all columns for elements in row i
+        for (size_type col = 0; col < ncol; ++col) {
+            if (columns_[offset + col] < j)
+                continue;
+
+            if (columns_[offset + col] > j)
+                break;
+
+            value = elements_[offset + col];
+            break;
+        }
+
+        return value;
+    }
+
+    // if not yet finalized
     Col_t & col = data_[i];
     return col[j];
 }

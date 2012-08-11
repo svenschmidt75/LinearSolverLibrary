@@ -5,6 +5,8 @@
  *         The matrix elements are first inserted and once finished,
  *         the internal matrix representation is converted into the
  *         compressed storage format.
+ *         Note: We are storing matrices in row-major format, hence here,
+ *               we implement the compressed row format.
  * Author: Sven Schmidt
  * Date  : 12/26/2011
  */

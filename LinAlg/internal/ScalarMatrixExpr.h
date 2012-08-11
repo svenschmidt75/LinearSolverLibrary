@@ -42,8 +42,8 @@ namespace LinAlg_NS {
             }
 
             double operator()(IMatrix2D::size_type row, IMatrix2D::size_type col) const {
-                // get matrix entry
-                double value = expression_traits<MATRIX_EXPR>::get_value(op2_, row, col);
+                // get matrix entry, use tag dispatching
+                double value = matrix_operation_traits<MATRIX_EXPR>::get_value(op2_, row, col);
                 return BINOP()(op1_(0), value);
             }
 
