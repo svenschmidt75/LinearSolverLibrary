@@ -25,7 +25,7 @@ namespace LinAlg_NS {
     class Vector;
 
 
-    class DECL_SYMBOLS Matrix2D : public IMatrix2D {
+    class LINALG_DECL_SYMBOLS Matrix2D : public IMatrix2D {
     public:
         // To be used as base class
         Matrix2D(size_type rows, size_type cols);

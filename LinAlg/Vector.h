@@ -26,7 +26,7 @@
 
 namespace LinAlg_NS {
 
-    class DECL_SYMBOLS Vector {
+    class LINALG_DECL_SYMBOLS Vector {
 
         friend class helper;
 

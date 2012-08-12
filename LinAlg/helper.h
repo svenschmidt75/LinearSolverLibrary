@@ -27,7 +27,7 @@ namespace LinAlg_NS {
     class SparseMatrix2D;
 
 
-    class DECL_SYMBOLS helper {
+    class LINALG_DECL_SYMBOLS helper {
     public:
         static TransposeVector transpose(Vector const & vec);
         static Vector          transpose(TransposeVector const & vec);

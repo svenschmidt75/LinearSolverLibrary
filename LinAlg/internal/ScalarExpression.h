@@ -19,7 +19,7 @@ namespace LinAlg_NS {
 
     namespace internal {
 
-        class DECL_SYMBOLS ScalarExpression {
+        class LINALG_DECL_SYMBOLS ScalarExpression {
         public:
             ScalarExpression(double value);
             ScalarExpression(ScalarExpression const & in);

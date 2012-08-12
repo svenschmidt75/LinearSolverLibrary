@@ -19,13 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="LinAlgOperatorTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="LinAlgOperatorTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FloridaSparseMatrixReader\FloridaSparseMatrixReader.vcxproj">
+      <Project>{bbdd266d-6e3f-48c1-8fc6-d5d0b61727b7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
       <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
     </ProjectReference>
@@ -124,8 +129,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
