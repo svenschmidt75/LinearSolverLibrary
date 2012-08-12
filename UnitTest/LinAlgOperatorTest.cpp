@@ -39,6 +39,7 @@ namespace {
         SparseMatrix2D m(3);
         m(0, 0) = 1;
         m(1, 1) = 3;
+        m(1, 2) = 2;
         m(2, 2) = 6;
         m.finalize();
         return m;
@@ -123,7 +124,7 @@ LinAlgOperatorTest::scalarSparseMatrixMulTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(0, 2), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(1, 0), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.3, result(1, 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(1, 2), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.2, result(1, 2), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(2, 0), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.0, result(2, 1), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.6, result(2, 2), 1E-10);
@@ -139,7 +140,9 @@ LinAlgOperatorTest::matrixVectorMulTest() {
 
     result = m * v;
 
-    //    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 5.0, result(0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 11.0, result(1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 17.0, result(2), 1E-10);
 }
 
 void
@@ -148,9 +151,11 @@ LinAlgOperatorTest::sparseMatrixVectorMulTest() {
     Vector v = createVector(3);
     Vector result(v.size());
 
-    std::iota(std::begin(v), std::end(v), 1);
+    std::iota(std::begin(v), std::end(v), 3);
 
     result = sm * v;
 
-//    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 0.1, result(0, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 3.0, result(0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 22.0, result(1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 30.0, result(2), 1E-10);
 }

@@ -33,7 +33,7 @@ namespace LinAlg_NS {
                 op2_(in.op2_) {}
 
             Vector::size_type size() const {
-                return op2_.size();
+                return op1_.rows();
             }
 
             double operator()(Vector::size_type index) const {
