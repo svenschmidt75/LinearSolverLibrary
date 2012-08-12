@@ -23,8 +23,8 @@ namespace LinAlg_NS {
                 :
                 op1_(m),
                 op2_(v) {
-                    static_assert(typename expression_traits<MATRIX_EXPR>::is_matrix_expression::value == std::true_type::value, "lhs not a matrix-like type");
-					static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "rhs not a vector-like type");
+                    static_assert(typename expression_traits<MATRIX_EXPR>::is_matrix_expression::value == std::true_type::value, "m not a matrix-like type");
+					static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "v not a vector-like type");
                 }
 
             MatrixVectorExpr(MatrixVectorExpr const & in)

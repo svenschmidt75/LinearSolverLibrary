@@ -17,6 +17,7 @@ namespace LinAlg_NS {
     // forward-declarations
     class Vector;
     class Matrix2D;
+    class SparseMatrix2D;
 
 namespace internal {
 
@@ -94,6 +95,9 @@ namespace internal {
     struct matrix_operation_traits<Matrix2D> {
         template<typename VECTOR_EXPR>
         struct apply {
+            /* Use tag dispatching to select the matrix multiplication
+             * for dense matrices.
+             */
             static double op(Matrix2D const & m, VECTOR_EXPR const & v, IMatrix2D::size_type row) {
                 return LinAlg_NS::helper::matrix_vector_mul<VECTOR_EXPR>(m, v, row);
             }
@@ -109,6 +113,9 @@ namespace internal {
         template<typename VECTOR_EXPR>
         struct apply {
             static double op(SparseMatrix2D const & m, VECTOR_EXPR const & v, IMatrix2D::size_type row) {
+                /* Use tag dispatching to select the matrix multiplication
+                 * for sparse matrices.
+                 */
                 return LinAlg_NS::helper::matrix_vector_mul<VECTOR_EXPR>(m, v, row);
             }
         };
@@ -117,9 +124,6 @@ namespace internal {
             return LinAlg_NS::helper::get_value(m, row, col);
         }
     };
-
-
-
 
 } // namespace internal
 

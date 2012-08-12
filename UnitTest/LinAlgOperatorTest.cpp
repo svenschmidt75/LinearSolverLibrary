@@ -159,3 +159,48 @@ LinAlgOperatorTest::sparseMatrixVectorMulTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 22.0, result(1), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix expression", 30.0, result(2), 1E-10);
 }
+
+void
+LinAlgOperatorTest::matrixVectorExprMulTest() {
+    Matrix2D m = createMatrix2D();
+    Vector v1 = createVector(2);
+    Vector v2 = createVector(2);
+    Vector v3 = createVector(3);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 67);
+    std::iota(std::begin(v3), std::end(v3), 978);
+
+    result = m * (v1 + v2) + v3;
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1186, result(0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1463, result(1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1740, result(2), 1E-10);
+}
+
+void
+LinAlgOperatorTest::sparseMatrixVectorExprMulTest() {
+    SparseMatrix2D sm = createSparseMatrix2D();
+    Vector v1 = createVector(3);
+    Vector v2 = createVector(3);
+    Vector v3 = createVector(3);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 67);
+    std::iota(std::begin(v3), std::end(v3), 978);
+
+    result = sm * (v1 + v2) + v3;
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1046, result(0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1333, result(1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1412, result(2), 1E-10);
+
+
+    result = (v3 + v2) + sm * (0.1 * v3 + v1);
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1143.8, result(0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1548.7, result(1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-vector expression", 1655, result(2), 1E-10);
+}

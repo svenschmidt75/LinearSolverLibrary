@@ -160,7 +160,6 @@
     <ClInclude Include="internal\ScalarExpression.h" />
     <ClInclude Include="internal\ScalarMatrixExpr.h" />
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
-    <ClInclude Include="internal\ScalarVectorExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="operators.h" />
