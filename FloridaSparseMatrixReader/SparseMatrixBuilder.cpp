@@ -19,8 +19,10 @@ SparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
 
 void
 SparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
+#ifdef DEBUG
     bool assert_cond = row < dim_ && col < dim_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::insertMatrixElement: post-condition error");
+#endif
     if (row >= dim_)
         throw std::range_error("SparseMatrixBuilder::insertMatrixElement: row index out of bounds");
 
