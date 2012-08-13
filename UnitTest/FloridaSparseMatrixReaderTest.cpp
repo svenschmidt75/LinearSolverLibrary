@@ -18,7 +18,11 @@ FloridaSparseMatrixReaderTest::tearDown() {}
 void
 FloridaSparseMatrixReaderTest::readTest() {
     SparseMatrixBuilder builder;
-    std::string filename = "\\Develop\\SparseMatrixData\\offshore\\offshore.mtx";
+    std::string filename = "\\Develop\\SparseMatrixData\\sts4098\\sts4098.mtx";
     FloridaSparseMatrixReader reader(filename, builder);
-    reader.read();
+    bool success = reader.read();
+
+    // assert #elements
+    // dim
+    // a couple of non-zero entries
 }

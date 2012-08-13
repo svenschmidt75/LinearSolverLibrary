@@ -85,5 +85,7 @@ FloridaSparseMatrixReader::read() const {
         builder_.insertMatrixElement(row, col, value);
     }
 
+    builder_.finalize();
+
     return true;
 }

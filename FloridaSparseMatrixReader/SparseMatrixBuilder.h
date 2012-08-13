@@ -34,6 +34,7 @@ namespace EntityReader_NS {
     public:
         void init(LinAlg_NS::IMatrix2D::size_type dim) const override;
         void insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const override;
+        void finalize() const override;
 
     private:
         mutable SparseMatrix2D_t                data_;
