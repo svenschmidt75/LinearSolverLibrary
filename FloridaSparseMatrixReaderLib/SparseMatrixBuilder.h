@@ -27,7 +27,7 @@ namespace LinAlg_NS {
 
 namespace EntityReader_NS {
 
-    class FLORIDASPARSEMATRIXREADER_DECL_SYMBOLS SparseMatrixBuilder : public IMatrixBuilder {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SparseMatrixBuilder : public IMatrixBuilder {
     public:
         typedef std::shared_ptr<LinAlg_NS::SparseMatrix2D> SparseMatrix2D_t;
 

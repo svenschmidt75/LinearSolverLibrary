@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReaderLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{412EA587-7361-4E82-B772-8A7FD380B6B8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReader", "FloridaSparseMatrixReader\FloridaSparseMatrixReader.vcxproj", "{91063F81-9843-470B-87B5-1BD9E7D9251E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,6 +35,14 @@ Global
 		{8CC4C61B-665D-4D19-9C74-2C65316E545D}.Release|Win32.Build.0 = Release|Win32
 		{8CC4C61B-665D-4D19-9C74-2C65316E545D}.Release|x64.ActiveCfg = Release|x64
 		{8CC4C61B-665D-4D19-9C74-2C65316E545D}.Release|x64.Build.0 = Release|x64
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Debug|Win32.Build.0 = Debug|Win32
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Debug|x64.ActiveCfg = Debug|x64
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Debug|x64.Build.0 = Debug|x64
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Release|Win32.ActiveCfg = Release|Win32
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Release|Win32.Build.0 = Release|Win32
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Release|x64.ActiveCfg = Release|x64
+		{91063F81-9843-470B-87B5-1BD9E7D9251E}.Release|x64.Build.0 = Release|x64
 		{A139880C-DA52-44C7-9F44-20B7FFD35EE1}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A139880C-DA52-44C7-9F44-20B7FFD35EE1}.Debug|Win32.Build.0 = Debug|Win32
 		{A139880C-DA52-44C7-9F44-20B7FFD35EE1}.Debug|x64.ActiveCfg = Debug|x64
@@ -52,8 +62,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

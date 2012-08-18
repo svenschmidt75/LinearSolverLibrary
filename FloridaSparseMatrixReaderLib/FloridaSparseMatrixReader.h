@@ -23,7 +23,7 @@ namespace EntityReader_NS {
 
     class IMatrixBuilder;
 
-    class FLORIDASPARSEMATRIXREADER_DECL_SYMBOLS FloridaSparseMatrixReader : public boost::noncopyable {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixReader : public boost::noncopyable {
     public:
         FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder & builder);
 
