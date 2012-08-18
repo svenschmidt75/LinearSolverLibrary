@@ -7,6 +7,7 @@
 
 
 using namespace EntityReader_NS;
+using namespace LinAlg_NS;
 
 
 void
@@ -21,6 +22,8 @@ FloridaSparseMatrixReaderTest::readTest() {
     std::string filename = "\\Develop\\SparseMatrixData\\sts4098\\sts4098.mtx";
     FloridaSparseMatrixReader reader(filename, builder);
     bool success = reader.read();
+
+    SparseMatrixBuilder::result_t m = builder.result();
 
     // assert #elements
     // dim

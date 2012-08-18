@@ -13,8 +13,6 @@
 
 #include "LinAlg/IMatrix2D.h"
 
-#include <memory>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -27,17 +25,15 @@ namespace LinAlg_NS {
 
 namespace EntityReader_NS {
 
-    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SparseMatrixBuilder : public IMatrixBuilder {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SparseMatrixBuilder : public IMatrixBuilder<LinAlg_NS::SparseMatrix2D> {
     public:
-        typedef std::shared_ptr<LinAlg_NS::SparseMatrix2D> SparseMatrix2D_t;
-
-    public:
-        void init(LinAlg_NS::IMatrix2D::size_type dim) const override;
-        void insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const override;
-        void finalize() const override;
+        void     init(LinAlg_NS::IMatrix2D::size_type dim) const final;
+        void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const final;
+        void     finalize() const final;
+        result_t result() const final;
 
     private:
-        mutable SparseMatrix2D_t                data_;
+        mutable result_t                        data_;
         mutable LinAlg_NS::IMatrix2D::size_type dim_;
     };
 

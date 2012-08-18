@@ -46,3 +46,8 @@ SparseMatrixBuilder::finalize() const {
 
     data_->finalize();
 }
+
+SparseMatrixBuilder::result_t
+SparseMatrixBuilder::result() const {
+    return data_;
+}

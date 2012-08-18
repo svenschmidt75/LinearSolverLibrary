@@ -22,6 +22,21 @@
 #include <boost/cstdint.hpp>
 
 
+namespace boost {
+    namespace serialization {
+        class access;
+    }
+
+    namespace archive {
+        class text_oarchive;
+        class text_iarchive;
+        class xml_oarchive;
+        class xml_iarchive;
+        class binary_oarchive;
+        class binary_iarchive;
+    }
+}
+
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)
 
@@ -33,10 +48,22 @@ namespace LinAlg_NS {
 
     class LINALG_DECL_SYMBOLS SparseMatrix2D : public IMatrix2D {
 
+        // support for boost::serialize
+        friend class boost::serialization::access; 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        template<typename AR>
+        friend void serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/);
+
         friend struct LinearSolver;
         friend class helper;
 
     public:
+        SparseMatrix2D();
         SparseMatrix2D(size_type ncols);
         SparseMatrix2D(SparseMatrix2D const & in);
         SparseMatrix2D & operator=(SparseMatrix2D const & in);

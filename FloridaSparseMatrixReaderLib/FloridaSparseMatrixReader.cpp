@@ -3,6 +3,7 @@
 #include "IMatrixBuilder.h"
 
 #include "LinAlg/IMatrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
 
 #include <boost/tokenizer.hpp>
 #include <boost/iostreams/device/file.hpp>
@@ -18,7 +19,7 @@
 using namespace EntityReader_NS;
 
 
-FloridaSparseMatrixReader::FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder & builder)
+FloridaSparseMatrixReader::FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder)
     :
     filename_(filename),
     builder_(builder) {}

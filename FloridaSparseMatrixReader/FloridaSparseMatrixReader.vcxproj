@@ -143,6 +143,9 @@
     <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">
       <Project>{bbdd266d-6e3f-48c1-8fc6-d5d0b61727b7}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
+      <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

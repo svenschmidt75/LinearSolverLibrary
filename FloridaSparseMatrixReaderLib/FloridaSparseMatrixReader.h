@@ -19,19 +19,25 @@
 #pragma warning(disable:4251)
 
 
+namespace LinAlg_NS {
+    class SparseMatrix2D;
+}
+
+
 namespace EntityReader_NS {
 
+    template<typename T>
     class IMatrixBuilder;
 
     class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixReader : public boost::noncopyable {
     public:
-        FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder & builder);
+        FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder);
 
         bool read() const;
 
     private:
-        std::string      filename_;
-        IMatrixBuilder & builder_;
+        std::string                                 filename_;
+        IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder_;
     };
 
 } // namespace EntityReader_NS
