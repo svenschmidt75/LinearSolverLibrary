@@ -1,7 +1,7 @@
 #include "FloridaSparseMatrixReaderTest.h"
 
-#include "FloridaSparseMatrixReader/FloridaSparseMatrixReader.h"
-#include "FloridaSparseMatrixReader/SparseMatrixBuilder.h"
+#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
+#include "FloridaSparseMatrixReaderLib/SparseMatrixBuilder.h"
 
 #include <string>
 

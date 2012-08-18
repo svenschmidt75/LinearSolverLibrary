@@ -5,7 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinearSolverLibrary", "Line
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinAlg", "LinAlg\LinAlg.vcxproj", "{8CC4C61B-665D-4D19-9C74-2C65316E545D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReader", "FloridaSparseMatrixReader\FloridaSparseMatrixReader.vcxproj", "{BBDD266D-6E3F-48C1-8FC6-D5D0B61727B7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReaderLib", "FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj", "{BBDD266D-6E3F-48C1-8FC6-D5D0B61727B7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{412EA587-7361-4E82-B772-8A7FD380B6B8}"
 EndProject

@@ -79,8 +79,8 @@ FloridaSparseMatrixReader::read() const {
         BOOST_ASSERT_MSG(token_arr.size() == 3ul, "FloridaSparseMatrixReader::read: File format error");
 // print line
 
-        LinAlg_NS::IMatrix2D::size_type row = boost::lexical_cast<std::uint64_t>(token_arr[0]);
-        LinAlg_NS::IMatrix2D::size_type col = boost::lexical_cast<std::uint64_t>(token_arr[1]);
+        LinAlg_NS::IMatrix2D::size_type row = boost::lexical_cast<std::uint64_t>(token_arr[0]) - 1;
+        LinAlg_NS::IMatrix2D::size_type col = boost::lexical_cast<std::uint64_t>(token_arr[1]) - 1;
         double value = boost::lexical_cast<double>(token_arr[2]);
         builder_.insertMatrixElement(row, col, value);
     }

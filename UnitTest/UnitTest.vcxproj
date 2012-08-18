@@ -28,7 +28,7 @@
     <ClInclude Include="LinAlgOperatorTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FloridaSparseMatrixReader\FloridaSparseMatrixReader.vcxproj">
+    <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">
       <Project>{bbdd266d-6e3f-48c1-8fc6-d5d0b61727b7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">

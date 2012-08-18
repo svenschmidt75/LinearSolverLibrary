@@ -13,8 +13,8 @@ using namespace EntityReader_NS;
 
 void
 SparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
-    dim_ = dim + 1;
-    data_.reset(new SparseMatrix2D(dim_));
+    data_.reset(new SparseMatrix2D(dim));
+    dim_ = dim;
 }
 
 void
