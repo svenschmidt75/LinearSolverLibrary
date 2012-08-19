@@ -10,6 +10,7 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 #include <boost/assert.hpp>
 
 #include <iostream>
@@ -30,20 +31,10 @@ namespace boost {
         template<>
             struct is_wrapper<LinAlg_NS::SparseMatrix2D> : public boost::mpl::true_ {
         };
-    }
-}
-
-namespace boost {
-    namespace serialization {
 
         template<>
         struct is_wrapper<int> : public boost::mpl::true_ {
         };
-
-        template<typename AR>
-        void serialize(AR & ar, const unsigned int version) {
-
-        }
 
     }
 }
@@ -57,23 +48,7 @@ int main(int argc, char* argv[])
     }
 
     FS::path filename(argv[1]);
-
-    {
-        LinAlg_NS::SparseMatrix2D m(10);
-        FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
-        std::ifstream file(output_file.string(), std::ios_base::binary);
-        BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
-//        boost::archive::text_iarchive oa(file); 
-//        boost::archive::xml_iarchive oa(file); 
-        boost::archive::binary_iarchive oa(file); 
-        oa >> BOOST_SERIALIZATION_NVP(m);
-        file.close();
-
-        int a = 1;
-        a++;
-
-    }
-
+    
     SparseMatrixBuilder builder;
     FloridaSparseMatrixReader reader(filename.string(), builder);
     bool success = reader.read();
