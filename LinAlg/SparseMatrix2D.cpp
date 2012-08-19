@@ -316,20 +316,12 @@ SparseMatrix2D::print() const {
 template<typename AR>
 void
 serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/) {
-//    ar & BOOST_SERIALIZATION_NVP(m.ncols_);
-//    ar & BOOST_SERIALIZATION_NVP(m.data_);
-//     ar & BOOST_SERIALIZATION_NVP(m.finalized_);
-
-    m.elements_.resize(4);
-    m.elements_[0] = 409897.3044519858;
-    m.elements_[1] = 30254.31359468764;
-    m.elements_[2] = -170499.3259934422;
-    m.elements_[3] = -1008.295442766739;
-
+    ar & BOOST_SERIALIZATION_NVP(m.ncols_);
+    ar & BOOST_SERIALIZATION_NVP(m.data_);
+    ar & BOOST_SERIALIZATION_NVP(m.finalized_);
     ar & BOOST_SERIALIZATION_NVP(m.elements_);
-
-    //     ar & BOOST_SERIALIZATION_NVP(m.columns_);
-//     ar & BOOST_SERIALIZATION_NVP(m.nelements_);
+    ar & BOOST_SERIALIZATION_NVP(m.columns_);
+    ar & BOOST_SERIALIZATION_NVP(m.nelements_);
 }
 
 void

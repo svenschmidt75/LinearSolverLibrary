@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     {
         LinAlg_NS::SparseMatrix2D m(10);
         FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
-        std::ifstream file(output_file.string());
+        std::ifstream file(output_file.string(), std::ios_base::binary);
         BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
 //        boost::archive::text_iarchive oa(file); 
 //        boost::archive::xml_iarchive oa(file); 
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
     // write serialized sparse matrix into same directory
     FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
-    std::ofstream file(output_file.string());
+    std::ofstream file(output_file.string(), std::ios_base::binary);
     BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
 //    boost::archive::text_oarchive oa(file); 
 //    boost::archive::xml_oarchive oa(file); 
