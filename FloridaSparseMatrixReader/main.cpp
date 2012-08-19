@@ -63,13 +63,15 @@ int main(int argc, char* argv[])
         FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
         std::ifstream file(output_file.string());
         BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
-        boost::archive::text_iarchive oa(file); 
+//        boost::archive::text_iarchive oa(file); 
 //        boost::archive::xml_iarchive oa(file); 
-//        boost::archive::binary_iarchive oa(file); 
+        boost::archive::binary_iarchive oa(file); 
         oa >> BOOST_SERIALIZATION_NVP(m);
+        file.close();
 
         int a = 1;
         a++;
+
     }
 
     SparseMatrixBuilder builder;
@@ -88,11 +90,12 @@ int main(int argc, char* argv[])
     FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
     std::ofstream file(output_file.string());
     BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
-    boost::archive::text_oarchive oa(file); 
+//    boost::archive::text_oarchive oa(file); 
 //    boost::archive::xml_oarchive oa(file); 
-//    boost::archive::binary_oarchive oa(file); 
+    boost::archive::binary_oarchive oa(file); 
     LinAlg_NS::SparseMatrix2D const & tmp = *m;
     oa << BOOST_SERIALIZATION_NVP(tmp);
+    file.close();
 
 	return 0;
 }

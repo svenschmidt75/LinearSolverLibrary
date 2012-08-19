@@ -17,61 +17,62 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/vector.hpp>
-
+#include <boost/serialization/nvp.hpp>
 
 
 /* The following specializations are needed for serializing
  * in the xml file format. Not sure why...
  */
-namespace boost {
-    namespace serialization {
-
-        template<>
-        struct is_wrapper<const LinAlg_NS::IMatrix2D::size_type> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<LinAlg_NS::IMatrix2D::size_type> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<const LinAlg_NS::SparseMatrix2D::Row_t> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<LinAlg_NS::SparseMatrix2D::Row_t> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<const bool> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<bool> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<const std::vector<double>> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<std::vector<double>> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<const std::vector<LinAlg_NS::IMatrix2D::size_type>> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<std::vector<LinAlg_NS::IMatrix2D::size_type>> : public boost::mpl::true_ {
-        };
-        
-    }
-}
+// namespace boost {
+//     namespace serialization {
+// 
+//         template<>
+//         struct is_wrapper<const LinAlg_NS::IMatrix2D::size_type> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<LinAlg_NS::IMatrix2D::size_type> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<const LinAlg_NS::SparseMatrix2D::Row_t> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<LinAlg_NS::SparseMatrix2D::Row_t> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<const bool> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<bool> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<const std::vector<double>> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<std::vector<double>> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<const std::vector<LinAlg_NS::IMatrix2D::size_type>> : public boost::mpl::true_ {
+//         };
+// 
+//         template<>
+//         struct is_wrapper<std::vector<LinAlg_NS::IMatrix2D::size_type>> : public boost::mpl::true_ {
+//         };
+//         
+//     }
+// }
 
 
 
 namespace LinAlg_NS {
+
 
 SparseMatrix2D::SparseMatrix2D()
     :
@@ -315,12 +316,20 @@ SparseMatrix2D::print() const {
 template<typename AR>
 void
 serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/) {
-    ar & BOOST_SERIALIZATION_NVP(m.ncols_);
-    ar & BOOST_SERIALIZATION_NVP(m.data_);
-    ar & BOOST_SERIALIZATION_NVP(m.finalized_);
+//    ar & BOOST_SERIALIZATION_NVP(m.ncols_);
+//    ar & BOOST_SERIALIZATION_NVP(m.data_);
+//     ar & BOOST_SERIALIZATION_NVP(m.finalized_);
+
+    m.elements_.resize(4);
+    m.elements_[0] = 409897.3044519858;
+    m.elements_[1] = 30254.31359468764;
+    m.elements_[2] = -170499.3259934422;
+    m.elements_[3] = -1008.295442766739;
+
     ar & BOOST_SERIALIZATION_NVP(m.elements_);
-    ar & BOOST_SERIALIZATION_NVP(m.columns_);
-    ar & BOOST_SERIALIZATION_NVP(m.nelements_);
+
+    //     ar & BOOST_SERIALIZATION_NVP(m.columns_);
+//     ar & BOOST_SERIALIZATION_NVP(m.nelements_);
 }
 
 void
