@@ -26,7 +26,7 @@ SparseMatrixReaderCreator::create(std::string const & filename) {
     
     std::string ext = FS::extension(filename);
 
-    if (ext == "ar") {
+    if (ext == ".ar") {
         // create binary reader
         ISparseMatrixReader::Ptr binary_reader(new SparseMatrixBinaryReader(filename));
         return binary_reader;

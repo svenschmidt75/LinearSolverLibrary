@@ -2,6 +2,8 @@
 
 #include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
 #include "FloridaSparseMatrixReaderLib/SparseMatrixBuilder.h"
+#include "FloridaSparseMatrixReaderLib/ISparseMatrixReader.h"
+#include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 
@@ -35,12 +37,10 @@ FloridaSparseMatrixReaderTest::readTest() {
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
     SparseMatrix2D m;
 
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
 
-    std::ifstream file(filename.string(), std::ios_base::binary);
-    BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
-    boost::archive::binary_iarchive oa(file); 
-    oa >> BOOST_SERIALIZATION_NVP(m);
-    file.close();
+    m = sm_reader->get();
 
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
