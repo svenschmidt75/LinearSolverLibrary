@@ -35,11 +35,6 @@ FloridaSparseMatrixReaderTest::readTest() {
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
     SparseMatrix2D m;
 
-    SparseMatrixReader & sm_reader = SparseMatrixReader::create(filename);
-    bool success = sm_reader.read();
-    m = sm_reader.get();
-
-
 
     std::ifstream file(filename.string(), std::ios_base::binary);
     BOOST_ASSERT_MSG(file.good(), "Error opening output file name");

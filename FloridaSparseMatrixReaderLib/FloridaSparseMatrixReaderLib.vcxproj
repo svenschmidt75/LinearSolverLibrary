@@ -164,6 +164,9 @@
     <ClInclude Include="SparseMatrixReaderCreator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{04def9ae-5b98-47e2-9fce-35897574eea9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
       <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
     </ProjectReference>

@@ -1,8 +1,13 @@
 #include "SparseMatrixReaderCreator.h"
 
 #include "ISparseMatrixReader.h"
+#include "SparseMatrixBinaryReader.h"
+
+#include "common/reporting.h"
 
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
+
 
 using namespace EntityReader_NS;
 
@@ -12,30 +17,20 @@ namespace FS = boost::filesystem;
 ISparseMatrixReader::Ptr
 SparseMatrixReaderCreator::create(std::string const & filename) {
     // create reader depending on the file extension
-    // throws runtime_error if unknown format
 
     if (!FS::exists(filename)) {
+        boost::format format = boost::format("SparseMatrixReaderCreator::create: File %1% not found!\n") % filename;
+        common_NS::reporting::error(format.str());
+        return nullptr;
     }
     
+    std::string ext = FS::extension(filename);
 
-// 
-//     assert( !exists( "foo" ) );  // (2)
-// 
-// 
-//     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
-//     SparseMatrix2D m;
-// 
-//     SparseMatrixReader & sm_reader = SparseMatrixReader::create(filename);
-//     bool success = sm_reader.read();
-//     m = sm_reader.get();
-// 
-// 
-// 
-//     std::ifstream file(filename.string(), std::ios_base::binary);
-//     BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
-//     boost::archive::binary_iarchive oa(file); 
-//     oa >> BOOST_SERIALIZATION_NVP(m);
-//     file.close();
+    if (ext == "ar") {
+        // create binary reader
+        ISparseMatrixReader::Ptr binary_reader(new SparseMatrixBinaryReader(filename));
+        return binary_reader;
+    }
 
-
+    return nullptr;
 }

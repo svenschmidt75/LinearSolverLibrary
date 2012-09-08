@@ -13,6 +13,8 @@
 
 #include "LinAlg/SparseMatrix2D.h"
 
+#include <string>
+
 
 namespace EntityReader_NS {
 
@@ -20,11 +22,15 @@ namespace EntityReader_NS {
 
     class SparseMatrixBinaryReader : public ISparseMatrixReader {
     public:
+        SparseMatrixBinaryReader(std::string const & filename);
+
+        // FROM ISparseMatrixReader
         bool                      read() const override;
         LinAlg_NS::SparseMatrix2D get() const override;
 
     private:
-        LinAlg_NS::SparseMatrix2D m_;
+        std::string                       filename_;
+        mutable LinAlg_NS::SparseMatrix2D m_;
     };
 
 } // namespace EntityReader_NS
