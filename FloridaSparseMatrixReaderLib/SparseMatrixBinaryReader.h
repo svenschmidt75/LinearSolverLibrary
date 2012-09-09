@@ -25,8 +25,8 @@ namespace EntityReader_NS {
         SparseMatrixBinaryReader(std::string const & filename);
 
         // FROM ISparseMatrixReader
-        bool                      read() const override;
-        LinAlg_NS::SparseMatrix2D get() const override;
+        bool                            read() const override;
+        LinAlg_NS::SparseMatrix2D const get() const override;
 
     private:
         std::string                       filename_;

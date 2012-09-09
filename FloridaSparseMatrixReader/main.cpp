@@ -40,6 +40,15 @@ namespace boost {
 }
 
 
+
+/* Usage: 1. Argument: Name of the file containing the sparse matrix data.
+ * Matrices can be found here: "The University of Florida Sparse Matrix Collection",
+ * http://www.cise.ufl.edu/research/sparse/matrices/
+ * File format: Matrix Market Format (mtx)
+ *
+ * The matrix data will be serialized into a binary format.
+ */
+
 int main(int argc, char* argv[])
 {
     if (argc != 2) {

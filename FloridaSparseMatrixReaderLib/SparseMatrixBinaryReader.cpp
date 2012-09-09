@@ -27,7 +27,7 @@ SparseMatrixBinaryReader::read() const {
     return file.good();
 }
 
-LinAlg_NS::SparseMatrix2D
+LinAlg_NS::SparseMatrix2D const
 SparseMatrixBinaryReader::get() const {
     return m_;
 }

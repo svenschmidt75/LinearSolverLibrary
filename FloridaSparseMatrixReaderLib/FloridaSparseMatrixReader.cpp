@@ -5,12 +5,15 @@
 #include "LinAlg/IMatrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 
+#include "common/reporting.h"
+
 #include <boost/tokenizer.hpp>
 #include <boost/iostreams/device/file.hpp>
 #include <boost/iostreams/stream.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/progress.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 
 #include <string>
 #include <cstdint>
@@ -54,7 +57,13 @@ FloridaSparseMatrixReader::read() const {
     }
 
     BOOST_ASSERT_MSG(token_arr.size() == 3ul, "FloridaSparseMatrixReader::read: File format error");
-// print line
+    if (token_arr.size() != 3ul) {
+        boost::format format = boost::format("FloridaSparseMatrixReader::read: File %1%, line %2%: Data format error!\n") % line_number % filename_;
+        common_NS::reporting::error(format.str());
+        return false;
+    }
+
+    // print line
 
     // read matrix dimension and number of non-zero elements
     LinAlg_NS::IMatrix2D::size_type dim = boost::lexical_cast<std::uint64_t>(token_arr[0]);
@@ -78,7 +87,11 @@ FloridaSparseMatrixReader::read() const {
         token_arr.assign(tokens.begin(), tokens.end());
 
         BOOST_ASSERT_MSG(token_arr.size() == 3ul, "FloridaSparseMatrixReader::read: File format error");
-// print line
+        if (token_arr.size() != 3ul) {
+            boost::format format = boost::format("FloridaSparseMatrixReader::read: File %1%, line %2%: Data format error!\n") % line_number % filename_;
+            common_NS::reporting::error(format.str());
+            return false;
+        }
 
         LinAlg_NS::IMatrix2D::size_type row = boost::lexical_cast<std::uint64_t>(token_arr[0]) - 1;
         LinAlg_NS::IMatrix2D::size_type col = boost::lexical_cast<std::uint64_t>(token_arr[1]) - 1;

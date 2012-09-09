@@ -20,7 +20,6 @@ namespace EntityReader_NS {
     class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SparseMatrixReaderCreator {
     public:
         static ISparseMatrixReader::Ptr create(std::string const & filename);
-
     };
 
 } // namespace EntityReader_NS

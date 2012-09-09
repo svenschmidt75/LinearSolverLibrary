@@ -25,8 +25,8 @@ namespace EntityReader_NS {
     public:
         virtual ~ISparseMatrixReader() {}
 
-        virtual bool                      read() const = 0;
-        virtual LinAlg_NS::SparseMatrix2D get() const = 0;
+        virtual bool                            read() const = 0;
+        virtual LinAlg_NS::SparseMatrix2D const get() const = 0;
     };
 
 } // namespace EntityReader_NS

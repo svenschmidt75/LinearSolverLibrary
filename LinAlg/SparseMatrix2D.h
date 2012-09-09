@@ -61,6 +61,7 @@ namespace LinAlg_NS {
 
         friend struct LinearSolver;
         friend class helper;
+        friend class FloridaSparseMatrixReaderTest;
 
     public:
         SparseMatrix2D();
