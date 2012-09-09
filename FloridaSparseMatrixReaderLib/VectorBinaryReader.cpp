@@ -1,4 +1,4 @@
-#include "SparseMatrixBinaryReader.h"
+#include "VectorBinaryReader.h"
 
 #include <boost/assert.hpp>
 #include <boost/filesystem.hpp>
@@ -11,12 +11,13 @@
 using namespace EntityReader_NS;
 
 
-SparseMatrixBinaryReader::SparseMatrixBinaryReader(std::string const & filename)
+VectorBinaryReader::VectorBinaryReader(std::string const & filename)
     :
-    filename_(filename) {};
+    filename_(filename),
+    data_(0) {};
 
 bool
-SparseMatrixBinaryReader::read() const {
+VectorBinaryReader::read() const {
     std::ifstream file(filename_, std::ios_base::binary);
     BOOST_ASSERT_MSG(file.good(), "Error opening output file name");
     boost::archive::binary_iarchive oa(file); 
@@ -26,7 +27,7 @@ SparseMatrixBinaryReader::read() const {
     return file.good();
 }
 
-LinAlg_NS::SparseMatrix2D const
-SparseMatrixBinaryReader::get() const {
+LinAlg_NS::Vector const
+VectorBinaryReader::get() const {
     return data_;
 }

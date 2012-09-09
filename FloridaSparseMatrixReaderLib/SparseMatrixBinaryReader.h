@@ -18,8 +18,6 @@
 
 namespace EntityReader_NS {
 
-    class SparseMatrix2D;
-
     class SparseMatrixBinaryReader : public ISparseMatrixReader {
     public:
         SparseMatrixBinaryReader(std::string const & filename);
@@ -30,7 +28,7 @@ namespace EntityReader_NS {
 
     private:
         std::string                       filename_;
-        mutable LinAlg_NS::SparseMatrix2D m_;
+        mutable LinAlg_NS::SparseMatrix2D data_;
     };
 
 } // namespace EntityReader_NS

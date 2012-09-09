@@ -12,7 +12,7 @@ FloridaVectorBuilder::init(LinAlg_NS::Vector::size_type dim) const {
 
 void
 FloridaVectorBuilder::insertVectorElement(LinAlg_NS::Vector::size_type row, double value) const {
-#ifdef DEBUG
+#ifdef _DEBUG
     bool assert_cond = row < dim_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "FloridaVectorBuilder::insertVectorElement: pre-condition error");
 #endif

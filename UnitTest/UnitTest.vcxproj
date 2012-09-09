@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
+    <ClCompile Include="FloridaVectorReaderTest.cpp" />
     <ClCompile Include="LinAlgOperatorTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
+    <ClInclude Include="FloridaVectorReaderTest.h" />
     <ClInclude Include="LinAlgOperatorTest.h" />
   </ItemGroup>
   <ItemGroup>

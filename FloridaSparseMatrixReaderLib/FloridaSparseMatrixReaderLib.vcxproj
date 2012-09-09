@@ -156,6 +156,8 @@
     <ClCompile Include="SparseMatrixBinaryReader.cpp" />
     <ClCompile Include="FloridaSparseMatrixBuilder.cpp" />
     <ClCompile Include="SparseMatrixReaderCreator.cpp" />
+    <ClCompile Include="VectorBinaryReader.cpp" />
+    <ClCompile Include="VectorReaderCreator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FloridaSparseMatrixBuilder.h" />
@@ -165,8 +167,11 @@
     <ClInclude Include="FloridaVectorReader.h" />
     <ClInclude Include="ISparseMatrixReader.h" />
     <ClInclude Include="IVectorBuilder.h" />
+    <ClInclude Include="IVectorReader.h" />
     <ClInclude Include="SparseMatrixBinaryReader.h" />
     <ClInclude Include="SparseMatrixReaderCreator.h" />
+    <ClInclude Include="VectorBinaryReader.h" />
+    <ClInclude Include="VectorReaderCreator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\common.vcxproj">

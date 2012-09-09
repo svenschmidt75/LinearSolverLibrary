@@ -77,7 +77,8 @@ FloridaVectorReader::read() const {
     }
 
     // #of non-zero elements?
-    LinAlg_NS::Vector::size_type nelem = 0;
+    LinAlg_NS::Vector::size_type nelem = dim;
+    LinAlg_NS::Vector::size_type nelem_act = 0;
     if (token_arr.size() > 2)
         nelem = boost::lexical_cast<std::uint64_t>(token_arr[2]);
 
@@ -128,7 +129,17 @@ FloridaVectorReader::read() const {
             value = boost::lexical_cast<double>(token_arr[2]);
         }
 
+        nelem_act++;
+
         builder_.insertVectorElement(row, value);
+    }
+
+    cond = nelem == nelem_act;
+    BOOST_ASSERT_MSG(cond, "FloridaVectorReader::read: File format error");
+    if (!cond) {
+        boost::format format = boost::format("FloridaVectorReader::read: File %1%, line %2%: Data format error!\n") % line_number % filename_;
+        common_NS::reporting::error(format.str());
+        return false;
     }
 
     return true;

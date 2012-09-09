@@ -19,7 +19,7 @@ FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
 
 void
 FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
-#ifdef DEBUG
+#ifdef _DEBUG
     bool assert_cond = row < dim_ && col < dim_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::insertMatrixElement: pre-condition error");
 #endif
