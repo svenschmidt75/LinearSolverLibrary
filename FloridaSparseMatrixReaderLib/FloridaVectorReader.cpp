@@ -132,6 +132,8 @@ FloridaVectorReader::read() const {
         nelem_act++;
 
         builder_.insertVectorElement(row, value);
+
+        row++;
     }
 
     cond = nelem == nelem_act;
