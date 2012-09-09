@@ -41,12 +41,12 @@ namespace boost {
 
 
 
-/* Usage: 1. Argument: Name of the file containing the sparse matrix data.
+/* Usage: 1. Argument: Name of the file containing the vector data.
  * Matrices can be found here: "The University of Florida Sparse Matrix Collection",
  * http://www.cise.ufl.edu/research/sparse/matrices/
  * File format: Matrix Market Format (mtx)
  *
- * The matrix data will be serialized into a binary format.
+ * The vector data will be serialized into a binary format.
  */
 
 int main(int argc, char* argv[])
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
     FS::path filename(argv[1]);
     
     FloridaVectorBuilder builder;
-    FloridaSparseMatrixReader reader(filename.string(), builder);
+    FloridaVectorReader reader(filename.string(), builder);
     bool success = reader.read();
 
     if (!success) {
@@ -67,9 +67,9 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    FloridaSparseMatrixBuilder::result_t m = builder.result();
+    FloridaVectorBuilder::result_t m = builder.result();
 
-
+#if 0
     // write serialized sparse matrix into same directory
     FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
     std::ofstream file(output_file.string(), std::ios_base::binary);
@@ -77,9 +77,9 @@ int main(int argc, char* argv[])
 //    boost::archive::text_oarchive oa(file); 
 //    boost::archive::xml_oarchive oa(file); 
     boost::archive::binary_oarchive oa(file); 
-    LinAlg_NS::SparseMatrix2D const & tmp = *m;
+    LinAlg_NS::Vector const & tmp = *m;
     oa << BOOST_SERIALIZATION_NVP(tmp);
     file.close();
-
+#endif
 	return 0;
 }

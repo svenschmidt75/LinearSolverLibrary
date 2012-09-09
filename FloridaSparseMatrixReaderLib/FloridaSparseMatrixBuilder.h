@@ -27,10 +27,10 @@ namespace EntityReader_NS {
 
     class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixBuilder : public IMatrixBuilder<LinAlg_NS::SparseMatrix2D> {
     public:
-        void     init(LinAlg_NS::IMatrix2D::size_type dim) const;
-        void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const;
-        void     finalize() const;
-        result_t result() const;
+        void     init(LinAlg_NS::IMatrix2D::size_type dim) const final;
+        void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const final;
+        void     finalize() const final;
+        result_t result() const final;
 
     private:
         mutable result_t                        data_;
