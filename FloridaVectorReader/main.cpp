@@ -1,5 +1,5 @@
-#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
-#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixBuilder.h"
+#include "FloridaSparseMatrixReaderLib/FloridaVectorReader.h"
+#include "FloridaSparseMatrixReaderLib/FloridaVectorBuilder.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
     FS::path filename(argv[1]);
     
-    FloridaSparseMatrixBuilder builder;
+    FloridaVectorBuilder builder;
     FloridaSparseMatrixReader reader(filename.string(), builder);
     bool success = reader.read();
 

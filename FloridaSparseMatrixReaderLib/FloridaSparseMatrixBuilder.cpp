@@ -1,4 +1,4 @@
-#include "SparseMatrixBuilder.h"
+#include "FloridaSparseMatrixBuilder.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 
@@ -12,13 +12,13 @@ using namespace EntityReader_NS;
 
 
 void
-SparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
+FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
     data_.reset(new SparseMatrix2D(dim));
     dim_ = dim;
 }
 
 void
-SparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
+FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
 #ifdef DEBUG
     bool assert_cond = row < dim_ && col < dim_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::insertMatrixElement: pre-condition error");
@@ -36,7 +36,7 @@ SparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, Li
 }
 
 void 
-SparseMatrixBuilder::finalize() const {
+FloridaSparseMatrixBuilder::finalize() const {
 #ifdef DEBUG
     bool assert_cond = bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::finalize: pre-condition error");
@@ -47,7 +47,7 @@ SparseMatrixBuilder::finalize() const {
     data_->finalize();
 }
 
-SparseMatrixBuilder::result_t
-SparseMatrixBuilder::result() const {
+FloridaSparseMatrixBuilder::result_t
+FloridaSparseMatrixBuilder::result() const {
     return data_;
 }

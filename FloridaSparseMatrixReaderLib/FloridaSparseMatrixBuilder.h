@@ -25,7 +25,7 @@ namespace LinAlg_NS {
 
 namespace EntityReader_NS {
 
-    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SparseMatrixBuilder : public IMatrixBuilder<LinAlg_NS::SparseMatrix2D> {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixBuilder : public IMatrixBuilder<LinAlg_NS::SparseMatrix2D> {
     public:
         void     init(LinAlg_NS::IMatrix2D::size_type dim) const;
         void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const;

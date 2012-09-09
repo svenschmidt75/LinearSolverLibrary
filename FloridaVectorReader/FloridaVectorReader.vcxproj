@@ -155,11 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FloridaVectorReader.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\common.vcxproj">
       <Project>{04def9ae-5b98-47e2-9fce-35897574eea9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">
+      <Project>{bbdd266d-6e3f-48c1-8fc6-d5d0b61727b7}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,8 +1,5 @@
 #include "FloridaSparseMatrixReaderTest.h"
 
-#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
-#include "FloridaSparseMatrixReaderLib/SparseMatrixBuilder.h"
-#include "FloridaSparseMatrixReaderLib/ISparseMatrixReader.h"
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 
 #include "LinAlg/SparseMatrix2D.h"
