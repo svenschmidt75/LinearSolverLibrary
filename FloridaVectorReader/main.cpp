@@ -1,7 +1,7 @@
 #include "FloridaSparseMatrixReaderLib/FloridaVectorReader.h"
 #include "FloridaSparseMatrixReaderLib/FloridaVectorBuilder.h"
 
-#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/Vector.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -20,25 +20,6 @@
 using namespace EntityReader_NS;
 
 namespace FS = boost::filesystem;
-
-
-/* The following specializations are needed for serializing
- * in the xml file format. Not sure why...
- */
-namespace boost {
-    namespace serialization {
-
-        template<>
-            struct is_wrapper<LinAlg_NS::SparseMatrix2D> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<int> : public boost::mpl::true_ {
-        };
-
-    }
-}
-
 
 
 /* Usage: 1. Argument: Name of the file containing the vector data.
@@ -69,7 +50,6 @@ int main(int argc, char* argv[])
 
     FloridaVectorBuilder::result_t m = builder.result();
 
-#if 0
     // write serialized sparse matrix into same directory
     FS::path output_file = filename.parent_path() / (filename.stem().string() + ".ar");
     std::ofstream file(output_file.string(), std::ios_base::binary);
@@ -80,6 +60,6 @@ int main(int argc, char* argv[])
     LinAlg_NS::Vector const & tmp = *m;
     oa << BOOST_SERIALIZATION_NVP(tmp);
     file.close();
-#endif
-	return 0;
+
+    return 0;
 }

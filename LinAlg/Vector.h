@@ -16,9 +16,25 @@
 
 #include "internal/expression_traits.h"
 
+#include <boost/cstdint.hpp>
+
 #include <vector>
 
-#include <boost/cstdint.hpp>
+
+namespace boost {
+    namespace serialization {
+        class access;
+    }
+
+    namespace archive {
+        class text_oarchive;
+        class text_iarchive;
+        class xml_oarchive;
+        class xml_iarchive;
+        class binary_oarchive;
+        class binary_iarchive;
+    }
+}
 
 
 #pragma warning(disable:4251)
@@ -27,6 +43,17 @@
 namespace LinAlg_NS {
 
     class LINALG_DECL_SYMBOLS Vector {
+
+        // support for boost::serialize
+        friend class boost::serialization::access; 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, Vector & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, Vector & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, Vector & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, Vector & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, Vector & m, const unsigned int version); 
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int version); 
+        template<typename AR>
+        friend void serialize_helper(AR & ar, Vector & m, const unsigned int /*version*/);
 
         friend class helper;
 

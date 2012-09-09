@@ -16,10 +16,10 @@
 
 #include "IMatrix2D.h"
 
+#include <boost/cstdint.hpp>
+
 #include <map>
 #include <vector>
-
-#include <boost/cstdint.hpp>
 
 
 namespace boost {

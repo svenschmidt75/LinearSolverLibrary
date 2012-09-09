@@ -4,6 +4,15 @@
 #include <stdexcept>
 
 #include <boost/assert.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/nvp.hpp>
 
 
 namespace LinAlg_NS {
@@ -105,6 +114,43 @@ Vector::begin() {
 Vector::iterator
 Vector::end() {
     return data_.end();
+}
+
+template<typename AR>
+void
+serialize_helper(AR & ar, Vector & m, const unsigned int /*version*/) {
+    ar & BOOST_SERIALIZATION_NVP(m.dim_);
+    ar & BOOST_SERIALIZATION_NVP(m.data_);
+}
+
+void
+serialize(boost::archive::text_oarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
+}
+
+void
+serialize(boost::archive::text_iarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
+}
+
+void
+serialize(boost::archive::xml_oarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
+}
+
+void
+serialize(boost::archive::xml_iarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
+}
+
+void
+serialize(boost::archive::binary_oarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
+}
+
+void
+serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int version) {
+    serialize_helper(ar, m, version);
 }
 
 } // namespace LinAlg_NS

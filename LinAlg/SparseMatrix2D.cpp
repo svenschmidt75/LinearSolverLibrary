@@ -7,7 +7,6 @@
 #include <stdexcept>
 
 #include <boost/mpl/bool_fwd.hpp>
-
 #include <boost/assert.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
