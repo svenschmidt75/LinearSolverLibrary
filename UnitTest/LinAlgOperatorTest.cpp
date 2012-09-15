@@ -1,11 +1,11 @@
+#include "pch.h"
+
 #include "LinAlgOperatorTest.h"
 
 #include "LinAlg/Vector.h"
 #include "LinAlg/operators.h"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
-
-#include <numeric>
 
 
 using namespace LinAlg_NS;

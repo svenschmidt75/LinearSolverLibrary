@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "internal/ScalarExpression.h"
 
 #include "Vector.h"

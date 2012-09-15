@@ -1,9 +1,6 @@
+#include "pch.h"
+
 #include "TransposeVector.h"
-
-#include <utility>
-#include <stdexcept>
-
-#include <boost/assert.hpp>
 
 
 namespace LinAlg_NS {

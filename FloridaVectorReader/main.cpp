@@ -1,20 +1,9 @@
+#include "pch.h"
+
 #include "FloridaSparseMatrixReaderLib/FloridaVectorReader.h"
 #include "FloridaSparseMatrixReaderLib/FloridaVectorBuilder.h"
 
 #include "LinAlg/Vector.h"
-
-#include <boost/filesystem.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/assert.hpp>
-
-#include <iostream>
-#include <cassert>
 
 
 using namespace EntityReader_NS;

@@ -1,6 +1,6 @@
-#include "reporting.h"
+#include "pch.h"
 
-#include <iostream>
+#include "reporting.h"
 
 using namespace common_NS;
 

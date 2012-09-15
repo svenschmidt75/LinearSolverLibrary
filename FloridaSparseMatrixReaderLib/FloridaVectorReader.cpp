@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "FloridaVectorReader.h"
 
 #include "IVectorBuilder.h"
@@ -5,17 +7,6 @@
 #include "LinAlg/Vector.h"
 
 #include "common/reporting.h"
-
-#include <boost/tokenizer.hpp>
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/progress.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/format.hpp>
-
-#include <string>
-#include <cstdint>
 
 
 using namespace EntityReader_NS;

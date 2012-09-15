@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;LINALG_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;LINALG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -107,6 +107,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,7 +138,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -147,6 +148,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,6 +162,10 @@
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="SparseMatrix2D.cpp" />
     <ClCompile Include="TransposeVector.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -175,6 +181,7 @@
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="SparseMatrix2D.h" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="IMatrix2D.h" />

@@ -1,15 +1,9 @@
+#include "pch.h"
+
 #include "Matrix2D.h"
 
 #include "Vector.h"
 
-#include <cassert>
-#include <stdexcept>
-#include <iostream>
-#include <iomanip>
-#include <utility>
-
-#include <boost/assert.hpp>
-#include <boost/cstdint.hpp>
 
 namespace LinAlg_NS {
 

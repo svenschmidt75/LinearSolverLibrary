@@ -1,44 +1,13 @@
+#include "pch.h"
+
 #include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
 #include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixBuilder.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 
-#include <boost/filesystem.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/assert.hpp>
-
-#include <iostream>
-#include <cassert>
-
-
 using namespace EntityReader_NS;
 
 namespace FS = boost::filesystem;
-
-
-/* The following specializations are needed for serializing
- * in the xml file format. Not sure why...
- */
-namespace boost {
-    namespace serialization {
-
-        template<>
-            struct is_wrapper<LinAlg_NS::SparseMatrix2D> : public boost::mpl::true_ {
-        };
-
-        template<>
-        struct is_wrapper<int> : public boost::mpl::true_ {
-        };
-
-    }
-}
-
 
 
 /* Usage: 1. Argument: Name of the file containing the sparse matrix data.

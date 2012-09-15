@@ -1,12 +1,11 @@
+#include "pch.h"
+
 #include "VectorReaderCreator.h"
 
 #include "IVectorReader.h"
 #include "VectorBinaryReader.h"
 
 #include "common/reporting.h"
-
-#include <boost/filesystem.hpp>
-#include <boost/format.hpp>
 
 
 using namespace EntityReader_NS;

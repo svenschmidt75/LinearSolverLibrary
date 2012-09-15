@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "FloridaSparseMatrixReader.h"
 
 #include "IMatrixBuilder.h"
@@ -6,17 +8,6 @@
 #include "LinAlg/SparseMatrix2D.h"
 
 #include "common/reporting.h"
-
-#include <boost/tokenizer.hpp>
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/progress.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/format.hpp>
-
-#include <string>
-#include <cstdint>
 
 
 using namespace EntityReader_NS;
