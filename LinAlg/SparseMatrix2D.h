@@ -39,6 +39,7 @@ namespace boost {
 
 namespace LinearSolverLibrary_NS {
     class SparseLinearSolverUtil;
+    class SparseLinearSolver;
 }
 
 #pragma warning(disable:4251)
@@ -65,6 +66,7 @@ namespace LinAlg_NS {
 
 
         friend class LinearSolverLibrary_NS::SparseLinearSolverUtil;
+        friend class LinearSolverLibrary_NS::SparseLinearSolver;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
 

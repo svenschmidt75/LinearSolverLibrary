@@ -168,6 +168,11 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
+      <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
