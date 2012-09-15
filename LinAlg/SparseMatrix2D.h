@@ -37,6 +37,10 @@ namespace boost {
     }
 }
 
+namespace LinearSolverLibrary_NS {
+    class SparseLinearSolverUtil;
+}
+
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)
 
@@ -59,7 +63,8 @@ namespace LinAlg_NS {
         template<typename AR>
         friend void serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/);
 
-        friend struct LinearSolver;
+
+        friend class LinearSolverLibrary_NS::SparseLinearSolverUtil;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
 

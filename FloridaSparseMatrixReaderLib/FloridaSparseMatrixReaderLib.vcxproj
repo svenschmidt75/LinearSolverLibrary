@@ -166,6 +166,7 @@
     <ClCompile Include="VectorReaderCreator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="FloridaSparseMatrixBuilder.h" />
     <ClInclude Include=".\IMatrixBuilder.h" />
     <ClInclude Include="FloridaSparseMatrixReader.h" />
