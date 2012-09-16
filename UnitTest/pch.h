@@ -4,6 +4,9 @@
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 #include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"
 
+#include "LinearSolverLibrary/SparseLinearSolver.h"
+#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
+
 
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
@@ -19,3 +22,4 @@
 #include <string>
 #include <numeric>
 #include <iostream>
+#include <tuple>

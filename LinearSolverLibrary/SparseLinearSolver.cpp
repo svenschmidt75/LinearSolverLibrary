@@ -76,7 +76,6 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
         }
 
         // check error term
-        l2_norm /= (nrows + 1);
         l2_norm = sqrt(l2_norm);
     
         k++;

@@ -43,6 +43,9 @@
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
       <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\LinearSolverLibrary\LinearSolverLibrary.vcxproj">
+      <Project>{a139880c-da52-44c7-9f44-20b7ffd35ee1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{412EA587-7361-4E82-B772-8A7FD380B6B8}</ProjectGuid>

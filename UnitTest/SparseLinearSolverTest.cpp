@@ -4,10 +4,12 @@
 
 #include "LinAlg/Vector.h"
 #include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/operators.h"
 
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;
+using namespace LinearSolverLibrary_NS;
 
 namespace FS = boost::filesystem;
 
@@ -44,8 +46,24 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
     IVectorReader::Ptr x_reader = VectorReaderCreator::create(filename.string());
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", x_reader->read());
 
-    Vector const x = x_reader->get();
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 18ull, x.size());
+    Vector const x_ref = x_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 18ull, x_ref.size());
 
+    bool success;
+    Vector x(x_ref.size());
+    int iterations;
+    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+
+
+
+
+    // compute A x and check that = b
+    Vector tmp(x.size());
+    tmp = m * x;
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
-
