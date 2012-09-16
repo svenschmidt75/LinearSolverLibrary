@@ -1,5 +1,10 @@
 /* all common and stable header files */
 
+/* stable headers in other projects */
+#include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
+#include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"
+
+
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/ui/text/TestRunner.h>

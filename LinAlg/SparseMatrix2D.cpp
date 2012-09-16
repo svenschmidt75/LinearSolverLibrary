@@ -287,7 +287,7 @@ SparseMatrix2D::print() const {
                 // trailing zeros
                 size_type diff = nrows - col;
 
-                while(diff--)
+                while(--diff)
                     std::cout << std::setw(8) << 0 << " ";
 
                 break;

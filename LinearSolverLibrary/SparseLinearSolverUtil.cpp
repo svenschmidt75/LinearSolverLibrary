@@ -49,3 +49,16 @@ SparseLinearSolverUtil::isDiagonallyDominant(SparseMatrix2D const & m) {
 
     return true;
 }
+
+bool
+SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, double tol = 1E-10) {
+    if (v1.size() != v2.size())
+        throw std::runtime_error("SparseLinearSolverUtil::isVectorEqual: Vectors have unequal size");
+
+    auto ret = std::mismatch(v1.cbegin(), v1.cend(), v2.cbegin(), [tol](double d1, double d2){
+        double delta = std::fabs(d1 - d2);
+        return delta < tol;
+    });
+
+    return ret.first == v1.cend() && ret.second == v2.cend();
+}

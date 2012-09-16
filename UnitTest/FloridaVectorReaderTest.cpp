@@ -2,8 +2,6 @@
 
 #include "FloridaVectorReaderTest.h"
 
-#include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"
-
 #include "LinAlg/Vector.h"
 
 

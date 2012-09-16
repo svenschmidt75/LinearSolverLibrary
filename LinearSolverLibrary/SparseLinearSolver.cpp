@@ -65,7 +65,7 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
             }
 
             if (!a_ii)
-                throw std::exception("SparseLinearSolver::sparseSOR: Matrix singular. Maybe too few independent equations?");
+                throw std::runtime_error("SparseLinearSolver::sparseSOR: Matrix singular. Maybe too few independent equations?");
 
             sigma = (f(row) - sigma) / a_ii;
 

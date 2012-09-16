@@ -2,8 +2,6 @@
 
 #include "FloridaSparseMatrixReaderTest.h"
 
-#include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
-
 #include "LinAlg/SparseMatrix2D.h"
 
 
