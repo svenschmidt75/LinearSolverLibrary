@@ -13,6 +13,7 @@
 class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseLinearSolverTest);
     CPPUNIT_TEST(VersteegMalalasekeraSORTest);
+    CPPUNIT_TEST(sts4098SORTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -21,6 +22,7 @@ public:
 
 protected:
     void VersteegMalalasekeraSORTest();
+    void sts4098SORTest();
 };
 
 

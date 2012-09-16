@@ -39,11 +39,11 @@ SparseLinearSolverUtil::isDiagonallyDominant(SparseMatrix2D const & m) {
 
             // add the total value of the off-diagonal elements in row 'row'
             double a_ij = m.elements_[offset + icol];
-            sum += a_ij;
+            sum += std::fabs(a_ij);
         }
 
         /* diagonally dominant is a per-row property */
-        if (!has_diagonal_element || sum > a_ii)
+        if (!has_diagonal_element || sum > std::fabs(a_ii))
             return false;
     }
 

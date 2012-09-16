@@ -31,6 +31,11 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 18ull, m.cols());
 
 
+    // check m is diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isDiagonallyDominant(m));
+
+
+
     // read rhs vector b
     filename = "\\Develop\\SparseMatrixData\\Versteeg_Malalasekera\\Versteeg_Malalasekera_b.ar";
     IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename.string());
@@ -57,6 +62,48 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 
+
+
+
+    // compute A x and check that = b
+    Vector tmp(x.size());
+    tmp = m * x;
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+}
+
+void
+SparseLinearSolverTest::sts4098SORTest() {
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
+
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+
+
+
+
+    // read rhs vector b
+    filename = "\\Develop\\SparseMatrixData\\sts4098\\sts4098_b.ar";
+    IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
+
+    Vector const b = b_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 4098ull, b.size());
+
+
+
+    bool success;
+    Vector x(b.size());
+    int iterations;
+    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
 
 
 
