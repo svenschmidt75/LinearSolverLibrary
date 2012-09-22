@@ -9,6 +9,8 @@
 
 #include "expression_traits.h"
 
+#include "Vector.h"
+
 #include <boost/assert.hpp>
 
 

@@ -16,6 +16,7 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
      * Note: For this scheme to converge, matrix m must satisfy
      * the diagonal dominance requirement. Apparently, this is
      * true for all iterative schemes?
+     * We use the Linfinity norm.
      *
      * Returns:
      * bool  : indicates whether the iteration succeeded
@@ -32,13 +33,13 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
 
     // maximum allowed error
     double max_l2_norm = 1E-16;
-    double l2_norm;
+    double l_infinity_norm;
 
     // Iteration count
     int k = 0;
 
     do {
-        l2_norm = 0;
+        l_infinity_norm = 0;
 
         // all rows
         for (size_type row = 0; row < nrows; ++row) {
@@ -70,17 +71,15 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
             sigma = (f(row) - sigma) / a_ii;
 
             double correction = omega * (sigma - x(row));
-            l2_norm += (correction * correction);
+
+            l_infinity_norm = std::max(l_infinity_norm, correction);
 
             x(row) += correction;
         }
-
-        // check error term
-        l2_norm = sqrt(l2_norm);
     
         k++;
 
-    } while (l2_norm > max_l2_norm && k < max_iterations);
+    } while (l_infinity_norm > max_l2_norm && k < max_iterations);
 
     if (k == max_iterations)
         return std::make_tuple(false, x, k);

@@ -9,3 +9,5 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cmath>
+#include <forward_list>
+#include <set>
