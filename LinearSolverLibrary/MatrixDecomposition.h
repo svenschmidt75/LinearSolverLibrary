@@ -19,6 +19,7 @@ namespace LinAlg_NS {
 
 
 #pragma warning(disable:4251)
+#pragma warning(disable:4275)
 
 
 namespace LinearSolverLibrary_NS {
@@ -26,10 +27,13 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS MatrixDecomposition {
     public:
         typedef std::vector<std::uint64_t> ISType;
-        typedef ISType::const_iterator const_iterator;
+        typedef ISType::const_iterator elem_const_iterator;
+
+        typedef std::vector<ISType> DataType;
+        typedef DataType::const_iterator const_iterator;
 
     public:
-        MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, std::vector<ISType> const & is_data);
+        MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, DataType const & is_data);
 
         const_iterator                    cbegin() const;
         const_iterator                    cend() const;
@@ -38,9 +42,10 @@ namespace LinearSolverLibrary_NS {
 
     private:
         LinAlg_NS::SparseMatrix2D m_;
-        std::vector<ISType>       is_data_;
+        DataType                  is_data_;
     };
 
 } // LinearSolverLibrary_NS
 
+#pragma warning(default:4275)
 #pragma warning(default:4251)

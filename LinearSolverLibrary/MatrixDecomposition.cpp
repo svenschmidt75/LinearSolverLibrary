@@ -4,7 +4,8 @@
 
 using namespace LinearSolverLibrary_NS;
 
-MatrixDecomposition::MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, std::vector<ISType> const & is_data)
+
+MatrixDecomposition::MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, DataType const & is_data)
     :
     m_(m),
     is_data_(is_data) {}
