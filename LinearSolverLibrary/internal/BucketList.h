@@ -7,6 +7,8 @@
  */
 #pragma once
 
+#include "BucketElement.h"
+
 #include <forward_list>
 #include <cstdint>
 
@@ -14,9 +16,6 @@
 namespace LinearSolverLibrary_NS {
 
 namespace internal_NS {
-
-    class BucketElement;
-
 
     class BucketList {
     private:
@@ -29,11 +28,18 @@ namespace internal_NS {
     public:
         void insert(BucketElement const & in);
         void insert(BucketElement && in);
+        void remove(BucketElement const & in);
 
         iterator begin() const;
         iterator end() const;
 
         iterator findElement(size_type element);
+
+        size_type size() const;
+
+        bool empty() const;
+
+        void clear();
 
     private:
         DataType data_;

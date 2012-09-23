@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "pch.h"
+#include <cstdint>
 
 
 namespace LinearSolverLibrary_NS {
@@ -23,11 +23,15 @@ namespace internal_NS {
         typedef DependencyType::const_iterator iterator;
 
     public:
+        BucketElement(size_type element_index);
+
         bool dependsOn(size_type element) const;
+        void dependsOn(size_type element);
 
         iterator begin() const;
         iterator end() const;
 
+        iterator findDependency(BucketElement e) const;
 
     private:
         // dependencies of this x_i to other x_j

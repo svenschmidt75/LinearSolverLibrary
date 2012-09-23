@@ -19,16 +19,18 @@ MultiColor::apply(SparseMatrix2D const & m) {
      * (i.e. no elements on the lower-left part).
      */
 
-    // move all buckets with their dependencies on other elements into the bucket
+    // move all bucket elements with their dependencies on other bucket elements into the bucket list
     BucketList bucket_list = MultiColor_internal::extractGraph(m);
 
 
+    // split the bucket elements such that all bucket elements in one set have no dependencies on
+    // elements in the same list
+    auto decomposed_buckets = MultiColor_internal::decompose(bucket_list);
 
 
 
 
-
-
+#if 0
     // move all buckets with their dependencies on other elements into the bucket
     bucket b_init = {0}
     for each row in Matrix m
@@ -38,7 +40,6 @@ MultiColor::apply(SparseMatrix2D const & m) {
             b->dependsOn(bucket_entry(m(row, j)))
         end all
     end for each
-
 
     bucket b_done = {0}
     bucket b_next = {0}
@@ -81,15 +82,7 @@ MultiColor::apply(SparseMatrix2D const & m) {
         end for all
     end for each
 
-
-    /* 
-    
-    
-    
-    
-    
-    */
-
+#endif
 
 
 

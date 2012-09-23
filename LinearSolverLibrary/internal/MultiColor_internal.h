@@ -10,6 +10,9 @@
 #pragma once
 
 
+#include <vector>
+
+
 namespace LinAlg_NS {
     class SparseMatrix2D;
 }
@@ -27,7 +30,8 @@ namespace internal_NS {
         friend class MultiColorTest;
 
     public:
-        static BucketList extractGraph(LinAlg_NS::SparseMatrix2D const & m);
+        static BucketList              extractGraph(LinAlg_NS::SparseMatrix2D const & m);
+        static std::vector<BucketList> decompose(BucketList bl);
 
     };
 

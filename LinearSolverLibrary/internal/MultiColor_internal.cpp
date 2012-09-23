@@ -35,7 +35,7 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
         for (SparseMatrix2D::size_type col = 0; col < ncols; ++col) {
             if (m(row, col))
                 // element 'row' depends on element 'col'
-                    be.insertDependency(col);
+                    be.dependsOn(col);
         }
 
         // insert element into BucketList
@@ -43,4 +43,60 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
     }
 
     return bucket_list;
+}
+
+std::vector<BucketList>
+MultiColor_internal::decompose(BucketList bl) {
+    typedef std::vector<BucketList> BucketListSet;
+
+    // split the bucket elements such that all bucket elements in one set have no dependencies on
+    // elements in the same list
+    BucketListSet bl_done;
+    BucketList bl_next;
+    BucketList bl_loop;
+    bl_loop = bl;
+
+    while (!bl_loop.empty()) {
+
+        while (bl_loop.size() > 1) {
+            //  check dependencies of first bucket element against all others
+            // in same bucket
+            BucketList::iterator it = bl_loop.begin();
+            BucketElement bl_first = *it;
+
+            for (++it; it != bl_loop.end(); ) {
+                BucketElement const & e = *it;
+
+                // if there is an edge between elements bl_first and e,
+                // move e out of bl_loop into bl_next.
+                bool split = false;
+
+                BucketElement::iterator it_dep = bl_first.findDependency(e);
+                if (it_dep != bl_first.end())
+                    split = true;
+
+                else {
+                    it_dep = e.findDependency(bl_first);
+                    if (it_dep != e.end())
+                        split = true;
+                }
+
+                if (split) {
+                    ++it;
+                    bl_loop.remove(e);
+                    bl_next.insert(e);
+                }
+                else
+                    ++it;
+            }
+
+            // bl_loop only contains elements that are independent
+            bl_done.push_back(bl_loop);
+
+            bl_loop = bl_next;
+            bl_next.clear();
+        }
+    }
+
+    return bl_done;
 }

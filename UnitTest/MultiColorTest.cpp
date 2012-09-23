@@ -79,6 +79,22 @@ namespace {
 }
 
 void
+MultiColorTest::bucketListDecompositionTest() {
+    BucketList bl;
+
+    BucketElement e(0);
+    e.dependsOn(1);
+    bl.insert(e);
+
+    e = BucketElement(1);
+    bl.insert(e);
+
+
+    auto decomp = MultiColor_internal::decompose(bl);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("decomposition error", 2ull, decomp.size());
+}
+
+void
 MultiColorTest::bucketElementTest() {
     SparseMatrix2D m = createMatrix();
 
@@ -90,33 +106,33 @@ MultiColorTest::bucketElementTest() {
     BucketList::iterator it = bl.findElement(0);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
 
-    BucketElement belem = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(3));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(5));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(8));
+    BucketElement const & belem1 = *it;
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1.dependsOn(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1.dependsOn(3));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1.dependsOn(5));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1.dependsOn(8));
 
 
     // check dependencies for x_5
     it = bl.findElement(5);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
 
-    belem = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(2));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(4));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(8));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(5));
+    BucketElement const & belem5 = *it;
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(2));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(4));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(8));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5.dependsOn(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5.dependsOn(5));
 
     // check dependencies for x_8
     it = bl.findElement(8);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
 
-    belem = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(5));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem.dependsOn(7));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem.dependsOn(4));
+    BucketElement const & belem8 = *it;
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8.dependsOn(5));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8.dependsOn(7));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8.dependsOn(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8.dependsOn(4));
 }
 
 void
