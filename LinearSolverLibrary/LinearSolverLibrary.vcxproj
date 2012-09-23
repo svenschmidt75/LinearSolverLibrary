@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="internal\BucketElement.cpp" />
     <ClCompile Include="internal\BucketList.h" />
     <ClCompile Include="internal\MultiColor.cpp" />
     <ClCompile Include="internal\MultiColor_internal.cpp" />

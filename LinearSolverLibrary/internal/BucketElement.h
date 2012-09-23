@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 
 namespace LinearSolverLibrary_NS {
@@ -15,19 +16,19 @@ namespace LinearSolverLibrary_NS {
 namespace internal_NS {
 
     class BucketElement {
+    public:
+        typedef std::shared_ptr<BucketElement> Ptr;
+        typedef std::uint64_t size_type;
+
     private:
-        typedef std::set<BucketElement> DependencyType;
+        typedef std::set<Ptr> DependencyType;
 
     public:
-        typedef std::uint64_t size_type;
         typedef DependencyType::const_iterator const_iterator;
         typedef DependencyType::iterator iterator;
 
     public:
         BucketElement(size_type element_index);
-
-        bool            dependsOn(size_type element) const;
-        void            dependsOn(size_type element);
 
         const_iterator  cbegin() const;
         const_iterator  cend() const;
@@ -35,7 +36,8 @@ namespace internal_NS {
         iterator        begin() const;
         iterator        end() const;
 
-        iterator        findDependency(BucketElement e) const;
+        void            dependsOn(Ptr element_index);
+        const_iterator  findDependency(BucketElement const & element) const;
 
         void            index(size_type index);
         size_type       index() const;
@@ -47,10 +49,10 @@ namespace internal_NS {
         DependencyType dependencies_;
 
         // index of this element x_i in original sparse matrix
-        LinAlg_NS::SparseMatrix2D::size_type prev_index_;
+        size_type      prev_element_index_;
 
         // index of this element x_i in new sparse matrix
-        LinAlg_NS::SparseMatrix2D::size_type index_;
+        size_type      element_index_;
     };
 
 } // namespace internal_NS

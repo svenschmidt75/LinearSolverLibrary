@@ -18,13 +18,19 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
      * The BucketList contains each x_i as BucketElement, that
      * describes x_i's dependencies on other x_j.
      */
-    BucketList bucket_list;
-
     SparseMatrix2D::size_type nrows = m.rows();
     SparseMatrix2D::size_type ncols = m.cols();
 
+    std::vector<BucketElement::Ptr> bucket_elements(nrows);
     for (SparseMatrix2D::size_type row = 0; row < nrows; ++row) {
-        BucketElement be(row);
+        bucket_elements[row] = BucketElement::Ptr(new BucketElement(row));
+    }
+
+
+    BucketList bucket_list;
+
+    for (SparseMatrix2D::size_type row = 0; row < nrows; ++row) {
+        BucketElement & be = *bucket_elements[row];
 
         /* We generate an undirected graph here, i.e. we pick up
          * a(i,j) as well as a(j,i). If only outgoing dependencies
@@ -33,9 +39,12 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
          * dependencies.
          */
         for (SparseMatrix2D::size_type col = 0; col < ncols; ++col) {
-            if (m(row, col))
+            if (m(row, col)) {
+                BucketElement::Ptr dep = bucket_elements[col];
+
                 // element 'row' depends on element 'col'
-                    be.dependsOn(col);
+                be.dependsOn(dep);
+            }
         }
 
         // insert element into BucketList
@@ -62,7 +71,7 @@ MultiColor_internal::decompose(BucketList bl) {
             //  check dependencies of first bucket element against all others
             // in same bucket
             BucketList::iterator it = bl_loop.begin();
-            BucketElement bl_first = *it;
+            BucketElement const & bl_first = *it;
 
             for (++it; it != bl_loop.end(); ) {
                 BucketElement const & e = *it;
@@ -71,7 +80,7 @@ MultiColor_internal::decompose(BucketList bl) {
                 // move e out of bl_loop into bl_next.
                 bool split = false;
 
-                BucketElement::iterator it_dep = bl_first.findDependency(e);
+                BucketElement::const_iterator it_dep = bl_first.findDependency(e);
                 if (it_dep != bl_first.end())
                     split = true;
 

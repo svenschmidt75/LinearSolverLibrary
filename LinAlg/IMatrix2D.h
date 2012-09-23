@@ -7,7 +7,8 @@
  */
 #pragma once
 
-#include <boost/cstdint.hpp>
+#include <cstdint>
+
 
 namespace LinAlg_NS {
 
@@ -16,7 +17,7 @@ namespace LinAlg_NS {
 
     class IMatrix2D {
     public:
-        typedef boost::uint64_t size_type;
+        typedef std::uint64_t size_type;
 
     public:
         // To be used as base class

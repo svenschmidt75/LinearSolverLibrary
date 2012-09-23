@@ -60,12 +60,12 @@ MultiColor::apply(SparseMatrix2D const & m) {
 
             // all dependencies
             for (auto & dep : e) {
-                SparseMatrix2D::size_type old_col = dep.prevIndex();
+                SparseMatrix2D::size_type old_col = dep->prevIndex();
 
                 double value = m(old_row, old_col);
 
                 SparseMatrix2D::size_type new_row = e.index();
-                SparseMatrix2D::size_type new_col = dep.index();
+                SparseMatrix2D::size_type new_col = dep->index();
 
                 new_m(new_row, new_col) = value;
             }
