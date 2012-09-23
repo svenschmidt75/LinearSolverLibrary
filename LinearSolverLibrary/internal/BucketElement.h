@@ -20,18 +20,27 @@ namespace internal_NS {
 
     public:
         typedef std::uint64_t size_type;
-        typedef DependencyType::const_iterator iterator;
+        typedef DependencyType::const_iterator const_iterator;
+        typedef DependencyType::iterator iterator;
 
     public:
         BucketElement(size_type element_index);
 
-        bool dependsOn(size_type element) const;
-        void dependsOn(size_type element);
+        bool            dependsOn(size_type element) const;
+        void            dependsOn(size_type element);
 
-        iterator begin() const;
-        iterator end() const;
+        const_iterator  cbegin() const;
+        const_iterator  cend() const;
 
-        iterator findDependency(BucketElement e) const;
+        iterator        begin() const;
+        iterator        end() const;
+
+        iterator        findDependency(BucketElement e) const;
+
+        void            index(size_type index);
+        size_type       index() const;
+
+        size_type       prevIndex() const;
 
     private:
         // dependencies of this x_i to other x_j

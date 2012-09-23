@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="internal\BucketElement.h" />
+    <ClInclude Include="internal\MatrixDecomposition.h" />
     <ClInclude Include="internal\MultiColor.h" />
     <ClInclude Include="internal\MultiColor_internal.h" />
     <ClInclude Include="SparseLinearSolver.h" />

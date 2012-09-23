@@ -23,23 +23,27 @@ namespace internal_NS {
 
     public:
         typedef std::uint64_t size_type;
-        typedef DataType::const_iterator iterator;
+        typedef DataType::const_iterator const_iterator;
+        typedef DataType::iterator iterator;
 
     public:
-        void insert(BucketElement const & in);
-        void insert(BucketElement && in);
-        void remove(BucketElement const & in);
+        void           insert(BucketElement const & in);
+        void           insert(BucketElement && in);
+        void           remove(BucketElement const & in);
 
-        iterator begin() const;
-        iterator end() const;
+        iterator       begin() const;
+        iterator       end() const;
 
-        iterator findElement(size_type element);
+        const_iterator cbegin() const;
+        const_iterator cend() const;
 
-        size_type size() const;
+        iterator       findElement(size_type element);
 
-        bool empty() const;
+        size_type      size() const;
 
-        void clear();
+        bool           empty() const;
+
+        void           clear();
 
     private:
         DataType data_;

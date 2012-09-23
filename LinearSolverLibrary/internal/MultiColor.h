@@ -8,8 +8,6 @@
  */
 #pragma once
 
-#include "pch.h"
-
 
 namespace LinAlg_NS {
     class  SparseMatrix2D;
@@ -18,11 +16,13 @@ namespace LinAlg_NS {
 
 namespace LinearSolverLibrary_NS {
 
+    class MatrixDecomposition;
+
 namespace internal_NS {
 
     class MultiColor {
     public:
-        static LinAlg_NS::SparseMatrix2D apply(LinAlg_NS::SparseMatrix2D const & m);
+        static MatrixDecomposition apply(LinAlg_NS::SparseMatrix2D const & m);
     };
 
 } // namespace internal_NS
