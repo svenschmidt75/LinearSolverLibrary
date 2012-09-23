@@ -8,6 +8,7 @@
 #pragma once
 
 #include <forward_list>
+#include <cstdint>
 
 
 namespace LinearSolverLibrary_NS {
@@ -18,12 +19,23 @@ namespace internal_NS {
 
 
     class BucketList {
+    private:
+        typedef std::forward_list<BucketElement> DataType;
+
+    public:
+        typedef std::uint64_t size_type;
+        typedef DataType::const_iterator iterator;
+
     public:
         void insert(BucketElement const & in);
         void insert(BucketElement && in);
 
+        iterator begin() const;
+        iterator end() const;
+
+        iterator findElement(size_type element);
+
     private:
-        typedef std::forward_list<BucketElement> DataType;
         DataType data_;
     };
 

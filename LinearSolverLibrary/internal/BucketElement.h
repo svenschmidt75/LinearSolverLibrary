@@ -15,13 +15,22 @@ namespace LinearSolverLibrary_NS {
 namespace internal_NS {
 
     class BucketElement {
-    public:
+    private:
+        typedef std::set<BucketElement> DependencyType;
 
+    public:
+        typedef std::uint64_t size_type;
+        typedef DependencyType::const_iterator iterator;
+
+    public:
+        bool dependsOn(size_type element) const;
+
+        iterator begin() const;
+        iterator end() const;
 
 
     private:
         // dependencies of this x_i to other x_j
-        typedef std::set<BucketElement> DependencyType;
         DependencyType dependencies_;
 
         // index of this element x_i in original sparse matrix
