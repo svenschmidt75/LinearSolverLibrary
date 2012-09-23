@@ -33,7 +33,7 @@ MultiColor::apply(SparseMatrix2D const & m) {
     BucketElement::size_type index = 0;
     for (auto & bl : decomposed_buckets) {
         for (auto & e : bl) {
-            e.index(index++);
+            e->index(index++);
         }
     }
 
@@ -43,7 +43,7 @@ MultiColor::apply(SparseMatrix2D const & m) {
         MatrixDecomposition::ISType data;
 
         for (auto & e : bl) {
-            data.push_back(e.index());
+            data.push_back(e->index());
         }
 
         is_data.push_back(data);
@@ -56,15 +56,15 @@ MultiColor::apply(SparseMatrix2D const & m) {
 
     for (auto & bl : decomposed_buckets) {
         for (auto & e : bl) {
-            SparseMatrix2D::size_type old_row = e.prevIndex();
+            SparseMatrix2D::size_type old_row = e->prevIndex();
 
             // all dependencies
-            for (auto & dep : e) {
+            for (auto & dep : *e) {
                 SparseMatrix2D::size_type old_col = dep->prevIndex();
 
                 double value = m(old_row, old_col);
 
-                SparseMatrix2D::size_type new_row = e.index();
+                SparseMatrix2D::size_type new_row = e->index();
                 SparseMatrix2D::size_type new_col = dep->index();
 
                 new_m(new_row, new_col) = value;

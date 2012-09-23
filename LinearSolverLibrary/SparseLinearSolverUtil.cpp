@@ -65,7 +65,7 @@ SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, doub
 }
 
 
-SparseMatrix2D
+MatrixDecomposition
 SparseLinearSolverUtil::multicolorDecomposition(SparseMatrix2D const & m) {
      return internal_NS::MultiColor::apply(m);
 }

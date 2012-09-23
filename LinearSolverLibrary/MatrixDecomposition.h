@@ -26,10 +26,7 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS MatrixDecomposition {
     public:
         typedef std::vector<std::uint64_t> ISType;
-        typedef ISType::const_iterator elem_const_iterator;
-
-        typedef std::vector<ISType> DataType;
-        typedef DataType::const_iterator const_iterator;
+        typedef ISType::const_iterator const_iterator;
 
     public:
         MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, std::vector<ISType> const & is_data);
@@ -41,7 +38,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         LinAlg_NS::SparseMatrix2D m_;
-        DataType const                 is_data_;
+        std::vector<ISType>       is_data_;
     };
 
 } // LinearSolverLibrary_NS

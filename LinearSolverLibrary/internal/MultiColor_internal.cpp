@@ -30,7 +30,7 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
     BucketList bucket_list;
 
     for (SparseMatrix2D::size_type row = 0; row < nrows; ++row) {
-        BucketElement & be = *bucket_elements[row];
+        BucketElement::Ptr & be = bucket_elements[row];
 
         /* We generate an undirected graph here, i.e. we pick up
          * a(i,j) as well as a(j,i). If only outgoing dependencies
@@ -43,7 +43,7 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
                 BucketElement::Ptr dep = bucket_elements[col];
 
                 // element 'row' depends on element 'col'
-                be.dependsOn(dep);
+                be->dependsOn(dep);
             }
         }
 
@@ -71,22 +71,22 @@ MultiColor_internal::decompose(BucketList bl) {
             //  check dependencies of first bucket element against all others
             // in same bucket
             BucketList::iterator it = bl_loop.begin();
-            BucketElement const & bl_first = *it;
+            BucketElement::Ptr const & bl_first = *it;
 
             for (++it; it != bl_loop.end(); ) {
-                BucketElement const & e = *it;
+                BucketElement::Ptr const & e = *it;
 
                 // if there is an edge between elements bl_first and e,
                 // move e out of bl_loop into bl_next.
                 bool split = false;
 
-                BucketElement::const_iterator it_dep = bl_first.findDependency(e);
-                if (it_dep != bl_first.end())
+                BucketElement::const_iterator it_dep = bl_first->findDependency(*e);
+                if (it_dep != bl_first->end())
                     split = true;
 
                 else {
-                    it_dep = e.findDependency(bl_first);
-                    if (it_dep != e.end())
+                    it_dep = e->findDependency(*bl_first);
+                    if (it_dep != e->end())
                         split = true;
                 }
 

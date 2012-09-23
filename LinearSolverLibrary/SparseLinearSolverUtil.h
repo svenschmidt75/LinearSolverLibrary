@@ -11,6 +11,8 @@
 
 #include "DeclSpec.h"
 
+#include "MatrixDecomposition.h"
+
 
 namespace LinAlg_NS {
     class SparseMatrix2D;
@@ -22,9 +24,9 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS SparseLinearSolverUtil {
     public:
-        static bool                      isDiagonallyDominant(LinAlg_NS::SparseMatrix2D const & m);
-        static bool                      isVectorEqual(LinAlg_NS::Vector const & v1, LinAlg_NS::Vector const & v2, double tol);
-        static LinAlg_NS::SparseMatrix2D multicolorDecomposition(LinAlg_NS::SparseMatrix2D const & m);
+        static bool                isDiagonallyDominant(LinAlg_NS::SparseMatrix2D const & m);
+        static bool                isVectorEqual(LinAlg_NS::Vector const & v1, LinAlg_NS::Vector const & v2, double tol);
+        static MatrixDecomposition multicolorDecomposition(LinAlg_NS::SparseMatrix2D const & m);
     };
 
 } // LinearSolverLibrary_NS

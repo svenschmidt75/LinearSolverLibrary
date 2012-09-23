@@ -9,7 +9,7 @@
 
 #include "BucketElement.h"
 
-#include <forward_list>
+#include <set>
 #include <cstdint>
 
 
@@ -19,7 +19,7 @@ namespace internal_NS {
 
     class BucketList {
     private:
-        typedef std::forward_list<BucketElement> DataType;
+        typedef std::set<BucketElement::Ptr> DataType;
 
     public:
         typedef std::uint64_t size_type;
@@ -27,9 +27,8 @@ namespace internal_NS {
         typedef DataType::iterator iterator;
 
     public:
-        void           insert(BucketElement const & in);
-        void           insert(BucketElement && in);
-        void           remove(BucketElement const & in);
+        void           insert(BucketElement::Ptr const & element);
+        void           remove(BucketElement::Ptr const & element);
 
         iterator       begin() const;
         iterator       end() const;
@@ -37,7 +36,7 @@ namespace internal_NS {
         const_iterator cbegin() const;
         const_iterator cend() const;
 
-        iterator       findElement(size_type element);
+        const_iterator findElement(BucketElement::Ptr const & element);
 
         size_type      size() const;
 
