@@ -10,7 +10,9 @@
 #include "pch.h"
 
 
-namespace internal {
+namespace LinearSolverLibrary_NS {
+
+namespace internal_NS {
 
     class BucketElement {
     public:
@@ -28,4 +30,7 @@ namespace internal {
         // index of this element x_i in new sparse matrix
         LinAlg_NS::SparseMatrix2D::size_type index_;
     };
-}
+
+} // namespace internal_NS
+
+} // namespace LinearSolverLibrary_NS

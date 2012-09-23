@@ -16,10 +16,15 @@ namespace LinAlg_NS {
 }
 
 
-namespace internal {
+namespace LinearSolverLibrary_NS {
+
+namespace internal_NS {
 
     class MultiColor {
     public:
         static LinAlg_NS::SparseMatrix2D apply(LinAlg_NS::SparseMatrix2D const & m);
     };
-}
+
+} // namespace internal_NS
+
+} // namespace LinearSolverLibrary_NS

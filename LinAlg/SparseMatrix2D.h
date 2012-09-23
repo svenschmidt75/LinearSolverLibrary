@@ -42,6 +42,7 @@ namespace LinearSolverLibrary_NS {
     class SparseLinearSolver;
 }
 
+
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)
 
@@ -64,11 +65,11 @@ namespace LinAlg_NS {
         template<typename AR>
         friend void serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/);
 
-
         friend class LinearSolverLibrary_NS::SparseLinearSolverUtil;
         friend class LinearSolverLibrary_NS::SparseLinearSolver;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
+
 
     public:
         SparseMatrix2D();
@@ -85,6 +86,7 @@ namespace LinAlg_NS {
         size_type cols() const;
         double    operator()(size_type row, size_type col) const;
         double &  operator()(size_type row, size_type col);
+
         void      solve(Vector const & b, Vector & x) const;
 
         // Local methods

@@ -200,7 +200,7 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     size_type nrows = nelements_.size() - 1;
 
     // All rows
-    for (int row = 0; row < nrows; ++row) {
+    for (size_type row = 0; row < nrows; ++row) {
         // Number of non-zero columns for this row
         size_type ncol = nelements_[row + 1] - nelements_[row];
         size_type offset = nelements_[row];
@@ -208,7 +208,7 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
         double tmp = 0;
 
         // all non-zero columns
-        for (int icol = 0; icol < ncol; ++icol) {
+        for (size_type icol = 0; icol < ncol; ++icol) {
             size_type col = columns_[offset + icol];
             double a_ij = elements_[offset + icol];
 
