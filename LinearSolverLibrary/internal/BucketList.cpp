@@ -37,8 +37,17 @@ BucketList::cend() const {
 }
 
 BucketList::const_iterator
-BucketList::findElement(BucketElement::Ptr const & element) {
+BucketList::findElement(BucketElement::Ptr const & element) const {
     return data_.find(element);
+}
+
+BucketList::const_iterator
+BucketList::findElement(size_type index) const {
+    auto it = std::find_if(data_.cbegin(), data_.cend(), [index](BucketElement::Ptr const & element) {
+        return element->prevIndex() == index;
+    });
+
+    return it;
 }
 
 BucketList::size_type

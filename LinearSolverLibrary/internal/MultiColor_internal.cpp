@@ -115,5 +115,8 @@ MultiColor_internal::decompose(BucketList bl) {
         }
     }
 
+    if (bl_loop.size() == 1)
+        bl_done.push_back(bl_loop);
+
     return bl_done;
 }

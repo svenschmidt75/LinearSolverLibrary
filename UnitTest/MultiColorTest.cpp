@@ -22,32 +22,16 @@ void
 MultiColorTest::tearDown() {}
 
 namespace {
-    bool noElementOnLowerLeft(SparseMatrix2D const & m, int row) {
+    bool noElementsOnLowerLeft(SparseMatrix2D const & m, SparseMatrix2D::size_type row, SparseMatrix2D::size_type column_offset) {
         SparseMatrix2D::size_type nrows = m.rows();
         SparseMatrix2D::size_type ncols = m.cols();
 
-    for (SparseMatrix2D::size_type row = 0; row < nrows; ++row) {
-        BucketElement::Ptr & be = bucket_elements[row];
-
-        /* We generate an undirected graph here, i.e. we pick up
-         * a(i,j) as well as a(j,i). If only outgoing dependencies
-         * are that matter, then change the col loop to
-         * col < row, i.e. we only look at the lower-triangular
-         * dependencies.
-         */
-        for (SparseMatrix2D::size_type col = 0; col < ncols; ++col) {
-            if (m(row, col)) {
-                BucketElement::Ptr dep = bucket_elements[col];
-
-                // element 'row' depends on element 'col'
-                be->dependsOn(dep);
-            }
+        for (SparseMatrix2D::size_type col = column_offset; col < row; ++col) {
+            if (m(row, col))
+                return false;
         }
 
-
-
-
-        return false;
+        return true;
     }
 
     SparseMatrix2D createMatrix() {
@@ -111,7 +95,6 @@ MultiColorTest::bucketListDecompositionTest() {
 
     e0->dependsOn(e1);
     bl.insert(e0);
-
     bl.insert(e1);
 
 
@@ -130,35 +113,34 @@ MultiColorTest::bucketElementTest() {
     // check dependencies for x_1 (i.e. 1st row of a)
     BucketList::iterator it = bl.findElement(0);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
-#if 0
+
     BucketElement::Ptr const & belem1 = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1->dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1->dependsOn(3));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1->dependsOn(5));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1->dependsOn(8));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1->findDependency(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem1->findDependency(3));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1->findDependency(5));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem1->findDependency(8));
 
 
     // check dependencies for x_5
     it = bl.findElement(5);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
 
-    BucketElement const & belem5 = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(2));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(4));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5.dependsOn(8));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5.dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5.dependsOn(5));
+    BucketElement::Ptr const & belem5 = *it;
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5->findDependency(2));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5->findDependency(4));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem5->findDependency(8));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5->findDependency(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem5->findDependency(7));
 
     // check dependencies for x_8
     it = bl.findElement(8);
     CPPUNIT_ASSERT_MESSAGE("could not find element", it != bl.end());
 
-    BucketElement const & belem8 = *it;
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8.dependsOn(5));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8.dependsOn(7));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8.dependsOn(1));
-    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8.dependsOn(4));
-#endif
+    BucketElement::Ptr const & belem8 = *it;
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8->findDependency(5));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", belem8->findDependency(7));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8->findDependency(1));
+    CPPUNIT_ASSERT_MESSAGE("failure in dependencies", !belem8->findDependency(4));
 }
 
 void
@@ -169,19 +151,25 @@ MultiColorTest::simpleTest() {
      */
     SparseMatrix2D m = createMatrix();
 
-    m.print();
+//    m.print();
 
 
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
     SparseMatrix2D const & new_m = m_decomp.matrix();
 
-    new_m.print();
+//    new_m.print();
 
     // the first 5 rows should have no elements on the lower-left part
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 0));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 1));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 2));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 3));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 4));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 0, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 1, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 2, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 3, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 4, 0));
+
+    // the last 4 rows should have no elements on the lower-left part for column > 5
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 5, 5));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 6, 5));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 7, 5));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 8, 5));
 }

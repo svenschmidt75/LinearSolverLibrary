@@ -43,6 +43,7 @@ namespace internal_NS {
 
         void            dependsOn(Ptr element_index);
         const_iterator  findDependency(BucketElement const & element) const;
+        bool            findDependency(size_type index) const;
 
         void            index(size_type index);
         size_type       index() const;

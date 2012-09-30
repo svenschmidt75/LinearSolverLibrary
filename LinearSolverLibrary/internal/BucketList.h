@@ -41,7 +41,8 @@ namespace internal_NS {
         const_iterator cbegin() const;
         const_iterator cend() const;
 
-        const_iterator findElement(BucketElement::Ptr const & element);
+        const_iterator findElement(BucketElement::Ptr const & element) const;
+        const_iterator findElement(size_type index) const;
 
         size_type      size() const;
 

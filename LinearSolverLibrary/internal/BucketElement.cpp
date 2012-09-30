@@ -31,6 +31,11 @@ BucketElement::end() const {
     return dependencies_.end();
 }
 
+void
+BucketElement::dependsOn(Ptr element) {
+    dependencies_.insert(element);
+}
+
 BucketElement::const_iterator
 BucketElement::findDependency(BucketElement const & element) const {
     for (auto it = dependencies_.cbegin(); it != dependencies_.cend(); ++it) {
@@ -40,9 +45,13 @@ BucketElement::findDependency(BucketElement const & element) const {
     return dependencies_.cend();
 }
 
-void
-BucketElement::dependsOn(Ptr element) {
-    dependencies_.insert(element);
+bool
+BucketElement::findDependency(size_type index) const {
+    auto it = std::find_if(dependencies_.cbegin(), dependencies_.cend(), [index](BucketElement::Ptr const & element) {
+        return element->prevIndex() == index;
+    });
+
+    return it != dependencies_.end();
 }
 
 void
