@@ -9,13 +9,10 @@
 
 #include "DeclSpec.h"
 
+#include "LinAlg/SparseMatrix2D.h"
+
 #include <cstdint>
 #include <vector>
-
-
-namespace LinAlg_NS {
-    class SparseMatrix2D;
-}
 
 
 #pragma warning(disable:4251)

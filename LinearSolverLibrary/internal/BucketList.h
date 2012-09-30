@@ -7,17 +7,22 @@
  */
 #pragma once
 
+#include "..\DeclSpec.h"
+
 #include "BucketElement.h"
 
 #include <set>
 #include <cstdint>
 
 
+#pragma warning(disable:4251)
+
+
 namespace LinearSolverLibrary_NS {
 
 namespace internal_NS {
 
-    class BucketList {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketList {
     private:
         typedef std::set<BucketElement::Ptr> DataType;
 
@@ -51,3 +56,5 @@ namespace internal_NS {
 } // namespace internal_NS
 
 } // namespace LinearSolverLibrary_NS
+
+#pragma warning(default:4251)

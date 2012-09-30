@@ -42,6 +42,7 @@ namespace LinearSolverLibrary_NS {
     class SparseLinearSolver;
 }
 
+class FloridaSparseMatrixReaderTest;
 
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)

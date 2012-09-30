@@ -7,15 +7,20 @@
  */
 #pragma once
 
+#include "..\DeclSpec.h"
+
 #include <cstdint>
 #include <memory>
+
+
+#pragma warning(disable:4251)
 
 
 namespace LinearSolverLibrary_NS {
 
 namespace internal_NS {
 
-    class BucketElement {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketElement {
     public:
         typedef std::shared_ptr<BucketElement> Ptr;
         typedef std::uint64_t size_type;
@@ -58,3 +63,5 @@ namespace internal_NS {
 } // namespace internal_NS
 
 } // namespace LinearSolverLibrary_NS
+
+#pragma warning(default:4251)

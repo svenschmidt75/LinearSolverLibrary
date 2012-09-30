@@ -9,6 +9,7 @@
  */
 #pragma once
 
+#include "..\DeclSpec.h"
 
 #include <vector>
 
@@ -25,7 +26,7 @@ namespace internal_NS {
     class BucketList;
 
 
-    class MultiColor_internal {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS MultiColor_internal {
 
         friend class MultiColorTest;
 
