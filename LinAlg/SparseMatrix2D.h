@@ -42,7 +42,12 @@ namespace LinearSolverLibrary_NS {
     class SparseLinearSolver;
 }
 
+/* This class is used as a friend here, and is declared in UnitTest in the global
+ * namespace. Hence, we have to forward-declare it here, otherwise the compiler
+ * complains about an ambiguity as it looks in namespace LinAlg_NS.
+ */
 class FloridaSparseMatrixReaderTest;
+
 
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)

@@ -23,6 +23,30 @@ MultiColorTest::tearDown() {}
 
 namespace {
     bool noElementOnLowerLeft(SparseMatrix2D const & m, int row) {
+        SparseMatrix2D::size_type nrows = m.rows();
+        SparseMatrix2D::size_type ncols = m.cols();
+
+    for (SparseMatrix2D::size_type row = 0; row < nrows; ++row) {
+        BucketElement::Ptr & be = bucket_elements[row];
+
+        /* We generate an undirected graph here, i.e. we pick up
+         * a(i,j) as well as a(j,i). If only outgoing dependencies
+         * are that matter, then change the col loop to
+         * col < row, i.e. we only look at the lower-triangular
+         * dependencies.
+         */
+        for (SparseMatrix2D::size_type col = 0; col < ncols; ++col) {
+            if (m(row, col)) {
+                BucketElement::Ptr dep = bucket_elements[col];
+
+                // element 'row' depends on element 'col'
+                be->dependsOn(dep);
+            }
+        }
+
+
+
+
         return false;
     }
 
@@ -149,7 +173,10 @@ MultiColorTest::simpleTest() {
 
 
     // find independent sets and return new matrix
-    MatrixDecomposition new_m = SparseLinearSolverUtil::multicolorDecomposition(m);
+    MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
+    SparseMatrix2D const & new_m = m_decomp.matrix();
+
+    new_m.print();
 
     // the first 5 rows should have no elements on the lower-left part
     CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementOnLowerLeft(m, 0));

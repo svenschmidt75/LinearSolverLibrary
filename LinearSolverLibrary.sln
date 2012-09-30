@@ -8,6 +8,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReaderLib", "FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj", "{BBDD266D-6E3F-48C1-8FC6-D5D0B61727B7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{412EA587-7361-4E82-B772-8A7FD380B6B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{04DEF9AE-5B98-47E2-9FCE-35897574EEA9} = {04DEF9AE-5B98-47E2-9FCE-35897574EEA9}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaSparseMatrixReader", "FloridaSparseMatrixReader\FloridaSparseMatrixReader.vcxproj", "{91063F81-9843-470B-87B5-1BD9E7D9251E}"
 EndProject

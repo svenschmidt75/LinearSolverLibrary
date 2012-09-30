@@ -34,7 +34,7 @@ BucketElement::end() const {
 BucketElement::const_iterator
 BucketElement::findDependency(BucketElement const & element) const {
     for (auto it = dependencies_.cbegin(); it != dependencies_.cend(); ++it) {
-        if ((*it)->index() == element.index())
+        if ((*it)->prevIndex() == element.prevIndex())
             return it;
     }
     return dependencies_.cend();
@@ -42,6 +42,7 @@ BucketElement::findDependency(BucketElement const & element) const {
 
 void
 BucketElement::dependsOn(Ptr element) {
+    dependencies_.insert(element);
 }
 
 void

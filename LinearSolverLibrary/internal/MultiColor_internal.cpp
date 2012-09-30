@@ -65,44 +65,52 @@ MultiColor_internal::decompose(BucketList bl) {
     BucketList bl_loop;
     bl_loop = bl;
 
-    while (!bl_loop.empty()) {
+    auto bl_loop_start_it = bl_loop.begin();
 
-        while (bl_loop.size() > 1) {
-            //  check dependencies of first bucket element against all others
-            // in same bucket
-            BucketList::iterator it = bl_loop.begin();
-            BucketElement::Ptr const & bl_first = *it;
+    while (bl_loop.size() > 1) {
+        //  check dependencies of first bucket element against all others
+        // in same bucket
+        auto bl_loop_current_it = bl_loop_start_it;
 
-            for (++it; it != bl_loop.end(); ) {
-                BucketElement::Ptr const & e = *it;
+        BucketElement::Ptr const & be_first = *bl_loop_start_it;
 
-                // if there is an edge between elements bl_first and e,
-                // move e out of bl_loop into bl_next.
-                bool split = false;
+        for (++bl_loop_current_it; bl_loop_current_it != bl_loop.end(); ) {
+            BucketElement::Ptr const be_next = *bl_loop_current_it;
 
-                BucketElement::const_iterator it_dep = bl_first->findDependency(*e);
-                if (it_dep != bl_first->end())
+            // if there is an edge between elements be_first and be_next,
+            // move e out of bl_loop into bl_next.
+            bool split = false;
+
+            BucketElement::const_iterator it_dep = be_first->findDependency(*be_next);
+            if (it_dep != be_first->end())
+                split = true;
+
+            else {
+                it_dep = be_next->findDependency(*be_first);
+                if (it_dep != be_next->end())
                     split = true;
-
-                else {
-                    it_dep = e->findDependency(*bl_first);
-                    if (it_dep != e->end())
-                        split = true;
-                }
-
-                if (split) {
-                    ++it;
-                    bl_loop.remove(e);
-                    bl_next.insert(e);
-                }
-                else
-                    ++it;
             }
 
+            if (split) {
+                ++bl_loop_current_it;
+                bl_loop.remove(be_next);
+                bl_next.insert(be_next);
+            }
+            else
+                ++bl_loop_current_it;
+        }
+
+        // check next element in bucket
+        bl_loop_start_it++;
+
+        // all elements in current bucket decomposed?
+        if (bl_loop_start_it == bl_loop.end()) {
             // bl_loop only contains elements that are independent
             bl_done.push_back(bl_loop);
 
             bl_loop = bl_next;
+            bl_loop_start_it = bl_loop.begin();
+
             bl_next.clear();
         }
     }
