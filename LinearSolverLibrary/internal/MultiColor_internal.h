@@ -12,6 +12,8 @@
 #include "..\DeclSpec.h"
 
 #include <vector>
+#include <cstdint>
+#include <map>
 
 
 namespace LinAlg_NS {
@@ -31,8 +33,12 @@ namespace internal_NS {
         friend class MultiColorTest;
 
     public:
-        static BucketList              extractGraph(LinAlg_NS::SparseMatrix2D const & m);
-        static std::vector<BucketList> decompose(BucketList bl);
+        typedef std::uint64_t color_t;
+
+    public:
+        static BucketList                            extractGraph(LinAlg_NS::SparseMatrix2D const & m);
+        static std::vector<BucketList>               decompose(BucketList bl);
+        static std::multimap<color_t, std::uint64_t> decomposeDirectly(BucketList bl);
 
     };
 

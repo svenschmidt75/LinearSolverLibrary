@@ -12,9 +12,10 @@
 
 class MultiColorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(MultiColorTest);
-    CPPUNIT_TEST(simpleTest);
-    CPPUNIT_TEST(bucketElementTest);
     CPPUNIT_TEST(bucketListDecompositionTest);
+    CPPUNIT_TEST(bucketElementTest);
+    CPPUNIT_TEST(simpleTest);
+    CPPUNIT_TEST(SaadFig210Test);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,4 +26,5 @@ protected:
     void bucketListDecompositionTest();
     void bucketElementTest();
     void simpleTest();
+    void SaadFig210Test();
 };

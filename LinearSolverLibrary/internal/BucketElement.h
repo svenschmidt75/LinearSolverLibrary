@@ -31,6 +31,7 @@ namespace internal_NS {
     public:
         typedef DependencyType::const_iterator const_iterator;
         typedef DependencyType::iterator iterator;
+        typedef std::uint64_t color_t;
 
     public:
         BucketElement(size_type element_index);
@@ -50,9 +51,15 @@ namespace internal_NS {
 
         size_type       prevIndex() const;
 
+        color_t         color() const;
+        void            color(color_t color);
+
     private:
         // dependencies of this x_i to other x_j
         DependencyType dependencies_;
+
+        // color
+        size_type      color_;
 
         // index of this element x_i in original sparse matrix
         size_type      prev_element_index_;

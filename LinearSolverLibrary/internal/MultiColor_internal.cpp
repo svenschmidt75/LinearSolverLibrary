@@ -120,3 +120,33 @@ MultiColor_internal::decompose(BucketList bl) {
 
     return bl_done;
 }
+
+std::multimap<MultiColor_internal::color_t, std::uint64_t>
+MultiColor_internal::decomposeDirectly(BucketList bl) {
+    typedef std::multimap<color_t, std::uint64_t> ISet_t;
+    ISet_t independent_decomposition;
+
+    for (auto & be : bl) {
+        std::vector<short> equ_used(bl.size(), 0);
+
+        // check all its dependencies
+        for (auto & dep : *be) {
+            // get the color of the dependent element
+            color_t color = dep->color();
+
+            equ_used[color] = 1;
+        }
+
+        // find the minimum color for the current element be
+        color_t min_color = 1;
+        while (equ_used[min_color])
+            min_color++;
+
+        // assign color
+        be->color(min_color);
+
+        independent_decomposition.insert(std::make_pair(min_color, be->prevIndex()));
+    }
+
+    return independent_decomposition;
+}

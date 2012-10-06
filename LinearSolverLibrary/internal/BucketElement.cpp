@@ -9,6 +9,7 @@ using namespace internal_NS;
 
 BucketElement::BucketElement(size_type element_index)
     :
+    color_(0),
     prev_element_index_(element_index) {}
 
 BucketElement::const_iterator
@@ -67,4 +68,14 @@ BucketElement::index() const {
 BucketElement::size_type
 BucketElement::prevIndex() const {
     return prev_element_index_;
+}
+
+BucketElement::color_t
+BucketElement::color() const {
+    return color_;
+}
+
+void
+BucketElement::color(color_t color) {
+    color_ = color;
 }

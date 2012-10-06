@@ -28,6 +28,8 @@ MultiColor::apply(SparseMatrix2D const & m) {
     // elements in the same list
     auto decomposed_buckets = MultiColor_internal::decompose(bucket_list);
 
+    auto decomposed_buckets2 = MultiColor_internal::decomposeDirectly(bucket_list);
+
 
     // enumerate bucket elements
     BucketElement::size_type index = 0;
