@@ -6,22 +6,21 @@
 using namespace LinearSolverLibrary_NS;
 
 
-MatrixDecomposition::MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, DataType const & is_data)
+MatrixDecomposition::MatrixDecomposition(ISO_t const & iso_data)
     :
-    m_(m),
-    is_data_(is_data) {}
+    iso_data_(iso_data) {}
 
 MatrixDecomposition::const_iterator
 MatrixDecomposition::cbegin() const {
-    return is_data_.cbegin();
+    return iso_data_.cbegin();
 }
 
 MatrixDecomposition::const_iterator
 MatrixDecomposition::cend() const {
-    return is_data_.cend();
+    return iso_data_.cend();
 }
 
-LinAlg_NS::SparseMatrix2D const &
-MatrixDecomposition::matrix() const {
-    return m_;
+MatrixDecomposition::ISO_t::size_type
+MatrixDecomposition::size() const {
+    return iso_data_.size();
 }

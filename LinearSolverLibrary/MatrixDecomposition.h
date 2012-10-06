@@ -12,7 +12,8 @@
 #include "LinAlg/SparseMatrix2D.h"
 
 #include <cstdint>
-#include <vector>
+#include <map>
+#include <set>
 
 
 #pragma warning(disable:4251)
@@ -23,23 +24,20 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS MatrixDecomposition {
     public:
-        typedef std::vector<std::uint64_t> ISType;
-        typedef ISType::const_iterator elem_const_iterator;
-
-        typedef std::vector<ISType> DataType;
-        typedef DataType::const_iterator const_iterator;
+        typedef std::uint64_t color_t;
+        typedef std::map<color_t, std::set<std::uint64_t>> ISO_t;
+        typedef ISO_t::const_iterator const_iterator;
 
     public:
-        MatrixDecomposition(LinAlg_NS::SparseMatrix2D const & m, DataType const & is_data);
+        MatrixDecomposition(ISO_t const & iso_data);
 
         const_iterator                    cbegin() const;
         const_iterator                    cend() const;
 
-        LinAlg_NS::SparseMatrix2D const & matrix() const;
+        ISO_t::size_type                  size() const;
 
     private:
-        LinAlg_NS::SparseMatrix2D m_;
-        DataType                  is_data_;
+        ISO_t iso_data_;
     };
 
 } // LinearSolverLibrary_NS

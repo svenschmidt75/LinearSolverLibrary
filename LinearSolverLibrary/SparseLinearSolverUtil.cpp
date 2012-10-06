@@ -64,7 +64,6 @@ SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, doub
     return ret.first == v1.cend() && ret.second == v2.cend();
 }
 
-
 MatrixDecomposition
 SparseLinearSolverUtil::multicolorDecomposition(SparseMatrix2D const & m) {
      return internal_NS::MultiColor::apply(m);

@@ -14,6 +14,7 @@
 #include <vector>
 #include <cstdint>
 #include <map>
+#include <set>
 
 
 namespace LinAlg_NS {
@@ -34,11 +35,11 @@ namespace internal_NS {
 
     public:
         typedef std::uint64_t color_t;
+        typedef std::map<color_t, std::set<std::uint64_t>> ISO_t;
 
     public:
-        static BucketList                            extractGraph(LinAlg_NS::SparseMatrix2D const & m);
-        static std::vector<BucketList>               decompose(BucketList bl);
-        static std::multimap<color_t, std::uint64_t> decomposeDirectly(BucketList bl);
+        static BucketList extractGraph(LinAlg_NS::SparseMatrix2D const & m);
+        static ISO_t      decompose(BucketList bl);
 
     };
 

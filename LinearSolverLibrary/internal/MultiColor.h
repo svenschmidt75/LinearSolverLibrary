@@ -9,6 +9,10 @@
 #pragma once
 
 
+#include <cstdint>
+#include <map>
+
+
 namespace LinAlg_NS {
     class  SparseMatrix2D;
 }

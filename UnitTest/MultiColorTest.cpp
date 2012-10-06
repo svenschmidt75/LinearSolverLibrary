@@ -255,33 +255,29 @@ MultiColorTest::simpleTest() {
 
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
-    SparseMatrix2D const & new_m = m_decomp.matrix();
 
-//    new_m.print();
+    // check the independent sets
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 2 independent sets of equations", 2ull, m_decomp.size());
 
-    // the first 5 rows should have no elements on the lower-left part
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 0, 0));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 1, 0));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 2, 0));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 3, 0));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 4, 0));
+    auto indep_set_1 = (*(m_decomp.cbegin())).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 5 equations in independent set 1", 5ull, indep_set_1.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_0 in independent set 1", true, indep_set_1.find(0) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_2 in independent set 1", true, indep_set_1.find(2) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_4 in independent set 1", true, indep_set_1.find(4) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_6 in independent set 1", true, indep_set_1.find(6) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_8 in independent set 1", true, indep_set_1.find(8) != indep_set_1.end());
 
-    // the last 4 rows should have no elements on the lower-left part for column > 5
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 5, 5));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 6, 5));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 7, 5));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("failure in multicoloring", true, noElementsOnLowerLeft(new_m, 8, 5));
-
-    // check # of independent sets
-
-
-
-
+    auto indep_set_2 = (*(++m_decomp.cbegin())).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 equations in independent set 1", 4ull, indep_set_2.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_1 in independent set 1", true, indep_set_2.find(1) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_3 in independent set 1", true, indep_set_2.find(3) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_5 in independent set 1", true, indep_set_2.find(5) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_7 in independent set 1", true, indep_set_2.find(7) != indep_set_2.end());
 }
 
 void
 MultiColorTest::SaadFig210Test() {
-    /* from Saag, page 67, Fig. 2.10 */
+    /* from Saad, page 67, Fig. 2.10 */
     SparseMatrix2D m = createMatrix2();
 
     m.print();

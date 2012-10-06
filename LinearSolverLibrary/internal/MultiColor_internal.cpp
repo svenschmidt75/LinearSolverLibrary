@@ -54,90 +54,25 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
     return bucket_list;
 }
 
-std::vector<BucketList>
+MultiColor_internal::ISO_t
 MultiColor_internal::decompose(BucketList bl) {
-    typedef std::vector<BucketList> BucketListSet;
-
-    // split the bucket elements such that all bucket elements in one set have no dependencies on
-    // elements in the same list
-    BucketListSet bl_done;
-    BucketList bl_next;
-    BucketList bl_loop;
-    bl_loop = bl;
-
-    auto bl_loop_start_it = bl_loop.begin();
-
-    while (bl_loop.size() > 1) {
-        //  check dependencies of first bucket element against all others
-        // in same bucket
-        auto bl_loop_current_it = bl_loop_start_it;
-
-        BucketElement::Ptr const & be_first = *bl_loop_start_it;
-
-        for (++bl_loop_current_it; bl_loop_current_it != bl_loop.end(); ) {
-            BucketElement::Ptr const be_next = *bl_loop_current_it;
-
-            // if there is an edge between elements be_first and be_next,
-            // move e out of bl_loop into bl_next.
-            bool split = false;
-
-            BucketElement::const_iterator it_dep = be_first->findDependency(*be_next);
-            if (it_dep != be_first->end())
-                split = true;
-
-            else {
-                it_dep = be_next->findDependency(*be_first);
-                if (it_dep != be_next->end())
-                    split = true;
-            }
-
-            if (split) {
-                ++bl_loop_current_it;
-                bl_loop.remove(be_next);
-                bl_next.insert(be_next);
-            }
-            else
-                ++bl_loop_current_it;
-        }
-
-        // check next element in bucket
-        bl_loop_start_it++;
-
-        // all elements in current bucket decomposed?
-        if (bl_loop_start_it == bl_loop.end()) {
-            // bl_loop only contains elements that are independent
-            bl_done.push_back(bl_loop);
-
-            bl_loop = bl_next;
-            bl_loop_start_it = bl_loop.begin();
-
-            bl_next.clear();
-        }
-    }
-
-    if (bl_loop.size() == 1)
-        bl_done.push_back(bl_loop);
-
-    return bl_done;
-}
-
-std::multimap<MultiColor_internal::color_t, std::uint64_t>
-MultiColor_internal::decomposeDirectly(BucketList bl) {
-    typedef std::multimap<color_t, std::uint64_t> ISet_t;
-    ISet_t independent_decomposition;
+    /* Implements algorithm 3.6, page 87, of Saad.
+     * The resulting multimap contains
+     * color -> {index of x_i}
+     */
+    ISO_t independent_decomposition;
 
     for (auto & be : bl) {
         std::vector<short> equ_used(bl.size(), 0);
 
-        // check all its dependencies
+        // check all of be's dependencies
         for (auto & dep : *be) {
             // get the color of the dependent element
             color_t color = dep->color();
-
             equ_used[color] = 1;
         }
 
-        // find the minimum color for the current element be
+        // find the minimum color > 0 of element be
         color_t min_color = 1;
         while (equ_used[min_color])
             min_color++;
@@ -145,7 +80,7 @@ MultiColor_internal::decomposeDirectly(BucketList bl) {
         // assign color
         be->color(min_color);
 
-        independent_decomposition.insert(std::make_pair(min_color, be->prevIndex()));
+        independent_decomposition[min_color].insert(be->prevIndex());
     }
 
     return independent_decomposition;
