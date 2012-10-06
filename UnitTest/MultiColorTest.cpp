@@ -13,6 +13,9 @@
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 using namespace internal_NS;
+using namespace EntityReader_NS;
+
+namespace FS = boost::filesystem;
 
 
 void
@@ -315,4 +318,40 @@ MultiColorTest::SaadFig210Test() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_8 in independent set 4", true, indep_set_4.find(8) != indep_set_4.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_10 in independent set 4", true, indep_set_4.find(10) != indep_set_4.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_14 in independent set 4", true, indep_set_4.find(14) != indep_set_4.end());
+}
+
+void
+MultiColorTest::floridaSherman3Test() {
+    FS::path filename("\\Develop\\SparseMatrixData\\sherman3\\sherman3.ar");
+
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+
+
+    // find independent sets and return new matrix
+    MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
+
+
+    // check the # of independent sets
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+}
+
+void
+MultiColorTest::floridaMemplusTest() {
+    FS::path filename("\\Develop\\SparseMatrixData\\memplus\\memplus.ar");
+
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+
+
+    // find independent sets and return new matrix
+    MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
+
+
+    // check the # of independent sets
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
 }
