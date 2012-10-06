@@ -40,7 +40,7 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
          */
         for (SparseMatrix2D::size_type col = 0; col < ncols; ++col) {
             if (m(row, col)) {
-                BucketElement::Ptr dep = bucket_elements[col];
+                BucketElement::Ptr const & dep = bucket_elements[col];
 
                 // element 'row' depends on element 'col'
                 be->dependsOn(dep);
@@ -54,13 +54,12 @@ MultiColor_internal::extractGraph(SparseMatrix2D const & m) {
     return bucket_list;
 }
 
-MultiColor_internal::ISO_t
-MultiColor_internal::decompose(BucketList bl) {
+void
+MultiColor_internal::computeColor(BucketList & bl) {
     /* Implements algorithm 3.6, page 87, of Saad.
      * The resulting multimap contains
      * color -> {index of x_i}
      */
-    ISO_t independent_decomposition;
 
     for (auto & be : bl) {
         std::vector<short> equ_used(bl.size(), 0);
@@ -68,8 +67,10 @@ MultiColor_internal::decompose(BucketList bl) {
         // check all of be's dependencies
         for (auto & dep : *be) {
             // get the color of the dependent element
-            color_t color = dep->color();
-            equ_used[color] = 1;
+            if (dep->prevIndex() != be->prevIndex()) {
+                color_t color = dep->color();
+                equ_used[color] = 1;
+            }
         }
 
         // find the minimum color > 0 of element be
@@ -79,7 +80,22 @@ MultiColor_internal::decompose(BucketList bl) {
 
         // assign color
         be->color(min_color);
+    }
+}
 
+MultiColor_internal::ISO_t
+MultiColor_internal::decompose(BucketList & bl) {
+    /* Implements algorithm 3.6, page 87, of Saad.
+     * The resulting multimap contains
+     * color -> {index of x_i}
+     */
+    ISO_t independent_decomposition;
+
+    computeColor(bl);
+
+    for (auto & be : bl) {
+        // get color of element be
+        color_t min_color = be->color();
         independent_decomposition[min_color].insert(be->prevIndex());
     }
 

@@ -6,6 +6,8 @@ using namespace LinearSolverLibrary_NS;
 using namespace internal_NS;
 
 
+BucketList::BucketList() {}
+
 void
 BucketList::insert(BucketElement::Ptr const & element) {
     data_.insert(element);

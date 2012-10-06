@@ -21,12 +21,23 @@ namespace LinearSolverLibrary_NS {
 namespace internal_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketElement {
+
+        friend class BucketList;
+
     public:
         typedef std::shared_ptr<BucketElement> Ptr;
         typedef std::uint64_t size_type;
 
     private:
         typedef std::set<Ptr> DependencyType;
+
+        struct comparitor {
+            comparitor() {}
+
+            bool operator()(Ptr const & lhs, Ptr const & rhs) const {
+                return lhs->prevIndex() < rhs->prevIndex();
+            }
+        };
 
     public:
         typedef DependencyType::const_iterator const_iterator;

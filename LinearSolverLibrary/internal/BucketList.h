@@ -24,7 +24,7 @@ namespace internal_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketList {
     private:
-        typedef std::set<BucketElement::Ptr> DataType;
+        typedef std::set<BucketElement::Ptr, BucketElement::comparitor> DataType;
 
     public:
         typedef std::uint64_t size_type;
@@ -32,6 +32,8 @@ namespace internal_NS {
         typedef DataType::iterator iterator;
 
     public:
+        BucketList();
+
         void           insert(BucketElement::Ptr const & element);
         void           remove(BucketElement::Ptr const & element);
 

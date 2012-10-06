@@ -25,16 +25,42 @@ void
 MultiColorTest::tearDown() {}
 
 namespace {
-    bool noElementsOnLowerLeft(SparseMatrix2D const & m, SparseMatrix2D::size_type row, SparseMatrix2D::size_type column_offset) {
-        SparseMatrix2D::size_type nrows = m.rows();
-        SparseMatrix2D::size_type ncols = m.cols();
 
-        for (SparseMatrix2D::size_type col = column_offset; col < row; ++col) {
-            if (m(row, col))
-                return false;
+    void checkISODecomposition(MatrixDecomposition const & m_decomp , SparseMatrix2D const & m) {
+        BucketList bl = internal_NS::MultiColor_internal::extractGraph(m);
+
+        // compute color
+        internal_NS::MultiColor_internal::computeColor(bl);
+
+        // iterator over all independent sets
+        for (auto iso_it = m_decomp.cbegin(); iso_it != m_decomp.cend(); ++iso_it) {
+            // color of current independent set
+            internal_NS::MultiColor_internal::color_t color = iso_it->first;
+
+            // set of equations
+            auto iso_set = iso_it->second;
+
+            // iterate over all elements in the independent set
+            for (auto & index : iso_set) {
+                auto be_it = bl.findElement(index);
+                CPPUNIT_ASSERT_MESSAGE("element not found", be_it != bl.cend());
+
+                BucketElement::Ptr const & be = *be_it;
+
+                // check all of be's dependencies
+                for (auto & dep : *be) {
+                    // get the color of the dependent element
+                    if (dep->prevIndex() != be->prevIndex()) {
+                        internal_NS::MultiColor_internal::color_t dep_color = dep->color();
+                        if (dep_color <= color) {
+                            int a = 1;
+                            a++;
+                        }
+                        //                        CPPUNIT_ASSERT_EQUAL_MESSAGE("color of element in independent set not larger than color of independent set", true, dep_color < color);
+                    }
+                }
+            }
         }
-
-        return true;
     }
 
     SparseMatrix2D createMatrix() {
@@ -195,10 +221,11 @@ MultiColorTest::bucketListDecompositionTest() {
     BucketElement::Ptr e0(new BucketElement(0));
     BucketElement::Ptr e1(new BucketElement(1));
 
+    e0->dependsOn(e0);
     e0->dependsOn(e1);
+    e1->dependsOn(e1);
     bl.insert(e0);
     bl.insert(e1);
-
 
     auto decomp = MultiColor_internal::decompose(bl);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("decomposition error", 2ull, decomp.size());
@@ -276,6 +303,8 @@ MultiColorTest::simpleTest() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_3 in independent set 2", true, indep_set_2.find(3) != indep_set_2.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_5 in independent set 2", true, indep_set_2.find(5) != indep_set_2.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_7 in independent set 2", true, indep_set_2.find(7) != indep_set_2.end());
+
+    checkISODecomposition(m_decomp, m);
 }
 
 void
@@ -287,6 +316,7 @@ MultiColorTest::SaadFig210Test() {
 
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
+
 
 
     // check the # of independent sets
@@ -318,6 +348,8 @@ MultiColorTest::SaadFig210Test() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_8 in independent set 4", true, indep_set_4.find(8) != indep_set_4.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_10 in independent set 4", true, indep_set_4.find(10) != indep_set_4.end());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_14 in independent set 4", true, indep_set_4.find(14) != indep_set_4.end());
+
+    checkISODecomposition(m_decomp, m);
 }
 
 void
@@ -335,7 +367,9 @@ MultiColorTest::floridaSherman3Test() {
 
 
     // check the # of independent sets
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+//    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+
+    checkISODecomposition(m_decomp, m);
 }
 
 void
@@ -354,4 +388,6 @@ MultiColorTest::floridaMemplusTest() {
 
     // check the # of independent sets
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+
+    checkISODecomposition(m_decomp, m);
 }

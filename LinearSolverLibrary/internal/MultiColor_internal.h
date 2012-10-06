@@ -39,8 +39,8 @@ namespace internal_NS {
 
     public:
         static BucketList extractGraph(LinAlg_NS::SparseMatrix2D const & m);
-        static ISO_t      decompose(BucketList bl);
-
+        static void computeColor(BucketList & bl);
+        static ISO_t      decompose(BucketList & bl);
     };
 
 } // namespace internal_NS
