@@ -256,7 +256,7 @@ MultiColorTest::simpleTest() {
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
 
-    // check the independent sets
+    // check the # of independent sets
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 2 independent sets of equations", 2ull, m_decomp.size());
 
     auto indep_set_1 = (*(m_decomp.cbegin())).second;
@@ -268,11 +268,11 @@ MultiColorTest::simpleTest() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_8 in independent set 1", true, indep_set_1.find(8) != indep_set_1.end());
 
     auto indep_set_2 = (*(++m_decomp.cbegin())).second;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 equations in independent set 1", 4ull, indep_set_2.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_1 in independent set 1", true, indep_set_2.find(1) != indep_set_2.end());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_3 in independent set 1", true, indep_set_2.find(3) != indep_set_2.end());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_5 in independent set 1", true, indep_set_2.find(5) != indep_set_2.end());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_7 in independent set 1", true, indep_set_2.find(7) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 equations in independent set 2", 4ull, indep_set_2.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_1 in independent set 2", true, indep_set_2.find(1) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_3 in independent set 2", true, indep_set_2.find(3) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_5 in independent set 2", true, indep_set_2.find(5) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_7 in independent set 2", true, indep_set_2.find(7) != indep_set_2.end());
 }
 
 void
@@ -282,17 +282,37 @@ MultiColorTest::SaadFig210Test() {
 
     m.print();
 
-#if 0
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
-    SparseMatrix2D const & new_m = m_decomp.matrix();
 
-    new_m.print();
 
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 sets of independent equations", std::iterator_traits<decltype(m_decomp.cbegin())>::difference_type(4), std::distance(m_decomp.cbegin(), m_decomp.cend()));
+    // check the # of independent sets
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
 
-    auto ips = *(m_decomp.cbegin());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 equations in independent set 1", 4ull, (m_decomp.cbegin()).size());
+    auto indep_set_1 = (*(m_decomp.cbegin())).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 6 equations in independent set 1", 6ull, indep_set_1.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_0 in independent set 1", true, indep_set_1.find(0) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_1 in independent set 1", true, indep_set_1.find(1) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_2 in independent set 1", true, indep_set_1.find(2) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_3 in independent set 1", true, indep_set_1.find(3) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_4 in independent set 1", true, indep_set_1.find(4) != indep_set_1.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_5 in independent set 1", true, indep_set_1.find(5) != indep_set_1.end());
 
-#endif
+    auto indep_set_2 = (*(++m_decomp.cbegin())).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 3 equations in independent set 2", 3ull, indep_set_2.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_6 in independent set 2", true, indep_set_2.find(6) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_9 in independent set 2", true, indep_set_2.find(9) != indep_set_2.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_11 in independent set 2", true, indep_set_2.find(11) != indep_set_2.end());
+
+    auto indep_set_3 = (*(++(++m_decomp.cbegin()))).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 3 equations in independent set 3", 3ull, indep_set_3.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_7 in independent set 3", true, indep_set_3.find(7) != indep_set_3.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_12 in independent set 3", true, indep_set_3.find(12) != indep_set_3.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_13 in independent set 3", true, indep_set_3.find(13) != indep_set_3.end());
+
+    auto indep_set_4 = (*(++(++(++m_decomp.cbegin())))).second;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 3 equations in independent set 4", 3ull, indep_set_4.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_8 in independent set 4", true, indep_set_4.find(8) != indep_set_4.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_10 in independent set 4", true, indep_set_4.find(10) != indep_set_4.end());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected x_14 in independent set 4", true, indep_set_4.find(14) != indep_set_4.end());
 }
