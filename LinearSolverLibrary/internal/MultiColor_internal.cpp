@@ -61,8 +61,13 @@ MultiColor_internal::computeColor(BucketList & bl) {
      * color -> {index of x_i}
      */
 
+    // compute the # of topological levels
+    color_t topological_levels = 0;
+
     for (auto & be : bl) {
         std::vector<short> equ_used(bl.size() + 1, 0);
+
+        color_t tl = 0;
 
         // check all of be's dependencies
         for (auto & dep : *be) {
@@ -70,6 +75,8 @@ MultiColor_internal::computeColor(BucketList & bl) {
             if (dep->prevIndex() != be->prevIndex()) {
                 color_t color = dep->color();
                 equ_used[color] = 1;
+
+                tl = std::max(dep->topologicalIndex(), tl);
             }
         }
 
@@ -80,6 +87,9 @@ MultiColor_internal::computeColor(BucketList & bl) {
 
         // assign color
         be->color(min_color);
+
+        topological_levels = std::max(tl + 1, topological_levels);
+        be->topologicalIndex(tl + 1);
     }
 }
 

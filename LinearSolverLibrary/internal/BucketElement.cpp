@@ -10,6 +10,7 @@ using namespace internal_NS;
 BucketElement::BucketElement(size_type element_index)
     :
     color_(0),
+    topological_index_(0),
     prev_element_index_(element_index) {}
 
 BucketElement::const_iterator
@@ -56,13 +57,13 @@ BucketElement::findDependency(size_type index) const {
 }
 
 void
-BucketElement::index(size_type index) {
-    element_index_ = index;
+BucketElement::topologicalIndex(size_type topological_index) {
+    topological_index_ = topological_index;
 }
 
 BucketElement::size_type
-BucketElement::index() const {
-    return element_index_;
+BucketElement::topologicalIndex() const {
+    return topological_index_;
 }
 
 BucketElement::size_type

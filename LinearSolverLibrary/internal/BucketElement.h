@@ -57,8 +57,8 @@ namespace internal_NS {
         const_iterator  findDependency(BucketElement const & element) const;
         bool            findDependency(size_type index) const;
 
-        void            index(size_type index);
-        size_type       index() const;
+        void            topologicalIndex(size_type index);
+        size_type       topologicalIndex() const;
 
         size_type       prevIndex() const;
 
@@ -75,8 +75,9 @@ namespace internal_NS {
         // index of this element x_i in original sparse matrix
         size_type      prev_element_index_;
 
-        // index of this element x_i in new sparse matrix
-        size_type      element_index_;
+        // topological index (Saad, p. 370 and GPU-Accelerated Preconditioned
+        // Iterative Linear Solvers, p. 16)
+        size_type      topological_index_;
     };
 
 } // namespace internal_NS
