@@ -47,17 +47,19 @@ namespace {
 
                 BucketElement::Ptr const & be = *be_it;
 
-                // check all of be's dependencies
+                CPPUNIT_ASSERT_EQUAL_MESSAGE("color unassigned", true, be->color() != 0);
+
+                /* Check that all dependencies of element 'be' have a different color
+                 * than itself.
+                 */
                 for (auto & dep : *be) {
                     // get the color of the dependent element
-                    if (dep->prevIndex() != be->prevIndex()) {
-                        internal_NS::MultiColor_internal::color_t dep_color = dep->color();
-                        if (dep_color <= color) {
-                            int a = 1;
-                            a++;
-                        }
-                        //                        CPPUNIT_ASSERT_EQUAL_MESSAGE("color of element in independent set not larger than color of independent set", true, dep_color < color);
-                    }
+                    internal_NS::MultiColor_internal::color_t dep_color = dep->color();
+
+                    CPPUNIT_ASSERT_EQUAL_MESSAGE("color unassigned", true, dep_color != 0);
+
+                    if (dep->prevIndex() != be->prevIndex())
+                        CPPUNIT_ASSERT_EQUAL_MESSAGE("color of dependent element must be different", true, dep_color != color);
                 }
             }
         }
@@ -220,15 +222,17 @@ MultiColorTest::bucketListDecompositionTest() {
 
     BucketElement::Ptr e0(new BucketElement(0));
     BucketElement::Ptr e1(new BucketElement(1));
+    BucketElement::Ptr e2(new BucketElement(2));
 
-    e0->dependsOn(e0);
     e0->dependsOn(e1);
-    e1->dependsOn(e1);
+    e2->dependsOn(e2);
     bl.insert(e0);
     bl.insert(e1);
 
     auto decomp = MultiColor_internal::decompose(bl);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("decomposition error", 2ull, decomp.size());
+
+    /* e0 and e1 can be compusted in the same color */
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("decomposition error", 1ull, decomp.size());
 }
 
 void
@@ -312,7 +316,7 @@ MultiColorTest::SaadFig210Test() {
     /* from Saad, page 67, Fig. 2.10 */
     SparseMatrix2D m = createMatrix2();
 
-    m.print();
+//    m.print();
 
     // find independent sets and return new matrix
     MatrixDecomposition m_decomp = SparseLinearSolverUtil::multicolorDecomposition(m);
@@ -367,7 +371,7 @@ MultiColorTest::floridaSherman3Test() {
 
 
     // check the # of independent sets
-//    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
 
     checkISODecomposition(m_decomp, m);
 }
@@ -387,7 +391,7 @@ MultiColorTest::floridaMemplusTest() {
 
 
     // check the # of independent sets
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 4 independent sets of equations", 4ull, m_decomp.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("expected 22 independent sets of equations", 22ull, m_decomp.size());
 
     checkISODecomposition(m_decomp, m);
 }

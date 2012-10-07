@@ -62,7 +62,7 @@ MultiColor_internal::computeColor(BucketList & bl) {
      */
 
     for (auto & be : bl) {
-        std::vector<short> equ_used(bl.size(), 0);
+        std::vector<short> equ_used(bl.size() + 1, 0);
 
         // check all of be's dependencies
         for (auto & dep : *be) {
@@ -73,7 +73,7 @@ MultiColor_internal::computeColor(BucketList & bl) {
             }
         }
 
-        // find the minimum color > 0 of element be
+        // find the minimum color > 0 of element 'be'
         color_t min_color = 1;
         while (equ_used[min_color])
             min_color++;
@@ -88,13 +88,15 @@ MultiColor_internal::decompose(BucketList & bl) {
     /* Implements algorithm 3.6, page 87, of Saad.
      * The resulting multimap contains
      * color -> {index of x_i}
+     * Note: This only works for undirected grpahs!
      */
     ISO_t independent_decomposition;
 
+    // compute color for each x_i
     computeColor(bl);
 
     for (auto & be : bl) {
-        // get color of element be
+        // get color of element 'be'
         color_t min_color = be->color();
         independent_decomposition[min_color].insert(be->prevIndex());
     }
