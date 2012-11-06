@@ -27,14 +27,16 @@ namespace LinearSolverLibrary_NS {
         typedef std::uint64_t color_t;
         typedef std::map<color_t, std::set<std::uint64_t>> ISO_t;
         typedef ISO_t::const_iterator const_iterator;
+        typedef ISO_t::size_type size_type;
 
     public:
         MatrixDecomposition(ISO_t const & iso_data);
+        MatrixDecomposition(MatrixDecomposition && in);
 
-        const_iterator                    cbegin() const;
-        const_iterator                    cend() const;
+        const_iterator   cbegin() const;
+        const_iterator   cend() const;
 
-        ISO_t::size_type                  size() const;
+        size_type        size() const;
 
     private:
         ISO_t iso_data_;

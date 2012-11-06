@@ -16,8 +16,10 @@ class MultiColorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(bucketElementTest);
     CPPUNIT_TEST(simpleTest);
     CPPUNIT_TEST(SaadFig210Test);
-//     CPPUNIT_TEST(floridaSherman3Test);
+#ifdef INTEGRATION_TEST
+    CPPUNIT_TEST(floridaSherman3Test);
     CPPUNIT_TEST(floridaMemplusTest);
+#endif
     CPPUNIT_TEST_SUITE_END();
 
 public:
