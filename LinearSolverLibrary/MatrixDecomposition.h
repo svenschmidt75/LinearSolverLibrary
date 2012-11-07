@@ -33,8 +33,10 @@ namespace LinearSolverLibrary_NS {
         MatrixDecomposition(ISO_t const & iso_data);
         MatrixDecomposition(MatrixDecomposition && in);
 
-        const_iterator   cbegin() const;
-        const_iterator   cend() const;
+        // should be cbegin/cend, but range based for looks
+        // for begin/end
+        const_iterator   begin() const;
+        const_iterator   end() const;
 
         size_type        size() const;
 

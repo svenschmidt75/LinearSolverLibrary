@@ -17,12 +17,12 @@ MatrixDecomposition::MatrixDecomposition(MatrixDecomposition && in)
     iso_data_(std::move(in.iso_data_)) {}
 
 MatrixDecomposition::const_iterator
-MatrixDecomposition::cbegin() const {
+MatrixDecomposition::begin() const {
     return iso_data_.cbegin();
 }
 
 MatrixDecomposition::const_iterator
-MatrixDecomposition::cend() const {
+MatrixDecomposition::end() const {
     return iso_data_.cend();
 }
 

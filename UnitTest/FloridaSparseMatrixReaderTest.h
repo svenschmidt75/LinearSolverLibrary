@@ -12,7 +12,9 @@
 
 class FloridaSparseMatrixReaderTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(FloridaSparseMatrixReaderTest);
+#ifdef INTEGRATION_TEST
     CPPUNIT_TEST(readTest);
+#endif
     CPPUNIT_TEST_SUITE_END();
 
 public:

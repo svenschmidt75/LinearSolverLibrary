@@ -16,6 +16,7 @@ class MultiColorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(bucketElementTest);
     CPPUNIT_TEST(simpleTest);
     CPPUNIT_TEST(SaadFig210Test);
+    CPPUNIT_TEST(VersteegMalalasekeraMultiColorTest);
 #ifdef INTEGRATION_TEST
     CPPUNIT_TEST(floridaSherman3Test);
     CPPUNIT_TEST(floridaMemplusTest);
@@ -31,6 +32,7 @@ protected:
     void bucketElementTest();
     void simpleTest();
     void SaadFig210Test();
+    void VersteegMalalasekeraMultiColorTest();
     void floridaSherman3Test();
     void floridaMemplusTest();
 };

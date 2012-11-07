@@ -16,7 +16,15 @@ using namespace EntityReader_NS;
 FloridaSparseMatrixReader::FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder)
     :
     filename_(filename),
-    builder_(builder) {}
+    builder_(builder) {
+
+    BOOST_ASSERT_MSG(boost::filesystem::exists(filename), "FloridaSparseMatrixReader: File not found");
+    if (!boost::filesystem::exists(filename)) {
+        boost::format format = boost::format("FloridaSparseMatrixReader: File %1% not found!\n") % filename;
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+}
 
 bool
 FloridaSparseMatrixReader::read() const {
