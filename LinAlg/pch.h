@@ -12,9 +12,11 @@
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/format.hpp>
 
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
 #include <utility>
+#include <cmath>

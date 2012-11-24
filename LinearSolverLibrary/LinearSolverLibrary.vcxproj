@@ -309,6 +309,7 @@
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="internal\BucketElement.h" />
     <ClInclude Include="internal\BucketList.h" />

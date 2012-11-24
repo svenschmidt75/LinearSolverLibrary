@@ -42,6 +42,12 @@ namespace boost {
 
 namespace LinAlg_NS {
 
+    namespace internal {
+
+        template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+        class MatrixVectorExpr;
+    }
+
     class LINALG_DECL_SYMBOLS Vector {
 
         // support for boost::serialize
@@ -57,6 +63,13 @@ namespace LinAlg_NS {
 
         friend class helper;
 
+        // operators
+        friend Vector operator-(Vector const & lhs, Vector const & rhs);
+        
+        template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+        friend Vector operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs);
+
+
     public:
         typedef boost::uint64_t                     size_type;
         typedef std::vector<double>::const_iterator const_iterator;
@@ -65,6 +78,13 @@ namespace LinAlg_NS {
     public:
         Vector(size_type dim);
         Vector(Vector const & in);
+
+        template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const && in)
+            :
+            dim_(std::forward<size_type>(in.dim_)),
+            data_(std::forward<std::vector<double>>(in.data_)) {}
+
         Vector & operator=(Vector const & in);
 
         // enable move semantics
@@ -86,7 +106,7 @@ namespace LinAlg_NS {
         double & operator()(size_type index);
         double   operator()(size_type index) const;
 
-        size_type size() const;
+        size_type      size() const;
 
         const_iterator cbegin() const;
         const_iterator cend() const;

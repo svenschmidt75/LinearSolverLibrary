@@ -2,6 +2,8 @@
 
 #include "Vector.h"
 
+#include "common/reporting.h"
+
 
 namespace LinAlg_NS {
 
@@ -139,6 +141,47 @@ serialize(boost::archive::binary_oarchive & ar, Vector & m, const unsigned int v
 void
 serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int version) {
     serialize_helper(ar, m, version);
+}
+
+/*************
+ * operators *
+ *************/
+
+Vector
+operator-(Vector const & lhs, Vector const & rhs) {
+    bool cond = lhs.size() == rhs.size();
+
+    BOOST_ASSERT_MSG(cond, "operator-(Vector, Vector): Size mismatch");
+    if (!cond) {
+        boost::format format = boost::format("operator-(Vector, Vector): Size mismatch\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+
+    Vector tmp(lhs.size());
+    tmp(0) = lhs(0) - rhs(0);
+    tmp(1) = lhs(1) - rhs(1);
+    tmp(2) = lhs(2) - rhs(2);
+    return tmp;
+}
+
+template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+Vector
+operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs) {
+    bool cond = lhs.size() == rhs.size();
+
+    BOOST_ASSERT_MSG(cond, "operator-(Vector, Vector): Size mismatch");
+    if (!cond) {
+        boost::format format = boost::format("operator-(Vector, Vector): Size mismatch\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+
+    Vector tmp(lhs.size());
+    tmp(0) = lhs(0) - rhs(0);
+    tmp(1) = lhs(1) - rhs(1);
+    tmp(2) = lhs(2) - rhs(2);
+    return tmp;
 }
 
 } // namespace LinAlg_NS

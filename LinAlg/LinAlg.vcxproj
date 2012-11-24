@@ -191,6 +191,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -306,6 +307,7 @@
   <ItemGroup>
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
+    <ClCompile Include="VectorMath.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -326,6 +328,7 @@
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
+    <ClInclude Include="VectorMath.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="pch.h" />
@@ -334,6 +337,11 @@
     <ClInclude Include="IMatrix2D.h" />
     <ClInclude Include="TransposeVector.h" />
     <ClInclude Include="Vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{04def9ae-5b98-47e2-9fce-35897574eea9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
