@@ -40,6 +40,9 @@ namespace LinAlg_NS {
 
             double operator()(Vector::size_type index) const {
                 // return row
+
+                // This is tag dispatching. The idea is to do an operation
+                // depending on the type of MATRIX_EXPR (which we don't know here)
                 double value = matrix_operation_traits<MATRIX_EXPR>::apply<VECTOR_EXPR>::op(op1_, op2_, index);
                 return value;
             }

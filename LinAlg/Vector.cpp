@@ -159,9 +159,9 @@ operator-(Vector const & lhs, Vector const & rhs) {
     }
 
     Vector tmp(lhs.size());
-    tmp(0) = lhs(0) - rhs(0);
-    tmp(1) = lhs(1) - rhs(1);
-    tmp(2) = lhs(2) - rhs(2);
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), tmp.begin(), [](double lhs, double rhs){
+        return lhs - rhs;
+    });
     return tmp;
 }
 
@@ -178,9 +178,9 @@ operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXP
     }
 
     Vector tmp(lhs.size());
-    tmp(0) = lhs(0) - rhs(0);
-    tmp(1) = lhs(1) - rhs(1);
-    tmp(2) = lhs(2) - rhs(2);
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), tmp.begin(), [](double lhs, double rhs){
+        return lhs - rhs;
+    });
     return tmp;
 }
 
