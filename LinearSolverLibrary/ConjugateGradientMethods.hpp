@@ -7,8 +7,7 @@
  */
 #pragma once
 
-#include "LinAlg/Vector.h"
-#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/entities.h"
 #include "LinAlg/VectorMath.h"
 
 #include <tuple>
@@ -49,7 +48,7 @@ namespace LinearSolverLibrary_NS {
                 alpha = VectorMath::dotProduct(r, r) / dAd;
 
                 x += alpha * d;
-            }
+            } while (1);
 
 #if 0
 

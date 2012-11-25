@@ -305,6 +305,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entities.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -320,6 +321,7 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entities.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\expression_traits.h" />
     <ClInclude Include="internal\primitiveOperators.h" />

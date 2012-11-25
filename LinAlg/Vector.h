@@ -61,13 +61,21 @@ namespace LinAlg_NS {
         template<typename AR>
         friend void serialize_helper(AR & ar, Vector & m, const unsigned int /*version*/);
 
-        friend class helper;
-
         // operators
-        friend Vector operator-(Vector const & lhs, Vector const & rhs);
+        friend LINALG_DECL_SYMBOLS Vector operator-(Vector const & lhs, Vector const & rhs);
         
         template<typename MATRIX_EXPR, typename VECTOR_EXPR>
         friend Vector operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs);
+
+        friend LINALG_DECL_SYMBOLS Vector operator*(double value, Vector const & v);
+
+        friend LINALG_DECL_SYMBOLS Vector & operator+=(Vector & lhs, Vector const & rhs);
+
+        template<typename VECTOR_EXPR, typename BINOP>
+        friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
+
+        // other
+        friend class helper;
 
 
     public:
@@ -80,10 +88,14 @@ namespace LinAlg_NS {
         Vector(Vector const & in);
 
         template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const && in)
-            :
-            dim_(std::forward<size_type>(in.dim_)),
-            data_(std::forward<std::vector<double>>(in.data_)) {}
+        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const && in) {
+            dim_ = in.size();
+
+            data_.resize(dim_);
+
+            for (size_type i = 0; i < in.size(); ++i)
+                (*this)(i) = in(i);
+        }
 
         Vector & operator=(Vector const & in);
 

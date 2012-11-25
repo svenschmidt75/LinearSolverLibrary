@@ -46,7 +46,7 @@ namespace LinAlg_NS {
             if (m.cols() != v.size())
                 throw std::runtime_error("helper::matrix_vector_operation: Matrix and vector incompatible");
 
-            IMatrix2D::size_type nrows = m.nelements_.size() - 1;
+//            IMatrix2D::size_type nrows = m.nelements_.size() - 1;
 
             // Number of non-zero columns for this row
             IMatrix2D::size_type ncol = m.nelements_[row + 1] - m.nelements_[row];

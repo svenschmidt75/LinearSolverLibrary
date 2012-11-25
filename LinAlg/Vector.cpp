@@ -143,45 +143,4 @@ serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int v
     serialize_helper(ar, m, version);
 }
 
-/*************
- * operators *
- *************/
-
-Vector
-operator-(Vector const & lhs, Vector const & rhs) {
-    bool cond = lhs.size() == rhs.size();
-
-    BOOST_ASSERT_MSG(cond, "operator-(Vector, Vector): Size mismatch");
-    if (!cond) {
-        boost::format format = boost::format("operator-(Vector, Vector): Size mismatch\n");
-        common_NS::reporting::error(format.str());
-        throw std::runtime_error(format.str());
-    }
-
-    Vector tmp(lhs.size());
-    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), tmp.begin(), [](double lhs, double rhs){
-        return lhs - rhs;
-    });
-    return tmp;
-}
-
-template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-Vector
-operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs) {
-    bool cond = lhs.size() == rhs.size();
-
-    BOOST_ASSERT_MSG(cond, "operator-(Vector, Vector): Size mismatch");
-    if (!cond) {
-        boost::format format = boost::format("operator-(Vector, Vector): Size mismatch\n");
-        common_NS::reporting::error(format.str());
-        throw std::runtime_error(format.str());
-    }
-
-    Vector tmp(lhs.size());
-    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), tmp.begin(), [](double lhs, double rhs){
-        return lhs - rhs;
-    });
-    return tmp;
-}
-
 } // namespace LinAlg_NS
