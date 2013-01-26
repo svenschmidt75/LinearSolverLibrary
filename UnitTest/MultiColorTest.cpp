@@ -364,6 +364,7 @@ MultiColorTest::VersteegMalalasekeraMultiColorTest() {
     // read matrix m
     FS::path filename("\\Develop\\SparseMatrixData\\Versteeg_Malalasekera\\Versteeg_Malalasekera.ar");
     ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
 
     SparseMatrix2D const m = sm_reader->get();

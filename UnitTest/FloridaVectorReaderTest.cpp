@@ -28,6 +28,7 @@ FloridaVectorReaderTest::readSTS4098Test() {
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098_b.ar");
 
     IVectorReader::Ptr sm_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", sm_reader->read());
 
     Vector const m = sm_reader->get();
@@ -55,6 +56,7 @@ FloridaVectorReaderTest::readDeter7Test() {
     FS::path filename("\\Develop\\SparseMatrixData\\deter7\\deter7_b.ar");
 
     IVectorReader::Ptr sm_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", sm_reader->read());
 
     Vector const m = sm_reader->get();
@@ -84,6 +86,7 @@ FloridaVectorReaderTest::readLF10Test() {
     FS::path filename("\\Develop\\SparseMatrixData\\LF10\\LF10_b.ar");
 
     IVectorReader::Ptr sm_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", sm_reader->read());
 
     Vector const m = sm_reader->get();
