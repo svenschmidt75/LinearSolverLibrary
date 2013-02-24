@@ -26,7 +26,7 @@ namespace LinearSolverLibrary_NS {
              * "Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods",
              * page 13.
              */
-            Vector x {b.size()};
+            Vector x { b.size() };
             double tol = 1E-10;
             double alpha;
 
@@ -40,13 +40,13 @@ namespace LinearSolverLibrary_NS {
             if (residual <= tol)
                 return std::make_tuple(true, b, 0);
 
-            for (int i = 0; i < max_iterations + 10000; ++i) {
+            for (int i = 0; i < max_iterations; ++i) {
                 Vector Ad = m * d;
                 double dAd = VectorMath::dotProduct(d, Ad);
                 alpha = VectorMath::dotProduct(r, r) / dAd;
 
                 // improved x_{i+1}
-                x += alpha * d;
+                x = x + alpha * d;
 
                 // new residual r_{i+1}
                 Vector r2 = r - alpha * Ad;
@@ -115,7 +115,7 @@ namespace LinearSolverLibrary_NS {
             return 1;
 #endif
             // scheme did not converge
-            return std::make_tuple(false, b, 10000);
+            return std::make_tuple(false, x, 10000);
         }
 
     };

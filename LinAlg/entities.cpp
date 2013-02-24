@@ -53,7 +53,7 @@ operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXP
     return tmp;
 }
 
-Vector
+Vector &
 operator-=(Vector & lhs, Vector const & rhs) {
     bool cond = lhs.size() == rhs.size();
 
@@ -64,13 +64,11 @@ operator-=(Vector & lhs, Vector const & rhs) {
         throw std::runtime_error(format.str());
     }
 
-    Vector tmp { lhs };
-
-    std::transform(rhs.cbegin(), rhs.cend(), rhs.cbegin(), lhs.begin(), [](double lhs, double rhs){
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), lhs.begin(), [](double lhs, double rhs){
         return lhs - rhs;
     });
 
-    return tmp;
+    return lhs;
 }
 
 Vector

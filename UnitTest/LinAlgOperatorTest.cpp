@@ -3,6 +3,7 @@
 #include "LinAlgOperatorTest.h"
 
 #include "LinAlg/Vector.h"
+#include "LinAlg/entities.h"
 #include "LinAlg/operators.h"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
@@ -45,6 +46,95 @@ namespace {
         return m;
     }
 
+}
+
+void
+LinAlgOperatorTest::testVectorAddScalarMulVectorTest() {
+    Vector v1 = createVector(10);
+    std::iota(std::begin(v1), std::end(v1), 1);
+
+    Vector v2 = createVector(10);
+    std::iota(std::begin(v2), std::end(v2), 20);
+
+    Vector result(v1.size());
+
+    double scalar = 0.93847;
+
+    result = v1 + scalar * v2;
+
+    // compare to this result
+    for (int i = 0; i < 10; ++i) {
+        double val = v1(i) + scalar * v2(i);
+
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", val, result(i), 1E-10);
+    }
+}
+
+void
+LinAlgOperatorTest::addScalarMulVectorTest() {
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 5);
+
+    // compare to this result
+    for (int i = 0; i < 10; ++i) {
+        double val = v2(i) + 0.1 * v1(i);
+        result(i) = val;
+    }
+
+    v2 += 0.1 * v1;
+
+    for (int i = 0; i < 10; ++i) {
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", result(i), v2(i), 1E-10);
+    }
+}
+
+void
+LinAlgOperatorTest::addVectorTest() {
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 5);
+
+    // compare to this result
+    for (int i = 0; i < 10; ++i) {
+        double val = v2(i) + v1(i);
+        result(i) = val;
+    }
+
+    v2 += v1;
+
+    for (int i = 0; i < 10; ++i) {
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", result(i), v2(i), 1E-10);
+    }
+}
+
+
+void
+LinAlgOperatorTest::subVectorTest() {
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 5);
+
+    // compare to this result
+    for (int i = 0; i < 10; ++i) {
+        double val = v2(i) - v1(i);
+        result(i) = val;
+    }
+
+    v2 -= v1;
+
+    for (int i = 0; i < 10; ++i) {
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", result(i), v2(i), 1E-10);
+    }
 }
 
 void

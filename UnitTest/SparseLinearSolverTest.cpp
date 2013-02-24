@@ -171,7 +171,7 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
     Vector const x_ref = x_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 18ull, x_ref.size());
 
-//    m.print();
+   m.print();
 
     bool success;
     Vector x {x_ref.size()};
