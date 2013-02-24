@@ -54,6 +54,26 @@ operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXP
 }
 
 Vector
+operator-=(Vector & lhs, Vector const & rhs) {
+    bool cond = lhs.size() == rhs.size();
+
+    BOOST_ASSERT_MSG(cond, "operator-=(Vector, Vector): Size mismatch");
+    if (!cond) {
+        boost::format format = boost::format("operator-=(Vector, Vector): Size mismatch\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+
+    Vector tmp { lhs };
+
+    std::transform(rhs.cbegin(), rhs.cend(), rhs.cbegin(), lhs.begin(), [](double lhs, double rhs){
+        return lhs - rhs;
+    });
+
+    return tmp;
+}
+
+Vector
 operator*(double value, Vector const & v) {
     Vector tmp(v);
 
@@ -66,6 +86,15 @@ operator*(double value, Vector const & v) {
 
 Vector &
 operator+=(Vector & lhs, Vector const & rhs) {
+    bool cond = lhs.size() == rhs.size();
+
+    BOOST_ASSERT_MSG(cond, "operator+=(Vector, Vector): Size mismatch");
+    if (!cond) {
+        boost::format format = boost::format("operator+=(Vector, Vector): Size mismatch\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+
     std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), lhs.begin(), [](double lhs, double rhs){
         return lhs + rhs;
     });
@@ -76,6 +105,15 @@ operator+=(Vector & lhs, Vector const & rhs) {
 template<typename VECTOR_EXPR, typename BINOP>
 Vector &
 operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs) {
+    bool cond = lhs.size() == rhs.size();
+
+    BOOST_ASSERT_MSG(cond, "operator+=(Vector, Vector): Size mismatch");
+    if (!cond) {
+        boost::format format = boost::format("operator+=(Vector, Vector): Size mismatch\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
+
     for (Vector::size_type i = 0; i < lhs.size(); ++i) {
         lhs(i) += rhs(i);
     }

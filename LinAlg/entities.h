@@ -39,6 +39,8 @@ namespace LinAlg_NS {
     template<typename MATRIX_EXPR, typename VECTOR_EXPR>
     Vector operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs);
 
+    LINALG_DECL_SYMBOLS Vector operator-=(Vector & lhs, Vector const & rhs);
+
     LINALG_DECL_SYMBOLS Vector operator*(double value, Vector const & v);
 
     LINALG_DECL_SYMBOLS Vector & operator+=(Vector & lhs, Vector const & rhs);

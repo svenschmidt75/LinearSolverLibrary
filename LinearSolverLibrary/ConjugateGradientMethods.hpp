@@ -20,35 +20,48 @@ namespace LinearSolverLibrary_NS {
     class ConjugateGradientMethods {
     public:
         template<typename PRECOND>
-        static std::tuple<bool, Vector, int> conjugateGradient(SparseMatrix2D const & m, PRECOND const & precond, Vector const & f, int max_iterations = 10000) {
+        static std::tuple<bool, Vector, int> conjugateGradient(SparseMatrix2D const & m, PRECOND const & precond, Vector const & b, int max_iterations = 10000) {
             /* Preconditioned conjugate gradient algorithm
              * as presented in 
              * "Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods",
              * page 13.
              */
-            Vector p {f.size()};
-            Vector q {f.size()};
-            Vector x {f.size()};
+            Vector p {b.size()};
+            Vector q {b.size()};
+            Vector x {b.size()};
             double tol = 1E-10;
             double alpha;
 
-            double normb = VectorMath::norm(f);
+            double normb = VectorMath::norm(b);
 
-            // x = null vector, so r = f
-            Vector d = f - m * x;
+            // guessed x = null vector, so initial search direction d = residual r = b
+            Vector d = b;
             Vector r { d };
 
             double residual = VectorMath::norm(d) / normb;
             if (residual <= tol)
-                return std::make_tuple(true, f, 0);
+                return std::make_tuple(true, b, 0);
 
-            do {
+            for (int i = 0; i < max_iterations; ++i) {
                 Vector Ad = m * d;
                 double dAd = VectorMath::dotProduct(d, Ad);
                 alpha = VectorMath::dotProduct(r, r) / dAd;
 
+                // improved x_{i+1}
                 x += alpha * d;
-            } while (1);
+
+                // new residual r_{i+1}
+                Vector r2 = r - alpha * Ad;
+
+                residual = VectorMath::norm(r2) / normb;
+                if (residual <= tol)
+                    return std::make_tuple(true, x, i);
+
+                double beta = VectorMath::dotProduct(r2, r2) / VectorMath::dotProduct(r, r);
+
+                // new search direction d_{i + 1}
+                d = r2 + beta * d;
+            }
 
 #if 0
 
@@ -97,8 +110,8 @@ namespace LinearSolverLibrary_NS {
             tol = resid;
             return 1;
 #endif
-
-            return std::make_tuple(true, f, 10000);
+            // scheme did not converge
+            return std::make_tuple(false, b, 10000);
         }
 
     };

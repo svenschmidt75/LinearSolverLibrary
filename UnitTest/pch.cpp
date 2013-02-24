@@ -1,5 +1,5 @@
 /*
- * Name  : reporting
+ * Name  : 
  * Path  : 
  * Use   : The sole purpose of this file is the creation of the precompiled
            header file pch.pch.
