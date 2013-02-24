@@ -77,8 +77,8 @@ Vector
 operator*(double value, Vector const & v) {
     Vector tmp(v);
 
-    std::for_each(tmp.begin(), tmp.end(), [value](double val) {
-        return val * value;
+    std::transform(v.cbegin(), v.cend(), tmp.begin(), [value](double val){
+        return value * val;
     });
 
     return tmp;

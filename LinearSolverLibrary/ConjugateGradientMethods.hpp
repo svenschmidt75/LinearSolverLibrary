@@ -26,8 +26,6 @@ namespace LinearSolverLibrary_NS {
              * "Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods",
              * page 13.
              */
-            Vector p {b.size()};
-            Vector q {b.size()};
             Vector x {b.size()};
             double tol = 1E-10;
             double alpha;
@@ -36,13 +34,13 @@ namespace LinearSolverLibrary_NS {
 
             // guessed x = null vector, so initial search direction d = residual r = b
             Vector d = b;
-            Vector r { d };
+            Vector r { b };
 
             double residual = VectorMath::norm(d) / normb;
             if (residual <= tol)
                 return std::make_tuple(true, b, 0);
 
-            for (int i = 0; i < max_iterations; ++i) {
+            for (int i = 0; i < max_iterations + 10000; ++i) {
                 Vector Ad = m * d;
                 double dAd = VectorMath::dotProduct(d, Ad);
                 alpha = VectorMath::dotProduct(r, r) / dAd;
@@ -59,8 +57,11 @@ namespace LinearSolverLibrary_NS {
 
                 double beta = VectorMath::dotProduct(r2, r2) / VectorMath::dotProduct(r, r);
 
+                r = r2;
+
                 // new search direction d_{i + 1}
-                d = r2 + beta * d;
+                Vector tmp = d;
+                d = r + beta * tmp;
             }
 
 #if 0
@@ -91,6 +92,9 @@ namespace LinearSolverLibrary_NS {
                     beta(0) = rho(0) / rho_1(0);
                     p = z + beta(0) * p;
                 }
+
+                // p = search direction d
+                // q = A d
 
                 q = A*p;
                 alpha(0) = rho(0) / dot(p, q);
