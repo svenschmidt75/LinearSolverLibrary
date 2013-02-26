@@ -135,7 +135,6 @@ SparseLinearSolverTest::VersteegMalalasekeraSORMultiColorTest() {
     CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
 
-
 void
 SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
     // read matrix m

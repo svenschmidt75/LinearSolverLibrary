@@ -9,7 +9,12 @@ namespace LinAlg_NS {
 
 double
 VectorMath::dotProduct(Vector const & lhs, Vector const & rhs) {
-    double tmp = lhs(0) * rhs(0) + lhs(1) * rhs(1) + lhs(2) * rhs(2);
+    double tmp = 0.0;
+
+    for (Vector::size_type i = 0; i < lhs.size(); ++i) {
+        tmp += lhs(i) * rhs(i);
+    }
+
     return tmp;
 }
 
