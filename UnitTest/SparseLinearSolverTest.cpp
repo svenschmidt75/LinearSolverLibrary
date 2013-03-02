@@ -198,6 +198,47 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
 }
 
 void
+SparseLinearSolverTest::BCSSTK05SORTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonnaly dominant
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\BCSSTK05\\bcsstk05.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+
+
+
+
+    // read rhs vector b
+    Vector b(153);
+    std::iota(std::begin(b), std::end(b), 1);
+
+
+
+    bool success;
+    Vector x(b.size());
+    int iterations;
+    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+
+    CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
+
+
+    // compute A x and check that = b
+    Vector tmp(x.size());
+    tmp = m * x;
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+}
+
+void
 SparseLinearSolverTest::sts4098SORTest() {
     // read matrix m
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
@@ -207,6 +248,7 @@ SparseLinearSolverTest::sts4098SORTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
 
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));

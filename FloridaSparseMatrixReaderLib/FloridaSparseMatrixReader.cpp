@@ -26,6 +26,36 @@ FloridaSparseMatrixReader::FloridaSparseMatrixReader(std::string const & filenam
     }
 }
 
+void
+FloridaSparseMatrixReader::checkHeader(std::vector<std::string> const & str_array, std::uint64_t line_number) const {
+    struct ErrorStr {
+        int         index;
+        std::string expected;
+        std::string error_msg;
+    } error_str[] = {
+        {0, "%%MatrixMarket", "Input data not in Matrix Market format!"},
+        {1, "matrix", "Expected format 'matrix'"},
+        {2, "coordinate", "Expected format 'coordinate'"},
+        {3, "real", "Expected format 'real'"}
+    };
+
+    BOOST_ASSERT_MSG(str_array.size() == 5ul, "FloridaSparseMatrixReader::read: File format error");
+    if (str_array.size() != 5ul) {
+        boost::format format = boost::format("FloridaSparseMatrixReader::read: File %1%, line %2%: Wrong header!\n") % line_number % filename_;
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error("FloridaSparseMatrixReader::read: Wrong header!");
+    }
+
+    for (int i = 0; i < 4; ++i) {
+        BOOST_ASSERT_MSG(str_array[error_str[i].index] == error_str[i].expected, "FloridaSparseMatrixReader::read: File format error");
+        if (str_array[error_str[i].index] != error_str[i].expected) {
+            boost::format format = boost::format("FloridaSparseMatrixReader::read: File %1%, line %2%: " + error_str[i].error_msg + "!\n") % line_number % filename_;
+            common_NS::reporting::error(format.str());
+            throw std::runtime_error("FloridaSparseMatrixReader::read: " + error_str[i].error_msg + "!");
+        }
+    }
+}
+
 bool
 FloridaSparseMatrixReader::read() const {
     boost::iostreams::stream<boost::iostreams::file_source> file(filename_);
@@ -37,10 +67,23 @@ FloridaSparseMatrixReader::read() const {
     std::vector<std::string> token_arr;
 
 
+
+    typedef boost::tokenizer<boost::char_separator<char>> TokenizerType;
+
+    // read 1st line to make sure the format is correct
+    // Example: %%MatrixMarket matrix coordinate real symmetric
+    std::getline(file, line);
+    line_number++;
+
+    boost::trim(line);
+    TokenizerType tokens(line, sep);
+    token_arr.assign(tokens.begin(), tokens.end());
+    checkHeader(token_arr, line_number);
+    std::string symmetry_str = token_arr[4];
+
+
     // skip all comments
     while (std::getline(file, line)) {
-        typedef boost::tokenizer<boost::char_separator<char>> TokenizerType;
-
         line_number++;
 
         boost::trim(line);
@@ -70,7 +113,7 @@ FloridaSparseMatrixReader::read() const {
     LinAlg_NS::IMatrix2D::size_type nelem = boost::lexical_cast<std::uint64_t>(token_arr[2]);
 
     // initialize builder
-    builder_.init(dim, strategy);
+    builder_.init(dim, symmetry_str);
 
 
     boost::progress_display show_progress((unsigned long)nelem);

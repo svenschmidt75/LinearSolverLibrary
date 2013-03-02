@@ -13,6 +13,8 @@
 #include <boost/noncopyable.hpp>
 
 #include <string>
+#include <vector>
+#include <cstdint>
 
 
 #pragma warning(disable:4275)
@@ -34,6 +36,9 @@ namespace EntityReader_NS {
         FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder);
 
         bool read() const;
+
+    private:
+        void checkHeader(std::vector<std::string> const & str_array, std::uint64_t line_number) const;
 
     private:
         std::string                                 filename_;

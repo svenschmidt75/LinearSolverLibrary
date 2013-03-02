@@ -9,6 +9,8 @@
 #pragma once
 
 
+#include "..\DeclSpec.h"
+
 #include "ISymmetryStrategy.h"
 
 #include "LinAlg/SparseMatrix2D.h"
@@ -16,7 +18,7 @@
 
 namespace EntityReader_NS {
 
-    class SymmetryStrategyFactory {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS SymmetryStrategyFactory {
     public:
         static ISymmetryStrategy::UniquePtr create(std::string const & strategy, LinAlg_NS::SparseMatrix2D & m);
     };

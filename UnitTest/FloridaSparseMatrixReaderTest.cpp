@@ -24,22 +24,30 @@ FloridaSparseMatrixReaderTest::tearDown() {}
 void
 FloridaSparseMatrixReaderTest::symmetryStrategyTest() {
     SparseMatrix2D m(3);
-    m(0, 0) = 0;
-    m(0, 1) = 0;
-    m(0, 2) = 0;
-    m(1, 0) = 0;
-    m(1, 1) = 0;
-    m(1, 2) = 0;
-    m(2, 0) = 0;
-    m(2, 1) = 0;
-    m(2, 2) = 0;
-    m.finalize();
+
+    // initialize the matrix s.t. it is NOT symmetric
+    m(0, 0) = 1;
+    m(0, 1) = 2;
+    m(0, 2) = 3;
+    m(1, 0) = 4;
+    m(1, 1) = 5;
+    m(1, 2) = 6;
+    m(2, 0) = 7;
+    m(2, 1) = 8;
+    m(2, 2) = 9;
 
     ISymmetryStrategy::UniquePtr symmetry_strategy = SymmetryStrategyFactory::create("symmetric", m);
 
     symmetry_strategy->insert(1, 2, 2);
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", m(1, 2), m(2, 1), 1E-10);
+}
+
+void
+FloridaSparseMatrixReaderTest::unknownSymmetryStrategyTest() {
+    SparseMatrix2D m(3);
+
+    ISymmetryStrategy::UniquePtr symmetry_strategy = SymmetryStrategyFactory::create("garbage", m);
 }
 
 void

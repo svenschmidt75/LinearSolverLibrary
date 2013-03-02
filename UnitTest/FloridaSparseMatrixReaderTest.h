@@ -9,10 +9,14 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <stdexcept>
+
 
 class FloridaSparseMatrixReaderTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(FloridaSparseMatrixReaderTest);
     CPPUNIT_TEST(symmetryStrategyTest);
+    CPPUNIT_TEST_EXCEPTION(unknownSymmetryStrategyTest, std::runtime_error);
+
 #ifdef INTEGRATION_TEST
     CPPUNIT_TEST(readTest);
 #endif
@@ -24,5 +28,6 @@ public:
 
 protected:
     void symmetryStrategyTest();
+    void unknownSymmetryStrategyTest();
     void readTest();
 };

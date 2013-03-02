@@ -10,8 +10,11 @@
 #include "DeclSpec.h"
 
 #include "IMatrixBuilder.h"
+#include "internal/ISymmetryStrategy.h"
 
 #include "LinAlg/IMatrix2D.h"
+
+#include <string>
 
 
 #pragma warning(disable:4275)
@@ -27,7 +30,7 @@ namespace EntityReader_NS {
 
     class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixBuilder : public IMatrixBuilder<LinAlg_NS::SparseMatrix2D> {
     public:
-        void     init(LinAlg_NS::IMatrix2D::size_type dim) const final;
+        void     init(LinAlg_NS::IMatrix2D::size_type dim, std::string const & symmetry_strategy) const final;
         void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const final;
         void     finalize() const final;
         result_t result() const final;
@@ -35,6 +38,7 @@ namespace EntityReader_NS {
     private:
         mutable result_t                        data_;
         mutable LinAlg_NS::IMatrix2D::size_type dim_;
+        mutable ISymmetryStrategy::UniquePtr    symmetry_strategy_;
     };
 
 } // namespace EntityReader_NS

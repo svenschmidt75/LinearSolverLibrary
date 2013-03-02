@@ -10,6 +10,7 @@
 #include "LinAlg/IMatrix2D.h"
 
 #include <memory>
+#include <string>
 
 
 namespace EntityReader_NS {
@@ -22,7 +23,7 @@ namespace EntityReader_NS {
     public:
         virtual ~IMatrixBuilder() {}
 
-        virtual void     init(LinAlg_NS::IMatrix2D::size_type dim) const = 0;
+        virtual void     init(LinAlg_NS::IMatrix2D::size_type dim, std::string const & symmetry_strategy) const = 0;
         virtual void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const = 0;
         virtual void     finalize() const = 0;
         virtual result_t result() const = 0;

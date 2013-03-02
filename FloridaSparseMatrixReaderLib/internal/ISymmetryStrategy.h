@@ -27,6 +27,7 @@ namespace EntityReader_NS {
         virtual ~ISymmetryStrategy() {}
 
         virtual void insert(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) = 0;
+        virtual bool check() const = 0;
     };
 
 } // EntityReader_NS

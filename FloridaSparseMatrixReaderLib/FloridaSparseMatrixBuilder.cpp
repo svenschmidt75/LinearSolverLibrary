@@ -1,8 +1,11 @@
 #include "pch.h"
 
 #include "FloridaSparseMatrixBuilder.h"
+#include "internal/SymmetryStrategyFactory.h"
 
 #include "LinAlg/SparseMatrix2D.h"
+
+#include "common/reporting.h"
 
 
 using namespace LinAlg_NS;
@@ -10,9 +13,12 @@ using namespace EntityReader_NS;
 
 
 void
-FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim) const {
+FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim, std::string const & symmetry_strategy) const {
     data_.reset(new SparseMatrix2D(dim));
     dim_ = dim;
+
+    // create symmetry strategy
+    symmetry_strategy_ = SymmetryStrategyFactory::create(symmetry_strategy, *data_);
 }
 
 void
@@ -30,7 +36,10 @@ FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type 
     if (!data_)
         throw std::range_error("SparseMatrixBuilder::insertMatrixElement: init needs to be called first");
 
-    (*data_)(row, col) = value;
+    if (col > row)
+        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: Row index must be bigger than column index");
+
+    symmetry_strategy_->insert(row, col, value);
 }
 
 void 
@@ -43,6 +52,15 @@ FloridaSparseMatrixBuilder::finalize() const {
         throw std::range_error("SparseMatrixBuilder::finalize: sparse matrix uninitialized");
 
     data_->finalize();
+
+    // check matrix
+    bool symmetry_strategy_check = symmetry_strategy_->check();
+    BOOST_ASSERT_MSG(symmetry_strategy_check, "FloridaSparseMatrixBuilder::finalize: Matrix error");
+    if (!symmetry_strategy_check) {
+        boost::format format = boost::format("FloridaSparseMatrixBuilder::finalize: Matrix error!\n");
+        common_NS::reporting::error(format.str());
+        throw std::runtime_error(format.str());
+    }
 }
 
 FloridaSparseMatrixBuilder::result_t

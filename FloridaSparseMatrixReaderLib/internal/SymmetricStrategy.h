@@ -29,6 +29,7 @@ namespace EntityReader_NS {
 
         // FROM ISymmetryStrategy
         void insert(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) final;
+        bool check() const final;
 
     private:
         LinAlg_NS::SparseMatrix2D & m_;
