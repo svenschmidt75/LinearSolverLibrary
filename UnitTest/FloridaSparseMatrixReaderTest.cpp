@@ -4,6 +4,10 @@
 
 #include "LinAlg/SparseMatrix2D.h"
 
+#include "FloridaSparseMatrixReaderLib/internal/ISymmetryStrategy.h"
+#include "FloridaSparseMatrixReaderLib/internal/SymmetryStrategyFactory.h"
+
+
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;
@@ -16,6 +20,27 @@ FloridaSparseMatrixReaderTest::setUp() {}
 
 void
 FloridaSparseMatrixReaderTest::tearDown() {}
+
+void
+FloridaSparseMatrixReaderTest::symmetryStrategyTest() {
+    SparseMatrix2D m(3);
+    m(0, 0) = 0;
+    m(0, 1) = 0;
+    m(0, 2) = 0;
+    m(1, 0) = 0;
+    m(1, 1) = 0;
+    m(1, 2) = 0;
+    m(2, 0) = 0;
+    m(2, 1) = 0;
+    m(2, 2) = 0;
+    m.finalize();
+
+    ISymmetryStrategy::UniquePtr symmetry_strategy = SymmetryStrategyFactory::create("symmetric", m);
+
+    symmetry_strategy->insert(1, 2, 2);
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", m(1, 2), m(2, 1), 1E-10);
+}
 
 void
 FloridaSparseMatrixReaderTest::readTest() {

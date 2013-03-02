@@ -36,6 +36,7 @@ FloridaSparseMatrixReader::read() const {
 
     std::vector<std::string> token_arr;
 
+
     // skip all comments
     while (std::getline(file, line)) {
         typedef boost::tokenizer<boost::char_separator<char>> TokenizerType;
@@ -69,7 +70,7 @@ FloridaSparseMatrixReader::read() const {
     LinAlg_NS::IMatrix2D::size_type nelem = boost::lexical_cast<std::uint64_t>(token_arr[2]);
 
     // initialize builder
-    builder_.init(dim);
+    builder_.init(dim, strategy);
 
 
     boost::progress_display show_progress((unsigned long)nelem);

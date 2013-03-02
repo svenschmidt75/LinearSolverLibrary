@@ -12,6 +12,7 @@
 
 class FloridaSparseMatrixReaderTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(FloridaSparseMatrixReaderTest);
+    CPPUNIT_TEST(symmetryStrategyTest);
 #ifdef INTEGRATION_TEST
     CPPUNIT_TEST(readTest);
 #endif
@@ -22,5 +23,6 @@ public:
     void tearDown();
 
 protected:
+    void symmetryStrategyTest();
     void readTest();
 };

@@ -293,6 +293,9 @@
     <ClCompile Include="FloridaSparseMatrixReader.cpp" />
     <ClCompile Include="FloridaVectorBuilder.cpp" />
     <ClCompile Include="FloridaVectorReader.cpp" />
+    <ClCompile Include="internal\SparseMatrixSymmetryDecorator.cpp" />
+    <ClCompile Include="internal\SymmetricStrategy.cpp" />
+    <ClCompile Include="internal\SymmetryStrategyFactory.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Debug|x64'">Create</PrecompiledHeader>
@@ -312,6 +315,10 @@
     <ClInclude Include="FloridaSparseMatrixReader.h" />
     <ClInclude Include="FloridaVectorBuilder.h" />
     <ClInclude Include="FloridaVectorReader.h" />
+    <ClInclude Include="internal\ISymmetryStrategy.h" />
+    <ClInclude Include="internal\SparseMatrixSymmetryDecorator.h" />
+    <ClInclude Include="internal\SymmetricStrategy.h" />
+    <ClInclude Include="internal\SymmetryStrategyFactory.h" />
     <ClInclude Include="ISparseMatrixReader.h" />
     <ClInclude Include="IVectorBuilder.h" />
     <ClInclude Include="IVectorReader.h" />

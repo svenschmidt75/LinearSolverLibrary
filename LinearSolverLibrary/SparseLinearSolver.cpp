@@ -109,7 +109,7 @@ SparseLinearSolver::sparseSORMultiColor(SparseMatrix2D const & m, Vector const &
     typedef decltype(m.nelements_.size()) size_type;
 
     // solution vector
-    Vector x{f.size()};
+    Vector x(f.size());
 
     // maximum allowed error
     double max_linfinity_norm = 1E-16;
