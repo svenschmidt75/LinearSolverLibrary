@@ -18,6 +18,9 @@ FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim, std::strin
     dim_ = dim;
 
     // create symmetry strategy
+    // Note: We don't have to explicitly move here, because SymmetryStrategyFactory::create
+    // returns a tmp, hence the compiler will automatically chose the move assignment operator
+    // on symmetry_strategy_.
     symmetry_strategy_ = SymmetryStrategyFactory::create(symmetry_strategy, *data_);
 }
 

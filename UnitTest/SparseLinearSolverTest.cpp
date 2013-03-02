@@ -62,6 +62,8 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
     int iterations;
     std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
 
+    // needs 33 iterations
+
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors
@@ -123,6 +125,8 @@ SparseLinearSolverTest::VersteegMalalasekeraSORMultiColorTest() {
     int iterations;
     std::tie(success, x, iterations) = SparseLinearSolver::sparseSORMultiColor(m, b, m_decomp, 1.1, 10000);
 
+    // needs 32 iterations
+
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors
@@ -181,6 +185,8 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
     int iterations;
     std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
 
+    // needs 4 iterations
+
     CPPUNIT_ASSERT_MESSAGE("CG failed to solve linear system", success);
 
     // compare vectors
@@ -198,10 +204,11 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
 }
 
 void
-SparseLinearSolverTest::BCSSTK05SORTest() {
-    // BCSSTK05 is symmetric pos. def., but not diagonnaly dominant
+SparseLinearSolverTest::bcsstk05SORTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonally dominant
+
     // read matrix m
-    FS::path filename("\\Develop\\SparseMatrixData\\BCSSTK05\\bcsstk05.ar");
+    FS::path filename("\\Develop\\SparseMatrixData\\bcsstk05\\bcsstk05.ar");
     ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
     CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
 
@@ -214,28 +221,69 @@ SparseLinearSolverTest::BCSSTK05SORTest() {
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
 
 
+    // create solution vector x
+    Vector x_ref(153);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
 
-
-    // read rhs vector b
+    // create vector b
     Vector b(153);
-    std::iota(std::begin(b), std::end(b), 1);
+    b = m * x_ref;
 
 
 
     bool success;
     Vector x(b.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 20000);
+
+    // needs 17687 iterations
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+}
 
-    // compute A x and check that = b
-    Vector tmp(x.size());
-    tmp = m * x;
+
+void
+SparseLinearSolverTest::bcsstk05CGTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonally dominant
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\bcsstk05\\bcsstk05.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(153);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(153);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    int iterations;
+    std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
+
+    // needs 321 iterations
+
+    CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
 void
