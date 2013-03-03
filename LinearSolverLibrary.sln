@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "common\common.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaVectorReader", "FloridaVectorReader\FloridaVectorReader.vcxproj", "{01DD04E3-50A7-44F5-AA5F-77531E14ADCF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Standalone", "Standalone\Standalone.vcxproj", "{10D962ED-8538-4711-B0D5-411B6F06DB5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -202,6 +204,27 @@ Global
 		{01DD04E3-50A7-44F5-AA5F-77531E14ADCF}.Release|Win32.Build.0 = Release|Win32
 		{01DD04E3-50A7-44F5-AA5F-77531E14ADCF}.Release|x64.ActiveCfg = Release|x64
 		{01DD04E3-50A7-44F5-AA5F-77531E14ADCF}.Release|x64.Build.0 = Release|x64
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|Win32.Build.0 = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|x64.ActiveCfg = Debug|x64
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Debug|x64.Build.0 = Debug|x64
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Debug|Win32.ActiveCfg = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Debug|Win32.Build.0 = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Debug|x64.ActiveCfg = Debug|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Mixed Platforms.Build.0 = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Win32.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Win32.Build.0 = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|x64.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Win32.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Win32.Build.0 = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
