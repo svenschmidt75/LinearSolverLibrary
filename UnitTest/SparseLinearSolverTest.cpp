@@ -244,6 +244,23 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
+namespace {
+
+    class HighResTimer {
+    public:
+        HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
+        ~HighResTimer() {
+            auto end = boost::chrono::high_resolution_clock::now();
+            auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start_);
+            std::cout << std::endl << "Duration: " << d << std::endl;
+        }
+
+    private:
+        boost::chrono::steady_clock::time_point start_;
+    };
+
+}
+
 void
 SparseLinearSolverTest::bcsstk05CGTest() {
     // BCSSTK05 is symmetric pos. def., but not diagonally dominant
@@ -276,13 +293,12 @@ SparseLinearSolverTest::bcsstk05CGTest() {
     Vector x(b.size());
     int iterations;
 
-    auto start = boost::chrono::high_resolution_clock::now();
-    std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
-    auto end = boost::chrono::high_resolution_clock::now();
-    auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start);
-    std::cout << "Time: " << d << << std::endl;
+    {
+        HighResTimer t;
 
-    // needs 321 iterations
+        // needs 321 iterations
+        std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
+    }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
