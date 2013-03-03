@@ -49,8 +49,8 @@ namespace LinAlg_NS {
             }
 
         private:
-            MATRIX_EXPR op1_;
-            VECTOR_EXPR op2_;
+            MATRIX_EXPR const & op1_;
+            VECTOR_EXPR const & op2_;
         };
 
 
