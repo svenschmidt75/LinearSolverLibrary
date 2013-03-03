@@ -38,7 +38,7 @@ FloridaSparseMatrixReaderTest::symmetryStrategyTest() {
 
     ISymmetryStrategy::UniquePtr symmetry_strategy = SymmetryStrategyFactory::create("symmetric", m);
 
-    symmetry_strategy->insert(1, 2, 2);
+    symmetry_strategy->insert(2, 1, 2);
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", m(1, 2), m(2, 1), 1E-10);
 }
@@ -64,6 +64,8 @@ FloridaSparseMatrixReaderTest::readSTS4098Test() {
     CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
 
     SparseMatrix2D const m = sm_reader->get();
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
@@ -96,18 +98,18 @@ FloridaSparseMatrixReaderTest::readFS6801Test() {
 
     SparseMatrix2D const m = sm_reader->get();
 
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
+    CPPUNIT_ASSERT_MESSAGE("Matrix should not be symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 72356ull, m.elements_.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 4099ull, m.nelements_.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 72356ull, m.columns_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2646ull, m.elements_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 681ull, m.nelements_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2646ull, m.columns_.size());
 
     // check some values
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", 409897.3044519858, m(1 - 1, 1 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -32933.34682143788, m(836 - 1, 1 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", 13.84223585895381, m(1605 - 1, 106 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -9.65525670802707, m(1695 - 1, 439 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -14.09773638247952, m(3898 - 1, 1274 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", 17.32241539867855, m(2543 - 1, 2541 - 1), 1E-10);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", 6.983992679022847, m(4098 - 1, 4098 - 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -2828956861.694, m(81 - 1, 1 - 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -41393849.94464, m(30 - 1, 31 - 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -732611814.3223, m(104 - 1, 105 - 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -68982344.42303, m(189 - 1, 190 - 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", 7711454570.932, m(680 - 1, 680 - 1), 1E-10);
 }
