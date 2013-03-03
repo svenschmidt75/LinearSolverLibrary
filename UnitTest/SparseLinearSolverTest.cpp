@@ -337,7 +337,13 @@ SparseLinearSolverTest::sts4098SORTest() {
     bool success;
     Vector x(b.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+
+    {
+        HighResTimer t;
+
+        // needs 10986 iterations
+        std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 11000);
+    }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
@@ -380,7 +386,13 @@ SparseLinearSolverTest::OffshoreSORTest() {
     bool success;
     Vector x(b.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+
+    {
+        HighResTimer t;
+
+        // needs 15 iterations
+        std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 20);
+    }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 

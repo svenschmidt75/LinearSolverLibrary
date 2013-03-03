@@ -29,7 +29,16 @@ int main(int argc, char* argv[])
     
     FloridaSparseMatrixBuilder builder;
     FloridaSparseMatrixReader reader(filename.string(), builder);
-    bool success = reader.read();
+
+    bool success = false;
+
+    try {
+        success = reader.read();
+    }
+    catch (std::exception const & ex) {
+        std::cerr << "Exception: " << ex.what() << std::endl;
+        return 1;
+    }
 
     if (!success) {
         std::cerr << "Error converting file " << filename << std::endl;

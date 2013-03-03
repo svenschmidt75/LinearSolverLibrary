@@ -12,6 +12,7 @@
 #include "Vector.h"
 
 #include <boost/assert.hpp>
+#include <boost/noncopyable.hpp>
 
 
 namespace LinAlg_NS {
@@ -19,7 +20,7 @@ namespace LinAlg_NS {
     namespace internal {
 
         template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-        class MatrixVectorExpr {
+        class MatrixVectorExpr : boost::noncopyable {
         public:
             MatrixVectorExpr(MATRIX_EXPR const & m, VECTOR_EXPR const & v)
                 :

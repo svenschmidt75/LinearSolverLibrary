@@ -18,7 +18,8 @@ class FloridaSparseMatrixReaderTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_EXCEPTION(unknownSymmetryStrategyTest, std::runtime_error);
 
 #ifdef INTEGRATION_TEST
-    CPPUNIT_TEST(readTest);
+    CPPUNIT_TEST(readSTS4098Test);
+    CPPUNIT_TEST(readFS6801Test);
 #endif
     CPPUNIT_TEST_SUITE_END();
 
@@ -29,5 +30,6 @@ public:
 protected:
     void symmetryStrategyTest();
     void unknownSymmetryStrategyTest();
-    void readTest();
+    void readSTS4098Test();
+    void readFS6801Test();
 };

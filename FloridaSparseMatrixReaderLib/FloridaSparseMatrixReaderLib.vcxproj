@@ -295,6 +295,7 @@
     <ClCompile Include="FloridaVectorReader.cpp" />
     <ClCompile Include="internal\SymmetricStrategy.cpp" />
     <ClCompile Include="internal\SymmetryStrategyFactory.cpp" />
+    <ClCompile Include="internal\UnsymmetricStrategy.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Debug|x64'">Create</PrecompiledHeader>
@@ -317,6 +318,7 @@
     <ClInclude Include="internal\ISymmetryStrategy.h" />
     <ClInclude Include="internal\SymmetricStrategy.h" />
     <ClInclude Include="internal\SymmetryStrategyFactory.h" />
+    <ClInclude Include="internal\UnsymmetricStrategy.h" />
     <ClInclude Include="ISparseMatrixReader.h" />
     <ClInclude Include="IVectorBuilder.h" />
     <ClInclude Include="IVectorReader.h" />

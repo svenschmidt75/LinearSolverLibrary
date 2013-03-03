@@ -39,9 +39,6 @@ FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type 
     if (!data_)
         throw std::range_error("SparseMatrixBuilder::insertMatrixElement: init needs to be called first");
 
-    if (col > row)
-        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: Row index must be bigger than column index");
-
     symmetry_strategy_->insert(row, col, value);
 }
 
