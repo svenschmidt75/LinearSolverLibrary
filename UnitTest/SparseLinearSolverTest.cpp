@@ -244,7 +244,6 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
-
 void
 SparseLinearSolverTest::bcsstk05CGTest() {
     // BCSSTK05 is symmetric pos. def., but not diagonally dominant
@@ -276,7 +275,12 @@ SparseLinearSolverTest::bcsstk05CGTest() {
     bool success;
     Vector x(b.size());
     int iterations;
+
+    auto start = boost::chrono::high_resolution_clock::now();
     std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
+    auto end = boost::chrono::high_resolution_clock::now();
+    auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start);
+    std::cout << "Time: " << d << << std::endl;
 
     // needs 321 iterations
 

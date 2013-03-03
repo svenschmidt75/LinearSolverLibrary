@@ -18,6 +18,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/chrono.hpp>
 
 #include <string>
 #include <numeric>

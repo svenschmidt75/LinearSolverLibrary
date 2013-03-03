@@ -18,8 +18,8 @@ class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(bcsstk05SORTest);
     CPPUNIT_TEST(bcsstk05CGTest);
 #ifdef INTEGRATION_TEST
-//    CPPUNIT_TEST(sts4098SORTest);
-//    CPPUNIT_TEST(OffshoreSORTest);
+    CPPUNIT_TEST(sts4098SORTest);
+    CPPUNIT_TEST(OffshoreSORTest);
 #endif
     CPPUNIT_TEST_SUITE_END();
 

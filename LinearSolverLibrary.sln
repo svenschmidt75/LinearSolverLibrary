@@ -19,6 +19,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FloridaVectorReader", "FloridaVectorReader\FloridaVectorReader.vcxproj", "{01DD04E3-50A7-44F5-AA5F-77531E14ADCF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Standalone", "Standalone\Standalone.vcxproj", "{10D962ED-8538-4711-B0D5-411B6F06DB5C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A139880C-DA52-44C7-9F44-20B7FFD35EE1} = {A139880C-DA52-44C7-9F44-20B7FFD35EE1}
+		{8CC4C61B-665D-4D19-9C74-2C65316E545D} = {8CC4C61B-665D-4D19-9C74-2C65316E545D}
+		{BBDD266D-6E3F-48C1-8FC6-D5D0B61727B7} = {BBDD266D-6E3F-48C1-8FC6-D5D0B61727B7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -219,12 +224,14 @@ Global
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Mixed Platforms.Build.0 = Release|Win32
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Win32.ActiveCfg = Release|Win32
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|Win32.Build.0 = Release|Win32
-		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|x64.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|x64.ActiveCfg = Release|x64
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.IntegrationTest Release|x64.Build.0 = Release|x64
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Win32.ActiveCfg = Release|Win32
 		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|Win32.Build.0 = Release|Win32
-		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|x64.ActiveCfg = Release|Win32
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|x64.ActiveCfg = Release|x64
+		{10D962ED-8538-4711-B0D5-411B6F06DB5C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
