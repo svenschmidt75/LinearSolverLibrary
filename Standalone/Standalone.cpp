@@ -28,7 +28,7 @@ int main(int /*argc*/, char* /*argv[]*/)
     BOOST_ASSERT_MSG(LinAlg_NS::helper::isSymmsteric(m), "Matrix not symmetric");
 
     // m is NOT diagonally dominant
-    BOOST_ASSERT_MSG(!SparseLinearSolverUtil::isDiagonallyDominant(m), "matrix should not be diagonally dominant");
+    BOOST_ASSERT_MSG(!SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m), "matrix should not be diagonally dominant");
 
 
     // create solution vector x

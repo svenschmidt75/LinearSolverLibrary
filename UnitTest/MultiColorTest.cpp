@@ -372,7 +372,7 @@ MultiColorTest::VersteegMalalasekeraMultiColorTest() {
 
 
     // check m is diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 //    m.print();
 

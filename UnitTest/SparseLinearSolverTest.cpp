@@ -35,7 +35,7 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
 
 
     // check m is diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
 
@@ -93,7 +93,7 @@ SparseLinearSolverTest::VersteegMalalasekeraSORMultiColorTest() {
 
 
     // check m is diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
 
@@ -156,7 +156,7 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
 
 
     // check m is diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
 
@@ -218,7 +218,7 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
     // m is NOT diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
     // create solution vector x
@@ -276,7 +276,7 @@ SparseLinearSolverTest::bcsstk05CGTest() {
     CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
     // m is NOT diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
     // create solution vector x
@@ -319,7 +319,7 @@ SparseLinearSolverTest::sts4098SORTest() {
     CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
     // m is NOT diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
 
@@ -369,7 +369,7 @@ SparseLinearSolverTest::OffshoreSORTest() {
 
 
     // check m is NOT diagonally dominant
-    CPPUNIT_ASSERT_MESSAGE("matrix diagonally dominant", !SparseLinearSolverUtil::isDiagonallyDominant(m));
+    CPPUNIT_ASSERT_MESSAGE("matrix diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
 
 

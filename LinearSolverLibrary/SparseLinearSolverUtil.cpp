@@ -9,12 +9,15 @@ using namespace LinAlg_NS;
 
 
 bool
-SparseLinearSolverUtil::isDiagonallyDominant(SparseMatrix2D const & m) {
+SparseLinearSolverUtil::isStrictlyDiagonallyDominant(SparseMatrix2D const & m) {
     /* Many (if not all) iterative linear solvers require that the
-     * matrix m is diagonally dominant for conversion.
-     * It is a necessary, but not sufficient condition (?).
+     * matrix m is strictly diagonally dominant for convergence.
+     * Note: This is NOT a necessary, but not sufficient condition.
      * There are exceptions, i.e. matrices m that are not
      * diagonally dominant and yet the scheme converges.
+     * Often, interchanging rows can bring a matrix into a strictly
+     * diagonally format. Note that the same rows need to be interchanged
+     * for both x and the r.h.s. vector b!
      */
 
     // Number of rows
