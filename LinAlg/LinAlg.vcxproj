@@ -190,6 +190,7 @@
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
+    <ClInclude Include="TransposedMatrix.hpp" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />

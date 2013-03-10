@@ -183,7 +183,8 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
     bool success;
     Vector x(x_ref.size());
     int iterations;
-    std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
+    double tol;
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 10000);
 
     // needs 4 iterations
 
@@ -292,12 +293,13 @@ SparseLinearSolverTest::bcsstk05CGTest() {
     bool success;
     Vector x(b.size());
     int iterations;
+    double tol;
 
     {
         HighResTimer t;
 
         // needs 321 iterations
-        std::tie(success, x, iterations) = ConjugateGradientMethods::conjugateGradient(m, std::function<void ()>(), b, 10000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 10000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
