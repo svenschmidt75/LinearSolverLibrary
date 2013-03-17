@@ -244,14 +244,17 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGTest() {
     Vector x(x_ref.size());
     int iterations;
     double tol;
+
+    // - calling transpose here is unnecessary, as m is symmetric
+    // - this is why BiCG is no better than CG
     std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), std::function<void ()>(), b, 10000);
 
     // needs 4 iterations
 
-    CPPUNIT_ASSERT_MESSAGE("CG failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("BiCG failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 
 
 
@@ -261,7 +264,7 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGTest() {
     tmp = m * x;
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
 
 void
@@ -302,7 +305,7 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
 namespace {
@@ -362,7 +365,7 @@ SparseLinearSolverTest::bcsstk05CGTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 10000);
     }
 
-    CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("CG failed to solve linear system", success);
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
@@ -466,4 +469,105 @@ SparseLinearSolverTest::OffshoreSORTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+}
+
+void
+SparseLinearSolverTest::fs_680_1CGTest() {
+    /* FS 680 1: Chemical kinetics problems
+     * RCHEM radiation chemistry study -- 1st output time step
+     * from set FACSIMILE, from the Harwell-Boeing Collection
+     *
+     * Note: fs_680_1 is a 680x680 real unsymmetric matrix which
+     * is not diagonally dominant.
+     */
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\fs_680_1\\fs_680_1.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(680);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(680);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    int iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // CG cannot solve this matrix as it is not symmetric
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 1000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("CG should have failed to solve linear system", !success);
+}
+
+void
+SparseLinearSolverTest::fs_680_1BiCGTest() {
+    /* FS 680 1: Chemical kinetics problems
+     * RCHEM radiation chemistry study -- 1st output time step
+     * from set FACSIMILE, from the Harwell-Boeing Collection
+     *
+     * Note: fs_680_1 is a 680x680 real unsymmetric matrix which
+     * is not diagonally dominant.
+     */
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\fs_680_1\\fs_680_1.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(680);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(680);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    int iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 541 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), std::function<void ()>(), b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("BiCG failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
 }

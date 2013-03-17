@@ -94,9 +94,8 @@ namespace LinAlg_NS {
         double    operator()(size_type row, size_type col) const;
         double &  operator()(size_type row, size_type col);
 
-        void      solve(Vector const & b, Vector & x) const;
-
         // Local methods
+        void solve(Vector const & b, Vector & x) const;
         void finalize() const;
         void print() const;
 

@@ -57,11 +57,12 @@ namespace LinAlg_NS {
         double    operator()(size_type row, size_type col) const;
         double&   operator()(size_type row, size_type col);
 
+        // Local Methods
+
         // solve A x = b
         void            solve(Vector const & b, Vector & x) const;
 
-        // Local Methods
-        void           print() const;
+        void            print() const;
 
         // Static Methods
         static Matrix2D identity(size_type n);

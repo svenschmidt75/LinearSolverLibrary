@@ -12,7 +12,10 @@
 
 class LinAlgTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(LinAlgTest);
-    CPPUNIT_TEST(transposeSparseMatrixTest);
+    CPPUNIT_TEST(transposeVersteegMalalasekeraTest);
+#ifdef INTEGRATION_TEST
+    CPPUNIT_TEST(transpose_fs_680_1_Test);
+#endif
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +23,6 @@ public:
     void tearDown();
 
     // test methods
-    void transposeSparseMatrixTest();
+    void transposeVersteegMalalasekeraTest();
+    void transpose_fs_680_1_Test();
 };

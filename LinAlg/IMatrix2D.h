@@ -28,9 +28,8 @@ namespace LinAlg_NS {
         virtual size_type cols() const                     = 0;
         virtual double    operator()(size_type row, size_type col) const  = 0;
         virtual double &  operator()(size_type row, size_type col)        = 0;
-        virtual void            solve(Vector const & b, Vector & x) const = 0;
 
-        virtual void            print() const = 0;
+        virtual void      print() const = 0;
     };
 
 } // namespace LinAlg_NS

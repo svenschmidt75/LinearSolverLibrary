@@ -66,7 +66,7 @@ namespace LinearSolverLibrary_NS {
                 if (residual <= tol)
                     return std::make_tuple(true, x, i, residual);
 
-//                std::cout << residual << std::endl;
+//                std::cout << "Iteration " << i << ": " << residual << std::endl;
 
                 double beta = VectorMath::dotProduct(r2, r2) / rr;
 
@@ -135,6 +135,8 @@ namespace LinearSolverLibrary_NS {
                 residual = VectorMath::norm(r1) / normb;
                 if (residual <= tol)
                     return std::make_tuple(true, x, i, residual);
+
+//                 std::cout << "Iteration " << i << ": " << residual << std::endl;
             }
 
             // scheme did not converge
