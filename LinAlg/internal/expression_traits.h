@@ -93,6 +93,7 @@ namespace internal {
 
     template<>
     struct matrix_operation_traits<Matrix2D> {
+
         template<typename VECTOR_EXPR>
         struct apply {
             /* Use tag dispatching to select the matrix multiplication
@@ -110,6 +111,7 @@ namespace internal {
 
     template<>
     struct matrix_operation_traits<SparseMatrix2D> {
+
         template<typename VECTOR_EXPR>
         struct apply {
             static double op(SparseMatrix2D const & m, VECTOR_EXPR const & v, IMatrix2D::size_type row) {

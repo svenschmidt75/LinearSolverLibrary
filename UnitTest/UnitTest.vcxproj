@@ -22,6 +22,7 @@
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
     <ClCompile Include="LinAlgOperatorTest.cpp" />
+    <ClCompile Include="LinAlgTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultiColorTest.cpp" />
     <ClCompile Include="pch.cpp">
@@ -36,6 +37,7 @@
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />
     <ClInclude Include="LinAlgOperatorTest.h" />
+    <ClInclude Include="LinAlgTest.h" />
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverTest.h" />

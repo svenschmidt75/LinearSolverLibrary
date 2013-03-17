@@ -82,7 +82,7 @@ namespace LinearSolverLibrary_NS {
 
         template<typename PRECOND>
         static Return_t BiCG(SparseMatrix2D const & m, SparseMatrix2D const & m_transposed, PRECOND const & precond, Vector const & b, int max_iterations = 10000) {
-            /* Preconditioned biconjugate conjugate gradient algorithm
+            /* Preconditioned biconjugate gradient algorithm
              * as presented in 
              * "Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods",
              * page 20.
@@ -115,8 +115,8 @@ namespace LinearSolverLibrary_NS {
                     return std::make_tuple(false, x, i, residual);
                 }
 
-                if (i > 1) {
-                    beta = rho / rho_prev;
+                if (i) {
+                    double beta = rho / rho_prev;
                     p1 = r1 + beta * p1;
                     p2 = r2 + beta * p2;
                 }
@@ -140,41 +140,6 @@ namespace LinearSolverLibrary_NS {
             // scheme did not converge
             return std::make_tuple(false, x, 10000, 0);
         }
-
-
-#if 0
-        z = M.solve(r);
-        ztilde = M.trans_solve(rtilde);
-        rho_1(0) = dot(z, rtilde);
-        if (rho_1(0) == 0) { 
-            tol = norm(r) / normb;
-            max_iter = i;
-            return 2;
-        }
-        if (i == 1) {
-            p = z;
-            ptilde = ztilde;
-        } else {
-            beta(0) = rho_1(0) / rho_2(0);
-            p = z + beta(0) * p;
-            ptilde = ztilde + beta(0) * ptilde;
-        }
-        q = A * p;
-        qtilde = A.trans_mult(ptilde);
-        alpha(0) = rho_1(0) / dot(ptilde, q);
-        x += alpha(0) * p;
-        r -= alpha(0) * q;
-        rtilde -= alpha(0) * qtilde;
-
-        rho_2(0) = rho_1(0);
-        if ((resid = norm(r) / normb) < tol) {
-            tol = resid;
-            max_iter = i;
-            return 0;
-        }
-  }
-#endif
-
 
     };
 

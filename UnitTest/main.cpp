@@ -5,8 +5,10 @@
 #include "FloridaVectorReaderTest.h"
 #include "SparseLinearSolverTest.h"
 #include "MultiColorTest.h"
+#include "LinAlgTest.h"
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(MultiColorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FloridaVectorReaderTest);

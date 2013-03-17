@@ -24,6 +24,33 @@ helper::transpose(TransposeVector const & vec) {
 
 }
 
+SparseMatrix2D
+helper::transpose(SparseMatrix2D const & m) {
+    /* Transpose a sparse matrix. My first idea was to write a wrapper that behaves like the transpose,
+     * but when multiplying this wrapper with a vector, we end up doing a dense matrix multiplication.
+     * Hence this explicit construction.
+     */
+    SparseMatrix2D transposed(m.rows());
+
+    for (SparseMatrix2D::size_type row = 0; row < m.rows(); ++row) {
+        // Number of non-zero columns for this row
+        IMatrix2D::size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
+        IMatrix2D::size_type offset = m.nelements_[row];
+
+        // all non-zero columns
+        for (int icol = 0; icol < ncol; ++icol) {
+            IMatrix2D::size_type col = m.columns_[offset + icol];
+            double a_ij = m.elements_[offset + icol];
+
+            transposed(col, row) = a_ij;
+        }
+    }
+
+    transposed.finalize();
+
+    return transposed;
+}
+
 double
 helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
     double value = m(row, col);

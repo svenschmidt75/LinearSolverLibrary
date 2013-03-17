@@ -31,6 +31,7 @@ namespace LinAlg_NS {
     public:
         static TransposeVector transpose(Vector const & vec);
         static Vector          transpose(TransposeVector const & vec);
+        static SparseMatrix2D  transpose(SparseMatrix2D const & m);
         static double          get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);
         static double          get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);
 
@@ -86,7 +87,7 @@ namespace LinAlg_NS {
 
             return value;
         }
-
+        
         static bool isSymmsteric(SparseMatrix2D const & m);
 
     };

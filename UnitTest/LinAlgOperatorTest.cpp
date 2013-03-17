@@ -49,7 +49,7 @@ namespace {
 }
 
 void
-LinAlgOperatorTest::testVectorAddScalarMulVectorTest() {
+LinAlgOperatorTest::vectorAddScalarMulVectorTest() {
     Vector v1 = createVector(10);
     std::iota(std::begin(v1), std::end(v1), 1);
 
