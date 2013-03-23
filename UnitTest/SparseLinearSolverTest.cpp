@@ -183,7 +183,7 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
     Vector x(x_ref.size());
     int iterations;
     double tol;
-    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 10000);
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, b, 10000);
 
     // needs 4 iterations
 
@@ -247,7 +247,7 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGTest() {
 
     // - calling transpose here is unnecessary, as m is symmetric
     // - this is why BiCG is no better than CG
-    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), std::function<void ()>(), b, 10000);
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), b, 10000);
 
     // needs 4 iterations
 
@@ -362,7 +362,7 @@ SparseLinearSolverTest::bcsstk05CGTest() {
         HighResTimer t;
 
         // needs 321 iterations
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 10000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, b, 10000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("CG failed to solve linear system", success);
@@ -514,7 +514,7 @@ SparseLinearSolverTest::fs_680_1CGTest() {
         HighResTimer t;
 
         // CG cannot solve this matrix as it is not symmetric
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, std::function<void ()>(), b, 1000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, b, 1000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("CG should have failed to solve linear system", !success);
@@ -562,12 +562,12 @@ SparseLinearSolverTest::fs_680_1BiCGTest() {
     {
         HighResTimer t;
 
-        // needs 541 iterations
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), std::function<void ()>(), b, 10000);
+        // needs 533 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), b, 10000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("BiCG failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-8));
 }

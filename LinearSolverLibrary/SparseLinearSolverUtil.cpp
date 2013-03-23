@@ -61,6 +61,11 @@ SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, doub
 
     auto ret = std::mismatch(v1.cbegin(), v1.cend(), v2.cbegin(), [tol](double d1, double d2){
         double delta = std::fabs(d1 - d2);
+
+//         if (delta >= tol) {
+//             int a = 1;
+//             a++;
+//         }
         return delta < tol;
     });
 
