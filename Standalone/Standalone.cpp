@@ -52,7 +52,7 @@ int main(int /*argc*/, char* /*argv[]*/)
     // compare vectors
 //    BOOST_ASSERT_MSG(SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10), "mismatch in CG solver result");
     std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), b, 10000);
-    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m, LinAlg_NS::helper::transpose(m), b, 10000);
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCGSTAB(m, b, 10000);
 
     // needs 17687 iterations
     std::cout << "Iterations: " << iterations << std::endl;

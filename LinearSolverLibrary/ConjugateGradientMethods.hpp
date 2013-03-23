@@ -146,7 +146,6 @@ namespace LinearSolverLibrary_NS {
             return std::make_tuple(false, x, 10000, 0);
         }
 
-        
         static Return_t BiCG(SparseMatrix2D const & m, SparseMatrix2D const & m_transposed, Vector const & b, int max_iterations = 10000) {
             /* Biconjugate gradient algorithm
              * as presented in 
@@ -195,6 +194,67 @@ namespace LinearSolverLibrary_NS {
                 double beta = rho / rho_prev;
                 p1 = r1 + beta * p1;
                 p2 = r2 + beta * p2;
+
+                rho_prev = rho;
+            }
+
+            // scheme did not converge
+            return std::make_tuple(false, x, 10000, 0);
+        }
+
+        static Return_t BiCGSTAB(SparseMatrix2D const & m, Vector const & b, int max_iterations = 10000) {
+            /* Biconjugate gradient stabilized algorithm
+             * as presented in 
+             * Iterative Methods for Solving Linear Systems
+             * Anne Greenbaum, page 91.
+             * Similar to BiCG (A indefinite), but without the need for A^{T} and
+             * better stability.
+             */
+            double tol = 1E-15;
+
+            double normb = VectorMath::norm(b);
+
+            // guessed x = null vector
+            Vector r(b);
+
+            double residual = VectorMath::norm(r) / normb;
+            if (residual <= tol)
+                return std::make_tuple(true, b, 0, residual);
+
+            Vector x(b.size());
+            Vector x_half(b.size());
+            Vector r0(b);
+            Vector r_half(b.size());
+            Vector p(r);
+            double alpha;
+            double rho;
+            double rho_prev = VectorMath::dotProduct(r, r0);
+
+            for (int i = 0; i < max_iterations; ++i) {
+                // most expensive operation
+                Vector q = m * p;
+
+                alpha = rho_prev / VectorMath::dotProduct(q, r0);
+
+                x_half = x + alpha * p;
+                r_half = r - alpha * q;
+
+                Vector q2 = m * r_half;
+
+                double omega = VectorMath::dotProduct(r_half, q2) / VectorMath::dotProduct(q2, q2);
+                x = x_half + omega * r_half;
+                r = r_half - omega * q2;
+
+                residual = VectorMath::norm(r) / normb;
+                if (residual <= tol)
+                    return std::make_tuple(true, x, i, residual);
+
+//                std::cout << "Iteration " << i << ": " << residual << std::endl;
+
+                rho = VectorMath::dotProduct(r, r0);
+
+                double beta = alpha / omega * rho / rho_prev;
+                p = r + beta * (p - omega * q);
 
                 rho_prev = rho;
             }
