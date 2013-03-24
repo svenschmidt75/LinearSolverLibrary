@@ -24,7 +24,7 @@ namespace LinearSolverLibrary_NS {
      * double: Tolerance achieved
      */
     typedef std::tuple<bool, Vector, int, double> Return_t;
-
+    
     class ConjugateGradientMethods {
     public:
         static Return_t CG(SparseMatrix2D const & m, Vector const & b, int max_iterations = 10000) {
