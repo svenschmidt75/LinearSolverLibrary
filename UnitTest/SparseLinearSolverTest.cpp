@@ -59,7 +59,7 @@ SparseLinearSolverTest::VersteegMalalasekeraSORTest() {
     bool success;
     Vector x(x_ref.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 10000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.1, 10000);
 
     // needs 33 iterations
 
@@ -122,7 +122,7 @@ SparseLinearSolverTest::VersteegMalalasekeraSORMultiColorTest() {
     bool success;
     Vector x(x_ref.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSORMultiColor(m, b, m_decomp, 1.1, 10000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSORMultiColor(m, b, m_decomp, 1.1, 10000);
 
     // needs 32 iterations
 
@@ -360,7 +360,7 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     bool success;
     Vector x(b.size());
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 20000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.1, 20000);
 
     // needs 17687 iterations
 
@@ -561,7 +561,7 @@ SparseLinearSolverTest::sts4098SORTest() {
         HighResTimer t;
 
         // needs 10986 iterations
-        std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 11000);
+        std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.1, 11000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
@@ -610,7 +610,7 @@ SparseLinearSolverTest::OffshoreSORTest() {
         HighResTimer t;
 
         // needs 15 iterations
-        std::tie(success, x, iterations) = SparseLinearSolver::sparseSOR(m, b, 1.1, 20);
+        std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.1, 20);
     }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);

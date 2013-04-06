@@ -39,7 +39,7 @@ namespace boost {
 
 namespace LinearSolverLibrary_NS {
     class SparseLinearSolverUtil;
-    class SparseLinearSolver;
+    class SparseLinearSolverLibrary;
 }
 
 /* This class is used as a friend here, and is declared in UnitTest in the global
@@ -72,7 +72,7 @@ namespace LinAlg_NS {
         friend void serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/);
 
         friend class LinearSolverLibrary_NS::SparseLinearSolverUtil;
-        friend class LinearSolverLibrary_NS::SparseLinearSolver;
+        friend class LinearSolverLibrary_NS::SparseLinearSolverLibrary;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
 

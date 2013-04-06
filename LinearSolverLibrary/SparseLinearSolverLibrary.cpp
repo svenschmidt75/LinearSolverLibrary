@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "SparseLinearSolver.h"
+#include "SparseLinearSolverLibrary.h"
 #include "MatrixDecomposition.h"
 
 
@@ -9,7 +9,7 @@ using namespace LinAlg_NS;
 
 
 std::tuple<bool, Vector, int>
-SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double omega, int max_iterations) {
+SparseLinearSolverLibrary::sparseSOR(SparseMatrix2D const & m, Vector const & f, double omega, int max_iterations) {
     /* Implements the Successive Over-Relaxation method from
      * "Templates for the Solution of Linear Systems:
      * Building Blocks for Iterative Methods"
@@ -89,7 +89,7 @@ SparseLinearSolver::sparseSOR(SparseMatrix2D const & m, Vector const & f, double
 }
 
 std::tuple<bool, Vector, int>
-SparseLinearSolver::sparseSORMultiColor(SparseMatrix2D const & m, Vector const & f, MatrixDecomposition const & mc, double omega, int max_iterations) {
+SparseLinearSolverLibrary::sparseSORMultiColor(SparseMatrix2D const & m, Vector const & f, MatrixDecomposition const & mc, double omega, int max_iterations) {
     /* Implements the Successive Over-Relaxation method for
      * multicolor decomposition.
      * 

@@ -4,7 +4,7 @@
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 #include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"
 
-#include "LinearSolverLibrary/SparseLinearSolver.h"
+#include "LinearSolverLibrary/SparseLinearSolverLibrary.h"
 #include "LinearSolverLibrary/SparseLinearSolverUtil.h"
 
 

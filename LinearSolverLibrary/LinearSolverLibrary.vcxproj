@@ -175,7 +175,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SparseLinearSolver.cpp" />
+    <ClCompile Include="SparseLinearSolverLibrary.cpp" />
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +186,7 @@
     <ClInclude Include="internal\MultiColor.h" />
     <ClInclude Include="internal\MultiColor_internal.h" />
     <ClInclude Include="MatrixDecomposition.h" />
-    <ClInclude Include="SparseLinearSolver.h" />
+    <ClInclude Include="SparseLinearSolverLibrary.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
   </ItemGroup>
