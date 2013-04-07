@@ -24,6 +24,8 @@
 #include "SparseMatrix2D.h"
 
 #include "internal/MatrixVectorExpr.h"
+#include "internal/PrimitiveOperators.h"
+#include "internal/ScalarVectorBinaryExpr.h"
 
 
 namespace LinAlg_NS {

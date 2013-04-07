@@ -372,7 +372,7 @@ SparseLinearSolverTest::VersteegMalalasekeraGMRESTest() {
     int iterations;
     double tol;
 
-    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 100, 10000);
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 18, 10000);
 
     // needs 4 iterations
 

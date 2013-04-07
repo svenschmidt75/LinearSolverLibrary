@@ -312,8 +312,7 @@ namespace LinearSolverLibrary_NS {
             }
 
             for (int j = 0; j <= k; ++j)
-//                x += q[j] * y(j);
-                x += q[j];
+               x += q[j] * y(j);
         }
 
         static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, int m, int max_iterations = 10000) {

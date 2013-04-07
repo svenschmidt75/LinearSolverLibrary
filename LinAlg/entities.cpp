@@ -126,5 +126,6 @@ operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> co
  * Instead, we export the explicitly instantiated function here!
  */
 template LINALG_DECL_SYMBOLS Vector operator-<SparseMatrix2D, Vector>(Vector const & lhs, internal::MatrixVectorExpr<SparseMatrix2D, Vector> const & rhs);
+template LINALG_DECL_SYMBOLS Vector & operator+=<Vector, internal::MUL<double>>(Vector & lhs, internal::ScalarVectorBinaryExpr<Vector, internal::MUL<double>> const & rhs);
 
 } // namespace LinAlg_NS

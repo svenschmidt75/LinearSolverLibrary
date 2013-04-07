@@ -17,17 +17,18 @@ class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(VersteegMalalasekeraCGTest);
     CPPUNIT_TEST(VersteegMalalasekeraBiCGTest);
     CPPUNIT_TEST(VersteegMalalasekeraBiCGSTABTest);
+    CPPUNIT_TEST(VersteegMalalasekeraGMRESTest);
+#ifdef INTEGRATION_TEST
     CPPUNIT_TEST(bcsstk05SORTest);
     CPPUNIT_TEST(bcsstk05CGTest);
     CPPUNIT_TEST(bcsstk05BiCGTest);
     CPPUNIT_TEST(bcsstk05BiCGSTABTest);
-#ifdef INTEGRATION_TEST
     CPPUNIT_TEST(sts4098SORTest);
     CPPUNIT_TEST(OffshoreSORTest);
-#endif
     CPPUNIT_TEST(fs_680_1CGTest);
     CPPUNIT_TEST(fs_680_1BiCGTest);
     CPPUNIT_TEST(fs_680_1BiCGSTABTest);
+#endif
     CPPUNIT_TEST_SUITE_END();
 
 public:

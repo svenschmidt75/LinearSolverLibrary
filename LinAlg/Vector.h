@@ -17,8 +17,10 @@
 #include "internal/expression_traits.h"
 
 #include <boost/cstdint.hpp>
+#include <boost/assert.hpp>
 
 #include <vector>
+#include <stdexcept>
 
 
 namespace boost {
