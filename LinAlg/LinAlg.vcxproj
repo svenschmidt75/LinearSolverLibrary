@@ -168,6 +168,7 @@
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
+    <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
     <ClCompile Include="VectorMath.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
+    <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="operators.h" />
