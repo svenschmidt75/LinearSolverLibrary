@@ -40,6 +40,7 @@ protected:
     void VersteegMalalasekeraCGTest();
     void VersteegMalalasekeraBiCGTest();
     void VersteegMalalasekeraBiCGSTABTest();
+    void VersteegMalalasekeraGMRESTest();
     void bcsstk05SORTest();
     void bcsstk05CGTest();
     void bcsstk05BiCGTest();
