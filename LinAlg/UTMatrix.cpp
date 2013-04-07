@@ -14,7 +14,7 @@ UTMatrix::UTMatrix(size_type ncols)
     :
     ncols_(ncols) {
 
-    data_.resize(ncols);
+    data_.resize(ncols * (ncols + 1) / 2);
 }
 
 UTMatrix::UTMatrix(UTMatrix const & in)
@@ -102,7 +102,7 @@ double &
 UTMatrix::operator()(UTMatrix::size_type i, UTMatrix::size_type j) {
     // i: x, j: y
     bool assert_cond = i < ncols_ && j < ncols_ && i <= j;
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
+//    BOOST_ASSERT_MSG(assert_cond, "Index range error");
     if (!assert_cond)
         throw std::out_of_range("UTMatrix::operator(): Out of range error");
 
@@ -111,11 +111,20 @@ UTMatrix::operator()(UTMatrix::size_type i, UTMatrix::size_type j) {
 
 void
 UTMatrix::print() const {
+    std::cout << std::endl;
+
     for (size_type row = 0; row < ncols_; ++row) {
-        for (size_type col = 0; col < row; ++col) {
+        for (size_type col = 0; col < ncols_; ++col) {
+            if (row > col) {
+                std::cout << boost::format("%5s") % " ";
+                continue;
+            }
+
             double value = data_[index(row, col)];
-            std::cout << std::setw(8) << 0 << value;
-        }    
+            std::cout << boost::format("%5d") % value;
+        }
+
+        std::cout << std::endl;
     }    
 
     std::cout << std::endl;

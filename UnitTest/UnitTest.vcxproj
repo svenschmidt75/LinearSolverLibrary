@@ -32,6 +32,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SparseLinearSolverTest.cpp" />
+    <ClCompile Include="UTMatrixTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverTest.h" />
+    <ClInclude Include="UTMatrixTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">

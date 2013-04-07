@@ -11,7 +11,9 @@
  *	       [      9 ... ] 
  *	       [      . ... ] 
  *	       [      . ... ] 
- *	       [      . ... ] 
+ *	       [      . ... ]
+ *
+ *         Storage format: column-major
  * Author: Sven Schmidt
  * Date  : 04/07/2013
  */
