@@ -312,7 +312,8 @@ namespace LinearSolverLibrary_NS {
             }
 
             for (int j = 0; j <= k; ++j)
-                x += q[j] * y(j);
+//                x += q[j] * y(j);
+                x += q[j];
         }
 
         static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, int m, int max_iterations = 10000) {
@@ -337,7 +338,7 @@ namespace LinearSolverLibrary_NS {
             auto dim = A.cols();
 
             // space for the orthogonal Arnoldi vectors
-            std::vector<Vector> q(m);
+            std::vector<Vector> q(m, Vector(m));
 
             // the Givens coefficients
             Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);
@@ -349,8 +350,7 @@ namespace LinearSolverLibrary_NS {
             Vector x(b.size());
 
             while (j <= max_iterations) {
-                q[0] = r * (1.0 / beta);    // ??? r / beta
-                s = 0.0;
+                q[0] = r * (1.0 / beta);
                 s(0) = beta;
 
                 for (int i = 0; i < m && j <= max_iterations; ++i, ++j) {

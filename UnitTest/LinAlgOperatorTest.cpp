@@ -114,7 +114,6 @@ LinAlgOperatorTest::addVectorTest() {
     }
 }
 
-
 void
 LinAlgOperatorTest::subVectorTest() {
     Vector v1 = createVector(10);
@@ -188,6 +187,42 @@ LinAlgOperatorTest::vectorExprAddTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1143.8, result(0), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1159.3, result(5), 1E-10);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1171.7, result(9), 1E-10);
+}
+
+#include "LinAlg/operators.h"
+
+namespace LinAlg_NS {
+
+
+    // Vector Expression + Vector Expression
+    static Vector & operator+=(Vector & lhs, ScalarVectorBinaryExpr<Vector, MUL<double>> const & rhs) {
+        // expression must be a vector to be compatible
+
+        return lhs;
+    }
+
+}
+
+void
+LinAlgOperatorTest::vectorAddVectorMulTest() {
+    Vector v1 = createVector(10);
+    Vector v2 = createVector(10);
+    Vector result(v1.size());
+
+    std::iota(std::begin(v1), std::end(v1), 1);
+    std::iota(std::begin(v2), std::end(v2), 67);
+
+    using namespace LinAlg_NS;
+
+//    result += (v1 * 10.0);
+
+
+    result = LinAlg_NS::operator+=(result, ScalarVectorBinaryExpr<Vector, MUL<double>>(ScalarExpression(10), v1));
+
+
+//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1046, result(0), 1E-10);
+//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1061, result(5), 1E-10);
+//     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in vector expression", 1073, result(9), 1E-10);
 }
 
 void

@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
-    <ClCompile Include="LinAlgOperatorTest.cpp" />
+    <ClCompile Include="LinAlgOperatorTest.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="LinAlgTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultiColorTest.cpp" />

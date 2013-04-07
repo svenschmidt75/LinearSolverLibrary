@@ -33,6 +33,12 @@ namespace LinAlg_NS {
         return ScalarVectorBinaryExpr<VECTOR_EXPR, MUL<double>>(ScalarExpression(value), expr);
     }
 
+    // Vector Expression * scalar
+    template<typename VECTOR_EXPR>
+    static ScalarVectorBinaryExpr<VECTOR_EXPR, MUL<double>> operator*(VECTOR_EXPR const & expr, double value) {
+        return ScalarVectorBinaryExpr<VECTOR_EXPR, MUL<double>>(ScalarExpression(value), expr);
+    }
+
     // Vector Expression + Vector Expression
     template<typename VECTOR_EXPR1, typename VECTOR_EXPR2>
     static VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, PLUS<double>> operator+(VECTOR_EXPR1 const & lhs, VECTOR_EXPR2 const & rhs) {

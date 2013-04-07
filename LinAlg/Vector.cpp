@@ -7,6 +7,10 @@
 
 namespace LinAlg_NS {
 
+// this constructor is needed because Vectors have to be
+// default-constructible when used in std containers
+Vector::Vector() {}
+
 Vector::Vector(size_type dim)
     :
     dim_(dim) {

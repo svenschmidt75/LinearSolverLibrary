@@ -84,6 +84,7 @@ namespace LinAlg_NS {
         typedef std::vector<double>::iterator       iterator;
 
     public:
+        Vector();
         Vector(size_type dim);
         Vector(Vector const & in);
 
