@@ -48,6 +48,5 @@ UTMatrixTest::indexTest() {
     CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access", m(1, 0), std::out_of_range);
     CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access", m(3, 2), std::out_of_range);
 
-
 //    m.print();
 }

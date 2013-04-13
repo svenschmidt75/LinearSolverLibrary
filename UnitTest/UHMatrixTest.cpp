@@ -42,12 +42,16 @@ UHMatrixTest::indexTest() {
 
     // tests index limits (making sure no exception is thrown)
     double tmp = m(0, 0);
-//     tmp = m(0, 3);
-//     tmp = m(3, 3);
+    tmp = m(0, 0);
+    tmp = m(1, 0);
+    CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access axpected", m(2, 0), std::out_of_range);
 
-//     CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access", m(1, 0), std::out_of_range);
-//     CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access", m(3, 2), std::out_of_range);
+    tmp = m(1, 1);
+    tmp = m(2, 1);
+    CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access axpected", m(3, 1), std::out_of_range);
 
+    tmp = m(3, 2);
+    tmp = m(3, 3);
 
     m.print();
 }
