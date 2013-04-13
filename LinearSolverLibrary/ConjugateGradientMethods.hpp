@@ -9,7 +9,7 @@
 
 #include "LinAlg/entities.h"
 #include "LinAlg/VectorMath.h"
-#include "LinAlg/UTMatrix.h"
+#include "LinAlg/UHMatrix.h"
 
 #include <tuple>
 
@@ -337,14 +337,14 @@ namespace LinearSolverLibrary_NS {
             auto dim = A.cols();
 
             // space for the orthogonal Arnoldi vectors
-            std::vector<Vector> q(m, Vector(m));
+            std::vector<Vector> q(m + 1, Vector(dim));
 
             // the Givens coefficients
             Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);
 
             int j = 1;
 
-            UTMatrix H(m + 1);
+            UHMatrix H(m + 1);
 
             Vector x(b.size());
 
@@ -365,14 +365,20 @@ namespace LinearSolverLibrary_NS {
                     H(i + 1, i) = normw;
                     q[i + 1] = w * (1.0 / normw);
 
+//                     H.print();
+
                     for (int k = 0; k < i; ++k)
                         // apply Givens rotation to column i, row 0, ..., k - 1
                         ApplyPlaneRotation(H(k, i), H(k + 1, i), cs(k), sn(k));
+
+//                     H.print();
 
                     GeneratePlaneRotation(H(i, i), H(i + 1, i), cs(i), sn(i));
 
                     ApplyPlaneRotation(H(i, i), H(i + 1,i), cs(i), sn(i));
                     ApplyPlaneRotation(s(i), s(i + 1), cs(i), sn(i));
+
+//                     H.print();
 
                     residual = std::fabs(s(i + 1) / normb);
                     if (residual < tol) {

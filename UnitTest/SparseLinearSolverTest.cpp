@@ -329,6 +329,22 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGSTABTest() {
     CPPUNIT_ASSERT_MESSAGE("mismatch in BiCGSTAB solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
 
+namespace {
+
+    class HighResTimer {
+    public:
+        HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
+        ~HighResTimer() {
+            auto end = boost::chrono::high_resolution_clock::now();
+            auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start_);
+            std::cout << std::endl << "Duration: " << d << std::endl;
+        }
+
+    private:
+        boost::chrono::steady_clock::time_point start_;
+    };
+
+}
 
 void
 SparseLinearSolverTest::VersteegMalalasekeraGMRESTest() {
@@ -372,9 +388,13 @@ SparseLinearSolverTest::VersteegMalalasekeraGMRESTest() {
     int iterations;
     double tol;
 
-    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 18, 10000);
+    {
+        HighResTimer t;
 
-    // needs 4 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 6, 10000);
+    }
+
+    // needs 5 iterations
 
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
 
@@ -431,23 +451,6 @@ SparseLinearSolverTest::bcsstk05SORTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
-}
-
-namespace {
-
-    class HighResTimer {
-    public:
-        HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
-        ~HighResTimer() {
-            auto end = boost::chrono::high_resolution_clock::now();
-            auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start_);
-            std::cout << std::endl << "Duration: " << d << std::endl;
-        }
-
-    private:
-        boost::chrono::steady_clock::time_point start_;
-    };
-
 }
 
 void

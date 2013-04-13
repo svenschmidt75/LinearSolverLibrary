@@ -53,5 +53,5 @@ UHMatrixTest::indexTest() {
     tmp = m(3, 2);
     tmp = m(3, 3);
 
-    m.print();
+//     m.print();
 }

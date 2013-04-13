@@ -59,8 +59,11 @@ SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, doub
     if (v1.size() != v2.size())
         throw std::runtime_error("SparseLinearSolverUtil::isVectorEqual: Vectors have unequal size");
 
-    auto ret = std::mismatch(v1.cbegin(), v1.cend(), v2.cbegin(), [tol](double d1, double d2){
+    double max_delta = std::numeric_limits<double>::min();
+
+    auto ret = std::mismatch(v1.cbegin(), v1.cend(), v2.cbegin(), [tol, &max_delta](double d1, double d2){
         double delta = std::fabs(d1 - d2);
+        max_delta = std::max(max_delta, delta);
 
 //         if (delta >= tol) {
 //             int a = 1;

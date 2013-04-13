@@ -102,7 +102,7 @@ double &
 UTMatrix::operator()(UTMatrix::size_type i, UTMatrix::size_type j) {
     // i: x, j: y
     bool assert_cond = i < ncols_ && j < ncols_ && i <= j;
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
+//    BOOST_ASSERT_MSG(assert_cond, "Index range error");
     if (!assert_cond)
         throw std::out_of_range("UTMatrix::operator(): Out of range error");
 
