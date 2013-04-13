@@ -90,6 +90,12 @@ Vector::size() const {
     return dim_;
 }
 
+void
+Vector::clear() {
+    for (auto && e : data_)
+        e = 0.0;
+}
+
 Vector::const_iterator
 Vector::cbegin() const {
     return data_.cbegin();

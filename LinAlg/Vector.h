@@ -122,6 +122,7 @@ namespace LinAlg_NS {
         double   operator()(size_type index) const;
 
         size_type      size() const;
+        void           clear();
 
         const_iterator cbegin() const;
         const_iterator cend() const;

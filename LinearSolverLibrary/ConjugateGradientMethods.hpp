@@ -25,7 +25,7 @@ namespace LinearSolverLibrary_NS {
      * int: Number of iterations needed
      * double: Tolerance achieved
      */
-    typedef std::tuple<bool, Vector, int, double> Return_t;
+    typedef std::tuple<bool, Vector, IMatrix2D::size_type, double> Return_t;
     
     class ConjugateGradientMethods {
     public:
@@ -112,7 +112,7 @@ namespace LinearSolverLibrary_NS {
             double rho;
             double rho_prev;
 
-            for (int i = 0; i < max_iterations; ++i) {
+            for (SparseMatrix2D::size_type i = 0; i < max_iterations; ++i) {
                 rho = VectorMath::dotProduct(r1, r2);
                 if (!rho) {
                     // r1 and r2 orthogonal
@@ -175,7 +175,7 @@ namespace LinearSolverLibrary_NS {
             double rho;
             double rho_prev = VectorMath::dotProduct(r1, r2);
 
-            for (int i = 0; i < max_iterations; ++i) {
+            for (SparseMatrix2D::size_type i = 0; i < max_iterations; ++i) {
                 // most expensive operation
                 Vector q1 = m * p1;
                 Vector q2 = m_transposed * p2;
@@ -232,7 +232,7 @@ namespace LinearSolverLibrary_NS {
             double rho;
             double rho_prev = VectorMath::dotProduct(r, r0);
 
-            for (int i = 0; i < max_iterations; ++i) {
+            for (SparseMatrix2D::size_type i = 0; i < max_iterations; ++i) {
                 // most expensive operation
                 Vector q = m * p;
 
@@ -300,22 +300,34 @@ namespace LinearSolverLibrary_NS {
         }
 
         template<typename MATRIX>
-        static void Update(Vector & x, int k, MATRIX const & H, Vector const & s, std::vector<Vector> const & q) {
+        static void Update(Vector & x, typename MATRIX::size_type k, MATRIX const & H, Vector const & s, std::vector<Vector> const & q) {
+            /* H(k + 1) (i.e. i = 0, ..., k) is upper triangular.
+             * Solve H(i + 1) * y = s via back-substitution.
+             * Then, compute x = x + q[i] * y[i], i = 0, ..., k
+             */
             Vector y(s);
 
             // solve via back-substitution
-            for (int i = k; i >= 0; --i) {
-                y(i) /= H(i, i);
+            for (typename MATRIX::size_type i = 0; i <= k; ++i) {
+                typename MATRIX::size_type index = k - i;
 
-                for (int j = i - 1; j >= 0; --j)
-                    y(j) -= H(j, i) * y(i);
+                y(index) /= H(index, index);
+
+                // y(index) is known at this point.
+                // Solve for all H(row, col) where col >= row because
+                // H(row, col) = 0 for col < row.
+                for (typename MATRIX::size_type j = 0; j < index; ++j) {
+                    typename MATRIX::size_type row = index - j - 1;
+                    y(row) -= H(row, index) * y(index);
+                }
             }
 
-            for (int j = 0; j <= k; ++j)
+            // compute approximate new solution
+            for (typename MATRIX::size_type j = 0; j <= k; ++j)
                x += q[j] * y(j);
         }
 
-        static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, int m, int max_iterations = 10000) {
+        static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int max_iterations = 10000) {
             /* Implements the GMRES(m) restarted algorithm from
              *  Reference:
              *  R. Barrett et al, "Templates for the Solution of Linear Systems:
@@ -353,6 +365,8 @@ namespace LinearSolverLibrary_NS {
                 s(0) = beta;
 
                 for (int i = 0; i < m && j <= max_iterations; ++i, ++j) {
+                    // compute the next basis vector in the iterative QR factorization
+                    // of A
                     w = A * q[i];
 
                     // compute the Hessenberg coefficients
@@ -363,23 +377,35 @@ namespace LinearSolverLibrary_NS {
 
                     double normw = VectorMath::norm(w);
                     H(i + 1, i) = normw;
+
+                    // next normalized basis vector of Krylov space
                     q[i + 1] = w * (1.0 / normw);
 
 //                     H.print();
 
+                    // apply all previous Givens rotations to the last column
+                    // of H. See Iterative Methods for Solving Linear systems,
+                    // Anne Greenbaum, page 40
                     for (int k = 0; k < i; ++k)
-                        // apply Givens rotation to column i, row 0, ..., k - 1
+                        // apply Givens rotation to column i, row 0, ..., i - 1
                         ApplyPlaneRotation(H(k, i), H(k + 1, i), cs(k), sn(k));
 
-//                     H.print();
+//                    H.print();
 
+                    // compute the Givens coefficients cs and sn
                     GeneratePlaneRotation(H(i, i), H(i + 1, i), cs(i), sn(i));
 
+                    // using the Givens coefficients cn and sn, eliminate
+                    // H(i + 1, i) to make it upper triangular
                     ApplyPlaneRotation(H(i, i), H(i + 1,i), cs(i), sn(i));
-                    ApplyPlaneRotation(s(i), s(i + 1), cs(i), sn(i));
 
 //                     H.print();
 
+                    // apply Givens rotation to r.h.s.
+                    ApplyPlaneRotation(s(i), s(i + 1), cs(i), sn(i));
+
+                    // s(k) = 0, except for k = i + 1, which equals the norm
+                    // of the residual
                     residual = std::fabs(s(i + 1) / normb);
                     if (residual < tol) {
                         Update(x, i, H, s, q);
@@ -396,6 +422,9 @@ namespace LinearSolverLibrary_NS {
                 residual = beta / normb;
                 if (residual < tol)
                     return std::make_tuple(true, x, j, residual);
+
+                // reset r.h.s. to zero
+                s.clear();
             }
 
             // scheme did not converge

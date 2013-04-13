@@ -181,7 +181,7 @@ SparseLinearSolverTest::VersteegMalalasekeraCGTest() {
 
     bool success;
     Vector x(x_ref.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
     std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m, b, 10000);
 
@@ -242,7 +242,7 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGTest() {
 
     bool success;
     Vector x(x_ref.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     // - calling transpose here is unnecessary, as m is symmetric
@@ -306,7 +306,7 @@ SparseLinearSolverTest::VersteegMalalasekeraBiCGSTABTest() {
 
     bool success;
     Vector x(x_ref.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCGSTAB(m, b, 10000);
@@ -385,13 +385,17 @@ SparseLinearSolverTest::VersteegMalalasekeraGMRESTest() {
 
     bool success;
     Vector x(x_ref.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
+
+    /************************************************************************/
+    /* Demonstrate the ideal case of iterations needed = 5                  */
+    /************************************************************************/
     {
         HighResTimer t;
 
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 6, 10000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 10, 10000);
     }
 
     // needs 5 iterations
@@ -406,6 +410,40 @@ SparseLinearSolverTest::VersteegMalalasekeraGMRESTest() {
 
     // compute A x and check that = b
     Vector tmp(x.size());
+    tmp = m * x;
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+
+
+
+
+
+
+
+
+    /************************************************************************/
+    /* Demonstrate what happens if restart too small                        */
+    /************************************************************************/
+
+    {
+        HighResTimer t;
+
+        // restart after 4 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, 4, 10000);
+    }
+
+    // needs 28(!!!) iterations
+
+    CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+
+
+
+
+    // compute A x and check that = b
     tmp = m * x;
 
     // compare vectors
@@ -483,7 +521,7 @@ SparseLinearSolverTest::bcsstk05CGTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
@@ -529,7 +567,7 @@ SparseLinearSolverTest::bcsstk05BiCGTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
@@ -575,7 +613,7 @@ SparseLinearSolverTest::bcsstk05BiCGSTABTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
@@ -727,7 +765,7 @@ SparseLinearSolverTest::fs_680_1CGTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
@@ -776,7 +814,7 @@ SparseLinearSolverTest::fs_680_1BiCGTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
@@ -828,7 +866,7 @@ SparseLinearSolverTest::fs_680_1BiCGSTABTest() {
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    SparseMatrix2D::size_type iterations;
     double tol;
 
     {
