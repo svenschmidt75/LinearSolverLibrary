@@ -26,7 +26,7 @@ namespace {
         double value = 1.0;
 
         for (UHMatrix::size_type col = 0; col < dim; ++col) {
-            for (UHMatrix::size_type row = 0; row < col; ++row) {
+            for (UHMatrix::size_type row = 0; row <= std::min(col + 1, dim - 1); ++row) {
                 m(row, col) = value++;
             }
         }

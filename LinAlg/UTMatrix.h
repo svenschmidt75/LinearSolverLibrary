@@ -13,6 +13,10 @@
  *	       [      . ... ] 
  *	       [      . ... ]
  *
+ *         The index of column j is
+ *         j * (j + 1) / 2.
+ *         Note: A triangular matrix is by definition square!
+ *
  *         Storage format: column-major
  * Author: Sven Schmidt
  * Date  : 04/07/2013

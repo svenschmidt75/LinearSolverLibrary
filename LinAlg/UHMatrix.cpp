@@ -68,7 +68,7 @@ UHMatrix::swap(UHMatrix const & in) {
 
 UHMatrix::size_type
 UHMatrix::rows() const {
-    return ncols_ + 1;
+    return ncols_;
 }
 
 UHMatrix::size_type
@@ -80,14 +80,14 @@ namespace {
 
     UHMatrix::size_type
     index(UHMatrix::size_type i, UHMatrix::size_type j) {
-        return j * (j + 1) / 2 + i;
+        return j * (j + 3) / 2 + i;
     }
 }
 
 double
 UHMatrix::operator()(UHMatrix::size_type i, UHMatrix::size_type j) const {
     // i: x, j: y
-    bool assert_cond = i < rows() && j < cols();
+    bool assert_cond = i < cols() && j < cols();
     BOOST_ASSERT_MSG(assert_cond, "Index range error");
     if (!assert_cond)
         throw std::out_of_range("UHMatrix::operator(): Out of range error");
@@ -101,7 +101,8 @@ UHMatrix::operator()(UHMatrix::size_type i, UHMatrix::size_type j) const {
 double &
 UHMatrix::operator()(UHMatrix::size_type i, UHMatrix::size_type j) {
     // i: x, j: y
-    bool assert_cond = i < rows() && j < cols() && i <= j + 1;
+    UHMatrix::size_type max_row = std::min(j + 1, cols() - 1);
+    bool assert_cond = i <= max_row && j < cols();
     BOOST_ASSERT_MSG(assert_cond, "Index range error");
     if (!assert_cond)
         throw std::out_of_range("UHMatrix::operator(): Out of range error");
@@ -113,7 +114,7 @@ void
 UHMatrix::print() const {
     std::cout << std::endl;
 
-    for (size_type row = 0; row < ncols_ + 1; ++row) {
+    for (size_type row = 0; row < ncols_; ++row) {
         for (size_type col = 0; col < ncols_; ++col) {
             if (row > col + 1) {
                 std::cout << boost::format("%5s") % " ";

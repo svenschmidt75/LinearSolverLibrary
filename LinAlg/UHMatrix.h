@@ -2,6 +2,21 @@
  * Name  : UHMatrix
  * Path  : 
  * Use   : Upper Hessenberg matrix
+ *         Matrix index scheme is:
+ *
+ *	       [0 2 5 8  ... ] 
+ *	       [1 3 6 9  ... ] 
+ *	       [  4 7 10 ... ] 
+ *	       [      11 ... ] 
+ *	       [      .  ... ] 
+ *	       [      .  ... ] 
+ *	       [      .  ... ]
+ *
+ *         The index of column j is
+ *         j * (j + 3) / 2.
+ *         Note: An (upper) Hessenberg matrix is by definition square!
+ *
+ *         Storage format: column-major
  * Author: Sven Schmidt
  * Date  : 04/07/2013
  */
