@@ -43,7 +43,7 @@ int main(int /*argc*/, char* /*argv[]*/)
 
     bool success;
     Vector x(b.size());
-    int iterations;
+    IMatrix2D::size_type iterations;
     double tol;
     std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.234, 200000);
 

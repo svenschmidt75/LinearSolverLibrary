@@ -411,12 +411,14 @@ namespace LinearSolverLibrary_NS {
                     // of the residual
                     residual = std::fabs(s(i + 1) / normb);
                     if (residual < tol) {
+                        // solve for x
                         Update(x, i, H, s, q);
 
                         return std::make_tuple(true, x, j, residual);
                     }
                 }
 
+                // solve for x and use as new initial x for restart
                 Update(x, m - 1, H, s, q);
 
                 r = b - A * x;
