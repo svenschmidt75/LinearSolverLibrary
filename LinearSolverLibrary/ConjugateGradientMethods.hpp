@@ -302,9 +302,12 @@ namespace LinearSolverLibrary_NS {
         template<typename MATRIX>
         static void Update(Vector & x, typename MATRIX::size_type k, MATRIX const & H, Vector const & s, std::vector<Vector> const & q) {
             /* H(k + 1) (i.e. i = 0, ..., k) is upper triangular.
-             * Solve H(i + 1) * y = s via back-substitution.
+             * Solve H(i + 1) * y = s via back-substitution., 
+             * Numerical Linear Algebra, Trefethen, Bau, Alg. 17.1, page 122.
              * Then, compute x = x + q[i] * y[i], i = 0, ..., k
              */
+
+            // initialize y with a copy of the r.h.s. s
             Vector y(s);
 
             // solve via back-substitution
