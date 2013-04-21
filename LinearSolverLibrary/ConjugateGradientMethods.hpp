@@ -330,6 +330,262 @@ namespace LinearSolverLibrary_NS {
                x += q[j] * y(j);
         }
 
+        static Return_t MINRES(SparseMatrix2D const & A, Vector const & b, int max_iterations = 10000) {
+            /* Implements the MINRES algorithm from
+             *  Reference:
+             *  Anne Greenbaum, Iterative Methods for Solving Linear Systems,
+             *  SIAM 1997
+             */
+            double tol = 1E-15;
+
+            double normb = VectorMath::norm(b);
+
+            // guessed x = null vector
+            Vector r(b);
+
+            double normr = VectorMath::norm(r);
+
+            double residual = normr / normb;
+            if (residual <= tol)
+                return std::make_tuple(true, b, 0, residual);
+
+            auto dim = A.cols();
+
+            // Space for the orthogonal Lanczos vectors.
+            // Due to A being symmetric, we only need to remember 3 of them,
+            // making use of the three-term recurrence formula.
+            std::vector<Vector> q(dim + 1, Vector(dim));
+
+            // search directions
+            std::vector<Vector> p(3 + 1, Vector(dim));
+
+            // the Givens coefficients
+            Vector s(dim + 1), cs(3 + 1), sn(3 + 1), w(dim);
+
+            // approximate solution vector
+            Vector x(b.size());
+
+            double beta = 0.0;
+
+            // initialize the Lanczos iteration
+            double T[4];
+            SparseMatrix2D::size_type k_current = 2;
+            SparseMatrix2D::size_type k_next = 3;
+            SparseMatrix2D::size_type k_prev_1 = 1;
+            SparseMatrix2D::size_type k_prev_2 = 0;
+
+            // initialize r.h.s. vector
+            s(0) = normr;
+
+            q[k_prev_1] = r * (1.0 / normr);
+
+
+
+
+
+
+
+            /***********************
+             * Lanczos iteration 1 *
+             ***********************/
+
+            // compute the next basis vector in the iterative QR factorization
+            // of A
+            w = A * q[k_prev_1];
+
+            T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
+
+            w -= T[k_current] * q[k_prev_1];
+
+            double normw = beta = VectorMath::norm(w);
+            T[k_next] = normw;
+
+            // next normalized basis vector of Krylov space
+            q[k_current] = w * (1.0 / normw);
+
+            // compute the Givens rotation that annihilates T[k_next]
+            GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+            // apply Givens rotation to r.h.s. vector s
+            ApplyPlaneRotation(s(0), s(1), cs(k_current), sn(k_current));
+
+            // using the Givens coefficients cn and sn, eliminate
+            // T[k_next] to make it upper triangular
+            ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+            // compute search vector
+            p[k_current] = q[k_prev_1] * (1.0 / T[k_current]);
+
+            // new approximate solution
+            x += s(0) * p[k_current];
+
+            r = b - A * x;
+            normr = VectorMath::norm(r);
+            residual = normr / normb;
+
+
+
+            /***********************
+             * Lanczos iteration 2 *
+             ***********************/
+
+            k_current = (k_current + 1) % 4;
+            k_next = (k_current + 1) % 4;
+            k_prev_1 = (k_current - 1 + 4) % 4;
+            k_prev_2 = (k_prev_1 - 1 + 4) % 4;
+
+
+            // compute the next basis vector in the iterative QR factorization
+            // of A
+            w = A * q[k_prev_1] - beta * q[k_prev_2];
+
+            T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
+
+            w -= T[k_current] * q[k_prev_1];
+
+            normw = beta = VectorMath::norm(w);
+            T[k_next] = normw;
+
+            // next normalized basis vector of Krylov space
+            q[k_current] = w * (1.0 / normw);
+
+            // apply previous rotation
+            ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
+
+            // compute the Givens rotation that annihilates T[k_next]
+            GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+            // apply Givens rotation to r.h.s. vector s
+            ApplyPlaneRotation(s(1), s(2), cs(k_current), sn(k_current));
+
+            // using the Givens coefficients cn and sn, eliminate
+            // T[k_next] to make it upper triangular
+            ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+            // compute search vector
+            p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
+
+            // new approximate solution
+            x += s(1) * p[k_current];
+
+            r = b - A * x;
+            normr = VectorMath::norm(r);
+            residual = normr / normb;
+
+
+
+
+
+            {
+
+
+                k_current = (k_current + 1) % 4;
+                k_next = (k_current + 1) % 4;
+                k_prev_1 = (k_current - 1 + 4) % 4;
+                k_prev_2 = (k_prev_1 - 1 + 4) % 4;
+
+
+                for (SparseMatrix2D::size_type k = 0; k < dim; ++k) {
+                    // compute the next basis vector in the iterative QR factorization
+                    // of A
+                    w = A * q[k_prev_1] - beta * q[k_prev_2];
+
+                    T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
+
+                    w -= T[k_current] * q[k_prev_1];
+
+                    normw = beta = VectorMath::norm(w);
+                    T[k_next] = normw;
+
+                    // next normalized basis vector of Krylov space
+                    q[k_current] = w * (1.0 / normw);
+
+
+                    double test = VectorMath::dotProduct(q[k_prev_1], q[k_current]);
+                    std::cout << test << std::endl;
+                    test = VectorMath::dotProduct(q[k_prev_2], q[k_current]);
+                    std::cout << test << std::endl;
+                    std::cout << std::endl;
+
+                    k_current = (k_current + 1) % 4;
+                    k_next = (k_current + 1) % 4;
+                    k_prev_1 = (k_current - 1 + 4) % 4;
+                    k_prev_2 = (k_prev_1 - 1 + 4) % 4;
+
+                }
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+            // compute until convergence
+            for (SparseMatrix2D::size_type k = 2; k < max_iterations; ++k) {
+                k_current = (k_current + 1) % 4;
+                k_next = (k_current + 1) % 4;
+                k_prev_1 = (k_current - 1 + 4) % 4;
+                k_prev_2 = (k_prev_1 - 1 + 4) % 4;
+
+
+                // compute the next basis vector in the iterative QR factorization
+                // of A
+                w = A * q[k_prev_1] - beta * q[k_prev_2];
+
+                T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
+
+                w -= T[k_current] * q[k_prev_1];
+
+                normw = beta = VectorMath::norm(w);
+                T[k_next] = normw;
+
+                // next normalized basis vector of Krylov space
+                q[k_current] = w * (1.0 / normw);
+
+                double test = VectorMath::dotProduct(q[k_prev_1], q[k_current]);
+                test = VectorMath::dotProduct(q[k_prev_2], q[k_current]);
+
+                // apply previous rotation
+                ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
+                ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
+
+                // compute the Givens rotation that annihilates T[k_next]
+                GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+                // apply Givens rotation to r.h.s. vector s
+                ApplyPlaneRotation(s(k), s(k + 1), cs(k_current), sn(k_current));
+
+                // using the Givens coefficients cn and sn, eliminate
+                // T[k_next] to make it upper triangular
+                ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
+
+                // compute search vector
+                p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
+
+                // new approximate solution
+                x += s(k) * p[k_current];
+
+                r = b - A * x;
+                normr = VectorMath::norm(r);
+                residual = normr / normb;
+
+                residual = std::fabs(s(k + 1) / normb);
+                if (residual < tol)
+                    return std::make_tuple(true, x, k, residual);
+            }
+
+            // scheme did not converge
+            return std::make_tuple(false, x, 10000, 0);
+        }
+
         static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int max_iterations = 10000) {
             /* Implements the GMRES(m) restarted algorithm from
              *  Reference:
@@ -357,7 +613,7 @@ namespace LinearSolverLibrary_NS {
             // the Givens coefficients
             Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);
 
-            int j = 1;
+            SparseMatrix2D::size_type j = 1;
 
             UHMatrix H(m + 1);
 
@@ -367,7 +623,7 @@ namespace LinearSolverLibrary_NS {
                 q[0] = r * (1.0 / beta);
                 s(0) = beta;
 
-                for (int i = 0; i < m && j <= max_iterations; ++i, ++j) {
+                for (SparseMatrix2D::size_type i = 0; i < m && j <= max_iterations; ++i, ++j) {
                     // compute the next basis vector in the iterative QR factorization
                     // of A
                     w = A * q[i];
@@ -400,11 +656,11 @@ namespace LinearSolverLibrary_NS {
 
                     // using the Givens coefficients cn and sn, eliminate
                     // H(i + 1, i) to make it upper triangular
-                    ApplyPlaneRotation(H(i, i), H(i + 1,i), cs(i), sn(i));
+                    ApplyPlaneRotation(H(i, i), H(i + 1, i), cs(i), sn(i));
 
 //                     H.print();
 
-                    // apply Givens rotation to r.h.s.
+                    // apply Givens rotation to r.h.s. vector s
                     ApplyPlaneRotation(s(i), s(i + 1), cs(i), sn(i));
 
                     // s(k) = 0, except for k = i + 1, which equals the norm

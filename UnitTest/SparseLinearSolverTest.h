@@ -18,6 +18,7 @@ class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(VersteegMalalasekeraBiCGTest);
     CPPUNIT_TEST(VersteegMalalasekeraBiCGSTABTest);
     CPPUNIT_TEST(VersteegMalalasekeraGMRESTest);
+    CPPUNIT_TEST(VersteegMalalasekeraMINRESTest);
 #ifdef INTEGRATION_TEST
     CPPUNIT_TEST(bcsstk05SORTest);
     CPPUNIT_TEST(bcsstk05CGTest);
@@ -43,6 +44,7 @@ protected:
     void VersteegMalalasekeraBiCGTest();
     void VersteegMalalasekeraBiCGSTABTest();
     void VersteegMalalasekeraGMRESTest();
+    void VersteegMalalasekeraMINRESTest();
     void bcsstk05SORTest();
     void bcsstk05CGTest();
     void bcsstk05BiCGTest();
