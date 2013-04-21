@@ -377,7 +377,7 @@ namespace LinearSolverLibrary_NS {
             SparseMatrix2D::size_type k_prev_2 = 0;
 
             // initialize r.h.s. vector
-            s(0) = 1.0; //normr;
+            s(0) = normr;
 
             q[k_prev_1] = r * (1.0 / normr);
 
@@ -419,11 +419,7 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = q[k_prev_1] * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += normb * s(0) * p[k_current];
-
-            r = b - A * x;
-            normr = VectorMath::norm(r);
-            residual = normr / normb;
+            x += s(0) * p[k_current];
 
 
 
@@ -474,11 +470,8 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += normb * s(1) * p[k_current];
+            x += s(1) * p[k_current];
 
-            r = b - A * x;
-            normr = VectorMath::norm(r);
-            residual = normr / normb;
 
             // compute until convergence
             for (SparseMatrix2D::size_type k = 2; k < max_iterations; ++k) {
@@ -513,7 +506,7 @@ namespace LinearSolverLibrary_NS {
 
                 // apply previous rotation
                 ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
-                ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_2), sn(k_prev_2));
+                ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
 
                 // compute the Givens rotation that annihilates T[k_next]
                 GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
@@ -529,13 +522,13 @@ namespace LinearSolverLibrary_NS {
                 p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
 
                 // new approximate solution
-                x += normb * s(k) * p[k_current];
+                x += s(k) * p[k_current];
 
-                r = b - A * x;
-                normr = VectorMath::norm(r);
-                residual = normr / normb;
+//                 r = b - A * x;
+//                 normr = VectorMath::norm(r);
+//                 residual = normr / normb;
 
-//                residual = std::fabs(s(k + 1) / normb);
+               residual = std::fabs(s(k + 1) / normb);
                 if (residual < tol)
                     return std::make_tuple(true, x, k, residual);
             }
