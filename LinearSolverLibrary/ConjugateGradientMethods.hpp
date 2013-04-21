@@ -337,6 +337,7 @@ namespace LinearSolverLibrary_NS {
              *  Reference:
              *  Anne Greenbaum, Iterative Methods for Solving Linear Systems,
              *  SIAM 1997
+             * Used for symmetric matrices that are not necessarily pos. def.
              */
             double tol = 1E-15;
 
@@ -362,7 +363,7 @@ namespace LinearSolverLibrary_NS {
             std::vector<Vector> p(3 + 1, Vector(dim));
 
             // the Givens coefficients
-            Vector s(dim + 1), cs(3 + 1), sn(3 + 1), w(dim);
+            Vector s(100 * dim + 1), cs(3 + 1), sn(3 + 1), w(dim);
 
             // approximate solution vector
             Vector x(b.size());
@@ -561,9 +562,9 @@ namespace LinearSolverLibrary_NS {
             // space for the orthogonal Arnoldi vectors
             std::vector<Vector> q(m + 1, Vector(dim));
 
+#if 0
             BOOST_SCOPE_EXIT(&q) {
                 // check orthogonality of Arnoldi vectors
-#if 0
                 std::cout << std::endl;
 
                 for (SparseMatrix2D::size_type k = 1; k < q.size(); ++k) {
@@ -571,9 +572,8 @@ namespace LinearSolverLibrary_NS {
                     std::cout << test << std::endl;
                     std::cout << std::endl;
                 }
-#endif
-
             } BOOST_SCOPE_EXIT_END
+#endif
 
             // the Givens coefficients
             Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);

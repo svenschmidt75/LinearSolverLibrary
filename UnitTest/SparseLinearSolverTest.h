@@ -24,6 +24,7 @@ class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(bcsstk05CGTest);
     CPPUNIT_TEST(bcsstk05BiCGTest);
     CPPUNIT_TEST(bcsstk05BiCGSTABTest);
+    CPPUNIT_TEST(bcsstk05MINRESTest);
     CPPUNIT_TEST(sts4098SORTest);
     CPPUNIT_TEST(OffshoreSORTest);
     CPPUNIT_TEST(fs_680_1CGTest);
@@ -49,6 +50,7 @@ protected:
     void bcsstk05CGTest();
     void bcsstk05BiCGTest();
     void bcsstk05BiCGSTABTest();
+    void bcsstk05MINRESTest();
     void sts4098SORTest();
     void OffshoreSORTest();
     void fs_680_1CGTest();
