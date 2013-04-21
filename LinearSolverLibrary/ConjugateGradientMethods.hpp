@@ -13,6 +13,8 @@
 
 #include <tuple>
 
+#include <boost/scope_exit.hpp>
+
 
 using namespace LinAlg_NS;
 
@@ -375,7 +377,7 @@ namespace LinearSolverLibrary_NS {
             SparseMatrix2D::size_type k_prev_2 = 0;
 
             // initialize r.h.s. vector
-            s(0) = normr;
+            s(0) = 1.0; //normr;
 
             q[k_prev_1] = r * (1.0 / normr);
 
@@ -417,7 +419,7 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = q[k_prev_1] * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += s(0) * p[k_current];
+            x += normb * s(0) * p[k_current];
 
             r = b - A * x;
             normr = VectorMath::norm(r);
@@ -437,11 +439,12 @@ namespace LinearSolverLibrary_NS {
 
             // compute the next basis vector in the iterative QR factorization
             // of A
-            w = A * q[k_prev_1] - beta * q[k_prev_2];
+            w = A * q[k_prev_1];
 
             T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
 
             w -= T[k_current] * q[k_prev_1];
+            w -= beta * q[k_prev_2];
 
             normw = beta = VectorMath::norm(w);
             T[k_next] = normw;
@@ -466,7 +469,7 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += s(1) * p[k_current];
+            x += normb * s(1) * p[k_current];
 
             r = b - A * x;
             normr = VectorMath::norm(r);
@@ -475,6 +478,7 @@ namespace LinearSolverLibrary_NS {
 
 
 
+#if 0
 
             {
 
@@ -484,27 +488,34 @@ namespace LinearSolverLibrary_NS {
                 k_prev_1 = (k_current - 1 + 4) % 4;
                 k_prev_2 = (k_prev_1 - 1 + 4) % 4;
 
+                q[0] = r * (1.0 / normr);
 
                 for (SparseMatrix2D::size_type k = 0; k < dim; ++k) {
                     // compute the next basis vector in the iterative QR factorization
                     // of A
-                    w = A * q[k_prev_1] - beta * q[k_prev_2];
+                    w = A * q[k];
 
-                    T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
+                    T[k_current] = VectorMath::dotProduct(w, q[k]);
 
-                    w -= T[k_current] * q[k_prev_1];
+                    w -= T[k_current] * q[k];
+
+                    if (k)
+                        w -= beta * q[k - 1];
 
                     normw = beta = VectorMath::norm(w);
                     T[k_next] = normw;
 
                     // next normalized basis vector of Krylov space
-                    q[k_current] = w * (1.0 / normw);
+                    q[k + 1] = w * (1.0 / normw);
 
 
-                    double test = VectorMath::dotProduct(q[k_prev_1], q[k_current]);
+                    double test = VectorMath::dotProduct(q[k], q[k + 1]);
                     std::cout << test << std::endl;
-                    test = VectorMath::dotProduct(q[k_prev_2], q[k_current]);
-                    std::cout << test << std::endl;
+
+                    if (k) {
+                        test = VectorMath::dotProduct(q[k - 1], q[k + 1]);
+                        std::cout << test << std::endl;
+                    }
                     std::cout << std::endl;
 
                     k_current = (k_current + 1) % 4;
@@ -516,7 +527,7 @@ namespace LinearSolverLibrary_NS {
 
 
             }
-
+#endif
 
 
 
@@ -538,11 +549,12 @@ namespace LinearSolverLibrary_NS {
 
                 // compute the next basis vector in the iterative QR factorization
                 // of A
-                w = A * q[k_prev_1] - beta * q[k_prev_2];
+                w = A * q[k_prev_1];
 
                 T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
 
                 w -= T[k_current] * q[k_prev_1];
+                w -= beta * q[k_prev_2];
 
                 normw = beta = VectorMath::norm(w);
                 T[k_next] = normw;
@@ -571,13 +583,13 @@ namespace LinearSolverLibrary_NS {
                 p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
 
                 // new approximate solution
-                x += s(k) * p[k_current];
+                x += normb * s(k) * p[k_current];
 
                 r = b - A * x;
                 normr = VectorMath::norm(r);
                 residual = normr / normb;
 
-                residual = std::fabs(s(k + 1) / normb);
+//                residual = std::fabs(s(k + 1) / normb);
                 if (residual < tol)
                     return std::make_tuple(true, x, k, residual);
             }
@@ -609,6 +621,20 @@ namespace LinearSolverLibrary_NS {
 
             // space for the orthogonal Arnoldi vectors
             std::vector<Vector> q(m + 1, Vector(dim));
+
+            BOOST_SCOPE_EXIT(&q) {
+                // check orthogonality of Arnoldi vectors
+#if 0
+                std::cout << std::endl;
+
+                for (SparseMatrix2D::size_type k = 1; k < q.size(); ++k) {
+                    double test = VectorMath::dotProduct(q[k], q[k - 1]);
+                    std::cout << test << std::endl;
+                    std::cout << std::endl;
+                }
+#endif
+
+            } BOOST_SCOPE_EXIT_END
 
             // the Givens coefficients
             Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);

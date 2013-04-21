@@ -465,6 +465,8 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
     // check m is diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
+    // check that m is symmetric
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
 
 
     // read rhs vector b
