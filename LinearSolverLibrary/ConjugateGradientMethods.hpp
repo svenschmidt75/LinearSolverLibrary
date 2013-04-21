@@ -436,6 +436,11 @@ namespace LinearSolverLibrary_NS {
             k_prev_1 = (k_current - 1 + 4) % 4;
             k_prev_2 = (k_prev_1 - 1 + 4) % 4;
 
+            T[k_current] = 0.0;
+            T[k_next] = 0.0;
+            T[k_prev_1] = beta;
+            T[k_prev_2] = 0.0;
+
 
             // compute the next basis vector in the iterative QR factorization
             // of A
@@ -475,76 +480,17 @@ namespace LinearSolverLibrary_NS {
             normr = VectorMath::norm(r);
             residual = normr / normb;
 
-
-
-
-#if 0
-
-            {
-
-
-                k_current = (k_current + 1) % 4;
-                k_next = (k_current + 1) % 4;
-                k_prev_1 = (k_current - 1 + 4) % 4;
-                k_prev_2 = (k_prev_1 - 1 + 4) % 4;
-
-                q[0] = r * (1.0 / normr);
-
-                for (SparseMatrix2D::size_type k = 0; k < dim; ++k) {
-                    // compute the next basis vector in the iterative QR factorization
-                    // of A
-                    w = A * q[k];
-
-                    T[k_current] = VectorMath::dotProduct(w, q[k]);
-
-                    w -= T[k_current] * q[k];
-
-                    if (k)
-                        w -= beta * q[k - 1];
-
-                    normw = beta = VectorMath::norm(w);
-                    T[k_next] = normw;
-
-                    // next normalized basis vector of Krylov space
-                    q[k + 1] = w * (1.0 / normw);
-
-
-                    double test = VectorMath::dotProduct(q[k], q[k + 1]);
-                    std::cout << test << std::endl;
-
-                    if (k) {
-                        test = VectorMath::dotProduct(q[k - 1], q[k + 1]);
-                        std::cout << test << std::endl;
-                    }
-                    std::cout << std::endl;
-
-                    k_current = (k_current + 1) % 4;
-                    k_next = (k_current + 1) % 4;
-                    k_prev_1 = (k_current - 1 + 4) % 4;
-                    k_prev_2 = (k_prev_1 - 1 + 4) % 4;
-
-                }
-
-
-            }
-#endif
-
-
-
-
-
-
-
-
-
-
-
             // compute until convergence
             for (SparseMatrix2D::size_type k = 2; k < max_iterations; ++k) {
                 k_current = (k_current + 1) % 4;
                 k_next = (k_current + 1) % 4;
                 k_prev_1 = (k_current - 1 + 4) % 4;
                 k_prev_2 = (k_prev_1 - 1 + 4) % 4;
+
+                T[k_current] = 0.0;
+                T[k_next] = 0.0;
+                T[k_prev_1] = beta;
+                T[k_prev_2] = 0.0;
 
 
                 // compute the next basis vector in the iterative QR factorization
@@ -567,7 +513,7 @@ namespace LinearSolverLibrary_NS {
 
                 // apply previous rotation
                 ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
-                ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
+                ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_2), sn(k_prev_2));
 
                 // compute the Givens rotation that annihilates T[k_next]
                 GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
