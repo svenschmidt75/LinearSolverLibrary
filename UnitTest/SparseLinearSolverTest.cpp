@@ -504,7 +504,7 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
     }
 
-    // needs 5 iterations
+    // needs 4 iterations
 
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
 
@@ -737,7 +737,7 @@ SparseLinearSolverTest::bcsstk05MINRESTest() {
     {
         HighResTimer t;
 
-        // needs 355 iterations
+        // needs 331 iterations
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
     }
 
@@ -795,6 +795,61 @@ SparseLinearSolverTest::sts4098SORTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+}
+
+void
+SparseLinearSolverTest::sts4098MINRESTest() {
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+
+
+    // read rhs vector b
+    filename = "\\Develop\\SparseMatrixData\\sts4098\\sts4098_b.ar";
+    IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
+
+    Vector const b = b_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 4098ull, b.size());
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 59944 iterations (due to very high condition number?)
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 60000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);
+
+
+    // compute A x and check that = b
+    Vector tmp(x.size());
+    tmp = m * x;
+
+
+    // compare vectors
+    // Note: The condition number is cond(A) = 2.17087e+8. With a default tolerance
+    // of 1E-15 (close to double eps), we cannot expect much more than 1E-7 in the
+    // final result.
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-8));
 }
 
 void

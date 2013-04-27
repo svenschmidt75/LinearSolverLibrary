@@ -451,8 +451,10 @@ namespace LinearSolverLibrary_NS {
             T[k_prev_1] = beta;
             T[k_prev_2] = 0.0;
 
+            // reinitialize the r.h.s. vector
             s(k_prev_1) = 0.0;
             s(k_prev_2) = 0.0;
+            s(k_next) = 0.0;
 
 
             // compute the 2nd basis vector in the iterative QR factorization
@@ -502,8 +504,10 @@ namespace LinearSolverLibrary_NS {
                 T[k_prev_1] = beta;
                 T[k_prev_2] = 0.0;
 
+                // reinitialize the r.h.s. vector
                 s(k_prev_1) = 0.0;
                 s(k_prev_2) = 0.0;
+                s(k_next) = 0.0;
 
 
                 // compute the next basis vector in the iterative QR factorization
