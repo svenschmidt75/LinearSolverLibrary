@@ -72,7 +72,7 @@ SparseLinearSolverUtil::isVectorEqual(Vector const & v1, Vector const & v2, doub
         return delta < tol;
     });
 
-    std::cout << "max_delta: " << max_delta << std::endl;
+//    std::cout << "max_delta: " << max_delta << std::endl;
 
     return ret.first == v1.cend() && ret.second == v2.cend();
 }
