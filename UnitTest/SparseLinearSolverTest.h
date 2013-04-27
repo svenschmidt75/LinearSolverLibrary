@@ -12,25 +12,25 @@
 
 class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseLinearSolverTest);
-    CPPUNIT_TEST(VersteegMalalasekeraSORTest);
-    CPPUNIT_TEST(VersteegMalalasekeraSORMultiColorTest);
-    CPPUNIT_TEST(VersteegMalalasekeraCGTest);
-    CPPUNIT_TEST(VersteegMalalasekeraBiCGTest);
-    CPPUNIT_TEST(VersteegMalalasekeraBiCGSTABTest);
-    CPPUNIT_TEST(VersteegMalalasekeraGMRESTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraSORTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraSORMultiColorTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraCGTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraBiCGTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraBiCGSTABTest);
+//     CPPUNIT_TEST(VersteegMalalasekeraGMRESTest);
     CPPUNIT_TEST(VersteegMalalasekeraMINRESTest);
 #ifdef INTEGRATION_TEST
-    CPPUNIT_TEST(bcsstk05SORTest);
-    CPPUNIT_TEST(bcsstk05CGTest);
-    CPPUNIT_TEST(bcsstk05BiCGTest);
-    CPPUNIT_TEST(bcsstk05BiCGSTABTest);
+//     CPPUNIT_TEST(bcsstk05SORTest);
+//     CPPUNIT_TEST(bcsstk05CGTest);
+//     CPPUNIT_TEST(bcsstk05BiCGTest);
+//     CPPUNIT_TEST(bcsstk05BiCGSTABTest);
     CPPUNIT_TEST(bcsstk05MINRESTest);
-    CPPUNIT_TEST(sts4098SORTest);
-    CPPUNIT_TEST(OffshoreSORTest);
-    CPPUNIT_TEST(fs_680_1CGTest);
-    CPPUNIT_TEST(fs_680_1BiCGTest);
-    CPPUNIT_TEST(fs_680_1BiCGSTABTest);
-    CPPUNIT_TEST(fs_680_1GMRESTest);
+//     CPPUNIT_TEST(sts4098SORTest);
+//     CPPUNIT_TEST(OffshoreSORTest);
+//     CPPUNIT_TEST(fs_680_1CGTest);
+//     CPPUNIT_TEST(fs_680_1BiCGTest);
+//     CPPUNIT_TEST(fs_680_1BiCGSTABTest);
+//    CPPUNIT_TEST(fs_680_1GMRESTest);
 #endif
     CPPUNIT_TEST_SUITE_END();
 

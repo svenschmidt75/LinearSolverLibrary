@@ -343,9 +343,8 @@ namespace LinearSolverLibrary_NS {
 
             double normb = VectorMath::norm(b);
 
-            // guessed x = null vector
+            // initial guess x_{0} = null
             Vector r(b);
-
             double normr = VectorMath::norm(r);
 
             double residual = normr / normb;
@@ -357,13 +356,13 @@ namespace LinearSolverLibrary_NS {
             // Space for the orthogonal Lanczos vectors.
             // Due to A being symmetric, we only need to remember 3 of them,
             // making use of the three-term recurrence formula.
-            std::vector<Vector> q(dim + 1, Vector(dim));
+            std::vector<Vector> q(3 + 1, Vector(dim));
 
             // search directions
             std::vector<Vector> p(3 + 1, Vector(dim));
 
             // the Givens coefficients
-            Vector s(100 * dim + 1), cs(3 + 1), sn(3 + 1), w(dim);
+            Vector s(3 + 1), cs(3 + 1), sn(3 + 1), w(dim);
 
             // approximate solution vector
             Vector x(b.size());
@@ -378,7 +377,7 @@ namespace LinearSolverLibrary_NS {
             SparseMatrix2D::size_type k_prev_2 = 0;
 
             // initialize r.h.s. vector
-            s(0) = normr;
+            s(k_current) = normr;
 
             q[k_prev_1] = r * (1.0 / normr);
 
@@ -392,7 +391,7 @@ namespace LinearSolverLibrary_NS {
              * Lanczos iteration 1 *
              ***********************/
 
-            // compute the next basis vector in the iterative QR factorization
+            // compute the 1st basis vector in the iterative QR factorization
             // of A
             w = A * q[k_prev_1];
 
@@ -410,7 +409,7 @@ namespace LinearSolverLibrary_NS {
             GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
             // apply Givens rotation to r.h.s. vector s
-            ApplyPlaneRotation(s(0), s(1), cs(k_current), sn(k_current));
+            ApplyPlaneRotation(s(k_current), s(k_next), cs(k_current), sn(k_current));
 
             // using the Givens coefficients cn and sn, eliminate
             // T[k_next] to make it upper triangular
@@ -420,7 +419,8 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = q[k_prev_1] * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += s(0) * p[k_current];
+            x += s(k_current) * p[k_current];
+
 
 
 
@@ -433,13 +433,29 @@ namespace LinearSolverLibrary_NS {
             k_prev_1 = (k_current - 1 + 4) % 4;
             k_prev_2 = (k_prev_1 - 1 + 4) % 4;
 
+
+            /* The tridiagonal structure of T is like
+             *
+             * | a(1) b(1)               |
+             * | b(1) a(2) b(2)          |
+             * |      b(2) a(3) b(3)     |
+             * |        .  .  .          |
+             * |         .  .  .         |
+             * |          .  .  . b(k-1) |
+             * |           b(k-1) a(k)   |
+             */
             T[k_current] = 0.0;
             T[k_next] = 0.0;
+
+            // initialize column with b(2) above
             T[k_prev_1] = beta;
             T[k_prev_2] = 0.0;
 
+            s(k_prev_1) = 0.0;
+            s(k_prev_2) = 0.0;
 
-            // compute the next basis vector in the iterative QR factorization
+
+            // compute the 2nd basis vector in the iterative QR factorization
             // of A
             w = A * q[k_prev_1];
 
@@ -461,7 +477,7 @@ namespace LinearSolverLibrary_NS {
             GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
             // apply Givens rotation to r.h.s. vector s
-            ApplyPlaneRotation(s(1), s(2), cs(k_current), sn(k_current));
+            ApplyPlaneRotation(s(k_current), s(k_next), cs(k_current), sn(k_current));
 
             // using the Givens coefficients cn and sn, eliminate
             // T[k_next] to make it upper triangular
@@ -471,7 +487,7 @@ namespace LinearSolverLibrary_NS {
             p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
 
             // new approximate solution
-            x += s(1) * p[k_current];
+            x += s(k_current) * p[k_current];
 
 
             // compute until convergence
@@ -485,6 +501,9 @@ namespace LinearSolverLibrary_NS {
                 T[k_next] = 0.0;
                 T[k_prev_1] = beta;
                 T[k_prev_2] = 0.0;
+
+                s(k_prev_1) = 0.0;
+                s(k_prev_2) = 0.0;
 
 
                 // compute the next basis vector in the iterative QR factorization
@@ -513,7 +532,7 @@ namespace LinearSolverLibrary_NS {
                 GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
                 // apply Givens rotation to r.h.s. vector s
-                ApplyPlaneRotation(s(k), s(k + 1), cs(k_current), sn(k_current));
+                ApplyPlaneRotation(s(k_current), s(k_next), cs(k_current), sn(k_current));
 
                 // using the Givens coefficients cn and sn, eliminate
                 // T[k_next] to make it upper triangular
@@ -523,13 +542,13 @@ namespace LinearSolverLibrary_NS {
                 p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
 
                 // new approximate solution
-                x += s(k) * p[k_current];
+                x += s(k_current) * p[k_current];
 
 //                 r = b - A * x;
 //                 normr = VectorMath::norm(r);
 //                 residual = normr / normb;
 
-               residual = std::fabs(s(k + 1) / normb);
+               residual = std::fabs(s(k_next) / normb);
                 if (residual < tol)
                     return std::make_tuple(true, x, k, residual);
             }
