@@ -20,11 +20,11 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS Minres final {
     public:
         /* Return type of iterative CG solvers.
-          *   bool: success or failure
-          * Vector: solution x
-          *    int: Number of iterations needed
-          * double: Tolerance achieved
-          */
+         *   bool: success or failure
+         * Vector: solution x
+         *    int: Number of iterations needed
+         * double: Tolerance achieved
+         */
         typedef std::tuple<bool, LinAlg_NS::Vector, LinAlg_NS::IMatrix2D::size_type, double> Return_t;
 
     public:
@@ -60,8 +60,6 @@ namespace LinearSolverLibrary_NS {
         mutable LinAlg_NS::SparseMatrix2D::size_type k_next;
         mutable LinAlg_NS::SparseMatrix2D::size_type k_prev_1;
         mutable LinAlg_NS::SparseMatrix2D::size_type k_prev_2;
-
-
     };
 
 } // LinearSolverLibrary_NS

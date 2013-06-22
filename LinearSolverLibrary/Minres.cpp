@@ -43,7 +43,6 @@ Minres::solve(SparseMatrix2D const & A, Vector const & b, int maxIterations, dou
     iteration1(A);
     iteration2(A);
 
-
     // compute until convergence
     for (SparseMatrix2D::size_type k = 2; k < maxIterations; ++k) {
         k_current = (k_current + 1) % 4;
@@ -125,6 +124,7 @@ Minres::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const {
 
     // approximate solution vector
     x = Vector(dim);
+    w = Vector(dim);
 
     beta = 0.0;
 
