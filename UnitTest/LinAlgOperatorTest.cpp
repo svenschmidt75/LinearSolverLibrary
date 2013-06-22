@@ -60,7 +60,7 @@ LinAlgOperatorTest::vectorAddScalarMulVectorTest() {
 
     double scalar = 0.93847;
 
-    result = v1 + scalar * v2;
+    result = v1 + (scalar * v2);
 
     // compare to this result
     for (int i = 0; i < 10; ++i) {

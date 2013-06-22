@@ -108,7 +108,7 @@ namespace LinAlg_NS {
 
         template<typename VECTOR_EXPR>
         Vector & operator=(VECTOR_EXPR const & in) {
-            static_assert(typename expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "in is not a vector-like type");
+            static_assert(typename internal::expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "in is not a vector-like type");
 
             data_.resize(in.size());
 

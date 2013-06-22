@@ -14,7 +14,7 @@
 
 namespace LinAlg_NS {
 
-    // forward-declarations
+    // forward declarations
     class Vector;
     class Matrix2D;
     class SparseMatrix2D;

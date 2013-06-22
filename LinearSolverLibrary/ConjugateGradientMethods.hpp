@@ -87,69 +87,6 @@ namespace LinearSolverLibrary_NS {
             return std::make_tuple(false, x, 10000, 0);
         }
 
-        static Return_t BiCG_old(SparseMatrix2D const & m, SparseMatrix2D const & m_transposed, Vector const & b, int max_iterations = 10000) {
-            /* Biconjugate gradient algorithm
-             * as presented in 
-             * "Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods",
-             * page 20.
-             * Use BiCG for indefinite A, i.e. eigenvalues are not required >= 0.
-             */
-            Vector x(b.size());
-
-            double tol = 1E-15;
-            double alpha;
-
-            double normb = VectorMath::norm(b);
-
-            // guessed x = null vector
-            Vector r1(b);
-
-            double residual = VectorMath::norm(r1) / normb;
-            if (residual <= tol)
-                return std::make_tuple(true, b, 0, residual);
-
-            Vector r2(b);
-            Vector p1(r1);
-            Vector p2(r2);
-            double rho;
-            double rho_prev;
-
-            for (SparseMatrix2D::size_type i = 0; i < max_iterations; ++i) {
-                rho = VectorMath::dotProduct(r1, r2);
-                if (!rho) {
-                    // r1 and r2 orthogonal
-                    double residual = VectorMath::norm(r1) / normb;
-                    return std::make_tuple(false, x, i, residual);
-                }
-
-                if (i) {
-                    double beta = rho / rho_prev;
-                    p1 = r1 + beta * p1;
-                    p2 = r2 + beta * p2;
-                }
-
-                // most expensive operation
-                Vector q1 = m * p1;
-                Vector q2 = m_transposed * p2;
-
-                alpha = rho / VectorMath::dotProduct(p2, q1);
-                x += alpha * p1;
-                r1 -= alpha * q1;
-                r2 -= alpha * q2;
-
-                rho_prev = rho;
-
-                residual = VectorMath::norm(r1) / normb;
-                if (residual <= tol)
-                    return std::make_tuple(true, x, i, residual);
-
-//                 std::cout << "Iteration " << i << ": " << residual << std::endl;
-            }
-
-            // scheme did not converge
-            return std::make_tuple(false, x, 10000, 0);
-        }
-
         static Return_t BiCG(SparseMatrix2D const & m, SparseMatrix2D const & m_transposed, Vector const & b, int max_iterations = 10000) {
             /* Biconjugate gradient algorithm
              * as presented in 
@@ -352,6 +289,7 @@ namespace LinearSolverLibrary_NS {
                 return std::make_tuple(true, b, 0, residual);
 
             auto dim = A.cols();
+            BOOST_ASSERT_MSG(dim == b.size(), "MINRES: Size mismatch");
 
             // Space for the orthogonal Lanczos vectors.
             // Due to A being symmetric, we only need to remember 3 of them,
@@ -365,7 +303,7 @@ namespace LinearSolverLibrary_NS {
             Vector s(3 + 1), cs(3 + 1), sn(3 + 1), w(dim);
 
             // approximate solution vector
-            Vector x(b.size());
+            Vector x(dim);
 
             double beta = 0.0;
 
