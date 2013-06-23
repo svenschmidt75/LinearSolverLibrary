@@ -164,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gmres.cpp" />
     <ClCompile Include="internal\BucketElement.cpp" />
     <ClCompile Include="internal\BucketList.cpp" />
     <ClCompile Include="internal\MultiColor.cpp" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
+    <ClInclude Include="Gmres.h" />
     <ClInclude Include="internal\BucketElement.h" />
     <ClInclude Include="internal\BucketList.h" />
     <ClInclude Include="internal\MultiColor.h" />

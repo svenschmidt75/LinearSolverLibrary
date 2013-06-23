@@ -47,15 +47,21 @@ namespace LinAlg_NS {
     template<typename VECTOR_EXPR1, typename VECTOR_EXPR2, typename BINOP>
     static VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP>, Vector, internal::PLUS<double>>
     operator+(VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP> const & lhs, Vector const & rhs) {
-        return VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP>, Vector, internal::PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP>, Vector, PLUS<double>>(lhs, rhs);
     }
 
     template<typename VECTOR_EXPR1, typename VECTOR_EXPR2, typename BINOP1, typename VECTOR_EXPR3, typename VECTOR_EXPR4, typename BINOP2>
-    static VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP1>, VectorBinaryExpr<VECTOR_EXPR3, VECTOR_EXPR4, BINOP2>, internal::PLUS<double>>
+    static VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP1>, VectorBinaryExpr<VECTOR_EXPR3, VECTOR_EXPR4, BINOP2>, PLUS<double>>
     operator+(VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP1> const & lhs, VectorBinaryExpr<VECTOR_EXPR3, VECTOR_EXPR4, BINOP2> const & rhs) {
-        return VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP1>, VectorBinaryExpr<VECTOR_EXPR3, VECTOR_EXPR4, BINOP2>, internal::PLUS<double>>(lhs, rhs);
+        return VectorBinaryExpr<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP1>, VectorBinaryExpr<VECTOR_EXPR3, VECTOR_EXPR4, BINOP2>, PLUS<double>>(lhs, rhs);
     }
-    
+
+    template<typename VECTOR_EXPR, typename BINOP>
+    static VectorBinaryExpr<Vector, ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP>, PLUS<double>>
+    operator+(Vector const & lhs, ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs) {
+        return VectorBinaryExpr<Vector, ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP>, PLUS<double>>(lhs, rhs);
+    }
+
     /* If VS would better work with templates, we could say
     * 
     template<typename VECTOR_EXPR1, typename VECTOR_EXPR2>
