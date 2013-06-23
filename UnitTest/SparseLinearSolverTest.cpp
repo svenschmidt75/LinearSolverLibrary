@@ -506,10 +506,10 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
 
     // needs 4 iterations
 
-    CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 
 
 
@@ -519,7 +519,79 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
     tmp = m * x;
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
+}
+
+void
+SparseLinearSolverTest::VersteegMalalasekeraTFQMRTest() {
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\Versteeg_Malalasekera\\Versteeg_Malalasekera.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 18ull, m.cols());
+
+
+    // check m is diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+    // check that m is symmetric
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+
+
+    // read rhs vector b
+    filename = "\\Develop\\SparseMatrixData\\Versteeg_Malalasekera\\Versteeg_Malalasekera_b.ar";
+    IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
+
+    Vector const b = b_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 18ull, b.size());
+
+
+
+    // read solution vector x
+    filename = "\\Develop\\SparseMatrixData\\Versteeg_Malalasekera\\Versteeg_Malalasekera_x.ar";
+    IVectorReader::Ptr x_reader = VectorReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading vector data", x_reader->read());
+
+    Vector const x_ref = x_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", 18ull, x_ref.size());
+
+    //   m.print();
+
+    bool success;
+    Vector x(x_ref.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+
+    /************************************************************************/
+    /* Demonstrate the ideal case of iterations needed = 5                  */
+    /************************************************************************/
+    {
+        HighResTimer t;
+
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::TFQMR(m, b, 10000);
+    }
+
+    // needs 4 iterations
+
+    CPPUNIT_ASSERT_MESSAGE("TFQMR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+
+
+
+
+    // compute A x and check that = b
+    Vector tmp(x.size());
+    tmp = m * x;
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
 
 void

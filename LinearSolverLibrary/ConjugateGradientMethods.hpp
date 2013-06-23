@@ -226,41 +226,56 @@ namespace LinearSolverLibrary_NS {
             Vector x(dim);
 
             double normb = VectorMath::norm(b);
-            double rho = VectorMath::dotProduct(r0, r0);
-            double tau = VectorMath::norm(r0);
+            double tau = normb;
+            double rho = tau * tau;
             double theta = 0;
             double eta = 0;
+            double residual;
 
             for (SparseMatrix2D::size_type i = 0; i < maxIterations; ++i) {
                 double sigma = VectorMath::dotProduct(r0, v);
                 if (sigma == 0)
                     return std::make_tuple(false, x, i, 0);
                 double alpha = rho / sigma;
-                Vector y2 = y1 - alpha * v;
-                Vector u2 = A * y2;
 
                 // even branch
                 w -= alpha * u1;
-                d = y1 + (theta * theta * eta / alpha) * d;
+//                d = y1 + (theta * theta * eta / alpha) * d;
+  
+                double tmp1 = theta * theta * eta / alpha;
+                Vector tmp2 = tmp1 * d;
+                d = y1 + tmp2;
+
                 theta = VectorMath::norm(w) / tau;
                 double c = 1.0 / std::sqrt(1.0 + tau * tau);
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
                 SparseMatrix2D::size_type m = 2 * (i + 1) - 2;
-                if (tau * std::sqrt(m) < tol * normb)
+                if (tau * std::sqrt(m + 1) < tol * normb)
                     return std::make_tuple(true, x, i, tau * std::sqrt(m));
 
                 // odd branch
+                Vector y2 = y1 - alpha * v;
+                Vector u2 = A * y2;
                 w -= alpha * u2;
-                d = y2 + (theta * theta * eta / alpha) * d;
+//                d = y2 + (theta * theta * eta / alpha) * d;
+
+                tmp1 = theta * theta * eta / alpha;
+                tmp2 = tmp1 * d;
+                d = y1 + tmp2;
+
                 theta = VectorMath::norm(w) / tau;
                 c = 1.0 / std::sqrt(1.0 + tau * tau);
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
+                m += 1;
                 if (tau * std::sqrt(m + 1) < tol * normb)
                     return std::make_tuple(true, x, i, tau * std::sqrt(m));
+
+                if (rho == 0)
+                    return std::make_tuple(false, x, i, 0);
 
                 double rho2 = VectorMath::dotProduct(r0, w);
                 double beta = rho2 / rho;
@@ -268,6 +283,7 @@ namespace LinearSolverLibrary_NS {
                 y1 = w + beta * y2;
                 u1 = A * y1;
                 v = u1 + beta * (u2 + beta * v);
+                residual = VectorMath::norm(v) / normb;
             }
 
             // scheme did not converge
