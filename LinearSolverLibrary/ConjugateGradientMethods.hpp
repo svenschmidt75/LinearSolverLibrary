@@ -238,7 +238,7 @@ namespace LinearSolverLibrary_NS {
                     return std::make_tuple(false, x, i, 0);
                 double alpha = rho / sigma;
 
-                // even branch
+                // odd branch
                 w -= alpha * u1;
 //                d = y1 + (theta * theta * eta / alpha) * d;
   
@@ -251,11 +251,11 @@ namespace LinearSolverLibrary_NS {
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
-                SparseMatrix2D::size_type m = 2 * (i + 1) - 2;
+                SparseMatrix2D::size_type m = 2 * (i + 1) - 2 + 1;
                 if (tau * std::sqrt(m + 1) < tol * normb)
-                    return std::make_tuple(true, x, i, tau * std::sqrt(m));
+                    return std::make_tuple(true, x, i, tau * std::sqrt(m + 1));
 
-                // odd branch
+                // even branch
                 Vector y2 = y1 - alpha * v;
                 Vector u2 = A * y2;
                 w -= alpha * u2;
@@ -270,9 +270,9 @@ namespace LinearSolverLibrary_NS {
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
-                m += 1;
+                m += 2;
                 if (tau * std::sqrt(m + 1) < tol * normb)
-                    return std::make_tuple(true, x, i, tau * std::sqrt(m));
+                    return std::make_tuple(true, x, i, tau * std::sqrt(m + 1));
 
                 if (rho == 0)
                     return std::make_tuple(false, x, i, 0);
