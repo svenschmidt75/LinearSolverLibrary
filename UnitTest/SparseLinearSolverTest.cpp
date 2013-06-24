@@ -1184,7 +1184,7 @@ SparseLinearSolverTest::fs_680_1BiCGSTABTest() {
 
 void
 SparseLinearSolverTest::fs_680_1GMRESTest() {
-        /* FS 680 1: Chemical kinetics problems
+    /* FS 680 1: Chemical kinetics problems
      * RCHEM radiation chemistry study -- 1st output time step
      * from set FACSIMILE, from the Harwell-Boeing Collection
      *
@@ -1232,4 +1232,56 @@ SparseLinearSolverTest::fs_680_1GMRESTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-8));
+}
+
+void
+SparseLinearSolverTest::fs_680_1TFQMRTest() {
+    /* FS 680 1: Chemical kinetics problems
+     * RCHEM radiation chemistry study -- 1st output time step
+     * from set FACSIMILE, from the Harwell-Boeing Collection
+     *
+     * Note: fs_680_1 is a 680x680 real unsymmetric matrix which
+     * is not diagonally dominant.
+     */
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\fs_680_1\\fs_680_1.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(680);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(680);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 517 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::TFQMR(m, b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("TFQMR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-7));
 }

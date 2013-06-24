@@ -240,14 +240,9 @@ namespace LinearSolverLibrary_NS {
 
                 // odd branch
                 w -= alpha * u1;
-//                d = y1 + (theta * theta * eta / alpha) * d;
-  
-                double tmp1 = theta * theta * eta / alpha;
-                Vector tmp2 = tmp1 * d;
-                d = y1 + tmp2;
-
+                d = y1 + (theta * theta * eta / alpha) * d;
                 theta = VectorMath::norm(w) / tau;
-                double c = 1.0 / std::sqrt(1.0 + tau * tau);
+                double c = 1.0 / std::sqrt(1.0 + theta * theta);
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
@@ -259,18 +254,13 @@ namespace LinearSolverLibrary_NS {
                 Vector y2 = y1 - alpha * v;
                 Vector u2 = A * y2;
                 w -= alpha * u2;
-//                d = y2 + (theta * theta * eta / alpha) * d;
-
-                tmp1 = theta * theta * eta / alpha;
-                tmp2 = tmp1 * d;
-                d = y1 + tmp2;
-
+                d = y2 + (theta * theta * eta / alpha) * d;
                 theta = VectorMath::norm(w) / tau;
-                c = 1.0 / std::sqrt(1.0 + tau * tau);
+                c = 1.0 / std::sqrt(1.0 + theta * theta);
                 tau = tau * theta * c;
                 eta = c * c * alpha;
                 x += eta * d;
-                m += 2;
+                m += 1;
                 if (tau * std::sqrt(m + 1) < tol * normb)
                     return std::make_tuple(true, x, i, tau * std::sqrt(m + 1));
 
