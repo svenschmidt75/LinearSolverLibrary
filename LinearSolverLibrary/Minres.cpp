@@ -20,7 +20,7 @@ Minres::Minres()
     w(3 + 1) {}
 
 Minres::Return_t
-Minres::solve(SparseMatrix2D const & A, Vector const & b, int maxIterations, double tolerance = 1E-15) const {
+Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterations, double tolerance = 1E-15) const {
     /* Implements the MINRES algorithm from
      *  Reference:
      *  Anne Greenbaum, Iterative Methods for Solving Linear Systems,
@@ -75,9 +75,6 @@ Minres::solve(SparseMatrix2D const & A, Vector const & b, int maxIterations, dou
 
         // next normalized basis vector of Krylov space
         q[k_current] = w * (1.0 / normw);
-
-        double test = VectorMath::dotProduct(q[k_prev_1], q[k_current]);
-        test = VectorMath::dotProduct(q[k_prev_2], q[k_current]);
 
         // apply previous rotation
         ResHelper::ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
@@ -244,6 +241,12 @@ Minres::iteration2(SparseMatrix2D const & A) const {
 
     // new approximate solution
     x += s(k_current) * p[k_current];
+}
+
+Minres::Return_t
+Minres::solve(SparseMatrix2D const & A, Vector const & b, int maxIterations, double tolerance = 1E-15) {
+    Minres minres;
+    return minres.solve_internal(A, b, maxIterations, tolerance);
 }
 
 } // LinearSolverLibrary_NS

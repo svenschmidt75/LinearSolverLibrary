@@ -281,7 +281,7 @@ namespace LinearSolverLibrary_NS {
         }
 
         static Return_t MINRES(SparseMatrix2D const & A, Vector const & b, int max_iterations = 10000) {
-            return Minres().solve(A, b, max_iterations, 1E-15);
+            return Minres::solve(A, b, max_iterations, 1E-15);
         }
 
         static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations = 10000) {

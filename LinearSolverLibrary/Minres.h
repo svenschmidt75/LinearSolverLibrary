@@ -28,10 +28,11 @@ namespace LinearSolverLibrary_NS {
         typedef std::tuple<bool, LinAlg_NS::Vector, LinAlg_NS::IMatrix2D::size_type, double> Return_t;
 
     public:
-        Minres();
-        Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance) const;
+        static Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance);
 
     private:
+        Minres();
+        Return_t solve_internal(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance) const;
         void setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const;
         void iteration1(LinAlg_NS::SparseMatrix2D const & A) const;
         void iteration2(LinAlg_NS::SparseMatrix2D const & A) const;
