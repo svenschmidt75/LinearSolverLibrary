@@ -893,6 +893,52 @@ SparseLinearSolverTest::bcsstk05MINRESTest() {
 }
 
 void
+SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonally dominant
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\bcsstk05\\bcsstk05.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(153);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(153);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 331 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("BiCGSTAB failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCGSTAB solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+}
+
+void
 SparseLinearSolverTest::sts4098SORTest() {
     // read matrix m
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
