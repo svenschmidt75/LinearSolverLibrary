@@ -171,6 +171,7 @@
     <ClCompile Include="internal\MultiColor_internal.cpp" />
     <ClCompile Include="MatrixDecomposition.cpp" />
     <ClCompile Include="Minres.cpp" />
+    <ClCompile Include="MinresLanPro.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Debug|x64'">Create</PrecompiledHeader>
@@ -191,6 +192,7 @@
     <ClInclude Include="internal\MultiColor_internal.h" />
     <ClInclude Include="MatrixDecomposition.h" />
     <ClInclude Include="Minres.h" />
+    <ClInclude Include="MinresLanPro.h" />
     <ClInclude Include="ResHelper.h" />
     <ClInclude Include="SparseLinearSolverLibrary.h" />
     <ClInclude Include="pch.h" />

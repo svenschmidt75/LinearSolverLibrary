@@ -1,9 +1,10 @@
 /*
- * Name  : Minres
+ * Name  : MinresLanPro
  * Path  : 
- * Use   : Implements sparse linear solver algorithm MINRES
+ * Use   : Implements sparse linear solver algorithm MINRES, with partial
+ *         reorthogonalization.
  * Author: Sven Schmidt
- * Date  : 06/15/2013
+ * Date  : 07/02/2013
  */
 #pragma once
 
@@ -17,7 +18,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS Minres final {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS MinresLanPro final {
     public:
         /* Return type of iterative CG solvers.
          *   bool: success or failure
@@ -31,7 +32,7 @@ namespace LinearSolverLibrary_NS {
         static Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance);
 
     private:
-        Minres();
+        MinresLanPro();
         Return_t solve_internal(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance) const;
         void setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const;
         void iteration1(LinAlg_NS::SparseMatrix2D const & A) const;
@@ -43,6 +44,7 @@ namespace LinearSolverLibrary_NS {
 
         // orthogonalized via Lanczos
         mutable std::vector<LinAlg_NS::Vector> q;
+        mutable LinAlg_NS::IMatrix2D::size_type current_lanczos_vector_index;
 
         // the Givens coefficients
         mutable LinAlg_NS::Vector s;
