@@ -22,14 +22,22 @@ MinresLanPro::MinresLanPro()
 namespace {
 
     void printLanczosVectorsOrthogonal(std::vector<Vector> const & q, IMatrix2D::size_type size) {
+        /* The best we can hope for in orthogonality of the Lanczos vectors
+         * is <q_i, q_j> = eps if they are orthogonal.
+         * Here, we compute the exponent of how much the orthogonality deviates
+         * from eps.
+         * Example: <q_i, q_j> = 10^{-12}
+         * Result: 4, i.e. -12 + 16 (from eps) = 4
+         */
+        double const machine_eps = std::numeric_limits<double>::epsilon();
         std::cout << std::endl;
-        for (IMatrix2D::size_type i = size - 1; i < size; --i) {
-            for (IMatrix2D::size_type j = 0; j < i; ++j) {
-                double angle = VectorMath::dotProduct(q[i], q[j]);
-                std::cout << "(" << i << "," << j << "): " << angle << std::endl;
-            }
+        for (IMatrix2D::size_type i = 0; i < size - 1; ++i) {
+            double angle = VectorMath::dotProduct(q[i], q[size - 1]);
+            double deviation = std::fabs(angle / machine_eps);
+            deviation = std::log10(deviation);
+            int int_deviation = static_cast<int>(boost::math::round(deviation));
+            std::cout << int_deviation << " ";
         }
-        std::cout << std::endl;
     }
 }
 
@@ -81,11 +89,15 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         // of A
         w = A * q[current_lanczos_vector_index - 1];
 
+        // TODO: a(i)
         T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
 
         w -= T[k_current] * q[current_lanczos_vector_index - 1];
+
+        // TODO: beta = b(i-1)
         w -= beta * q[current_lanczos_vector_index - 2];
 
+        // TODO: beta = b(i)
         normw = beta = VectorMath::norm(w);
         T[k_next] = normw;
 
@@ -136,6 +148,9 @@ MinresLanPro::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) cons
     // making use of the three-term recurrence formula.
     q.resize(dim + 1, Vector(dim));
 
+    a.resize(dim + 1, Vector(dim));
+    b.resize(dim + 1, Vector(dim));
+
     // search directions
     p.resize(3 + 1, Vector(dim));
 
@@ -143,6 +158,7 @@ MinresLanPro::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) cons
     x = Vector(dim);
     w = Vector(dim);
 
+    // TODO: b(0)
     beta = 0.0;
 
     // initialize the Lanczos iteration
@@ -168,6 +184,7 @@ MinresLanPro::iteration1(SparseMatrix2D const & A) const {
     // of A
     w = A * q[current_lanczos_vector_index - 1];
 
+    // TODO: a(i)
     T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
 
     w -= T[k_current] * q[current_lanczos_vector_index - 1];

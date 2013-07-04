@@ -46,6 +46,14 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<LinAlg_NS::Vector> q;
         mutable LinAlg_NS::IMatrix2D::size_type current_lanczos_vector_index;
 
+        // alphas and bets in T_i
+        mutable std::vector<LinAlg_NS::Vector> a;
+        mutable std::vector<LinAlg_NS::Vector> b;
+
+        // omegas for monitoring of orthogonality
+        mutable std::vector<LinAlg_NS::Vector> w1;
+        mutable std::vector<LinAlg_NS::Vector> w2;
+
         // the Givens coefficients
         mutable LinAlg_NS::Vector s;
         mutable LinAlg_NS::Vector cs;

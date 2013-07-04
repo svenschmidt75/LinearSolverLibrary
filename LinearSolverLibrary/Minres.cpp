@@ -64,11 +64,10 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
         // compute the next basis vector in the iterative QR factorization
         // of A
         w = A * q[k_prev_1];
+        w -= beta * q[k_prev_2];
 
         T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-
         w -= T[k_current] * q[k_prev_1];
-        w -= beta * q[k_prev_2];
 
         normw = beta = VectorMath::norm(w);
         T[k_next] = normw;
@@ -148,7 +147,6 @@ Minres::iteration1(SparseMatrix2D const & A) const {
     w = A * q[k_prev_1];
 
     T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-
     w -= T[k_current] * q[k_prev_1];
 
     double normw = beta = VectorMath::norm(w);
@@ -211,11 +209,10 @@ Minres::iteration2(SparseMatrix2D const & A) const {
     // compute the 2nd basis vector in the iterative QR factorization
     // of A
     w = A * q[k_prev_1];
+    w -= beta * q[k_prev_2];
 
     T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-
     w -= T[k_current] * q[k_prev_1];
-    w -= beta * q[k_prev_2];
 
     normw = beta = VectorMath::norm(w);
     T[k_next] = normw;
