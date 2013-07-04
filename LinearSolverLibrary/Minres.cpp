@@ -124,7 +124,6 @@ Minres::iteration1() const {
     /***********************
      * Lanczos iteration 1 *
      ***********************/
-
     Vector const & q = lanczos.getPreviousLanczosVector();
     T[k_next] = lanczos.getCurrentBeta();
     T[k_current] = lanczos.getCurrentAlpha();

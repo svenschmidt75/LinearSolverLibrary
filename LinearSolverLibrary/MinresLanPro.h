@@ -11,6 +11,7 @@
 #include "DeclSpec.h"
 
 #include "LinAlg/entities.h"
+#include "lanczosPRO.h"
 
 
 #pragma warning(disable:4275)
@@ -35,24 +36,18 @@ namespace LinearSolverLibrary_NS {
         MinresLanPro();
         Return_t solve_internal(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance) const;
         void setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const;
-        void iteration1(LinAlg_NS::SparseMatrix2D const & A) const;
-        void iteration2(LinAlg_NS::SparseMatrix2D const & A) const;
+        void iteration1() const;
+        void iteration2() const;
 
     private:
+        LanczosPRO lanczos;
+
         // search directions
         mutable std::vector<LinAlg_NS::Vector> p;
-
-        // orthogonalized via Lanczos
-        mutable std::vector<LinAlg_NS::Vector> q;
-        mutable LinAlg_NS::IMatrix2D::size_type current_lanczos_vector_index;
 
         // alphas and bets in T_i
         mutable std::vector<LinAlg_NS::Vector> a;
         mutable std::vector<LinAlg_NS::Vector> b;
-
-        // omegas for monitoring of orthogonality
-        mutable std::vector<LinAlg_NS::Vector> w1;
-        mutable std::vector<LinAlg_NS::Vector> w2;
 
         // the Givens coefficients
         mutable LinAlg_NS::Vector s;

@@ -19,28 +19,6 @@ MinresLanPro::MinresLanPro()
     sn(3 + 1),
     w(3 + 1) {}
 
-namespace {
-
-    void printLanczosVectorsOrthogonal(std::vector<Vector> const & q, IMatrix2D::size_type size) {
-        /* The best we can hope for in orthogonality of the Lanczos vectors
-         * is <q_i, q_j> = eps if they are orthogonal.
-         * Here, we compute the exponent of how much the orthogonality deviates
-         * from eps.
-         * Example: <q_i, q_j> = 10^{-12}
-         * Result: 4, i.e. -12 + 16 (from eps) = 4
-         */
-        double const machine_eps = std::numeric_limits<double>::epsilon();
-        std::cout << std::endl;
-        for (IMatrix2D::size_type i = 0; i < size - 1; ++i) {
-            double angle = VectorMath::dotProduct(q[i], q[size - 1]);
-            double deviation = std::fabs(angle / machine_eps);
-            deviation = std::log10(deviation);
-            int int_deviation = static_cast<int>(boost::math::round(deviation));
-            std::cout << int_deviation << " ";
-        }
-    }
-}
-
 MinresLanPro::Return_t
 MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterations, double tolerance = 1E-15) const {
     /* Implements the MINRES algorithm from
@@ -59,13 +37,13 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         return std::make_tuple(true, b, 0, residual);
 
     auto dim = A.cols();
-    BOOST_ASSERT_MSG(dim == b.size(), "MINRES: Size mismatch");
+    BOOST_ASSERT_MSG(dim == b.size(), "MinresLanPro: Size mismatch");
+
+    lanczos.init(A, r * (1.0 / normr));
 
     setup(dim, normr);
-    iteration1(A);
-    iteration2(A);
-
-    printLanczosVectorsOrthogonal(q, 3);
+    iteration1();
+    iteration2();
 
     // compute until convergence
     for (SparseMatrix2D::size_type k = 2; k < maxIterations; ++k) {
@@ -74,33 +52,18 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         k_prev_1 = (k_current - 1 + 4) % 4;
         k_prev_2 = (k_prev_1 - 1 + 4) % 4;
 
-        T[k_current] = 0.0;
-        T[k_next] = 0.0;
-        T[k_prev_1] = beta;
+        lanczos.computeNextLanczosVector();
+        Vector const & q = lanczos.getPreviousLanczosVector();
+
+        T[k_next] = lanczos.getCurrentBeta();
+        T[k_current] = lanczos.getCurrentAlpha();
+        T[k_prev_1] = lanczos.getPreviousBeta();
         T[k_prev_2] = 0.0;
 
         // reinitialize the r.h.s. vector
         s(k_prev_1) = 0.0;
         s(k_prev_2) = 0.0;
         s(k_next) = 0.0;
-
-
-        // compute the next basis vector in the iterative QR factorization
-        // of A
-        w = A * q[current_lanczos_vector_index - 1];
-        // TODO: beta = b(i)
-        w -= beta * q[current_lanczos_vector_index - 2];
-
-        // TODO: a(i)
-        T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
-        w -= T[k_current] * q[current_lanczos_vector_index - 1];
-
-        // TODO: beta = b(i+1)
-        normw = beta = VectorMath::norm(w);
-        T[k_next] = normw;
-
-        // next normalized basis vector of Krylov space
-        q[current_lanczos_vector_index] = w * (1.0 / normw);
 
         // apply previous rotation
         ResHelper::ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
@@ -117,7 +80,7 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
         // compute search vector
-        p[k_current] = (q[current_lanczos_vector_index - 1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
+        p[k_current] = (q - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
 
         // new approximate solution
         x += s(k_current) * p[k_current];
@@ -129,10 +92,6 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         residual = std::fabs(s(k_next) / normb);
         if (residual < tolerance)
             return std::make_tuple(true, x, k, residual);
-
-        current_lanczos_vector_index++;
-
-        printLanczosVectorsOrthogonal(q, current_lanczos_vector_index);
     }
 
     // scheme did not converge
@@ -141,14 +100,6 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
 
 void
 MinresLanPro::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const {
-    // Space for the orthogonal Lanczos vectors.
-    // Due to A being symmetric, we only need to remember 3 of them,
-    // making use of the three-term recurrence formula.
-    q.resize(dim + 1, Vector(dim));
-
-    a.resize(dim + 1, Vector(dim));
-    b.resize(dim + 1, Vector(dim));
-
     // search directions
     p.resize(3 + 1, Vector(dim));
 
@@ -164,34 +115,19 @@ MinresLanPro::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) cons
     k_next = 3;
     k_prev_1 = 1;
     k_prev_2 = 0;
-    current_lanczos_vector_index = 1;
 
     // initialize r.h.s. vector
     s(k_current) = normr;
-
-    q[current_lanczos_vector_index - 1] = r * (1.0 / normr);
 }
 
 void
-MinresLanPro::iteration1(SparseMatrix2D const & A) const {
+MinresLanPro::iteration1() const {
     /***********************
      * Lanczos iteration 1 *
      ***********************/
-
-    // compute the 1st basis vector in the iterative QR factorization
-    // of A
-    w = A * q[current_lanczos_vector_index - 1];
-
-    // TODO: a(i)
-    T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
-
-    w -= T[k_current] * q[current_lanczos_vector_index - 1];
-
-    double normw = beta = VectorMath::norm(w);
-    T[k_next] = normw;
-
-    // next normalized basis vector of Krylov space
-    q[current_lanczos_vector_index] = w * (1.0 / normw);
+    Vector const & q = lanczos.getPreviousLanczosVector();
+    T[k_next] = lanczos.getCurrentBeta();
+    T[k_current] = lanczos.getCurrentAlpha();
 
     // compute the Givens rotation that annihilates T[k_next]
     ResHelper::GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
@@ -204,16 +140,14 @@ MinresLanPro::iteration1(SparseMatrix2D const & A) const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = q[current_lanczos_vector_index - 1] * (1.0 / T[k_current]);
+    p[k_current] = q * (1.0 / T[k_current]);
 
     // new approximate solution
     x += s(k_current) * p[k_current];
-
-    current_lanczos_vector_index++;
 }
 
 void
-MinresLanPro::iteration2(SparseMatrix2D const & A) const {
+MinresLanPro::iteration2() const {
     /***********************
      * Lanczos iteration 2 *
      ***********************/
@@ -233,32 +167,17 @@ MinresLanPro::iteration2(SparseMatrix2D const & A) const {
      * |          .  .  . b(k-1) |
      * |           b(k-1) a(k)   |
      */
-    T[k_current] = 0.0;
-    T[k_next] = 0.0;
-
-    // initialize column with b(2) above
-    T[k_prev_1] = beta;
+    lanczos.computeNextLanczosVector();
+    Vector const & q = lanczos.getPreviousLanczosVector();
+    T[k_prev_1] = lanczos.getPreviousBeta();
+    T[k_next] = lanczos.getCurrentBeta();
+    T[k_current] = lanczos.getCurrentAlpha();
     T[k_prev_2] = 0.0;
 
     // reinitialize the r.h.s. vector
     s(k_prev_1) = 0.0;
     s(k_prev_2) = 0.0;
     s(k_next) = 0.0;
-
-
-    // compute the 2nd basis vector in the iterative QR factorization
-    // of A
-    w = A * q[current_lanczos_vector_index - 1];
-    w -= beta * q[current_lanczos_vector_index - 2];
-
-    T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
-    w -= T[k_current] * q[current_lanczos_vector_index - 1];
-
-    normw = beta = VectorMath::norm(w);
-    T[k_next] = normw;
-
-    // next normalized basis vector of Krylov space
-    q[current_lanczos_vector_index] = w * (1.0 / normw);
 
     // apply previous rotation
     ResHelper::ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
@@ -274,12 +193,10 @@ MinresLanPro::iteration2(SparseMatrix2D const & A) const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = (q[current_lanczos_vector_index - 1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
+    p[k_current] = (q - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
 
     // new approximate solution
     x += s(k_current) * p[k_current];
-
-    current_lanczos_vector_index++;
 }
 
 MinresLanPro::Return_t

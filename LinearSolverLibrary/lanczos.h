@@ -30,9 +30,9 @@ namespace LinearSolverLibrary_NS {
         }
 
         void computeNextLanczosVector() const;
-        LinAlg_NS::Vector const & getPreviousLanczosVector() const;
         double getCurrentAlpha() const;
         double getCurrentBeta() const;
+        LinAlg_NS::Vector const & getPreviousLanczosVector() const;
         double getPreviousAlpha() const;
         double getPreviousBeta() const;
 

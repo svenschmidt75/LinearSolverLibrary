@@ -51,11 +51,6 @@ Lanczos::computeNextLanczosVector() const {
     current_lanczos_vector_index++;
 }
 
-Vector const &
-Lanczos::getPreviousLanczosVector() const {
-    return q[current_lanczos_vector_index - 2];
-}
-
 double
 Lanczos::getCurrentAlpha() const {
     return a[current_lanczos_vector_index - 1];
@@ -64,6 +59,11 @@ Lanczos::getCurrentAlpha() const {
 double
 Lanczos::getCurrentBeta() const {
     return b[current_lanczos_vector_index - 1];
+}
+
+Vector const &
+Lanczos::getPreviousLanczosVector() const {
+    return q[current_lanczos_vector_index - 2];
 }
 
 double
