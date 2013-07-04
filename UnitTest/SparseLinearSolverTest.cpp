@@ -931,10 +931,10 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
     }
 
-    CPPUNIT_ASSERT_MESSAGE("BiCGSTAB failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("MINRESLanPRO failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCGSTAB solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
 void
