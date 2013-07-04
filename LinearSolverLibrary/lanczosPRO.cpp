@@ -118,7 +118,7 @@ LanczosPRO::monitorOrthogonality() const {
         double omega_i_jp1 = i == j + 1 ? 1.0 : w2[j + 1];
         double term1 = beta_jp1 * omega_i_jp1 / beta_ip1;
 
-        double aa = a[j] - a[i];
+        double aa = a[j + 1] - a[i + 1];
         double omega_i_j = i == j ? 1.0 : w2[j];
         double term2 = aa * omega_i_j / beta_ip1;
 
@@ -130,14 +130,16 @@ LanczosPRO::monitorOrthogonality() const {
         double omega_j_im1 = j == i - 1 ? 1.0 : (i - 1 == 0 ? 0 : w1[j]);
         double term4 = beta_i * omega_j_im1 / beta_ip1;
 
-        w3[j] = (beta_jp1 * omega_i_jp1 + aa * omega_i_j + beta_j * omega_i_jm1 - beta_i * omega_j_im1) / beta_ip1;
-        w3[j] = term1 + term2 + term3 - term4;
+        double sum = (beta_jp1 * omega_i_jp1 + aa * omega_i_j + beta_j * omega_i_jm1 - beta_i * omega_j_im1) / beta_ip1;
+        sum = term1 + term2 + term3 - term4;
+        w3[j] = sum;
 
         double angle = std::sqrt(VectorMath::dotProduct(q[i + 1], q[j]));
         angle = angle;
     }
     w3[i] = A_.cols() * 0.5 * std::sqrt(eps);
 
+    // TODO: Use indices instead of copying
     w1 = w2;
     w2 = w3;
 }
