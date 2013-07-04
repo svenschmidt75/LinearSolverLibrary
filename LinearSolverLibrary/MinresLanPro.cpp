@@ -88,16 +88,14 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         // compute the next basis vector in the iterative QR factorization
         // of A
         w = A * q[current_lanczos_vector_index - 1];
+        // TODO: beta = b(i)
+        w -= beta * q[current_lanczos_vector_index - 2];
 
         // TODO: a(i)
         T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
-
         w -= T[k_current] * q[current_lanczos_vector_index - 1];
 
-        // TODO: beta = b(i-1)
-        w -= beta * q[current_lanczos_vector_index - 2];
-
-        // TODO: beta = b(i)
+        // TODO: beta = b(i+1)
         normw = beta = VectorMath::norm(w);
         T[k_next] = normw;
 
@@ -251,11 +249,10 @@ MinresLanPro::iteration2(SparseMatrix2D const & A) const {
     // compute the 2nd basis vector in the iterative QR factorization
     // of A
     w = A * q[current_lanczos_vector_index - 1];
+    w -= beta * q[current_lanczos_vector_index - 2];
 
     T[k_current] = VectorMath::dotProduct(w, q[current_lanczos_vector_index - 1]);
-
     w -= T[k_current] * q[current_lanczos_vector_index - 1];
-    w -= beta * q[current_lanczos_vector_index - 2];
 
     normw = beta = VectorMath::norm(w);
     T[k_next] = normw;
