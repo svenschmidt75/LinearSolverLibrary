@@ -137,7 +137,7 @@ LanczosPRO::monitorOrthogonality() const {
         double angle = std::sqrt(VectorMath::dotProduct(q[i + 1], q[j]));
         angle = angle;
     }
-    w3[i] = A_.cols() * 0.5 * std::sqrt(eps);
+    w3[i] = A_.cols() * 0.5 * eps;
 
     // TODO: Use indices instead of copying
     w1 = w2;
