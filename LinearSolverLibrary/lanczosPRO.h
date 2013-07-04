@@ -38,6 +38,8 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void monitorOrthogonality() const;
+        bool checkForReorthogonalization(LinAlg_NS::IMatrix2D::size_type index) const;
+        void reorthogonalizeLanczosVector(LinAlg_NS::IMatrix2D::size_type index) const;
 
     private:
         // orthogonalized via Lanczos

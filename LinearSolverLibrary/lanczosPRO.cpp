@@ -25,9 +25,12 @@ namespace {
         std::cout << std::endl;
         for (IMatrix2D::size_type i = 0; i < size - 1; ++i) {
             double angle = VectorMath::dotProduct(q[i], q[size - 1]);
-            double deviation = std::fabs(angle / machine_eps);
-            deviation = std::log10(deviation);
-            int int_deviation = static_cast<int>(boost::math::round(deviation));
+            int int_deviation = 0;
+            if (angle) {
+                double deviation = std::fabs(angle / machine_eps);
+                deviation = std::log10(deviation);
+                int_deviation = static_cast<int>(boost::math::round(deviation));
+            }
             std::cout << int_deviation << " ";
         }
     }
@@ -139,9 +142,57 @@ LanczosPRO::monitorOrthogonality() const {
     }
     w3[i] = A_.cols() * 0.5 * eps;
 
+    bool reorthogonalize = checkForReorthogonalization(i);
+    if (reorthogonalize)
+        reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
+
+
     // TODO: Use indices instead of copying
     w1 = w2;
     w2 = w3;
+}
+
+bool
+LanczosPRO::checkForReorthogonalization(IMatrix2D::size_type index) const {
+    double const eps = std::numeric_limits<double>::epsilon();
+    double const eps2 = std::sqrt(eps);
+    double max_value = std::numeric_limits<double>::min();
+    for (IMatrix2D::size_type j = 1; j <= index; ++j) {
+        max_value = std::max(max_value, std::fabs(w3[j]));
+        if (max_value > eps2)
+            return true;
+    }
+    return false;
+}
+
+void
+LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
+    double const eps = std::numeric_limits<double>::epsilon();
+    double const eps2 = std::pow(eps, 3.0 / 4.0);
+
+    Vector const & q_prev = q[index];
+    Vector reorthogonalized_q = q[index];
+
+    printLanczosVectorsOrthogonal(q, index + 1);
+
+    for (IMatrix2D::size_type j = 1; j < index; ++j) {
+        double value = std::fabs(w3[j]);
+        if (value > eps2) {
+            double proj = VectorMath::dotProduct(q_prev, q[j]);
+            reorthogonalized_q -= proj * q[j];
+
+            w3[j] = A_.cols() * 0.5 * eps;
+            w2[j] = A_.cols() * 0.5 * eps;
+        }
+    }
+    q[index] = reorthogonalized_q;
+
+    printLanczosVectorsOrthogonal(q, index + 1);
+
+    // reinitialize the w
+//     std::fill(std::begin(w1), std::end(w1), eps);
+//     std::fill(std::begin(w2), std::end(w2), eps);
+//     std::fill(std::begin(w3), std::end(w3), eps);
 }
 
 } // LinearSolverLibrary_NS
