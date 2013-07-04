@@ -35,17 +35,14 @@ namespace LinearSolverLibrary_NS {
         Minres();
         Return_t solve_internal(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, int maxIterations, double tolerance) const;
         void setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const;
-        void iteration1(LinAlg_NS::SparseMatrix2D const & A) const;
-        void iteration2(LinAlg_NS::SparseMatrix2D const & A) const;
+        void iteration1() const;
+        void iteration2() const;
 
     private:
         Lanczos lanczos;
 
         // search directions
         mutable std::vector<LinAlg_NS::Vector> p;
-
-        // orthogonalized via Lanczos
-        mutable std::vector<LinAlg_NS::Vector> q;
 
         // the Givens coefficients
         mutable LinAlg_NS::Vector s;

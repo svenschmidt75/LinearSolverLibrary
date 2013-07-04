@@ -14,7 +14,7 @@ namespace LinearSolverLibrary_NS {
 void
 Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     A_ = A;
-    IMatrix2D::size_type dim = A_.cols();
+    IMatrix2D::size_type dim = A_.cols() * 10;
     a.resize(dim);
     b.resize(dim);
     q.resize(dim, Vector(dim));
@@ -35,9 +35,9 @@ Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 
 void
 Lanczos::computeNextLanczosVector() const {
-    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
+//    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
     Vector const & qn = q[current_lanczos_vector_index - 1];
-    double beta = getLastBeta();
+    double beta = getCurrentBeta();
     Vector w = A_ * qn;
     w -= beta * q[current_lanczos_vector_index - 2];
     double alpha = VectorMath::dotProduct(w, qn);
@@ -52,18 +52,28 @@ Lanczos::computeNextLanczosVector() const {
 }
 
 Vector const &
-Lanczos::getLastLanczosVector() const {
+Lanczos::getPreviousLanczosVector() const {
     return q[current_lanczos_vector_index - 2];
 }
 
 double
-Lanczos::getLastAlpha() const {
+Lanczos::getCurrentAlpha() const {
     return a[current_lanczos_vector_index - 1];
 }
 
 double
-Lanczos::getLastBeta() const {
+Lanczos::getCurrentBeta() const {
     return b[current_lanczos_vector_index - 1];
+}
+
+double
+Lanczos::getPreviousAlpha() const {
+    return a[current_lanczos_vector_index - 2];
+}
+
+double
+Lanczos::getPreviousBeta() const {
+    return b[current_lanczos_vector_index - 2];
 }
 
 } // LinearSolverLibrary_NS

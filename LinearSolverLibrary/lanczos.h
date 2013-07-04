@@ -30,9 +30,11 @@ namespace LinearSolverLibrary_NS {
         }
 
         void computeNextLanczosVector() const;
-        LinAlg_NS::Vector const & getLastLanczosVector() const;
-        double getLastAlpha() const;
-        double getLastBeta() const;
+        LinAlg_NS::Vector const & getPreviousLanczosVector() const;
+        double getCurrentAlpha() const;
+        double getCurrentBeta() const;
+        double getPreviousAlpha() const;
+        double getPreviousBeta() const;
 
     private:
         // orthogonalized via Lanczos

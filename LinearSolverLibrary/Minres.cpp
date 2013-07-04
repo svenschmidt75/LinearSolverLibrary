@@ -42,8 +42,8 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
     lanczos.init(A, r * (1.0 / normr));
 
     setup(dim, normr);
-    iteration1(A);
-    iteration2(A);
+    iteration1();
+    iteration2();
 
     // compute until convergence
     for (SparseMatrix2D::size_type k = 2; k < maxIterations; ++k) {
@@ -52,34 +52,18 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
         k_prev_1 = (k_current - 1 + 4) % 4;
         k_prev_2 = (k_prev_1 - 1 + 4) % 4;
 
-        T[k_current] = 0.0;
-        T[k_next] = 0.0;
-        T[k_prev_1] = beta;
+        lanczos.computeNextLanczosVector();
+        Vector const & q = lanczos.getPreviousLanczosVector();
+
+        T[k_next] = lanczos.getCurrentBeta();
+        T[k_current] = lanczos.getCurrentAlpha();
+        T[k_prev_1] = lanczos.getPreviousBeta();
         T[k_prev_2] = 0.0;
 
         // reinitialize the r.h.s. vector
         s(k_prev_1) = 0.0;
         s(k_prev_2) = 0.0;
         s(k_next) = 0.0;
-
-        lanczos.computeNextLanczosVector();
-        T[k_current] = lanczos.getLastAlpha();
-        T[k_next] = lanczos.getLastBeta();
-        Vector const qm = lanczos.getLastLanczosVector();
-
-        // compute the next basis vector in the iterative QR factorization
-        // of A
-        w = A * q[k_prev_1];
-        w -= beta * q[k_prev_2];
-
-        T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-        w -= T[k_current] * q[k_prev_1];
-
-        normw = beta = VectorMath::norm(w);
-        T[k_next] = normw;
-
-        // next normalized basis vector of Krylov space
-        q[k_current] = w * (1.0 / normw);
 
         // apply previous rotation
         ResHelper::ApplyPlaneRotation(T[k_prev_2], T[k_prev_1], cs(k_prev_2), sn(k_prev_2));
@@ -96,7 +80,7 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
         ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
         // compute search vector
-        p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
+        p[k_current] = (q - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
 
         // new approximate solution
         x += s(k_current) * p[k_current];
@@ -116,11 +100,6 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
 
 void
 Minres::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const {
-    // Space for the orthogonal Lanczos vectors.
-    // Due to A being symmetric, we only need to remember 3 of them,
-    // making use of the three-term recurrence formula.
-    q.resize(3 + 1, Vector(dim));
-
     // search directions
     p.resize(3 + 1, Vector(dim));
 
@@ -138,30 +117,17 @@ Minres::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const {
 
     // initialize r.h.s. vector
     s(k_current) = normr;
-
-    q[k_prev_1] = r * (1.0 / normr);
 }
 
 void
-Minres::iteration1(SparseMatrix2D const & A) const {
+Minres::iteration1() const {
     /***********************
      * Lanczos iteration 1 *
      ***********************/
 
-//    lanczos.computeNextLanczosVector();
-
-    // compute the 1st basis vector in the iterative QR factorization
-    // of A
-    w = A * q[k_prev_1];
-
-    T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-    w -= T[k_current] * q[k_prev_1];
-
-    double normw = beta = VectorMath::norm(w);
-    T[k_next] = normw;
-
-    // next normalized basis vector of Krylov space
-    q[k_current] = w * (1.0 / normw);
+    Vector const & q = lanczos.getPreviousLanczosVector();
+    T[k_next] = lanczos.getCurrentBeta();
+    T[k_current] = lanczos.getCurrentAlpha();
 
     // compute the Givens rotation that annihilates T[k_next]
     ResHelper::GeneratePlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
@@ -174,14 +140,14 @@ Minres::iteration1(SparseMatrix2D const & A) const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = q[k_prev_1] * (1.0 / T[k_current]);
+    p[k_current] = q * (1.0 / T[k_current]);
 
     // new approximate solution
     x += s(k_current) * p[k_current];
 }
 
 void
-Minres::iteration2(SparseMatrix2D const & A) const {
+Minres::iteration2() const {
     /***********************
      * Lanczos iteration 2 *
      ***********************/
@@ -201,34 +167,17 @@ Minres::iteration2(SparseMatrix2D const & A) const {
      * |          .  .  . b(k-1) |
      * |           b(k-1) a(k)   |
      */
-    T[k_current] = 0.0;
-    T[k_next] = 0.0;
-
-    // initialize column with b(2) above
-    T[k_prev_1] = beta;
+    lanczos.computeNextLanczosVector();
+    Vector const & q = lanczos.getPreviousLanczosVector();
+    T[k_prev_1] = lanczos.getPreviousBeta();
+    T[k_next] = lanczos.getCurrentBeta();
+    T[k_current] = lanczos.getCurrentAlpha();
     T[k_prev_2] = 0.0;
 
     // reinitialize the r.h.s. vector
     s(k_prev_1) = 0.0;
     s(k_prev_2) = 0.0;
     s(k_next) = 0.0;
-
-
-    lanczos.computeNextLanczosVector();
-
-    // compute the 2nd basis vector in the iterative QR factorization
-    // of A
-    w = A * q[k_prev_1];
-    w -= beta * q[k_prev_2];
-
-    T[k_current] = VectorMath::dotProduct(w, q[k_prev_1]);
-    w -= T[k_current] * q[k_prev_1];
-
-    normw = beta = VectorMath::norm(w);
-    T[k_next] = normw;
-
-    // next normalized basis vector of Krylov space
-    q[k_current] = w * (1.0 / normw);
 
     // apply previous rotation
     ResHelper::ApplyPlaneRotation(T[k_prev_1], T[k_current], cs(k_prev_1), sn(k_prev_1));
@@ -244,7 +193,7 @@ Minres::iteration2(SparseMatrix2D const & A) const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = (q[k_prev_1] - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
+    p[k_current] = (q - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
 
     // new approximate solution
     x += s(k_current) * p[k_current];

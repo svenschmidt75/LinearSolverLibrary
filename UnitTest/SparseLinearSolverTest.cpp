@@ -522,7 +522,6 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
     CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(tmp, b, 1E-10));
 }
 
-
 void
 SparseLinearSolverTest::VersteegMalalasekeraMINRESLanProTest() {
     // read matrix m
@@ -882,7 +881,7 @@ SparseLinearSolverTest::bcsstk05MINRESTest() {
     {
         HighResTimer t;
 
-        // needs 331 iterations
+        // needs 323 iterations
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
     }
 
