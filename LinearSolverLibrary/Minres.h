@@ -10,6 +10,7 @@
 #include "DeclSpec.h"
 
 #include "LinAlg/entities.h"
+#include "lanczos.h"
 
 
 #pragma warning(disable:4275)
@@ -38,6 +39,8 @@ namespace LinearSolverLibrary_NS {
         void iteration2(LinAlg_NS::SparseMatrix2D const & A) const;
 
     private:
+        Lanczos lanczos;
+
         // search directions
         mutable std::vector<LinAlg_NS::Vector> p;
 

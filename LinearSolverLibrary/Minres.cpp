@@ -39,6 +39,8 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
     auto dim = A.cols();
     BOOST_ASSERT_MSG(dim == b.size(), "MINRES: Size mismatch");
 
+    lanczos.init(A, r * (1.0 / normr));
+
     setup(dim, normr);
     iteration1(A);
     iteration2(A);
@@ -60,6 +62,10 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
         s(k_prev_2) = 0.0;
         s(k_next) = 0.0;
 
+        lanczos.computeNextLanczosVector();
+        T[k_current] = lanczos.getLastAlpha();
+        T[k_next] = lanczos.getLastBeta();
+        Vector const qm = lanczos.getLastLanczosVector();
 
         // compute the next basis vector in the iterative QR factorization
         // of A
@@ -142,6 +148,8 @@ Minres::iteration1(SparseMatrix2D const & A) const {
      * Lanczos iteration 1 *
      ***********************/
 
+//    lanczos.computeNextLanczosVector();
+
     // compute the 1st basis vector in the iterative QR factorization
     // of A
     w = A * q[k_prev_1];
@@ -205,6 +213,8 @@ Minres::iteration2(SparseMatrix2D const & A) const {
     s(k_prev_2) = 0.0;
     s(k_next) = 0.0;
 
+
+    lanczos.computeNextLanczosVector();
 
     // compute the 2nd basis vector in the iterative QR factorization
     // of A

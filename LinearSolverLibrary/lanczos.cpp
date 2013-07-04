@@ -11,19 +11,24 @@ using namespace LinAlg_NS;
 
 namespace LinearSolverLibrary_NS {
 
-Lanczos::Lanczos(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) : A_(A) {
-    IMatrix2D::size_type dim = A.cols();
+void
+Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
+    A_ = A;
+    IMatrix2D::size_type dim = A_.cols();
     a.resize(dim);
     b.resize(dim);
     q.resize(dim, Vector(dim));
     q[0] = q0;
 
     // compute 2nd Lanczos vector
-    Vector w = A * q0;
+    Vector w = A_ * q0;
     double alpha = VectorMath::dotProduct(w, q0);
     w -= alpha * q0;
     double beta = VectorMath::norm(w);
     q[1] = w * (1.0 / beta);
+
+    a[1] = alpha;
+    b[1] = beta;
 
     current_lanczos_vector_index = 2;
 }
@@ -48,7 +53,7 @@ Lanczos::computeNextLanczosVector() const {
 
 Vector const &
 Lanczos::getLastLanczosVector() const {
-    return q[current_lanczos_vector_index - 1];
+    return q[current_lanczos_vector_index - 2];
 }
 
 double

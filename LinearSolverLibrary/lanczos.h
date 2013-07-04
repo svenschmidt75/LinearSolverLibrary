@@ -19,13 +19,20 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS Lanczos final : boost::noncopyable {
     public:
-        Lanczos(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & q0);
+        void init(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & q0) const;
 
-    private:
+        template<typename EXPR, typename BINOP>
+        void init(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::internal::ScalarVectorBinaryExpr<EXPR, BINOP> const & q0) const {
+            // really need inheriting constructors here :-(
+            LinAlg_NS::Vector q;
+            q = q0;
+            init(A, q);
+        }
+
+        void computeNextLanczosVector() const;
         LinAlg_NS::Vector const & getLastLanczosVector() const;
         double getLastAlpha() const;
         double getLastBeta() const;
-        void computeNextLanczosVector() const;
 
     private:
         // orthogonalized via Lanczos
@@ -36,7 +43,7 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<double> a;
         mutable std::vector<double> b;
 
-        LinAlg_NS::SparseMatrix2D const & A_;
+        mutable LinAlg_NS::SparseMatrix2D A_;
     };
 
 } // LinearSolverLibrary_NS
