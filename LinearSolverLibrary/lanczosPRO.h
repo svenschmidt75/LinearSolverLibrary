@@ -56,6 +56,7 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<double> w3;
 
         mutable LinAlg_NS::SparseMatrix2D A_;
+        mutable bool force_reorthogonalization;
     };
 
 } // LinearSolverLibrary_NS

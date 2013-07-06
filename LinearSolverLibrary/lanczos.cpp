@@ -15,8 +15,11 @@ void
 Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     A_ = A;
     IMatrix2D::size_type dim = A_.cols() * 10;
+
     a.resize(dim);
     b.resize(dim);
+    // TODO: Use reserve as it will not default-construct vectors.
+    // Also, use emplace_back instead of random access.
     q.resize(dim, Vector(dim));
     q[0] = q0;
 
