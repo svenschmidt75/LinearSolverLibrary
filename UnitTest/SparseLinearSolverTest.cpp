@@ -927,14 +927,14 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
     {
         HighResTimer t;
 
-        // needs 331 iterations
+        // needs 152 iterations vs 331 without partial reorthogonalization
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("MINRESLanPRO failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
 }
 
 void

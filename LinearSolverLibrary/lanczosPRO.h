@@ -40,6 +40,7 @@ namespace LinearSolverLibrary_NS {
         void monitorOrthogonality() const;
         bool checkForReorthogonalization(LinAlg_NS::IMatrix2D::size_type index) const;
         void reorthogonalizeLanczosVector(LinAlg_NS::IMatrix2D::size_type index) const;
+        void findLanczosVectorsToReorthogonalizeAgainst(LinAlg_NS::IMatrix2D::size_type index) const;
 
     private:
         // orthogonalized via Lanczos
@@ -54,6 +55,7 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<double> w1;
         mutable std::vector<double> w2;
         mutable std::vector<double> w3;
+        mutable std::vector<LinAlg_NS::IMatrix2D::size_type> indices;
 
         mutable LinAlg_NS::SparseMatrix2D A_;
         mutable bool force_reorthogonalization;

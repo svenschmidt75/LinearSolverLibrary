@@ -161,8 +161,9 @@ LanczosPRO::monitorOrthogonality() const {
 
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
-        force_reorthogonalization = true;
+        findLanczosVectorsToReorthogonalizeAgainst(current_lanczos_vector_index - 1);
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
+        force_reorthogonalization = true;
     }
 
     // TODO: Use indices instead of copying
@@ -184,30 +185,29 @@ LanczosPRO::checkForReorthogonalization(IMatrix2D::size_type index) const {
 }
 
 void
-LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
+LanczosPRO::findLanczosVectorsToReorthogonalizeAgainst(IMatrix2D::size_type index) const {
     double const eps = std::numeric_limits<double>::epsilon();
     double const eps2 = std::pow(eps, 3.0 / 4.0);
-
-    Vector const & q_prev = q[index];
-    Vector reorthogonalized_q = q[index];
-
-    printLanczosVectorsOrthogonal(q, index + 1);
-
+    indices.resize(index);
     for (IMatrix2D::size_type j = 0; j < index; ++j) {
         double value = std::fabs(w3[j]);
-        if (value > eps2) {
-            double proj = VectorMath::dotProduct(q_prev, q[j]);
-            reorthogonalized_q -= proj * q[j];
+        indices[j] = value > eps2;
+    }
+}
 
-            if (!force_reorthogonalization) {
-                w3[j] = std::sqrt(A_.cols()) * 0.5 * eps;
-                w2[j] = std::sqrt(A_.cols()) * 0.5 * eps;
-            }
+void
+LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
+    Vector const & q_prev = q[index];
+    Vector reorthogonalized_q = q[index];
+    printLanczosVectorsOrthogonal(q, index + 1);
+    for (IMatrix2D::size_type i = 0; i < indices.size(); ++i) {
+        decltype(i) lanczos_index = indices[i];
+        if (lanczos_index) {
+            double proj = VectorMath::dotProduct(q_prev, q[i]);
+            reorthogonalized_q -= proj * q[i];
         }
     }
-
     q[index] = reorthogonalized_q;
-
     printLanczosVectorsOrthogonal(q, index + 1);
 }
 
