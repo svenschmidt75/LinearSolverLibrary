@@ -29,6 +29,9 @@ namespace {
             if (angle) {
                 double deviation = std::fabs(angle / machine_eps);
                 deviation = std::log10(deviation);
+                if (deviation < 0)
+                    // precision cannot possibly be better than eps
+                    deviation = 0;
                 int_deviation = static_cast<int>(boost::math::round(deviation));
             }
             std::cout << int_deviation << " ";
@@ -123,6 +126,8 @@ LanczosPRO::monitorOrthogonality() const {
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
     }
 
+    double theta = computeLanczosNorm();
+
     auto i = current_lanczos_vector_index - 1;
     if (i > 1) {
         for (IMatrix2D::size_type j = 0; j < i - 1; ++j) {
@@ -149,8 +154,10 @@ LanczosPRO::monitorOrthogonality() const {
             double omega_j_im1 = j  + 1 == i - 1 ? 1.0 : w1[j];
             double term4 = beta_i * omega_j_im1 / beta_ip1;
 
-            double sum = (beta_jp1 * omega_i_jp1 + aa * omega_i_j + beta_j * omega_i_jm1 - beta_i * omega_j_im1) / beta_ip1;
-            sum = term1 + term2 + term3 - term4;
+            double term5 = theta / beta_ip1;
+
+            double sum = (beta_jp1 * omega_i_jp1 + aa * omega_i_j + beta_j * omega_i_jm1 - beta_i * omega_j_im1 + theta) / beta_ip1;
+            sum = term1 + term2 + term3 - term4 + term5;
             w3[j] = sum;
 
             double angle = VectorMath::dotProduct(q[i], q[j]);
@@ -209,6 +216,75 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
     }
     q[index] = reorthogonalized_q;
     printLanczosVectorsOrthogonal(q, index + 1);
+}
+
+double
+LanczosPRO::computeLanczosNorm() const {
+    double g0;
+
+    // this uses Gershgorin's circle theorem
+    if (current_lanczos_vector_index == 2) {
+        g0_prev = 0;
+        g2 = 0;
+
+        double alpha1 = a[1];
+        double beta2 = b[1];
+        double T00 = alpha1 * alpha1 + beta2 * beta2;
+        double T01 = alpha1 * beta2;
+        double T10 = T01;
+        double T11 = beta2 * beta2;
+
+        // 1st and 2nd row of T_{1}
+        g1 = T00 + std::fabs(T01);
+        g0 = T11 + std::fabs(T10);
+    }
+
+    // this uses Gershgorin's circle theorem
+    else if (current_lanczos_vector_index == 3) {
+        double alpha1 = a[1];
+        double alpha2 = a[2];
+        double beta2 = b[1];
+        double beta3 = b[2];
+        double T00 = alpha1 * alpha1 + beta2 * beta2;
+        double T01 = (alpha1 + alpha2) * beta2;
+        double T02 = beta2 * beta3;
+        double T10 = T01;
+        double T11 = beta2 * beta2 + alpha2 * alpha2 + beta3 * beta3;
+        double T12 = alpha2 * beta3;
+        double T20 = T02;
+        double T21 = T12;
+        double T22 = beta3 * beta3;
+
+        g2 = T00 + std::fabs(T01) + std::fabs(T02);
+        g1 = T11 + std::fabs(T10) + std::fabs(T12);
+        g0 = T22 + std::fabs(T20) + std::fabs(T21);
+    }
+
+    else {
+        IMatrix2D::size_type index = current_lanczos_vector_index - 1;
+        double alphaPrev = a[index - 1];
+        double alpha = a[index];
+        double betaPrev = b[index - 1];
+        double beta = b[index];
+
+        double tmp1 = std::fabs(betaPrev * beta);
+        double tmp2 = std::fabs((alphaPrev + alpha) * beta);
+        g2 += tmp1;
+        g1 += (beta * beta + tmp2);
+        g0 = beta * beta + alpha * alpha + tmp2 + tmp1;
+    }
+
+    // take largest eigenvalue approximation
+    double g = std::max(g2, g1);
+    g = std::max(g0, g);
+    g = std::max(g0_prev, g);
+
+    double const eps = std::numeric_limits<double>::epsilon();
+    double theta = std::sqrt(A_.cols()) * eps * 0.5 * std::sqrt(g);
+
+    g0_prev = g;
+
+    return theta;
 }
 
 } // LinearSolverLibrary_NS

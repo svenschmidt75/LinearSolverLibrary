@@ -107,9 +107,6 @@ MinresLanPro::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) cons
     x = Vector(dim);
     w = Vector(dim);
 
-    // TODO: b(0)
-    beta = 0.0;
-
     // initialize the Lanczos iteration
     k_current = 2;
     k_next = 3;

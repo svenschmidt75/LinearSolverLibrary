@@ -57,8 +57,6 @@ namespace LinearSolverLibrary_NS {
 
         mutable LinAlg_NS::Vector r;
 
-        mutable double beta;
-        mutable double normw;
         mutable LinAlg_NS::Vector x;
 
         mutable double T[4];
