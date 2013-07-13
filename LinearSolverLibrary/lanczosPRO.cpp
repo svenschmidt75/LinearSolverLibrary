@@ -42,7 +42,13 @@ namespace {
 void
 LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     A_ = A;
-    IMatrix2D::size_type dim = A_.cols() * 10;
+    IMatrix2D::size_type dim = A_.cols();
+
+    /* Use
+     * 1. reserve instead of resize, so not all the vectors have to be default-created
+     *    immediately
+     * 2. use push_back
+     */
     a.resize(dim);
     b.resize(dim);
     q.resize(dim, Vector(dim));
@@ -64,6 +70,7 @@ LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     b[1] = beta;
 
     current_lanczos_vector_index = 2;
+    numer_of_reorthogonalizations = 0;
 
     force_reorthogonalization = false;
 
@@ -72,7 +79,7 @@ LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 
 void
 LanczosPRO::computeNextLanczosVector() const {
-    //    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
+    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
     Vector const & qn = q[current_lanczos_vector_index - 1];
     double beta = getCurrentBeta();
     Vector w = A_ * qn;
@@ -122,8 +129,8 @@ LanczosPRO::monitorOrthogonality() const {
     eps2 = eps2;
 
     if (force_reorthogonalization) {
-        force_reorthogonalization = false;
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
+        force_reorthogonalization = false;
     }
 
     double theta = computeLanczosNorm();
@@ -161,6 +168,9 @@ LanczosPRO::monitorOrthogonality() const {
             w3[j] = sum;
 
             double angle = VectorMath::dotProduct(q[i], q[j]);
+
+            std::cout << std::endl << "(" << i << "," << j << "): is/true: " << sum << ":" << angle;
+
             angle = angle;
         }
     }
@@ -168,12 +178,29 @@ LanczosPRO::monitorOrthogonality() const {
 
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
+        numer_of_reorthogonalizations++;
+        std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
+
+        printLanczosVectorsOrthogonal(q, current_lanczos_vector_index);
+
         findLanczosVectorsToReorthogonalizeAgainst(current_lanczos_vector_index - 1);
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
+
         force_reorthogonalization = true;
     }
 
     // TODO: Use indices instead of copying
+    /* Use a lambda function for accessing, i.e.
+     * 
+     * std::function<> last() {
+     *   return [this, &w3]() -> std::vector<double> & {
+     *     return w1;
+     *   }
+     *   
+     *   Then: last()[index] = eps; or so
+     * }
+     * 
+     * */
     w1 = w2;
     w2 = w3;
 }
@@ -204,25 +231,28 @@ LanczosPRO::findLanczosVectorsToReorthogonalizeAgainst(IMatrix2D::size_type inde
 
 void
 LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
-    Vector const & q_prev = q[index];
-    Vector reorthogonalized_q = q[index];
+    Vector & q_prev = q[index];
     printLanczosVectorsOrthogonal(q, index + 1);
     for (IMatrix2D::size_type i = 0; i < indices.size(); ++i) {
         decltype(i) lanczos_index = indices[i];
         if (lanczos_index) {
             double proj = VectorMath::dotProduct(q_prev, q[i]);
-            reorthogonalized_q -= proj * q[i];
+            q_prev -= proj * q[i];
+            double const eps = std::numeric_limits<double>::epsilon();
+            w3[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+            w2[i] = std::sqrt(A_.cols()) * 0.5 * eps;
         }
     }
-    q[index] = reorthogonalized_q;
     printLanczosVectorsOrthogonal(q, index + 1);
 }
 
 double
 LanczosPRO::computeLanczosNorm() const {
+    /* Compute norm of matrix A via the symmetric matrix T.
+     * Uses Gershgorin's circle theorem to estimate the largest
+     * eigenvalue of T.
+     */
     double g0;
-
-    // this uses Gershgorin's circle theorem
     if (current_lanczos_vector_index == 2) {
         g0_prev = 0;
         g2 = 0;

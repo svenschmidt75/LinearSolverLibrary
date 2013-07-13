@@ -64,6 +64,8 @@ namespace LinearSolverLibrary_NS {
         mutable double g1;
         mutable double g2;
         mutable double g0_prev;
+
+        mutable int numer_of_reorthogonalizations;
     };
 
 } // LinearSolverLibrary_NS

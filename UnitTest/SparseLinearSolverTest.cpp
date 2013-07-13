@@ -938,6 +938,47 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
 }
 
 void
+SparseLinearSolverTest::SimonExample1Test() {
+    /* Exmaple 1 from
+     * Horst D Simon, The Lanczos Algorithm With Partial Reorthogonalization
+     * page 129
+     */
+
+    Vector x_ref(1000);
+    SparseMatrix2D m(1000);
+    for (IMatrix2D::size_type i = 1; i <= 1000; ++i) {
+        double ii = 1E4 * 1.0 / i;
+        m(i - 1, i - 1) = ii;
+        x_ref(i - 1) = 0.1;
+    }
+    m.finalize();
+
+    // create vector b
+    Vector b(1000);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 103 iterations vs 186 without partial reorthogonalization
+//        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("MINRESLanPRO failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
+}
+
+void
 SparseLinearSolverTest::sts4098SORTest() {
     // read matrix m
     FS::path filename("\\Develop\\SparseMatrixData\\sts4098\\sts4098.ar");
