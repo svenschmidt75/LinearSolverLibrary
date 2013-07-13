@@ -42,7 +42,7 @@ namespace {
 void
 LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     A_ = A;
-    IMatrix2D::size_type dim = A_.cols();
+    IMatrix2D::size_type dim = A_.cols() + 1;
 
     /* Use
      * 1. reserve instead of resize, so not all the vectors have to be default-created
@@ -96,7 +96,7 @@ LanczosPRO::initializeOmega() const {
 
 void
 LanczosPRO::computeNextLanczosVector() const {
-    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
+    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols() + 1, "Lanczos::computeNextLanczosVector: Insufficient space");
     Vector const & qn = q[current_lanczos_vector_index - 1];
     double beta = getCurrentBeta();
     Vector w = A_ * qn;
@@ -204,27 +204,12 @@ LanczosPRO::monitorOrthogonality() const {
         force_reorthogonalization = true;
     }
 
-    // TODO: Use indices instead of copying
-    /* Use a lambda function for accessing, i.e.
-     * 
-     * std::function<> last() {
-     *   return [this, &w3]() -> std::vector<double> & {
-     *     return w1;
-     *   }
-     *   
-     *   Then: last()[index] = eps; or so
-     * }
-     * 
-     * */
     rotateOmega();
-//     w1 = w2;
-//     w2 = w3;
 }
 
 void
 LanczosPRO::rotateOmega() const {
     decltype(omega1) tmp = omega1;
-
     omega1 = omega2;
     omega2 = omega3;
     omega3 = tmp;
