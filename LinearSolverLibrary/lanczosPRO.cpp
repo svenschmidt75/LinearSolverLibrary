@@ -258,14 +258,10 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
         if (lanczos_index) {
             double proj = VectorMath::dotProduct(q_prev, q[i]);
             q_prev -= proj * q[i];
-            double const eps = std::numeric_limits<double>::epsilon();
-
-            // TODO SS: Is omega3() reinit needed? Its thrown away the next iteration
-//            omega3()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
-            w3[i] = std::sqrt(A_.cols()) * 0.5 * eps;
-
-//            omega2()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
-            w2[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+            if (force_reorthogonalization) {
+                double const eps = std::numeric_limits<double>::epsilon();
+                w2[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+            }
         }
     }
     double norm = VectorMath::norm(q_prev);
