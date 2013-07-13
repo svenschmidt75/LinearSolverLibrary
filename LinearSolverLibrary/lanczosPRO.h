@@ -11,6 +11,8 @@
 
 #include "LinAlg/entities.h"
 
+#include <functional>
+
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -42,6 +44,8 @@ namespace LinearSolverLibrary_NS {
         void reorthogonalizeLanczosVector(LinAlg_NS::IMatrix2D::size_type index) const;
         void findLanczosVectorsToReorthogonalizeAgainst(LinAlg_NS::IMatrix2D::size_type index) const;
         double computeLanczosNorm() const;
+        void initializeOmega() const;
+        void rotateOmega() const;
 
     private:
         // orthogonalized via Lanczos
@@ -56,6 +60,11 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<double> w1;
         mutable std::vector<double> w2;
         mutable std::vector<double> w3;
+
+        mutable std::function<decltype(w1) & ()> omega1;
+        mutable std::function<decltype(w1) & ()> omega2;
+        mutable std::function<decltype(w1) & ()> omega3;
+
         mutable std::vector<LinAlg_NS::IMatrix2D::size_type> indices;
 
         mutable LinAlg_NS::SparseMatrix2D A_;

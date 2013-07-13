@@ -939,7 +939,7 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
 
 void
 SparseLinearSolverTest::SimonExample1Test() {
-    /* Exmaple 1 from
+    /* Example 1 from
      * Horst D Simon, The Lanczos Algorithm With Partial Reorthogonalization
      * page 129
      */

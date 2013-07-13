@@ -74,7 +74,24 @@ LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 
     force_reorthogonalization = false;
 
+    initializeOmega();
+
     monitorOrthogonality();
+}
+
+void
+LanczosPRO::initializeOmega() const {
+    omega1 = [this]() -> std::vector<double> & {
+        return w1;
+    };
+
+    omega2 = [this]() -> std::vector<double> & {
+        return w2;
+    };
+
+    omega3 = [this]() -> std::vector<double> & {
+        return w3;
+    };
 }
 
 void
@@ -125,8 +142,6 @@ LanczosPRO::getPreviousBeta() const {
 void
 LanczosPRO::monitorOrthogonality() const {
     double const eps = std::numeric_limits<double>::epsilon();
-    double eps2 = std::sqrt(eps);
-    eps2 = eps2;
 
     if (force_reorthogonalization) {
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
@@ -141,11 +156,11 @@ LanczosPRO::monitorOrthogonality() const {
             double beta_ip1 = b[i];
 
             double beta_jp1 = b[j + 1];
-            double omega_i_jp1 = i - 1 == j + 1 ? 1.0 : w2[j];
+            double omega_i_jp1 = i - 1 == j + 1 ? 1.0 : omega2()[j];
             double term1 = beta_jp1 * omega_i_jp1 / beta_ip1;
 
             double aa = a[j + 1] - a[i];
-            double omega_i_j = w2[j];
+            double omega_i_j = omega2()[j];
             double term2 = aa * omega_i_j / beta_ip1;
 
             double beta_j = 0;
@@ -153,28 +168,28 @@ LanczosPRO::monitorOrthogonality() const {
             double term3 = 0;
             if (j) {
                 beta_j = b[j];
-                omega_i_jm1 = w2[j - 1];
+                omega_i_jm1 = omega2()[j - 1];
                 term3 = beta_j * omega_i_jm1 / beta_ip1;
             }
 
             double beta_i = b[i - 1];
-            double omega_j_im1 = j  + 1 == i - 1 ? 1.0 : w1[j];
+            double omega_j_im1 = j  + 1 == i - 1 ? 1.0 : omega1()[j];
             double term4 = beta_i * omega_j_im1 / beta_ip1;
 
             double term5 = theta / beta_ip1;
 
             double sum = (beta_jp1 * omega_i_jp1 + aa * omega_i_j + beta_j * omega_i_jm1 - beta_i * omega_j_im1 + theta) / beta_ip1;
             sum = term1 + term2 + term3 - term4 + term5;
-            w3[j] = sum;
+            omega3()[j] = sum;
 
             double angle = VectorMath::dotProduct(q[i], q[j]);
 
-            std::cout << std::endl << "(" << i << "," << j << "): is/true: " << sum << ":" << angle;
+//            std::cout << std::endl << "(" << i << "," << j << "): is/true: " << sum << ":" << angle;
 
             angle = angle;
         }
     }
-    w3[i - 1] = std::sqrt(A_.cols()) * 0.5 * eps;
+    omega3()[i - 1] = std::sqrt(A_.cols()) * 0.5 * eps;
 
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
@@ -201,8 +216,18 @@ LanczosPRO::monitorOrthogonality() const {
      * }
      * 
      * */
-    w1 = w2;
-    w2 = w3;
+    rotateOmega();
+//     w1 = w2;
+//     w2 = w3;
+}
+
+void
+LanczosPRO::rotateOmega() const {
+    decltype(omega1) tmp = omega1;
+
+    omega1 = omega2;
+    omega2 = omega3;
+    omega3 = tmp;
 }
 
 bool
@@ -211,7 +236,7 @@ LanczosPRO::checkForReorthogonalization(IMatrix2D::size_type index) const {
     double const eps2 = std::sqrt(eps);
     double max_value = std::numeric_limits<double>::min();
     for (IMatrix2D::size_type j = 0; j < index; ++j) {
-        max_value = std::max(max_value, std::fabs(w3[j]));
+        max_value = std::max(max_value, std::fabs(omega3()[j]));
         if (max_value > eps2)
             return true;
     }
@@ -224,7 +249,7 @@ LanczosPRO::findLanczosVectorsToReorthogonalizeAgainst(IMatrix2D::size_type inde
     double const eps2 = std::pow(eps, 3.0 / 4.0);
     indices.resize(index);
     for (IMatrix2D::size_type j = 0; j < index; ++j) {
-        double value = std::fabs(w3[j]);
+        double value = std::fabs(omega3()[j]);
         indices[j] = value > eps2;
     }
 }
@@ -239,10 +264,15 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
             double proj = VectorMath::dotProduct(q_prev, q[i]);
             q_prev -= proj * q[i];
             double const eps = std::numeric_limits<double>::epsilon();
-            w3[i] = std::sqrt(A_.cols()) * 0.5 * eps;
-            w2[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+
+            // TODO SS: Is omega3() reinit needed? Its thrown away the next iteration
+            omega3()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+
+            omega2()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
         }
     }
+    double norm = VectorMath::norm(q_prev);
+    q_prev = q_prev * (1.0 / norm);
     printLanczosVectorsOrthogonal(q, index + 1);
 }
 
