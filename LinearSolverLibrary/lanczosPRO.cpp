@@ -250,7 +250,7 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
             q_prev -= proj * q[i];
             if (force_reorthogonalization) {
                 double const eps = std::numeric_limits<double>::epsilon();
-                w2[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+                omega2()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
             }
         }
     }

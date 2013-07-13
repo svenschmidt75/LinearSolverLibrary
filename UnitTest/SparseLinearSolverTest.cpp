@@ -934,7 +934,7 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
     CPPUNIT_ASSERT_MESSAGE("MINRESLanPRO failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
 void
