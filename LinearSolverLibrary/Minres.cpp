@@ -90,6 +90,7 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
 //         residual = normr / normb;
 
         residual = std::fabs(s(k_next) / normb);
+//        std::cout << residual << std::endl;
         if (residual < tolerance)
             return std::make_tuple(true, x, k, residual);
     }

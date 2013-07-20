@@ -1119,9 +1119,8 @@ SparseLinearSolverTest::sts4098MINRESLanProTest() {
     {
         HighResTimer t;
 
-        // needs 59944 iterations (due to very high condition number?)
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 60000);
-//        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 60000);
+        // needs 53108 iterations (due to very high condition number?) with reg. MINRES
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 60000);
     }
 
     CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);

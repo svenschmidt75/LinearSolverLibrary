@@ -38,7 +38,6 @@ Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 
 void
 Lanczos::computeNextLanczosVector() const {
-//    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
     if (q.capacity() < current_lanczos_vector_index + 1)
         extendCapacity();
     Vector const & qn = q[current_lanczos_vector_index - 1];
@@ -58,10 +57,10 @@ Lanczos::computeNextLanczosVector() const {
 
 void
 Lanczos::extendCapacity() const {
-    IMatrix2D::size_type new_size = current_lanczos_vector_index + 1;
-    a.resize(new_size);
-    b.resize(new_size);
-    q.resize(new_size);
+    IMatrix2D::size_type new_size = current_lanczos_vector_index * 2;
+    a.reserve(new_size);
+    b.reserve(new_size);
+    q.reserve(new_size);
 }
 
 double
