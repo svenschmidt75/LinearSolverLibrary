@@ -285,7 +285,6 @@ namespace LinearSolverLibrary_NS {
             return Minres::solve(A, b, max_iterations, 1E-15);
         }
 
-
         static Return_t MINRESLanPro(SparseMatrix2D const & A, Vector const & b, int max_iterations = 10000) {
             return MinresLanPro::solve(A, b, max_iterations, 1E-15);
         }

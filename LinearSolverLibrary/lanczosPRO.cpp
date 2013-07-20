@@ -144,14 +144,16 @@ LanczosPRO::monitorOrthogonality() const {
     double const eps = std::numeric_limits<double>::epsilon();
 
     if (force_reorthogonalization) {
+        // we orthogonalize agianst the same Lanczos vectors
+        // as in the previous iteration
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
         force_reorthogonalization = false;
     }
 
-    double theta = computeLanczosNorm();
-
     auto i = current_lanczos_vector_index - 1;
     if (i > 1) {
+        double theta = computeLanczosNorm();
+
         for (IMatrix2D::size_type j = 0; j < i - 1; ++j) {
             double beta_ip1 = b[i];
 
@@ -241,6 +243,7 @@ LanczosPRO::findLanczosVectorsToReorthogonalizeAgainst(IMatrix2D::size_type inde
 
 void
 LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
+    double const eps = std::numeric_limits<double>::epsilon();
     Vector & q_prev = q[index];
     printLanczosVectorsOrthogonal(q, index + 1);
     for (IMatrix2D::size_type i = 0; i < indices.size(); ++i) {
@@ -248,16 +251,14 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
         if (lanczos_index) {
             double proj = VectorMath::dotProduct(q_prev, q[i]);
             q_prev -= proj * q[i];
-            if (force_reorthogonalization) {
-                double const eps = std::numeric_limits<double>::epsilon();
-                omega2()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
-            }
+            omega3()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
         }
     }
     double norm = VectorMath::norm(q_prev);
     q_prev = q_prev * (1.0 / norm);
     printLanczosVectorsOrthogonal(q, index + 1);
 }
+
 
 double
 LanczosPRO::computeLanczosNorm() const {
@@ -266,41 +267,73 @@ LanczosPRO::computeLanczosNorm() const {
      * eigenvalue of T.
      */
     double g0;
-    if (current_lanczos_vector_index == 2) {
+    if (current_lanczos_vector_index == 3) {
+        // estimate T_{2}
         g0_prev = 0;
         g2 = 0;
 
         double alpha1 = a[1];
+        double alpha2 = a[2];
         double beta2 = b[1];
+        double scale = std::max(std::fabs(alpha1), std::fabs(alpha2));
+        scale = std::max(std::fabs(beta2), scale);
+        alpha1 /= scale;
+        alpha2 /= scale;
+        beta2 /= scale;
+
         double T00 = alpha1 * alpha1 + beta2 * beta2;
-        double T01 = alpha1 * beta2;
+        double T01 = (alpha1 + alpha2) * beta2;
         double T10 = T01;
-        double T11 = beta2 * beta2;
+        double T11 = alpha2 * alpha2 + beta2 * beta2;
+
+        double fac = 1.01 * scale;
+        double fac2 = fac * fac;
 
         // 1st and 2nd row of T_{1}
         g1 = T00 + std::fabs(T01);
+        g1 *= fac2;
         g0 = T11 + std::fabs(T10);
+        g0 *= fac2;
     }
 
     // this uses Gershgorin's circle theorem
-    else if (current_lanczos_vector_index == 3) {
+    else if (current_lanczos_vector_index == 4) {
+        // estimate T_{3}
+
         double alpha1 = a[1];
         double alpha2 = a[2];
+        double alpha3 = a[3];
         double beta2 = b[1];
         double beta3 = b[2];
+
+        double scale = std::max(std::fabs(alpha1), std::fabs(alpha2));
+        scale = std::max(std::fabs(alpha3), scale);
+        scale = std::max(std::fabs(beta2), scale);
+        scale = std::max(std::fabs(beta3), scale);
+        alpha1 /= scale;
+        alpha2 /= scale;
+        alpha3 /= scale;
+        beta2 /= scale;
+        beta3 /= scale;
+
         double T00 = alpha1 * alpha1 + beta2 * beta2;
         double T01 = (alpha1 + alpha2) * beta2;
         double T02 = beta2 * beta3;
         double T10 = T01;
         double T11 = beta2 * beta2 + alpha2 * alpha2 + beta3 * beta3;
-        double T12 = alpha2 * beta3;
+        double T12 = (alpha2 + alpha3) * beta3;
         double T20 = T02;
         double T21 = T12;
-        double T22 = beta3 * beta3;
+        double T22 = alpha3 * alpha3 + beta3 * beta3;
+
+        double fac2 = scale * scale;
 
         g2 = T00 + std::fabs(T01) + std::fabs(T02);
+        g2 *= fac2;
         g1 = T11 + std::fabs(T10) + std::fabs(T12);
+        g1 *= fac2;
         g0 = T22 + std::fabs(T20) + std::fabs(T21);
+        g0 *= fac2;
     }
 
     else {
@@ -310,11 +343,24 @@ LanczosPRO::computeLanczosNorm() const {
         double betaPrev = b[index - 1];
         double beta = b[index];
 
+        double scale = std::max(std::fabs(alphaPrev), std::fabs(alpha));
+        scale = std::max(std::fabs(betaPrev), scale);
+        scale = std::max(std::fabs(beta), scale);
+
+        alphaPrev /= scale;
+        alpha /= scale;
+        betaPrev /= scale;
+        beta /= scale;
+
+        double fac2 = std::fabs(scale * scale);
+
         double tmp1 = std::fabs(betaPrev * beta);
         double tmp2 = std::fabs((alphaPrev + alpha) * beta);
-        g2 += tmp1;
-        g1 += (beta * beta + tmp2);
-        g0 = beta * beta + alpha * alpha + tmp2 + tmp1;
+        double tmp3 = alpha * alpha;
+        double tmp4 = beta * beta;
+        g2 += tmp1 * fac2;
+        g1 += (tmp4 + tmp2) * fac2;
+        g0 = (tmp3 + tmp4 + tmp2 + tmp1) * fac2;
     }
 
     // take largest eigenvalue approximation
