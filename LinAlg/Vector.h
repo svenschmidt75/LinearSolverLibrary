@@ -91,11 +91,17 @@ namespace LinAlg_NS {
         Vector(Vector const & in);
 
         template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const && in) {
+        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> && in) {
             dim_ = in.size();
-
             data_.resize(dim_);
+            for (size_type i = 0; i < in.size(); ++i)
+                (*this)(i) = in(i);
+        }
 
+        template<typename VECTOR_EXPR, typename BINOP>
+        Vector(internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> && in) {
+            dim_ = in.size();
+            data_.resize(dim_);
             for (size_type i = 0; i < in.size(); ++i)
                 (*this)(i) = in(i);
         }
@@ -108,14 +114,12 @@ namespace LinAlg_NS {
 
         template<typename VECTOR_EXPR>
         Vector & operator=(VECTOR_EXPR const & in) {
+            // could use SFINAE instead
             static_assert(typename internal::expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "in is not a vector-like type");
             dim_ = in.size();
-
             data_.resize(dim_);
-
             for (Vector::size_type i = 0; i < in.size(); ++i)
                 (*this)(i) = in(i);
-
             return *this;
         }
 

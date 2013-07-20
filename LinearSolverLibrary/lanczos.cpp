@@ -13,25 +13,25 @@ namespace LinearSolverLibrary_NS {
 
 void
 Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
-    A_ = A;
-    IMatrix2D::size_type dim = A_.cols() * 10;
+    A_ = &A;
+    IMatrix2D::size_type dim = A_->cols();
 
-    a.resize(dim);
-    b.resize(dim);
-    // TODO: Use reserve as it will not default-construct vectors.
-    // Also, use emplace_back instead of random access.
-    q.resize(dim, Vector(dim));
-    q[0] = q0;
+    a.reserve(dim);
+    b.reserve(dim);
+    q.reserve(dim);
+    q.push_back(q0);
 
     // compute 2nd Lanczos vector
-    Vector w = A_ * q0;
+    Vector w = (*A_) * q0;
     double alpha = VectorMath::dotProduct(w, q0);
     w -= alpha * q0;
     double beta = VectorMath::norm(w);
-    q[1] = w * (1.0 / beta);
+    q.emplace_back(w * (1.0 / beta));
 
-    a[1] = alpha;
-    b[1] = beta;
+    a.push_back(0);
+    a.push_back(alpha);
+    b.push_back(0);
+    b.push_back(beta);
 
     current_lanczos_vector_index = 2;
 }
@@ -39,19 +39,29 @@ Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 void
 Lanczos::computeNextLanczosVector() const {
 //    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols(), "Lanczos::computeNextLanczosVector: Insufficient space");
+    if (q.capacity() < current_lanczos_vector_index + 1)
+        extendCapacity();
     Vector const & qn = q[current_lanczos_vector_index - 1];
     double beta = getCurrentBeta();
-    Vector w = A_ * qn;
+    Vector w = (*A_) * qn;
     w -= beta * q[current_lanczos_vector_index - 2];
     double alpha = VectorMath::dotProduct(w, qn);
     w -= alpha * qn;
     beta = VectorMath::norm(w);
-    q[current_lanczos_vector_index] = w * (1.0 / beta);
+    q.emplace_back(w * (1.0 / beta));
 
-    a[current_lanczos_vector_index] = alpha;
-    b[current_lanczos_vector_index] = beta;
+    a.push_back(alpha);
+    b.push_back(beta);
 
     current_lanczos_vector_index++;
+}
+
+void
+Lanczos::extendCapacity() const {
+    IMatrix2D::size_type new_size = current_lanczos_vector_index + 1;
+    a.resize(new_size);
+    b.resize(new_size);
+    q.resize(new_size);
 }
 
 double

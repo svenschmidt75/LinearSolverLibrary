@@ -35,6 +35,7 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::Vector const & getPreviousLanczosVector() const;
         double getPreviousAlpha() const;
         double getPreviousBeta() const;
+        void extendCapacity() const;
 
     private:
         // orthogonalized via Lanczos
@@ -45,7 +46,7 @@ namespace LinearSolverLibrary_NS {
         mutable std::vector<double> a;
         mutable std::vector<double> b;
 
-        mutable LinAlg_NS::SparseMatrix2D A_;
+        mutable LinAlg_NS::SparseMatrix2D const * A_;
     };
 
 } // LinearSolverLibrary_NS

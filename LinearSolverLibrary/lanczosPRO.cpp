@@ -198,6 +198,10 @@ LanczosPRO::monitorOrthogonality() const {
         numer_of_reorthogonalizations++;
         std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
 
+        if ( numer_of_reorthogonalizations == 63) {
+            int a = 1;
+            a++;
+        }
         printLanczosVectorsOrthogonal(q, current_lanczos_vector_index);
 
         findLanczosVectorsToReorthogonalizeAgainst(current_lanczos_vector_index - 1);
@@ -221,10 +225,8 @@ bool
 LanczosPRO::checkForReorthogonalization(IMatrix2D::size_type index) const {
     double const eps = std::numeric_limits<double>::epsilon();
     double const eps2 = std::sqrt(eps);
-    double max_value = std::numeric_limits<double>::min();
     for (IMatrix2D::size_type j = 0; j < index; ++j) {
-        max_value = std::max(max_value, std::fabs(omega3()[j]));
-        if (max_value > eps2)
+        if (std::fabs(omega3()[j]) > eps2)
             return true;
     }
     return false;
