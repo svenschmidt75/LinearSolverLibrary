@@ -274,6 +274,7 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
             omega3()[i] = std::sqrt(A_->cols()) * 0.5 * eps;
         }
     }
+    // the normalization makes no real difference it seems
 //     double norm = VectorMath::norm(q_prev);
 //     q_prev = q_prev * (1.0 / norm);
     printLanczosVectorsOrthogonal(q, index + 1);
