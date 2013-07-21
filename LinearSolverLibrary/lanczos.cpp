@@ -15,10 +15,9 @@ void
 Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     A_ = &A;
     IMatrix2D::size_type dim = A_->cols();
+    extendCapacity(dim);
 
-    a.reserve(dim);
-    b.reserve(dim);
-    q.reserve(dim);
+    // 1st Lanczos vector
     q.push_back(q0);
 
     // compute 2nd Lanczos vector
@@ -39,7 +38,7 @@ Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
 void
 Lanczos::computeNextLanczosVector() const {
     if (q.capacity() < current_lanczos_vector_index + 1)
-        extendCapacity();
+        extendCapacity(current_lanczos_vector_index * 2);
     Vector const & qn = q[current_lanczos_vector_index - 1];
     double beta = getCurrentBeta();
     Vector w = (*A_) * qn;
@@ -56,8 +55,8 @@ Lanczos::computeNextLanczosVector() const {
 }
 
 void
-Lanczos::extendCapacity() const {
-    IMatrix2D::size_type new_size = current_lanczos_vector_index * 2;
+Lanczos::extendCapacity(IMatrix2D::size_type new_size) const {
+    BOOST_ASSERT_MSG(new_size > q.capacity(), "Lanczos::extendCapacity: Capacity should be bigger than existing one");
     a.reserve(new_size);
     b.reserve(new_size);
     q.reserve(new_size);

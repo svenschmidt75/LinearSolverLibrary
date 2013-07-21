@@ -466,7 +466,7 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESTest() {
     CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
     // check that m is symmetric
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
 
     // read rhs vector b
@@ -538,7 +538,7 @@ SparseLinearSolverTest::VersteegMalalasekeraMINRESLanProTest() {
     CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
     // check that m is symmetric
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
 
     // read rhs vector b
@@ -610,7 +610,7 @@ SparseLinearSolverTest::VersteegMalalasekeraTFQMRTest() {
     CPPUNIT_ASSERT_MESSAGE("matrix not diagonally dominant", SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
 
     // check that m is symmetric
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
 
     // read rhs vector b
@@ -678,7 +678,7 @@ SparseLinearSolverTest::bcsstk05SORTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -719,7 +719,7 @@ SparseLinearSolverTest::bcsstk05CGTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -765,7 +765,7 @@ SparseLinearSolverTest::bcsstk05BiCGTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -811,7 +811,7 @@ SparseLinearSolverTest::bcsstk05BiCGSTABTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -857,7 +857,7 @@ SparseLinearSolverTest::bcsstk05MINRESTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -885,10 +885,10 @@ SparseLinearSolverTest::bcsstk05MINRESTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
     }
 
-    CPPUNIT_ASSERT_MESSAGE("BiCGSTAB failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCGSTAB solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 }
 
 void
@@ -903,7 +903,7 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 153ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -927,7 +927,7 @@ SparseLinearSolverTest::bcsstk05MINRESLanProTest() {
     {
         HighResTimer t;
 
-        // needs 152 iterations vs 331 without partial reorthogonalization
+        // needs 152 iterations vs 323 without partial reorthogonalization
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
     }
 
@@ -988,7 +988,7 @@ SparseLinearSolverTest::sts4098SORTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1038,7 +1038,7 @@ SparseLinearSolverTest::sts4098MINRESTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1064,7 +1064,7 @@ SparseLinearSolverTest::sts4098MINRESTest() {
     {
         HighResTimer t;
 
-        // needs 59944 iterations (due to very high condition number?)
+        // needs 53108 iterations (due to very high condition number?)
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 60000);
     }
 
@@ -1093,7 +1093,7 @@ SparseLinearSolverTest::sts4098MINRESLanProTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1148,7 +1148,7 @@ SparseLinearSolverTest::sts4098GMRESTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1174,12 +1174,13 @@ SparseLinearSolverTest::sts4098GMRESTest() {
     {
         HighResTimer t;
 
-        // needs 59944 iterations (due to very high condition number?)
+        // needs 4485 iterations (due to very high condition number?)
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m, b, m.cols());
     }
 
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
 
+    std::cout << "Iterations: " << iterations << std::endl;
 
     // compute A x and check that = b
     Vector tmp(x.size());
@@ -1261,7 +1262,7 @@ SparseLinearSolverTest::fs_680_1CGTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1310,7 +1311,7 @@ SparseLinearSolverTest::fs_680_1BiCGTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1362,7 +1363,7 @@ SparseLinearSolverTest::fs_680_1BiCGSTABTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1414,7 +1415,7 @@ SparseLinearSolverTest::fs_680_1GMRESTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1466,7 +1467,7 @@ SparseLinearSolverTest::fs_680_1TFQMRTest() {
     SparseMatrix2D const m = sm_reader->get();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     // m is NOT diagonally dominant
     CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
@@ -1498,4 +1499,98 @@ SparseLinearSolverTest::fs_680_1TFQMRTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-7));
+}
+
+void
+SparseLinearSolverTest::spiralMINRESTest() {
+    // spiral is symmetric, not pos. def.
+    // condition nr: 390841
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\spiral\\spiral.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 1434ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(1434);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(1434);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 1989 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m, b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 2.56 * 1E-8));
+}
+
+void
+SparseLinearSolverTest::spiralMINRESLanProTest() {
+    // spiral is symmetric, not pos. def.
+    // condition nr: 390841
+
+    // read matrix m
+    FS::path filename("\\Develop\\SparseMatrixData\\spiral\\spiral.ar");
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+
+    SparseMatrix2D const m = sm_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 1434ull, m.cols());
+
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
+
+    // m is NOT diagonally dominant
+    CPPUNIT_ASSERT_MESSAGE("matrix should not be diagonally dominant", !SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m));
+
+
+    // create solution vector x
+    Vector x_ref(1434);
+    std::iota(std::begin(x_ref), std::end(x_ref), 1);
+
+    // create vector b
+    Vector b(1434);
+    b = m * x_ref;
+
+
+
+    bool success;
+    Vector x(b.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 152 iterations vs 323 without partial reorthogonalization
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRESLanPro(m, b, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("MINRESLanPRO failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-9));
 }

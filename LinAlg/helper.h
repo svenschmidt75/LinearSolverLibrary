@@ -88,7 +88,7 @@ namespace LinAlg_NS {
             return value;
         }
         
-        static bool isSymmsteric(SparseMatrix2D const & m);
+        static bool isSymmetric(SparseMatrix2D const & m);
 
     };
 

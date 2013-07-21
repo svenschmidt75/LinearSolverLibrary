@@ -64,7 +64,7 @@ helper::get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D:
 }
 
 bool
-helper::isSymmsteric(SparseMatrix2D const & m) {
+helper::isSymmetric(SparseMatrix2D const & m) {
     static double const tol = 1E-10;
 
     for (IMatrix2D::size_type row = 1; row < m.cols(); ++row) {

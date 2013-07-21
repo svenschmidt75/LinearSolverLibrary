@@ -69,7 +69,8 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
     auto dim = A.cols();
 
     // space for the orthogonal Arnoldi vectors
-    std::vector<Vector> q(m + 1, Vector(dim));
+    std::vector<Vector> q;
+    q.reserve(m + 1);
 
 #if 0
     BOOST_SCOPE_EXIT(&q) {
@@ -94,7 +95,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
     Vector x(b.size());
 
     while (j <= maxIterations) {
-        q[0] = r * (1.0 / beta);
+        q.emplace_back(r * (1.0 / beta));
         s(0) = beta;
 
         for (SparseMatrix2D::size_type i = 0; i < m && j <= maxIterations; ++i, ++j) {
@@ -112,7 +113,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
             H(i + 1, i) = normw;
 
             // next normalized basis vector of Krylov space
-            q[i + 1] = w * (1.0 / normw);
+            q.emplace_back(w * (1.0 / normw));
 
 //             H.print();
 
@@ -158,11 +159,11 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
 
         // reset r.h.s. to zero
         s.clear();
+        q.clear();
     }
 
     // scheme did not converge
     return std::make_tuple(false, x, 10000, 0);
-
 }
 
 } // LinearSolverLibrary_NS

@@ -43,6 +43,7 @@ namespace LinearSolverLibrary_NS {
         bool checkForReorthogonalization(LinAlg_NS::IMatrix2D::size_type index) const;
         void reorthogonalizeLanczosVector(LinAlg_NS::IMatrix2D::size_type index) const;
         void findLanczosVectorsToReorthogonalizeAgainst(LinAlg_NS::IMatrix2D::size_type index) const;
+        void extendCapacity(LinAlg_NS::IMatrix2D::size_type new_size) const;
         double computeLanczosNorm() const;
         void initializeOmega() const;
         void rotateOmega() const;
@@ -67,7 +68,7 @@ namespace LinearSolverLibrary_NS {
 
         mutable std::vector<LinAlg_NS::IMatrix2D::size_type> indices;
 
-        mutable LinAlg_NS::SparseMatrix2D A_;
+        mutable LinAlg_NS::SparseMatrix2D const * A_;
         mutable bool force_reorthogonalization;
 
         mutable double g1;

@@ -35,7 +35,7 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::Vector const & getPreviousLanczosVector() const;
         double getPreviousAlpha() const;
         double getPreviousBeta() const;
-        void extendCapacity() const;
+        void extendCapacity(LinAlg_NS::IMatrix2D::size_type new_size) const;
 
     private:
         // orthogonalized via Lanczos

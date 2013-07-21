@@ -65,7 +65,7 @@ FloridaSparseMatrixReaderTest::readSTS4098Test() {
 
     SparseMatrix2D const m = sm_reader->get();
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
@@ -98,7 +98,7 @@ FloridaSparseMatrixReaderTest::readFS6801Test() {
 
     SparseMatrix2D const m = sm_reader->get();
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix should not be symmetric", !LinAlg_NS::helper::isSymmsteric(m));
+    CPPUNIT_ASSERT_MESSAGE("Matrix should not be symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);

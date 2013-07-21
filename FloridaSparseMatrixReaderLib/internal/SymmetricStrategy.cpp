@@ -26,7 +26,7 @@ SymmetricStrategy::insert(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatri
 bool
 SymmetricStrategy::check() const {
     // check that the matrix is indeed symmetric
-    return LinAlg_NS::helper::isSymmsteric(m_);
+    return LinAlg_NS::helper::isSymmetric(m_);
 }
 
 } // EntityReader_NS

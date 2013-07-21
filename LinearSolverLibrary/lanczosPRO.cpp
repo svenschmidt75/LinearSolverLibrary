@@ -34,40 +34,40 @@ namespace {
                     deviation = 0;
                 int_deviation = static_cast<int>(boost::math::round(deviation));
             }
-            std::cout << int_deviation << " ";
+//            std::cout << int_deviation << " ";
         }
     }
 }
 
 void
 LanczosPRO::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
-    A_ = A;
-    IMatrix2D::size_type dim = A_.cols() + 1;
+    A_ = &A;
+    IMatrix2D::size_type dim = A_->cols() + 1;
 
     /* Use
      * 1. reserve instead of resize, so not all the vectors have to be default-created
      *    immediately
      * 2. use push_back
      */
-    a.resize(dim);
-    b.resize(dim);
-    q.resize(dim, Vector(dim));
+    extendCapacity(dim);
     w1.resize(dim);
     w2.resize(dim);
     w3.resize(dim);
 
     // 1st Lanczos vector
-    q[0] = q0;
+    q.push_back(q0);
 
     // compute 2nd Lanczos vector
-    Vector w = A_ * q0;
+    Vector w = (*A_) * q0;
     double alpha = VectorMath::dotProduct(w, q0);
     w -= alpha * q0;
     double beta = VectorMath::norm(w);
-    q[1] = w * (1.0 / beta);
+    q.emplace_back(w * (1.0 / beta));
 
-    a[1] = alpha;
-    b[1] = beta;
+    a.push_back(0);
+    a.push_back(alpha);
+    b.push_back(0);
+    b.push_back(beta);
 
     current_lanczos_vector_index = 2;
     numer_of_reorthogonalizations = 0;
@@ -96,22 +96,30 @@ LanczosPRO::initializeOmega() const {
 
 void
 LanczosPRO::computeNextLanczosVector() const {
-    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_.cols() + 1, "Lanczos::computeNextLanczosVector: Insufficient space");
+    BOOST_ASSERT_MSG(current_lanczos_vector_index < A_->cols() + 1, "Lanczos::computeNextLanczosVector: Insufficient space");
     Vector const & qn = q[current_lanczos_vector_index - 1];
     double beta = getCurrentBeta();
-    Vector w = A_ * qn;
+    Vector w = (*A_) * qn;
     w -= beta * q[current_lanczos_vector_index - 2];
     double alpha = VectorMath::dotProduct(w, qn);
     w -= alpha * qn;
     beta = VectorMath::norm(w);
-    q[current_lanczos_vector_index] = w * (1.0 / beta);
+    q.emplace_back(w * (1.0 / beta));
 
-    a[current_lanczos_vector_index] = alpha;
-    b[current_lanczos_vector_index] = beta;
+    a.push_back(alpha);
+    b.push_back(beta);
 
     current_lanczos_vector_index++;
 
     monitorOrthogonality();
+}
+
+void
+LanczosPRO::extendCapacity(IMatrix2D::size_type new_size) const {
+    BOOST_ASSERT_MSG(new_size > q.capacity(), "LanczosPRO::extendCapacity: Capacity should be bigger than existing one");
+    a.reserve(new_size);
+    b.reserve(new_size);
+    q.reserve(new_size);
 }
 
 double
@@ -144,7 +152,7 @@ LanczosPRO::monitorOrthogonality() const {
     double const eps = std::numeric_limits<double>::epsilon();
 
     if (force_reorthogonalization) {
-        // we orthogonalize agianst the same Lanczos vectors
+        // we orthogonalize against the same Lanczos vectors
         // as in the previous iteration
         reorthogonalizeLanczosVector(current_lanczos_vector_index - 1);
         force_reorthogonalization = false;
@@ -191,17 +199,13 @@ LanczosPRO::monitorOrthogonality() const {
             angle = angle;
         }
     }
-   omega3()[i - 1] = std::sqrt(A_.cols()) * 0.5 * eps;
+   omega3()[i - 1] = std::sqrt(A_->cols()) * 0.5 * eps;
 
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
         numer_of_reorthogonalizations++;
-        std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
+//       std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
 
-        if ( numer_of_reorthogonalizations == 63) {
-            int a = 1;
-            a++;
-        }
         printLanczosVectorsOrthogonal(q, current_lanczos_vector_index);
 
         findLanczosVectorsToReorthogonalizeAgainst(current_lanczos_vector_index - 1);
@@ -253,7 +257,7 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
         if (lanczos_index) {
             double proj = VectorMath::dotProduct(q_prev, q[i]);
             q_prev -= proj * q[i];
-            omega3()[i] = std::sqrt(A_.cols()) * 0.5 * eps;
+            omega3()[i] = std::sqrt(A_->cols()) * 0.5 * eps;
         }
     }
     double norm = VectorMath::norm(q_prev);
@@ -354,7 +358,7 @@ LanczosPRO::computeLanczosNorm() const {
         betaPrev /= scale;
         beta /= scale;
 
-        double fac2 = std::fabs(scale * scale);
+        double fac2 = scale * scale;
 
         double tmp1 = std::fabs(betaPrev * beta);
         double tmp2 = std::fabs((alphaPrev + alpha) * beta);
@@ -371,7 +375,7 @@ LanczosPRO::computeLanczosNorm() const {
     g = std::max(g0_prev, g);
 
     double const eps = std::numeric_limits<double>::epsilon();
-    double theta = std::sqrt(A_.cols()) * eps * 0.5 * std::sqrt(g);
+    double theta = std::sqrt(A_->cols()) * eps * 0.5 * std::sqrt(g);
 
     g0_prev = g;
 
