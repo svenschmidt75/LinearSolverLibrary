@@ -169,7 +169,7 @@ LanczosPRO::monitorOrthogonality() const {
 
     auto i = current_lanczos_vector_index - 1;
     if (i > 1) {
-        double theta = computeLanczosNorm();// * 1E3;
+        double theta = computeLanczosNorm();
         double beta_ip1 = b[i];
         for (IMatrix2D::size_type j = 0; j < i - 1; ++j) {
             double beta_jp1 = b[j + 1];
@@ -235,10 +235,8 @@ LanczosPRO::monitorOrthogonality() const {
 
 void
 LanczosPRO::rotateOmega() const {
-    decltype(omega1) tmp = omega1;
     omega1 = omega2;
     omega2 = omega3;
-    omega3 = tmp;
 }
 
 bool
@@ -276,8 +274,8 @@ LanczosPRO::reorthogonalizeLanczosVector(IMatrix2D::size_type index) const {
             omega3()[i] = std::sqrt(A_->cols()) * 0.5 * eps;
         }
     }
-    double norm = VectorMath::norm(q_prev);
-    q_prev = q_prev * (1.0 / norm);
+//     double norm = VectorMath::norm(q_prev);
+//     q_prev = q_prev * (1.0 / norm);
     printLanczosVectorsOrthogonal(q, index + 1);
 }
 
@@ -299,6 +297,8 @@ LanczosPRO::computeLanczosNorm() const {
         double beta2 = b[1];
         double scale = std::max(std::fabs(alpha1), std::fabs(alpha2));
         scale = std::max(std::fabs(beta2), scale);
+        scale = 1.0;
+
         alpha1 /= scale;
         alpha2 /= scale;
         beta2 /= scale;
@@ -332,6 +332,8 @@ LanczosPRO::computeLanczosNorm() const {
         scale = std::max(std::fabs(alpha3), scale);
         scale = std::max(std::fabs(beta2), scale);
         scale = std::max(std::fabs(beta3), scale);
+        scale = 1.0;
+
         alpha1 /= scale;
         alpha2 /= scale;
         alpha3 /= scale;
@@ -362,12 +364,13 @@ LanczosPRO::computeLanczosNorm() const {
         IMatrix2D::size_type index = current_lanczos_vector_index - 1;
         double alphaPrev = a[index - 1];
         double alpha = a[index];
-        double betaPrev = b[index - 1];
-        double beta = b[index];
+        double betaPrev = b[index - 2];
+        double beta = b[index - 1];
 
         double scale = std::max(std::fabs(alphaPrev), std::fabs(alpha));
         scale = std::max(std::fabs(betaPrev), scale);
         scale = std::max(std::fabs(beta), scale);
+        scale = 1.0;
 
         alphaPrev /= scale;
         alpha /= scale;
