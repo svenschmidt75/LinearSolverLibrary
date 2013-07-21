@@ -9,6 +9,11 @@
 using namespace LinAlg_NS;
 
 
+
+
+#define WRITE_TO_CONSOLE 0
+
+
 namespace LinearSolverLibrary_NS {
     
 namespace {
@@ -22,7 +27,9 @@ namespace {
          * Result: 4, i.e. -12 + 16 (from eps) = 4
          */
         double const machine_eps = std::numeric_limits<double>::epsilon();
+#if WRITE_TO_CONSOLE
         std::cout << std::endl;
+#endif
         for (IMatrix2D::size_type i = 0; i < size - 1; ++i) {
             double angle = VectorMath::dotProduct(q[i], q[size - 1]);
             int int_deviation = 0;
@@ -34,7 +41,9 @@ namespace {
                     deviation = 0;
                 int_deviation = static_cast<int>(boost::math::round(deviation));
             }
-//            std::cout << int_deviation << " ";
+#if WRITE_TO_CONSOLE
+            std::cout << int_deviation << " ";
+#endif
         }
     }
 }
@@ -160,13 +169,11 @@ LanczosPRO::monitorOrthogonality() const {
 
     auto i = current_lanczos_vector_index - 1;
     if (i > 1) {
-        double theta = computeLanczosNorm();
-
+        double theta = computeLanczosNorm();// * 1E3;
+        double beta_ip1 = b[i];
         for (IMatrix2D::size_type j = 0; j < i - 1; ++j) {
-            double beta_ip1 = b[i];
-
             double beta_jp1 = b[j + 1];
-            double omega_i_jp1 = i - 1 == j + 1 ? 1.0 : omega2()[j];
+            double omega_i_jp1 = i - 1 == j + 1 ? 1.0 : omega2()[j + 1];
             double term1 = beta_jp1 * omega_i_jp1 / beta_ip1;
 
             double aa = a[j + 1] - a[i];
@@ -183,7 +190,7 @@ LanczosPRO::monitorOrthogonality() const {
             }
 
             double beta_i = b[i - 1];
-            double omega_j_im1 = j  + 1 == i - 1 ? 1.0 : omega1()[j];
+            double omega_j_im1 = j + 1 == i - 1 ? 1.0 : omega1()[j];
             double term4 = beta_i * omega_j_im1 / beta_ip1;
 
             double term5 = theta / beta_ip1;
@@ -194,7 +201,14 @@ LanczosPRO::monitorOrthogonality() const {
 
             double angle = VectorMath::dotProduct(q[i], q[j]);
 
-//            std::cout << std::endl << "(" << i << "," << j << "): is/true: " << sum << ":" << angle;
+#if WRITE_TO_CONSOLE
+            std::cout << std::endl << "(" << i << "," << j << "): is/true: " << sum << ":" << angle;
+#endif
+
+            if (std::fabs(angle / sum) > 1E2) {
+                int a = 1;
+                a++;
+            }
 
             angle = angle;
         }
@@ -204,7 +218,9 @@ LanczosPRO::monitorOrthogonality() const {
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
         numer_of_reorthogonalizations++;
-//       std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
+#if WRITE_TO_CONSOLE
+        std::cout << std::endl << "reorthogonalization " << numer_of_reorthogonalizations;
+#endif
 
         printLanczosVectorsOrthogonal(q, current_lanczos_vector_index);
 
