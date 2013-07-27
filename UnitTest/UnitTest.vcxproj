@@ -37,6 +37,7 @@
     <ClCompile Include="SparseLinearSolverTest.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
+    <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="SparseLinearSolverTest.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
+    <ClInclude Include="VersteegMalalasekeraTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">

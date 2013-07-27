@@ -8,16 +8,18 @@
 #include "LinAlgTest.h"
 #include "UTMatrixTest.h"
 #include "UHMatrixTest.h"
+#include "VersteegMalalasekeraTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(UHMatrixTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(UTMatrixTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(MultiColorTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FloridaVectorReaderTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FloridaSparseMatrixReaderTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(UHMatrixTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(UTMatrixTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(MultiColorTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(FloridaVectorReaderTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(FloridaSparseMatrixReaderTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
 
 
 int main(int /*argc*/, char ** /*argv*/) {
