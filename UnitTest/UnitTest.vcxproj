@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
     <ClCompile Include="LinAlgOperatorTest.cpp">
@@ -35,11 +36,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SparseLinearSolverTest.cpp" />
+    <ClCompile Include="sts4098Test.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />
     <ClInclude Include="LinAlgOperatorTest.h" />
@@ -47,6 +50,7 @@
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverTest.h" />
+    <ClInclude Include="sts4098Test.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="VersteegMalalasekeraTest.h" />

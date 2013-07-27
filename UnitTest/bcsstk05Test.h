@@ -1,5 +1,5 @@
 /*
- * Name  : VersteegMalalasekeraTest
+ * Name  : bcsstk05Test
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
@@ -10,18 +10,14 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class VersteegMalalasekeraTest : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(VersteegMalalasekeraTest);
+class bcsstk05Test : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(bcsstk05Test);
     CPPUNIT_TEST(SORTest);
-    CPPUNIT_TEST(SORMultiColorTest);
     CPPUNIT_TEST(CGTest);
     CPPUNIT_TEST(BiCGTest);
     CPPUNIT_TEST(BiCGSTABTest);
-    CPPUNIT_TEST(GMRESWithNoRestartsTest);
-    CPPUNIT_TEST(GMRESWithRestartsTest);
     CPPUNIT_TEST(MINRESTest);
     CPPUNIT_TEST(MINRESLanProTest);
-    CPPUNIT_TEST(TFQMRTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -30,21 +26,16 @@ public:
 
 protected:
     void SORTest();
-    void SORMultiColorTest();
     void CGTest();
     void BiCGTest();
     void BiCGSTABTest();
-    void GMRESWithNoRestartsTest();
-    void GMRESWithRestartsTest();
     void MINRESTest();
     void MINRESLanProTest();
-    void TFQMRTest();
 
 private:
     void initMatrix();
-    void initRHS();
-    void initReferenceVector();
     void matrixIsDiagonallyDominant();
+    void matrixIsSymmetric();
 
 private:
     LinAlg_NS::SparseMatrix2D m_;

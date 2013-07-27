@@ -12,27 +12,9 @@
 
 class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseLinearSolverTest);
-    CPPUNIT_TEST(VersteegMalalasekeraSORTest);
-    CPPUNIT_TEST(VersteegMalalasekeraSORMultiColorTest);
-    CPPUNIT_TEST(VersteegMalalasekeraCGTest);
-    CPPUNIT_TEST(VersteegMalalasekeraBiCGTest);
-    CPPUNIT_TEST(VersteegMalalasekeraBiCGSTABTest);
-    CPPUNIT_TEST(VersteegMalalasekeraGMRESTest);
-    CPPUNIT_TEST(VersteegMalalasekeraMINRESTest);
-    CPPUNIT_TEST(VersteegMalalasekeraTFQMRTest);
     CPPUNIT_TEST(SimonExample1Test);
 #ifdef INTEGRATION_TEST
-    CPPUNIT_TEST(bcsstk05SORTest);
-    CPPUNIT_TEST(bcsstk05CGTest);
-    CPPUNIT_TEST(bcsstk05BiCGTest);
-    CPPUNIT_TEST(bcsstk05BiCGSTABTest);
-    CPPUNIT_TEST(bcsstk05MINRESTest);
-    CPPUNIT_TEST(bcsstk05MINRESLanProTest);
     CPPUNIT_TEST(SimonExample1Test);
-    CPPUNIT_TEST(sts4098SORTest);
-    CPPUNIT_TEST(sts4098MINRESTest);
-    CPPUNIT_TEST(sts4098MINRESLanProTest);
-    CPPUNIT_TEST(sts4098GMRESTest);
     CPPUNIT_TEST(OffshoreSORTest);
     CPPUNIT_TEST(fs_680_1CGTest);
     CPPUNIT_TEST(fs_680_1BiCGTest);
@@ -49,26 +31,7 @@ public:
     void tearDown();
 
 protected:
-    void VersteegMalalasekeraSORTest();
-    void VersteegMalalasekeraSORMultiColorTest();
-    void VersteegMalalasekeraCGTest();
-    void VersteegMalalasekeraBiCGTest();
-    void VersteegMalalasekeraBiCGSTABTest();
-    void VersteegMalalasekeraGMRESTest();
-    void VersteegMalalasekeraMINRESTest();
-    void VersteegMalalasekeraMINRESLanProTest();
-    void VersteegMalalasekeraTFQMRTest();
-    void bcsstk05SORTest();
-    void bcsstk05CGTest();
-    void bcsstk05BiCGTest();
-    void bcsstk05BiCGSTABTest();
-    void bcsstk05MINRESTest();
-    void bcsstk05MINRESLanProTest();
     void SimonExample1Test();
-    void sts4098SORTest();
-    void sts4098MINRESTest();
-    void sts4098MINRESLanProTest();
-    void sts4098GMRESTest();
     void OffshoreSORTest();
     void fs_680_1CGTest();
     void fs_680_1BiCGTest();

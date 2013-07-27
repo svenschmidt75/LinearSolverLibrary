@@ -9,9 +9,16 @@
 #include "UTMatrixTest.h"
 #include "UHMatrixTest.h"
 #include "VersteegMalalasekeraTest.h"
+#include "bcsstk05Test.h"
+#include "sts4098Test.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
+#ifdef INTEGRATION_TEST
+//CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);
+#endif
+CPPUNIT_TEST_SUITE_REGISTRATION(sts4098Test);
+
 // CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(UHMatrixTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(UTMatrixTest);
