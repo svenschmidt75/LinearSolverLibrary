@@ -25,7 +25,7 @@ int main(int /*argc*/, char* /*argv[]*/)
     SparseMatrix2D const m = sm_reader->get();
     BOOST_ASSERT_MSG(153ull == m.cols(), "error in number of columns");
 
-    BOOST_ASSERT_MSG(LinAlg_NS::helper::isSymmsteric(m), "Matrix not symmetric");
+    BOOST_ASSERT_MSG(LinAlg_NS::helper::isSymmetric(m), "Matrix not symmetric");
 
     // m is NOT diagonally dominant
     BOOST_ASSERT_MSG(!SparseLinearSolverUtil::isStrictlyDiagonallyDominant(m), "matrix should not be diagonally dominant");

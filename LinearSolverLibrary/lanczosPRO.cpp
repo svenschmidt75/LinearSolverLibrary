@@ -110,8 +110,11 @@ LanczosPRO::computeNextLanczosVector() const {
     double beta = getCurrentBeta();
     Vector w = (*A_) * qn;
     w -= beta * q[current_lanczos_vector_index - 2];
+
+    // make w orthogonal to qn
     double alpha = VectorMath::dotProduct(w, qn);
     w -= alpha * qn;
+
     beta = VectorMath::norm(w);
     q.emplace_back(w * (1.0 / beta));
 
@@ -206,14 +209,15 @@ LanczosPRO::monitorOrthogonality() const {
 #endif
 
             if (std::fabs(angle / sum) > 1E2) {
-                int a = 1;
-                a++;
+                std::cout << "LanczosPRO::monitorOrthogonality: Value too optimistic" << std::endl;
             }
 
             angle = angle;
         }
     }
-   omega3()[i - 1] = std::sqrt(A_->cols()) * 0.5 * eps;
+
+    // q_{i+1} is per construction (Lanczos) orthogonal to q_{i}
+    omega3()[i - 1] = std::sqrt(A_->cols()) * 0.5 * eps;
 
     bool reorthogonalize = checkForReorthogonalization(i);
     if (reorthogonalize) {
@@ -298,7 +302,6 @@ LanczosPRO::computeLanczosNorm() const {
         double beta2 = b[1];
         double scale = std::max(std::fabs(alpha1), std::fabs(alpha2));
         scale = std::max(std::fabs(beta2), scale);
-        scale = 1.0;
 
         alpha1 /= scale;
         alpha2 /= scale;
@@ -322,7 +325,6 @@ LanczosPRO::computeLanczosNorm() const {
     // this uses Gershgorin's circle theorem
     else if (current_lanczos_vector_index == 4) {
         // estimate T_{3}
-
         double alpha1 = a[1];
         double alpha2 = a[2];
         double alpha3 = a[3];
@@ -333,7 +335,6 @@ LanczosPRO::computeLanczosNorm() const {
         scale = std::max(std::fabs(alpha3), scale);
         scale = std::max(std::fabs(beta2), scale);
         scale = std::max(std::fabs(beta3), scale);
-        scale = 1.0;
 
         alpha1 /= scale;
         alpha2 /= scale;
@@ -371,7 +372,6 @@ LanczosPRO::computeLanczosNorm() const {
         double scale = std::max(std::fabs(alphaPrev), std::fabs(alpha));
         scale = std::max(std::fabs(betaPrev), scale);
         scale = std::max(std::fabs(beta), scale);
-        scale = 1.0;
 
         alphaPrev /= scale;
         alpha /= scale;
