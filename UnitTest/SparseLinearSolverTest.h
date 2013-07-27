@@ -16,11 +16,6 @@ class SparseLinearSolverTest : public CppUnit::TestFixture {
 #ifdef INTEGRATION_TEST
     CPPUNIT_TEST(SimonExample1Test);
     CPPUNIT_TEST(OffshoreSORTest);
-    CPPUNIT_TEST(fs_680_1CGTest);
-    CPPUNIT_TEST(fs_680_1BiCGTest);
-    CPPUNIT_TEST(fs_680_1BiCGSTABTest);
-    CPPUNIT_TEST(fs_680_1GMRESTest);
-    CPPUNIT_TEST(fs_680_1TFQMRTest);
     CPPUNIT_TEST(spiralMINRESTest);
     CPPUNIT_TEST(spiralMINRESLanProTest);
 #endif
@@ -33,11 +28,6 @@ public:
 protected:
     void SimonExample1Test();
     void OffshoreSORTest();
-    void fs_680_1CGTest();
-    void fs_680_1BiCGTest();
-    void fs_680_1BiCGSTABTest();
-    void fs_680_1GMRESTest();
-    void fs_680_1TFQMRTest();
     void spiralMINRESTest();
     void spiralMINRESLanProTest();
 };

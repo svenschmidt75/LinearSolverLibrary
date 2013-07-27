@@ -22,6 +22,7 @@
     <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
+    <ClCompile Include="fs_680_1_Test.cpp" />
     <ClCompile Include="LinAlgOperatorTest.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IgnoreStandardIncludePath>
@@ -45,6 +46,7 @@
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />
+    <ClInclude Include="fs_680_1_Test.h" />
     <ClInclude Include="LinAlgOperatorTest.h" />
     <ClInclude Include="LinAlgTest.h" />
     <ClInclude Include="MultiColorTest.h" />
