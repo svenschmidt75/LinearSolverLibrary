@@ -32,6 +32,10 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
     initializePartialPivotingMap(max_row);
 
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
+        ACopy.print();
+        AInverse.print();
+
+        
         // Find pivot element row index
         IMatrix2D::size_type pivot_index = findPivotIndex(ACopy, col);
 
@@ -54,18 +58,20 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
             val2 /= pivot_element;
         }
 
+        ACopy.print();
+
         // Do same transformation on the rhs
         rhs(pivot_index) /= pivot_element;
 
         // Add pivot row to all other rows to reduce column col
         // to the corresponding identity matrix column.
-        for (int current_row = 0; current_row < max_row; ++current_row) {
+        for (IMatrix2D::size_type current_row = 0; current_row < max_row; ++current_row) {
             if (current_row == pivot_index)
                 continue;
 
             double val = - ACopy(current_row, col) / ACopy(pivot_index, col);
 
-            for (int j = 0; j < max_col; ++j) {
+            for (IMatrix2D::size_type j = 0; j < max_col; ++j) {
                 ACopy(current_row, j) += val * ACopy(pivot_index, j);
                 AInverse(current_row, j) += val * AInverse(pivot_index, j);
             }
@@ -109,10 +115,11 @@ Gauss::findPivotIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
 void
 Gauss::adjustPivotingMap(IMatrix2D::size_type column_index, IMatrix2D::size_type pivot_index) const {
     if (column_index != partial_pivoting_map_[pivot_index]) {
-        partial_pivoting_map_[pivot_index] = column_index;
-        partial_pivoting_map_[partial_pivoting_map_[column_index]] = pivot_index;
+        IMatrix2D::size_type tmp = partial_pivoting_map_[pivot_index];
+        partial_pivoting_map_[pivot_index] = partial_pivoting_map_[column_index];
+        partial_pivoting_map_[column_index] = tmp;
     }
-    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
+//    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
 }
 
 void
@@ -141,6 +148,11 @@ Gauss::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & rhs) c
         partial_pivoting_map_[i] = partial_pivoting_map_[row];
         partial_pivoting_map_[row] = row;
     }
+}
+
+void
+Gauss::print(Matrix2D const & A) const {
+print with pivot
 }
 
 } // LinearSolverLibrary_NS
