@@ -37,6 +37,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SparseLinearSolverTest.cpp" />
+    <ClCompile Include="spiralTest.cpp" />
     <ClCompile Include="sts4098Test.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverTest.h" />
+    <ClInclude Include="spiralTest.h" />
     <ClInclude Include="sts4098Test.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />

@@ -1,9 +1,9 @@
 /*
- * Name  : sts4098Test
+ * Name  : spiral
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
- * Date  : 07/27/2013
+ * Date  : 08/03/2013
  */
 #pragma once
 
@@ -12,12 +12,10 @@
 #include "LinAlg/entities.h"
 
 
-class sts4098Test : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(sts4098Test);
-    CPPUNIT_TEST(SORTest);
-    CPPUNIT_TEST(MINRESTest);
-    CPPUNIT_TEST(MINRESLanProTest);
-    CPPUNIT_TEST(GMRESTest);
+class spiralTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(spiralTest);
+    CPPUNIT_TEST(spiralMINRESTest);
+    CPPUNIT_TEST(spiralMINRESLanProTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,15 +23,13 @@ public:
     void tearDown();
 
 protected:
-    void SORTest();
-    void MINRESTest();
-    void MINRESLanProTest();
-    void GMRESTest();
+    void spiralMINRESTest();
+    void spiralMINRESLanProTest();
 
 private:
     void initMatrix();
-    void initRHS();
     void matrixIsDiagonallyDominant();
+    void matrixIsSymmetric();
 
 private:
     LinAlg_NS::SparseMatrix2D m_;

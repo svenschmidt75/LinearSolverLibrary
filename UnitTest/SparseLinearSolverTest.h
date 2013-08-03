@@ -28,6 +28,4 @@ public:
 protected:
     void SimonExample1Test();
     void OffshoreSORTest();
-    void spiralMINRESTest();
-    void spiralMINRESLanProTest();
 };

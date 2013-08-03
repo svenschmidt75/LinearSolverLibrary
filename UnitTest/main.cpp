@@ -12,9 +12,11 @@
 #include "bcsstk05Test.h"
 #include "sts4098Test.h"
 #include "fs_680_1_Test.h"
+#include "spiralTest.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(spiralTest);
 #ifdef INTEGRATION_TEST
 CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);
 CPPUNIT_TEST_SUITE_REGISTRATION(sts4098Test);

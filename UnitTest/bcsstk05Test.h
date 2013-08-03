@@ -9,6 +9,8 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include "LinAlg/entities.h"
+
 
 class bcsstk05Test : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(bcsstk05Test);
