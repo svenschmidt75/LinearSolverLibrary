@@ -57,9 +57,10 @@ GaussTest::Test4by4() {
     bool success;
     std::tie(success, AInverse, x) = LinearSolverLibrary_NS::Gauss().solve(A, rhs);
 
+
     Vector x_ref(4);
     x_ref = AInverse * rhs;
 
-    CPPUNIT_ASSERT_MESSAGE("mismatch in Gauss solver result", SparseLinearSolverUtil::isVectorEqual(rhs, x_ref, 1E-10));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in Gauss solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
 
 }

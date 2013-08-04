@@ -29,7 +29,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void initializePartialPivotingMap(size_type rows) const;
-        size_type findRowWithPivotElement(LinAlg_NS::Matrix2D const & A, size_type column_index);
+        size_type findPivotRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index);
         void adjustPivotingMap(size_type source_row, size_type dest_row) const;
         void rearrangeDueToPivoting(LinAlg_NS::Matrix2D & A, LinAlg_NS::Matrix2D & AInverse, LinAlg_NS::Vector & rhs) const;
         void print(LinAlg_NS::Matrix2D const & A) const;
