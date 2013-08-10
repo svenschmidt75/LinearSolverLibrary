@@ -10,14 +10,13 @@ namespace LinearSolverLibrary_NS {
 
 GaussJordan::Return_t
 GaussJordan::solve(Matrix2D const & A, Vector const & f) {
-    // Solve the equation A x = f using Gauss' elimination with row pivoting.
-    // Description of algorithm: First, search for the largest element
-    // in all following rows and use it as the pivot element. This is to
-    // reduce round-off errors. The matrix ACopy will be transformed
-    // into the identity matrix, while the identity matrix, AInv, will
-    // be transformed into the inverse.
+    // Solve the equation A x = f using Gauss-Jordan elimination with row pivoting.
+    // Description of algorithm: First, search for the largest element in the current
+    // column use it as the pivot element. This is to reduce round-off errors. The
+    // matrix ACopy will be transformed into the identity matrix, while the identity
+    // matrix, AInvwerse, will be transformed into the inverse.
     // A x =  Id y is successively transformed into A^{-1} A x = A^{-1} Id f,
-    // where ACopy = Id and A^{-1} = AInv.
+    // where ACopy = Id and A^{-1} = AInverse.
 
     BOOST_ASSERT_MSG(A.cols() == A.rows(), "Gauss::solve: Matrix must be quadratic");
     BOOST_ASSERT_MSG(A.cols() == f.size(), "Gauss::solve: r.h.s. vector size mismatch");
@@ -39,13 +38,13 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
      * we do not bother with at all here.
      */
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
-        ACopy.print();
+//         ACopy.print();
 //        print(ACopy);
-        AInverse.print();
+//         AInverse.print();
 //        print(ACopy);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
-        row_has_been_pivot_row_[physical_pivot_row_index] = 1;
+        markRowAsPivotRow(A, physical_pivot_row_index);
 
 
 
@@ -77,9 +76,9 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
             val2 /= pivot_element;
         }
 
-        ACopy.print();
+//         ACopy.print();
 //        print(ACopy);
-        AInverse.print();
+//         AInverse.print();
 
         // Do same transformation on the rhs
         rhs(physical_pivot_row_index) /= pivot_element;
@@ -98,7 +97,6 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
         // column of the identity matrix.
         for (IMatrix2D::size_type i = 0; i < max_row; ++i) {
             auto mapped_i = partial_pivoting_map_[i];
-//            mapped_i = i;
             if (mapped_i == physical_pivot_row_index)
                 continue;
             double tmp = ACopy(mapped_i, col);
@@ -115,24 +113,24 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
             // do same transformation on the rhs
             rhs(mapped_i) += val * rhs(physical_pivot_row_index);
 
-            ACopy.print();
+//             ACopy.print();
 //            print(ACopy);
-            AInverse.print();
+//             AInverse.print();
         }
 
-        ACopy.print();
+//         ACopy.print();
 //        print(ACopy);
-        AInverse.print();
+//         AInverse.print();
     }
 
-    AInverse.print();
-    print(AInverse);
+//     AInverse.print();
+//     print(AInverse);
 
     // Rearrange the rows in AInverse due to pivoting
     rearrangeDueToPivoting(ACopy, AInverse, rhs);
 
-    ACopy.print();
-    AInverse.print();
+//     ACopy.print();
+//     AInverse.print();
 
     return std::make_tuple(success, AInverse, rhs);
 }
@@ -146,13 +144,16 @@ GaussJordan::initializePivoting(IMatrix2D::size_type rows) const {
 
 IMatrix2D::size_type
 GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
+    /* Return the largest element in the column.
+     * Note that no row can be pivot row more than once.
+     */
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type pivot_index = 0;
     double pivot_value = 0;
     double val;
     for (IMatrix2D::size_type physical_row_index = 0; physical_row_index < max_row; ++physical_row_index) {
-        if (row_has_been_pivot_row_[physical_row_index])
-            continue;
+//         if (wasRowPreviouslyAPivotRow(A, physical_row_index))
+//             continue;
         val = std::fabs(A(physical_row_index, column_index));
         if (val > pivot_value) {
             pivot_index = physical_row_index;
@@ -162,12 +163,23 @@ GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type c
     return pivot_index;
 }
 
+bool
+GaussJordan::wasRowPreviouslyAPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
+    BOOST_ASSERT_MSG(row < A.rows(), "GaussJordan::wasRowPreviouslyAPivotRow: Row out of bounds");
+    return row_has_been_pivot_row_[row] == 1;
+}
+
+void
+GaussJordan::markRowAsPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
+    BOOST_ASSERT_MSG(row < A.rows(), "GaussJordan::markRowAsPivotRow: Row out of bounds");
+    row_has_been_pivot_row_[row] = 1;
+}
+
 void
 GaussJordan::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type dest_row) const {
-    // "swap" rows source_row to dest_row and vice versa
-//    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
-    // dest_row must be > than source_row!!!
-//    std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[dest_row]);
+
+
+
     if (dest_row != partial_pivoting_map_[source_row]) {
         auto index = partial_pivoting_map_[dest_row];
         std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[index]);
@@ -197,8 +209,8 @@ GaussJordan::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & 
             A(j, col) = tmp;
         }
 
-        AInverse.print();
-        print(AInverse);
+//         AInverse.print();
+//         print(AInverse);
 
         // Swap rows on the r.h.s.
         double tmp2 = rhs(i);
@@ -210,8 +222,8 @@ GaussJordan::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & 
         physical_map[j] = tmp;
     }
 
-    AInverse.print();
-    print(AInverse);
+//     AInverse.print();
+//     print(AInverse);
 }
 
 void
