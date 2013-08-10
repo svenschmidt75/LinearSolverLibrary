@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Gauss.h"
+#include "GaussJordan.h"
 
 
 using namespace LinAlg_NS;
@@ -8,8 +8,8 @@ using namespace LinAlg_NS;
 
 namespace LinearSolverLibrary_NS {
 
-Gauss::Return_t
-Gauss::solve(Matrix2D const & A, Vector const & f) {
+GaussJordan::Return_t
+GaussJordan::solve(Matrix2D const & A, Vector const & f) {
     // Solve the equation A x = f using Gauss' elimination with row pivoting.
     // Description of algorithm: First, search for the largest element
     // in all following rows and use it as the pivot element. This is to
@@ -146,13 +146,13 @@ mapped:
 }
 
 void
-Gauss::initializePivoting(IMatrix2D::size_type rows) const {
+GaussJordan::initializePivoting(IMatrix2D::size_type rows) const {
     partial_pivoting_map_.resize(rows);
     std::iota(std::begin(partial_pivoting_map_), std::end(partial_pivoting_map_), 0ull);
 }
 
 IMatrix2D::size_type
-Gauss::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
+GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type pivot_index = 0;
     double pivot_value = 0;
@@ -168,7 +168,7 @@ Gauss::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_
 }
 
 void
-Gauss::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type dest_row) const {
+GaussJordan::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type dest_row) const {
     // "swap" rows source_row to dest_row and vice versa
 //    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
     // dest_row must be > than source_row!!!
@@ -176,7 +176,7 @@ Gauss::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type d
 }
 
 void
-Gauss::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & rhs) const {
+GaussJordan::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & rhs) const {
     decltype(partial_pivoting_map_) physical_map(partial_pivoting_map_.size());
     for (auto i = 0; i < partial_pivoting_map_.size(); ++i) {
         physical_map[i] = physicalToLogicalRowIndex(i);
@@ -216,7 +216,7 @@ Gauss::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & rhs) c
 }
 
 void
-Gauss::print(Matrix2D const & A) const {
+GaussJordan::print(Matrix2D const & A) const {
     std::cout << std::endl;
     for (IMatrix2D::size_type i = 0; i < A.rows(); ++i) {
         IMatrix2D::size_type row = logicalToPhysicalRowIndex(i);
@@ -228,7 +228,7 @@ Gauss::print(Matrix2D const & A) const {
 }
 
 IMatrix2D::size_type
-Gauss::logicalToPhysicalRowIndex(IMatrix2D::size_type logical_row_index) const {
+GaussJordan::logicalToPhysicalRowIndex(IMatrix2D::size_type logical_row_index) const {
     BOOST_ASSERT_MSG(logical_row_index < partial_pivoting_map_.size(), "Gauss::logicalToPhysicalRowIndex: Index out of range");
     // maps the row index with pivoting to the one without pivoting
     IMatrix2D::size_type physical_row_index = partial_pivoting_map_[logical_row_index];
@@ -236,7 +236,7 @@ Gauss::logicalToPhysicalRowIndex(IMatrix2D::size_type logical_row_index) const {
 }
 
 IMatrix2D::size_type
-Gauss::physicalToLogicalRowIndex(IMatrix2D::size_type physical_row_index) const {
+GaussJordan::physicalToLogicalRowIndex(IMatrix2D::size_type physical_row_index) const {
     BOOST_ASSERT_MSG(physical_row_index < partial_pivoting_map_.size(), "Gauss::physicalToLogicalRowIndex: Index out of range");
     // maps the row index into its row index with pivoting
     IMatrix2D::size_type logical_row_index = std::distance(std::begin(partial_pivoting_map_), std::find(std::begin(partial_pivoting_map_), std::end(partial_pivoting_map_), physical_row_index));

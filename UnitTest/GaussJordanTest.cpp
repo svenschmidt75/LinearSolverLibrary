@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include "GaussTest.h"
+#include "GaussJordanTest.h"
 
-#include "LinearSolverLibrary/Gauss.h"
+#include "LinearSolverLibrary/GaussJordan.h"
 #include "LinearSolverLibrary/SparseLinearSolverUtil.h"
 
 #include "LinAlg/entities.h"
@@ -14,13 +14,13 @@ using namespace LinearSolverLibrary_NS;
 
 
 void
-GaussTest::setUp() {}
+GaussJordanTest::setUp() {}
 
 void
-GaussTest::tearDown() {}
+GaussJordanTest::tearDown() {}
 
 void
-GaussTest::Test2by2() {
+GaussJordanTest::Test2by2() {
     Matrix2D A(2, 2);
 
     A(0, 0) = 4;
@@ -39,7 +39,7 @@ GaussTest::Test2by2() {
     Matrix2D AInverse(2, 2);
     Vector x(4);
     bool success;
-    std::tie(success, AInverse, x) = LinearSolverLibrary_NS::Gauss().solve(A, rhs);
+    std::tie(success, AInverse, x) = LinearSolverLibrary_NS::GaussJordan().solve(A, rhs);
 
 
     Vector x_ref(2);
@@ -50,7 +50,7 @@ GaussTest::Test2by2() {
 }
 
 void
-GaussTest::Test4by4() {
+GaussJordanTest::Test4by4() {
     Matrix2D A(4, 4);
 
     A(0, 0) = 2;
@@ -85,7 +85,7 @@ GaussTest::Test4by4() {
     Matrix2D AInverse(4, 4);
     Vector x(4);
     bool success;
-    std::tie(success, AInverse, x) = LinearSolverLibrary_NS::Gauss().solve(A, rhs);
+    std::tie(success, AInverse, x) = LinearSolverLibrary_NS::GaussJordan().solve(A, rhs);
 
 
     Vector x_ref(4);

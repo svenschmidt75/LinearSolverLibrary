@@ -1,5 +1,5 @@
 /*
- * Name  : GaussTest
+ * Name  : GaussJordanTest
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
@@ -12,8 +12,8 @@
 #include "LinAlg/entities.h"
 
 
-class GaussTest : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(GaussTest);
+class GaussJordanTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(GaussJordanTest);
 //    CPPUNIT_TEST(Test2by2);
     CPPUNIT_TEST(Test4by4);
     CPPUNIT_TEST_SUITE_END();

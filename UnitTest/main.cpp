@@ -13,11 +13,11 @@
 #include "sts4098Test.h"
 #include "fs_680_1_Test.h"
 #include "spiralTest.h"
-#include "GaussTest.h"
+#include "GaussJordanTest.h"
 
 
 //CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(GaussTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);
 #ifdef INTEGRATION_TEST
 CPPUNIT_TEST_SUITE_REGISTRATION(spiralTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);

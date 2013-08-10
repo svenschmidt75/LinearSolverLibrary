@@ -19,7 +19,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS Gauss final {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS GaussJordan final {
     public:
         typedef std::tuple<bool, LinAlg_NS::Matrix2D, LinAlg_NS::Vector> Return_t;
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
