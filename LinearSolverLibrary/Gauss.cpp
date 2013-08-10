@@ -29,17 +29,30 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
     Matrix2D AInverse(Matrix2D::identity(max_col));
     Vector rhs(f);
 
-    initializePartialPivotingMap(max_row);
+    initializePivoting(max_row);
 
+    /* This is a column index, rather than a row index.
+     * Obviously, this makes no difference for a square
+     * matrix, but if #columns > #rows, the problem is
+     * overspecified and then least-squares could be used.
+     * The other extreme is an underspecified problem, which
+     * we do not bother with at all here.
+     */
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
         ACopy.print();
         print(ACopy);
 
-        // Find pivot element row index
-        auto physical_pivot_row_index = findPivotRowIndex(ACopy, col);
+        auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
+
+
+
+        // temporarily switch off pivoting
+        physical_pivot_row_index = col;
+
+
 
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
-        adjustPivotingMap(col, physical_pivot_row_index);
+//        adjustPivotingMap(col, physical_pivot_row_index);
         double pivot_element = ACopy(physical_pivot_row_index, col);
 
         // Matrix is singular
@@ -51,9 +64,11 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
 
 
 
-        // divide pivot row by pivot element to set pivot element to 1
+        // Divide pivot row by pivot element to set pivot element to 1
+        // as part of the reduction of ACopy to the identity matrix.
+        // Note: Start column is 'col', as all elements with column
+        // index (0, ..., col - 1) are 0 already.
         for (IMatrix2D::size_type i = 0; i < max_col; ++i) {
-            // ACopy(pivot_index, i) = 0 for i < col
             if (i >= col) {
                 double & val1 = ACopy(physical_pivot_row_index, i);
                 val1 /= pivot_element;
@@ -71,24 +86,45 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
 
 
         // SET TO ZERO
-
-
-
-        // Add pivot row to all other rows to reduce column col
-        // to the corresponding identity matrix column.
-        for (IMatrix2D::size_type current_row = 0; current_row < max_row; ++current_row) {
-            if (current_row == physical_pivot_row_index)
+#if 0
+unmapped:
+            2         1         1         0
+            4         3         3         1
+            1     0.875     1.125     0.625
+            6         7         9         8
+mapped:
+            1     0.875     1.125     0.625
+            4         3         3         1
+            2         1         1         0
+            6         7         9         8
+#endif
+        // Add pivot row to all later rows such that all elemnts
+        // in those rows become 0, i.e. we set the column to the
+        // column of the identity matrix.
+        for (IMatrix2D::size_type i = 0; i < max_row; ++i) {
+            auto mapped_i = partial_pivoting_map_[i];
+            mapped_i = i;
+            if (mapped_i == physical_pivot_row_index)
                 continue;
+            double tmp = ACopy(mapped_i, col);
+            tmp = tmp;
+            double val = - ACopy(mapped_i, col) / ACopy(physical_pivot_row_index, col);
 
-            double val = - ACopy(current_row, col) / ACopy(physical_pivot_row_index, col);
-
-            for (IMatrix2D::size_type j = 0; j < max_col; ++j) {
-                ACopy(current_row, j) += val * ACopy(physical_pivot_row_index, j);
-                AInverse(current_row, j) += val * AInverse(physical_pivot_row_index, j);
+            // subtract the pivot row from row mapped_i
+            for (IMatrix2D::size_type j = col; j < max_col; ++j) {
+                double tmp1 = ACopy(mapped_i, j);
+                tmp1 = tmp1;
+                double tmp2 = ACopy(physical_pivot_row_index, j);
+                tmp2 = tmp2;
+                ACopy(mapped_i, j) += val * ACopy(physical_pivot_row_index, j);
+                AInverse(mapped_i, j) += val * AInverse(physical_pivot_row_index, j);
             }
 
             // do same transformation on the rhs
-            rhs(current_row) += val * rhs(physical_pivot_row_index);
+            rhs(mapped_i) += val * rhs(physical_pivot_row_index);
+
+            ACopy.print();
+            print(ACopy);
         }
 
         ACopy.print();
@@ -108,21 +144,18 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
 }
 
 void
-Gauss::initializePartialPivotingMap(IMatrix2D::size_type rows) const {
+Gauss::initializePivoting(IMatrix2D::size_type rows) const {
     partial_pivoting_map_.resize(rows);
     std::iota(std::begin(partial_pivoting_map_), std::end(partial_pivoting_map_), 0ull);
 }
 
 IMatrix2D::size_type
-Gauss::findPivotRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
+Gauss::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type pivot_index = 0;
-    double pivot_value = std::numeric_limits<double>::min();
+    double pivot_value = 0;
     double val;
-    for (IMatrix2D::size_type physical_row_index = 0; physical_row_index < max_row; ++physical_row_index) {
-        IMatrix2D::size_type logical_row_index = physicalToLogicalRowIndex(physical_row_index);
-        if (logical_row_index < column_index)
-            continue;
+    for (IMatrix2D::size_type physical_row_index = column_index; physical_row_index < max_row; ++physical_row_index) {
         val = std::fabs(A(physical_row_index, column_index));
         if (val > pivot_value) {
             pivot_index = physical_row_index;
@@ -137,12 +170,7 @@ Gauss::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type d
     // "swap" rows source_row to dest_row and vice versa
 //    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
     // dest_row must be > than source_row!!!
-
-    IMatrix2D::size_type logical_source_row_index = source_row;
-    IMatrix2D::size_type logical_dest_row_index = physicalToLogicalRowIndex(dest_row);
-    IMatrix2D::size_type tmp = partial_pivoting_map_[logical_source_row_index];
-    partial_pivoting_map_[logical_source_row_index] = partial_pivoting_map_[logical_dest_row_index];
-    partial_pivoting_map_[logical_dest_row_index] = tmp;
+    std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[dest_row]);
 }
 
 void
