@@ -38,6 +38,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         mutable std::vector<size_type> partial_pivoting_map_;
+        mutable std::vector<size_type> row_has_been_pivot_row_;
     };
 
 } // LinearSolverLibrary_NS

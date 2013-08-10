@@ -45,16 +45,14 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
 //        print(ACopy);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
+        row_has_been_pivot_row_[physical_pivot_row_index] = 1;
 
 
-
-        // temporarily switch off pivoting
-        physical_pivot_row_index = col;
 
 
 
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
-//        adjustPivotingMap(col, physical_pivot_row_index);
+        adjustPivotingMap(col, physical_pivot_row_index);
         double pivot_element = ACopy(physical_pivot_row_index, col);
 
         // Matrix is singular
@@ -89,24 +87,18 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
 
 
         // SET TO ZERO
-#if 0
-unmapped:
-            2         1         1         0
-            4         3         3         1
-            1     0.875     1.125     0.625
-            6         7         9         8
-mapped:
-            1     0.875     1.125     0.625
-            4         3         3         1
-            2         1         1         0
-            6         7         9         8
-#endif
+
+
+
+
+
+
         // Add pivot row to all later rows such that all elemnts
         // in those rows become 0, i.e. we set the column to the
         // column of the identity matrix.
         for (IMatrix2D::size_type i = 0; i < max_row; ++i) {
             auto mapped_i = partial_pivoting_map_[i];
-            mapped_i = i;
+//            mapped_i = i;
             if (mapped_i == physical_pivot_row_index)
                 continue;
             double tmp = ACopy(mapped_i, col);
@@ -149,6 +141,7 @@ void
 GaussJordan::initializePivoting(IMatrix2D::size_type rows) const {
     partial_pivoting_map_.resize(rows);
     std::iota(std::begin(partial_pivoting_map_), std::end(partial_pivoting_map_), 0ull);
+    row_has_been_pivot_row_.resize(rows, 0);
 }
 
 IMatrix2D::size_type
@@ -157,7 +150,9 @@ GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type c
     IMatrix2D::size_type pivot_index = 0;
     double pivot_value = 0;
     double val;
-    for (IMatrix2D::size_type physical_row_index = column_index; physical_row_index < max_row; ++physical_row_index) {
+    for (IMatrix2D::size_type physical_row_index = 0; physical_row_index < max_row; ++physical_row_index) {
+        if (row_has_been_pivot_row_[physical_row_index])
+            continue;
         val = std::fabs(A(physical_row_index, column_index));
         if (val > pivot_value) {
             pivot_index = physical_row_index;
@@ -172,7 +167,11 @@ GaussJordan::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_
     // "swap" rows source_row to dest_row and vice versa
 //    BOOST_ASSERT_MSG(partial_pivoting_map_[pivot_index] == column_index, "Gauss::adjustPivotingMap: Pivoting error");
     // dest_row must be > than source_row!!!
-    std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[dest_row]);
+//    std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[dest_row]);
+    if (dest_row != partial_pivoting_map_[source_row]) {
+        auto index = partial_pivoting_map_[dest_row];
+        std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[index]);
+    }
 }
 
 void
