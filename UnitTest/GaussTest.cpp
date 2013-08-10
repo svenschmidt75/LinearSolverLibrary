@@ -20,6 +20,36 @@ void
 GaussTest::tearDown() {}
 
 void
+GaussTest::Test2by2() {
+    Matrix2D A(2, 2);
+
+    A(0, 0) = 4;
+    A(0, 1) = 3;
+
+    A(1, 0) = 3;
+    A(1, 1) = 2;
+
+    A.print();
+
+    // generate r.h.s.
+    Vector rhs(2);
+    rhs(0) = 1;
+    rhs(1) = 1;
+
+    Matrix2D AInverse(2, 2);
+    Vector x(4);
+    bool success;
+    std::tie(success, AInverse, x) = LinearSolverLibrary_NS::Gauss().solve(A, rhs);
+
+
+    Vector x_ref(2);
+    x_ref = AInverse * rhs;
+
+    CPPUNIT_ASSERT_MESSAGE("mismatch in Gauss solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-10));
+
+}
+
+void
 GaussTest::Test4by4() {
     Matrix2D A(4, 4);
 

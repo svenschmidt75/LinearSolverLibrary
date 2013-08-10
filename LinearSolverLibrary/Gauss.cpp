@@ -40,7 +40,9 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
      */
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
         ACopy.print();
-        print(ACopy);
+//        print(ACopy);
+        AInverse.print();
+//        print(ACopy);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
 
@@ -78,7 +80,8 @@ Gauss::solve(Matrix2D const & A, Vector const & f) {
         }
 
         ACopy.print();
-        print(ACopy);
+//        print(ACopy);
+        AInverse.print();
 
         // Do same transformation on the rhs
         rhs(physical_pivot_row_index) /= pivot_element;
@@ -111,12 +114,9 @@ mapped:
             double val = - ACopy(mapped_i, col) / ACopy(physical_pivot_row_index, col);
 
             // subtract the pivot row from row mapped_i
-            for (IMatrix2D::size_type j = col; j < max_col; ++j) {
-                double tmp1 = ACopy(mapped_i, j);
-                tmp1 = tmp1;
-                double tmp2 = ACopy(physical_pivot_row_index, j);
-                tmp2 = tmp2;
-                ACopy(mapped_i, j) += val * ACopy(physical_pivot_row_index, j);
+            for (IMatrix2D::size_type j = 0; j < max_col; ++j) {
+                if (j >= col)
+                    ACopy(mapped_i, j) += val * ACopy(physical_pivot_row_index, j);
                 AInverse(mapped_i, j) += val * AInverse(physical_pivot_row_index, j);
             }
 
@@ -124,11 +124,13 @@ mapped:
             rhs(mapped_i) += val * rhs(physical_pivot_row_index);
 
             ACopy.print();
-            print(ACopy);
+//            print(ACopy);
+            AInverse.print();
         }
 
         ACopy.print();
-        print(ACopy);
+//        print(ACopy);
+        AInverse.print();
     }
 
     AInverse.print();
