@@ -46,22 +46,12 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
         markRowAsPivotRow(A, physical_pivot_row_index);
 
-
-
-
-
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
         adjustPivotingMap(col, physical_pivot_row_index);
         double pivot_element = ACopy(physical_pivot_row_index, col);
-
-        // Matrix is singular
         if (pivot_element == 0.0)
+            // Matrix is singular
             return std::make_tuple(false, AInverse, rhs);
-
-
-        // SCALE ROW
-
-
 
         // Divide pivot row by pivot element to set pivot element to 1
         // as part of the reduction of ACopy to the identity matrix.
@@ -83,27 +73,17 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
         // Do same transformation on the rhs
         rhs(physical_pivot_row_index) /= pivot_element;
 
-
-
-        // SET TO ZERO
-
-
-
-
-
-
-        // Add pivot row to all later rows such that all elemnts
+        // Add pivot row to all later rows such that all elements
         // in those rows become 0, i.e. we set the column to the
         // column of the identity matrix.
         for (IMatrix2D::size_type i = 0; i < max_row; ++i) {
-            auto mapped_i = partial_pivoting_map_[i];
+            auto mapped_i = logicalToPhysicalRowIndex(i);
             if (mapped_i == physical_pivot_row_index)
+                // skip pivot row
                 continue;
-            double tmp = ACopy(mapped_i, col);
-            tmp = tmp;
             double val = - ACopy(mapped_i, col) / ACopy(physical_pivot_row_index, col);
 
-            // subtract the pivot row from row mapped_i
+            // subtract the pivot row from row 'mapped_i'
             for (IMatrix2D::size_type j = 0; j < max_col; ++j) {
                 if (j >= col)
                     ACopy(mapped_i, j) += val * ACopy(physical_pivot_row_index, j);
@@ -152,8 +132,8 @@ GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type c
     double pivot_value = 0;
     double val;
     for (IMatrix2D::size_type physical_row_index = 0; physical_row_index < max_row; ++physical_row_index) {
-//         if (wasRowPreviouslyAPivotRow(A, physical_row_index))
-//             continue;
+        if (wasRowPreviouslyAPivotRow(A, physical_row_index))
+            continue;
         val = std::fabs(A(physical_row_index, column_index));
         if (val > pivot_value) {
             pivot_index = physical_row_index;
@@ -165,21 +145,26 @@ GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type c
 
 bool
 GaussJordan::wasRowPreviouslyAPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
-    BOOST_ASSERT_MSG(row < A.rows(), "GaussJordan::wasRowPreviouslyAPivotRow: Row out of bounds");
+    bool assertion = row < A.rows();
+    assertion = assertion;
+    BOOST_ASSERT_MSG(assertion, "GaussJordan::wasRowPreviouslyAPivotRow: Row out of bounds");
     return row_has_been_pivot_row_[row] == 1;
 }
 
 void
 GaussJordan::markRowAsPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
-    BOOST_ASSERT_MSG(row < A.rows(), "GaussJordan::markRowAsPivotRow: Row out of bounds");
+    bool assertion = row < A.rows();
+    assertion = assertion;
+    BOOST_ASSERT_MSG(assertion, "GaussJordan::markRowAsPivotRow: Row out of bounds");
     row_has_been_pivot_row_[row] = 1;
 }
 
 void
 GaussJordan::adjustPivotingMap(IMatrix2D::size_type source_row, IMatrix2D::size_type dest_row) const {
-
-
-
+    /* This maps logical rows (i.e. rows with pivoting) to physical
+     * rows of the matrix.
+     * Swaps rows of necessary.
+     */
     if (dest_row != partial_pivoting_map_[source_row]) {
         auto index = partial_pivoting_map_[dest_row];
         std::swap(partial_pivoting_map_[source_row], partial_pivoting_map_[index]);
@@ -200,26 +185,16 @@ GaussJordan::rearrangeDueToPivoting(Matrix2D & A, Matrix2D & AInverse, Vector & 
 
         // Swap rows
         for (auto col = 0; col < A.cols(); ++col) {
-            double tmp = AInverse(i, col);
-            AInverse(i, col) = AInverse(j, col);
-            AInverse(j, col) = tmp;
-
-            tmp = A(i, col);
-            A(i, col) = A(j, col);
-            A(j, col) = tmp;
+            std::swap(AInverse(i, col), AInverse(j, col));
+            std::swap(A(i, col), A(j, col));
         }
 
 //         AInverse.print();
 //         print(AInverse);
 
         // Swap rows on the r.h.s.
-        double tmp2 = rhs(i);
-        rhs(i) = rhs(j);
-        rhs(j) = tmp2;
-
-        auto tmp = physical_map[i];
-        physical_map[i] = i;
-        physical_map[j] = tmp;
+        std::swap(rhs(i), rhs(j));
+        std::swap(physical_map[i], physical_map[j]);
     }
 
 //     AInverse.print();

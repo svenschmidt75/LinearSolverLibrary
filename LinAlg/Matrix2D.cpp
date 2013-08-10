@@ -126,12 +126,10 @@ Matrix2D::solve(Vector const & b, Vector & x) const {
 void
 Matrix2D::print() const {
     std::cout << std::endl;
-
     for (IMatrix2D::size_type i = 0; i < rows_; ++i) {
         for (IMatrix2D::size_type j = 0; j < cols_; ++j) {
 //            unsigned int index = i * cols_ + j;
-
-            std::cout << std::setw(10) << (*this)(i, j);
+            std::cout << std::setw(15) << (*this)(i, j);
         }
         std::cout << std::endl;
     }
