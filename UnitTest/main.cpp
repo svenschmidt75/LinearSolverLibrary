@@ -14,10 +14,12 @@
 #include "fs_680_1_Test.h"
 #include "spiralTest.h"
 #include "GaussJordanTest.h"
+#include "LUDecompositionTest.h"
 
 
 //CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);
 #ifdef INTEGRATION_TEST
 CPPUNIT_TEST_SUITE_REGISTRATION(spiralTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);

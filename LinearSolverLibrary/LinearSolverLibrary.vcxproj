@@ -172,6 +172,7 @@
     <ClCompile Include="internal\MultiColor_internal.cpp" />
     <ClCompile Include="lanczos.cpp" />
     <ClCompile Include="lanczosPRO.cpp" />
+    <ClCompile Include="LUDecomposition.cpp" />
     <ClCompile Include="MatrixDecomposition.cpp" />
     <ClCompile Include="Minres.cpp" />
     <ClCompile Include="MinresLanPro.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="internal\MultiColor_internal.h" />
     <ClInclude Include="lanczos.h" />
     <ClInclude Include="lanczosPRO.h" />
+    <ClInclude Include="LUDecomposition.h" />
     <ClInclude Include="MatrixDecomposition.h" />
     <ClInclude Include="Minres.h" />
     <ClInclude Include="MinresLanPro.h" />

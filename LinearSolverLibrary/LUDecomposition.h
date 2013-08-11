@@ -1,5 +1,5 @@
 /*
- * Name  : Gauss
+ * Name  : LUDecomposition
  * Path  : 
  * Use   : Implements sparse linear solver algorithm MINRES
  * Author: Sven Schmidt
@@ -12,6 +12,7 @@
 #include "LinAlg/entities.h"
 
 #include <vector>
+#include <memory>
 
 
 #pragma warning(disable:4275)
@@ -19,17 +20,18 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS GaussJordan final {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS LUDecomposition final {
     public:
         typedef std::tuple<bool, LinAlg_NS::Matrix2D, LinAlg_NS::Vector> Return_t;
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        Return_t solve(LinAlg_NS::Matrix2D const & A, LinAlg_NS::Vector const & b) const;
+        bool decompose(LinAlg_NS::Matrix2D const & A) const;
+//         LinAlg_NS::Vector solve(LinAlg_NS::Vector const & rhs) const;
 
     private:
         void initializePivoting(size_type rows) const;
-        size_type getPivotElementsRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index) const;
+        size_type getPivotElementsRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index);
         void adjustPivotingMap(size_type source_row, size_type dest_row) const;
         void rearrangeDueToPivoting(LinAlg_NS::Matrix2D & A, LinAlg_NS::Matrix2D & AInverse, LinAlg_NS::Vector & rhs) const;
         void print(LinAlg_NS::Matrix2D const & A) const;
@@ -37,8 +39,8 @@ namespace LinearSolverLibrary_NS {
         inline size_type physicalToLogicalRowIndex(size_type logical_row_index) const;
 
     private:
+        mutable std::unique_ptr<LinAlg_NS::Matrix2D> LU_;
         mutable std::vector<size_type> partial_pivoting_map_;
-        mutable std::vector<size_type> row_has_been_pivot_row_;
     };
 
 } // LinearSolverLibrary_NS

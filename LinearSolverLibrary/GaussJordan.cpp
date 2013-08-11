@@ -9,7 +9,7 @@ using namespace LinAlg_NS;
 namespace LinearSolverLibrary_NS {
 
 GaussJordan::Return_t
-GaussJordan::solve(Matrix2D const & A, Vector const & f) {
+GaussJordan::solve(Matrix2D const & A, Vector const & f) const {
     // Solve the equation A x = f using Gauss-Jordan elimination with row pivoting.
     // Description of algorithm: First, search for the largest element in the current
     // column use it as the pivot element. This is to reduce round-off errors. The
@@ -121,7 +121,7 @@ GaussJordan::initializePivoting(IMatrix2D::size_type rows) const {
 }
 
 IMatrix2D::size_type
-GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
+GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) const {
     /* Return the largest element in the column.
      * Note that no row can be pivot row more than once.
      * This is 
