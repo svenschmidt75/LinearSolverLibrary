@@ -25,17 +25,21 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
     initializePivoting(max_row);
 
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
-//         ACopy.print();
-//        print(ACopy);
-//         AInverse.print();
-//        print(ACopy);
+        LU_->print();
+//         print(*LU_);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(*LU_, col);
         physical_pivot_row_index = col;
 
+//        if (physical_pivot_row_index != col)
+//            swapRows(col, physical_pivot_row_index);
+
+        LU_->print();
+//         print(*LU_);
+
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
-//        adjustPivotingMap(col, physical_pivot_row_index);
-        double pivot_element = (*LU_)(physical_pivot_row_index, col);
+       adjustPivotingMap(col, physical_pivot_row_index);
+        double pivot_element = (*LU_)(col, col);
         if (pivot_element == 0.0)
             // Matrix is singular
                 return false;
@@ -50,10 +54,44 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
         }
 
         LU_->print();
+//         print(*LU_);
     }
     LU_->print();
+//     print(*LU_);
+
+//    rearrangeDueToPivoting();
 
     return true;
+}
+
+void
+LUDecomposition::rearrangeDueToPivoting() const {
+    decltype(partial_pivoting_map_) physical_map(partial_pivoting_map_.size());
+    for (auto i = 0; i < partial_pivoting_map_.size(); ++i) {
+        physical_map[i] = physicalToLogicalRowIndex(i);
+    }
+
+    for (auto i = 0; i < physical_map.size(); ++i) {
+        auto j = std::distance(std::begin(physical_map), std::find(std::begin(physical_map), std::end(physical_map), i));
+        if (i == j)
+            continue;
+
+        // Swap rows
+        for (auto col = 0; col < LU_->cols(); ++col)
+            std::swap((*LU_)(i, col), (*LU_)(j, col));
+
+//         AInverse.print();
+//         print(AInverse);
+    }
+
+//     AInverse.print();
+//     print(AInverse);
+}
+
+void
+LUDecomposition::swapRows(IMatrix2D::size_type row1, IMatrix2D::size_type row2) const {
+    for (auto col = 0; col < LU_->cols(); ++col)
+        std::swap((*LU_)(row1, col), (*LU_)(row2, col));
 }
 
 void

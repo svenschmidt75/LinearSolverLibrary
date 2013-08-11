@@ -39,9 +39,9 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) const {
      */
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
 //         ACopy.print();
-//        print(ACopy);
+//         print(ACopy);
 //         AInverse.print();
-//        print(ACopy);
+//         print(AInverse);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
 
@@ -66,8 +66,9 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) const {
         }
 
 //         ACopy.print();
-//        print(ACopy);
+//         print(ACopy);
 //         AInverse.print();
+//         print(AInverse);
 
         // Do same transformation on the rhs
         rhs(physical_pivot_row_index) /= pivot_element;
@@ -93,13 +94,15 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) const {
             rhs(mapped_i) += val * rhs(physical_pivot_row_index);
 
 //             ACopy.print();
-//            print(ACopy);
+//             print(ACopy);
 //             AInverse.print();
+//             print(AInverse);
         }
 
 //         ACopy.print();
-//        print(ACopy);
+//         print(ACopy);
 //         AInverse.print();
+//         print(AInverse);
     }
 
 //     AInverse.print();
