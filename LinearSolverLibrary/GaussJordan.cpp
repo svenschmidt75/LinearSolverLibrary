@@ -44,7 +44,6 @@ GaussJordan::solve(Matrix2D const & A, Vector const & f) {
 //        print(ACopy);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(ACopy, col);
-        markRowAsPivotRow(A, physical_pivot_row_index);
 
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
         adjustPivotingMap(col, physical_pivot_row_index);
@@ -119,44 +118,27 @@ void
 GaussJordan::initializePivoting(IMatrix2D::size_type rows) const {
     partial_pivoting_map_.resize(rows);
     std::iota(std::begin(partial_pivoting_map_), std::end(partial_pivoting_map_), 0ull);
-    row_has_been_pivot_row_.resize(rows, 0);
 }
 
 IMatrix2D::size_type
 GaussJordan::getPivotElementsRowIndex(Matrix2D const & A, IMatrix2D::size_type column_index) {
     /* Return the largest element in the column.
      * Note that no row can be pivot row more than once.
+     * This is 
      */
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type pivot_index = 0;
     double pivot_value = 0;
     double val;
-    for (IMatrix2D::size_type physical_row_index = 0; physical_row_index < max_row; ++physical_row_index) {
-        if (wasRowPreviouslyAPivotRow(A, physical_row_index))
-            continue;
-        val = std::fabs(A(physical_row_index, column_index));
+    for (auto row_index = column_index; row_index < max_row; ++row_index) {
+        auto mapped_row_index = logicalToPhysicalRowIndex(row_index);
+        val = std::fabs(A(mapped_row_index, column_index));
         if (val > pivot_value) {
-            pivot_index = physical_row_index;
+            pivot_index = mapped_row_index;
             pivot_value = val;
         }
     }
     return pivot_index;
-}
-
-bool
-GaussJordan::wasRowPreviouslyAPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
-    bool assertion = row < A.rows();
-    assertion = assertion;
-    BOOST_ASSERT_MSG(assertion, "GaussJordan::wasRowPreviouslyAPivotRow: Row out of bounds");
-    return row_has_been_pivot_row_[row] == 1;
-}
-
-void
-GaussJordan::markRowAsPivotRow(Matrix2D const & A, IMatrix2D::size_type row) const {
-    bool assertion = row < A.rows();
-    assertion = assertion;
-    BOOST_ASSERT_MSG(assertion, "GaussJordan::markRowAsPivotRow: Row out of bounds");
-    row_has_been_pivot_row_[row] = 1;
 }
 
 void

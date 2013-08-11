@@ -33,8 +33,6 @@ namespace LinearSolverLibrary_NS {
         void adjustPivotingMap(size_type source_row, size_type dest_row) const;
         void rearrangeDueToPivoting(LinAlg_NS::Matrix2D & A, LinAlg_NS::Matrix2D & AInverse, LinAlg_NS::Vector & rhs) const;
         void print(LinAlg_NS::Matrix2D const & A) const;
-        bool wasRowPreviouslyAPivotRow(LinAlg_NS::Matrix2D const & A, LinAlg_NS::IMatrix2D::size_type row) const;
-        void markRowAsPivotRow(LinAlg_NS::Matrix2D const & A, LinAlg_NS::IMatrix2D::size_type row) const;
         inline size_type logicalToPhysicalRowIndex(size_type physical_row_index) const;
         inline size_type physicalToLogicalRowIndex(size_type logical_row_index) const;
 
