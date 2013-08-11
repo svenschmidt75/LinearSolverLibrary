@@ -36,7 +36,6 @@ namespace LinearSolverLibrary_NS {
         void initializePivoting(size_type rows) const;
         size_type getPivotElementsRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index) const;
         void adjustPivotingMap(size_type source_row, size_type dest_row) const;
-        void rearrangeDueToPivoting() const;
         void print(LinAlg_NS::Matrix2D const & A) const;
         inline size_type logicalToPhysicalRowIndex(size_type physical_row_index) const;
         inline size_type physicalToLogicalRowIndex(size_type logical_row_index) const;

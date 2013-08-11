@@ -42,17 +42,17 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
         double pivot_element = (*LU_)(physical_pivot_row_index, col);
         if (pivot_element == 0.0)
             // Matrix is singular
-                return false;
+            return false;
+
+        auto mapped_col = logicalToPhysicalRowIndex(col);
 
         for (IMatrix2D::size_type i = col + 1; i < max_col; ++i) {
             auto mapped_i = logicalToPhysicalRowIndex(i);
             if (mapped_i == physical_pivot_row_index)
                 // skip pivot row
-                    continue;
-            auto mapped_col = logicalToPhysicalRowIndex(col);
+                continue;
             (*LU_)(mapped_i, col) /= pivot_element;
             double ljk = (*LU_)(mapped_i, col);
-
             for (IMatrix2D::size_type j = col + 1; j < max_col; ++j) {
                 (*LU_)(mapped_i, j) -= ljk * (*LU_)(mapped_col, j);
             }
@@ -63,34 +63,7 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
     }
     LU_->print();
     print(*LU_);
-
-//    rearrangeDueToPivoting();
-
     return true;
-}
-
-void
-LUDecomposition::rearrangeDueToPivoting() const {
-    decltype(partial_pivoting_map_) physical_map(partial_pivoting_map_.size());
-    for (auto i = 0; i < partial_pivoting_map_.size(); ++i) {
-        physical_map[i] = physicalToLogicalRowIndex(i);
-    }
-
-    for (auto i = 0; i < physical_map.size(); ++i) {
-        auto j = std::distance(std::begin(physical_map), std::find(std::begin(physical_map), std::end(physical_map), i));
-        if (i == j)
-            continue;
-
-        // Swap rows
-        for (auto col = 0; col < LU_->cols(); ++col)
-            std::swap((*LU_)(i, col), (*LU_)(j, col));
-
-//         AInverse.print();
-//         print(AInverse);
-    }
-
-//     AInverse.print();
-//     print(AInverse);
 }
 
 void
