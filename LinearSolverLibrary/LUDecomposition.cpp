@@ -26,38 +26,43 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
 
     for (IMatrix2D::size_type col = 0; col < max_col; ++col) {
         LU_->print();
-//         print(*LU_);
+        print(*LU_);
 
         auto physical_pivot_row_index = getPivotElementsRowIndex(*LU_, col);
-        physical_pivot_row_index = col;
+//        physical_pivot_row_index = col;
 
 //        if (physical_pivot_row_index != col)
 //            swapRows(col, physical_pivot_row_index);
 
         LU_->print();
-//         print(*LU_);
+        print(*LU_);
 
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
        adjustPivotingMap(col, physical_pivot_row_index);
-        double pivot_element = (*LU_)(col, col);
+        double pivot_element = (*LU_)(physical_pivot_row_index, col);
         if (pivot_element == 0.0)
             // Matrix is singular
                 return false;
 
         for (IMatrix2D::size_type i = col + 1; i < max_col; ++i) {
-            (*LU_)(i, col) /= pivot_element;
-            double ljk = (*LU_)(i, col);
+            auto mapped_i = logicalToPhysicalRowIndex(i);
+            if (mapped_i == physical_pivot_row_index)
+                // skip pivot row
+                    continue;
+            auto mapped_col = logicalToPhysicalRowIndex(col);
+            (*LU_)(mapped_i, col) /= pivot_element;
+            double ljk = (*LU_)(mapped_i, col);
 
             for (IMatrix2D::size_type j = col + 1; j < max_col; ++j) {
-                (*LU_)(i, j) -= ljk * (*LU_)(col, j);
+                (*LU_)(mapped_i, j) -= ljk * (*LU_)(mapped_col, j);
             }
         }
 
         LU_->print();
-//         print(*LU_);
+        print(*LU_);
     }
     LU_->print();
-//     print(*LU_);
+    print(*LU_);
 
 //    rearrangeDueToPivoting();
 
