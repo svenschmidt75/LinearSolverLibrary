@@ -14,6 +14,8 @@ bool
 LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
     /* LU decomposition of square matrix A using Crout's method
      * with partial pivoting.
+     * Note: the 1 on the diagonal is implicit, i.e. is not written
+     * into LU_.
      */
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type max_col = A.cols();
@@ -32,59 +34,24 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
         physical_pivot_row_index = col;
 
         // "swap" rows 'col' and 'row_with_pivot_element' due to row pivoting
-        adjustPivotingMap(col, physical_pivot_row_index);
+//        adjustPivotingMap(col, physical_pivot_row_index);
         double pivot_element = (*LU_)(physical_pivot_row_index, col);
         if (pivot_element == 0.0)
             // Matrix is singular
                 return false;
 
-        // Divide pivot row by pivot element to set pivot element to 1
-        // as part of the reduction of ACopy to the identity matrix.
-        // Note: Start column is 'col', as all elements with column
-        // index (0, ..., col - 1) are 0 already.
-        for (IMatrix2D::size_type i = 0; i < max_col; ++i) {
-            if (i >= col) {
-                double & val1 = (*LU_)(physical_pivot_row_index, i);
-                val1 /= pivot_element;
+        for (IMatrix2D::size_type i = col + 1; i < max_col; ++i) {
+            (*LU_)(i, col) /= pivot_element;
+            double ljk = (*LU_)(i, col);
+
+            for (IMatrix2D::size_type j = col + 1; j < max_col; ++j) {
+                (*LU_)(i, j) -= ljk * (*LU_)(col, j);
             }
         }
 
-//         ACopy.print();
-//        print(ACopy);
-//         AInverse.print();
-
-        // Add pivot row to all later rows such that all elements
-        // in those rows become 0, i.e. we set the column to the
-        // column of the identity matrix.
-        for (IMatrix2D::size_type i = 0; i < max_row; ++i) {
-            auto mapped_i = logicalToPhysicalRowIndex(i);
-            if (mapped_i == physical_pivot_row_index)
-                // skip pivot row
-                    continue;
-            double val = - (*LU_)(mapped_i, col) / (*LU_)(physical_pivot_row_index, col);
-
-            // subtract the pivot row from row 'mapped_i'
-            for (IMatrix2D::size_type j = 0; j < max_col; ++j) {
-                if (j >= col)
-                    (*LU_)(mapped_i, j) += val * (*LU_)(physical_pivot_row_index, j);
-            }
-
-//             ACopy.print();
-//            print(ACopy);
-//             AInverse.print();
-        }
-
-//         ACopy.print();
-//        print(ACopy);
-//         AInverse.print();
+        LU_->print();
     }
-
-//     AInverse.print();
-//     print(AInverse);
-
-
-
-
+    LU_->print();
 
     return true;
 }

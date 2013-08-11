@@ -21,6 +21,9 @@
 namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS LUDecomposition final {
+
+        friend class LUDecompositionTest;
+
     public:
         typedef std::tuple<bool, LinAlg_NS::Matrix2D, LinAlg_NS::Vector> Return_t;
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
