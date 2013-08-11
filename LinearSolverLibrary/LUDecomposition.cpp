@@ -16,6 +16,8 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
      * with partial pivoting.
      * Note: the 1 on the diagonal is implicit, i.e. is not written
      * into LU_.
+     * Also, we do not actuall compute the LU decomposition of A, but
+     * that of PA, where P is a permutation matrix.
      */
     IMatrix2D::size_type max_row = A.rows();
     IMatrix2D::size_type max_col = A.cols();
@@ -64,6 +66,25 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
     LU_->print();
     print(*LU_);
     return true;
+}
+
+void
+LUDecomposition::rearrangeDueToPivoting() const {
+    decltype(partial_pivoting_map_) physical_map(partial_pivoting_map_.size());
+    for (auto i = 0; i < partial_pivoting_map_.size(); ++i) {
+        physical_map[i] = physicalToLogicalRowIndex(i);
+    }
+    for (auto i = 0; i < physical_map.size(); ++i) {
+        auto j = std::distance(std::begin(physical_map), std::find(std::begin(physical_map), std::end(physical_map), i));
+        if (i == j)
+            continue;
+        // Swap rows
+        for (auto col = 0; col < LU_->cols(); ++col)
+            std::swap((*LU_)(i, col), (*LU_)(j, col));
+        std::swap(physical_map[i], physical_map[j]);
+
+//        LU_->print();
+    }
 }
 
 void
