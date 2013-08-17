@@ -47,7 +47,7 @@ LUDecompositionTest::Test3by3_1() {
     A(2, 1) = 6;
     A(2, 2) = 8;
 
-    A.print();
+//     A.print();
 
     LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
     bool success = ludecomp.decompose(A);
@@ -57,7 +57,8 @@ LUDecompositionTest::Test3by3_1() {
 
     Matrix2D const & LU = *(ludecomp.LU_);
 
-    LU.print();
+//     LU.print();
+
 /*
 Matrix U:
 4.00000   6.00000   8.00000   
@@ -89,6 +90,125 @@ Permutation P:
 }
 
 void
+LUDecompositionTest::Test3by3_2() {
+    // Example from http://site.iugaza.edu.ps/iismail/files/Example-on-LU-decomposition-with-partial-pivoting1.pdf
+    // generated from http://comnuan.com/cmnn0100d/
+    Matrix2D A(3, 3);
+
+    A(0, 0) = 2;
+    A(0, 1) = -6;
+    A(0, 2) = -1;
+
+    A(1, 0) = -3;
+    A(1, 1) = -1;
+    A(1, 2) = 7;
+
+    A(2, 0) = -8;
+    A(2, 1) = 1;
+    A(2, 2) = -2;
+
+//     A.print();
+
+    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+    ludecomp.rearrangeDueToPivoting();
+
+    Matrix2D const & LU = *(ludecomp.LU_);
+
+//     LU.print();
+
+/*
+Matrix U:
+-8.00000   1.00000   -2.00000   
+0.00000   -5.75000   -1.50000   
+0.00000   0.00000   8.10870   
+
+
+Matrix L:
+1.00000   0.00000   0.00000   
+-0.25000   1.00000   0.00000   
+0.37500   0.23913   1.00000   
+
+
+Permutation P:
+3   1   2   
+*/
+    // check L part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 0), -0.25));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 0), 0.375));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 1), 0.23913));
+
+    // check U part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), -8.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 1), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 1), -5.75));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), -2.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), -1.5));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), 8.1087));
+}
+
+void
+LUDecompositionTest::Test3by3_3() {
+    // Example from http://www-old.math.gatech.edu/academic/courses/core/math2601/Web-notes/2num.pdf
+    // generated from http://comnuan.com/cmnn0100d/
+    Matrix2D A(3, 3);
+
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = -2;
+
+    A(1, 0) = 1;
+    A(1, 1) = 3;
+    A(1, 2) = -1;
+
+    A(2, 0) = 1;
+    A(2, 1) = 5;
+    A(2, 2) = 1;
+
+//     A.print();
+
+    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+    ludecomp.rearrangeDueToPivoting();
+
+    Matrix2D const & LU = *(ludecomp.LU_);
+
+//     LU.print();
+
+/*
+Matrix U:
+1.00000   1.00000   -2.00000   
+0.00000   4.00000   3.00000   
+0.00000   0.00000   -0.50000   
+
+
+Matrix L:
+1.00000   0.00000   0.00000   
+1.00000   1.00000   0.00000   
+1.00000   0.50000   1.00000   
+
+
+Permutation P:
+1   3   2   */
+    // check L part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 0), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 0), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 1), 0.5));
+
+    // check U part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 1), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 1), 4.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), -2.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), 3.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), -0.5));
+}
+
+void
 LUDecompositionTest::Test4by4_1() {
     // Introduction to Algorithms, Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein
     // page 822
@@ -115,7 +235,7 @@ LUDecompositionTest::Test4by4_1() {
     A(3, 2) = 11;
     A(3, 3) = 31;
 
-    A.print();
+//     A.print();
 
     LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
     bool success = ludecomp.decompose(A);
@@ -125,7 +245,7 @@ LUDecompositionTest::Test4by4_1() {
 
     Matrix2D const & LU = *(ludecomp.LU_);
 
-    LU.print();
+//     LU.print();
 
 /*
 Matrix U:
@@ -204,6 +324,7 @@ LUDecompositionTest::Test4by4_2() {
     Matrix2D const & LU = *(ludecomp.LU_);
 
 //     LU.print();
+
 /*
 Matrix U:
 8.00000   7.00000   9.00000   5.00000   
@@ -270,7 +391,7 @@ LUDecompositionTest::Test4by4_3() {
     A(3, 2) = 3.4;
     A(3, 3) = -1;
 
-    A.print();
+//     A.print();
 
     LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
     bool success = ludecomp.decompose(A);
@@ -280,7 +401,7 @@ LUDecompositionTest::Test4by4_3() {
 
     Matrix2D const & LU = *(ludecomp.LU_);
 
-    LU.print();
+//     LU.print();
 
 /*
 Matrix U:
