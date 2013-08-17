@@ -53,9 +53,7 @@ LUDecompositionTest::Test3by3_1() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 
@@ -113,9 +111,7 @@ LUDecompositionTest::Test3by3_2() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 
@@ -173,9 +169,7 @@ LUDecompositionTest::Test3by3_3() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 
@@ -206,6 +200,78 @@ Permutation P:
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), -2.0));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), 3.0));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), -0.5));
+}
+
+void
+LUDecompositionTest::Test3by3_4() {
+    // generated from http://comnuan.com/cmnn0100d/
+    Matrix2D A(3, 3);
+
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+
+    A(1, 0) = 2;
+    A(1, 1) = 2;
+    A(1, 2) = 5;
+
+    A(2, 0) = 4;
+    A(2, 1) = 6;
+    A(2, 2) = 8;
+
+    A.print();
+
+    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+    ludecomp.LU_->print();
+
+    auto const LU = ludecomp.rearrangeDueToPivoting();
+
+    LU.print();
+
+/*
+Matrix U:
+4.00000   6.00000   8.00000   
+0.00000   -1.00000   1.00000   
+0.00000   0.00000   -1.50000   
+
+
+Matrix L:
+1.00000   0.00000   0.00000   
+0.50000   1.00000   0.00000   
+0.25000   0.50000   1.00000   
+
+
+Permutation P:
+3   2   1   
+*/
+
+    // check L part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 0), 0.5));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 0), 0.25));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 1), 0.5));
+
+    // check U part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), 4.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 1), 6.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 1), -1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), 8.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), -1.5));
+
+
+    // solve for rhs
+    Vector rhs(3);
+    rhs(0) = 1;
+    rhs(1) = 0;
+    rhs(2) = 0;
+    Vector x = ludecomp.solve(rhs);
+
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(0), 7.0 / 3.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(1), - 2.0 / 3.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(2), - 2.0 / 3.0));
 }
 
 void
@@ -241,9 +307,7 @@ LUDecompositionTest::Test4by4_1() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 
@@ -319,9 +383,7 @@ LUDecompositionTest::Test4by4_2() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 
@@ -397,9 +459,7 @@ LUDecompositionTest::Test4by4_3() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.rearrangeDueToPivoting();
-
-    Matrix2D const & LU = *(ludecomp.LU_);
+    auto const LU = ludecomp.rearrangeDueToPivoting();
 
 //     LU.print();
 

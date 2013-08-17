@@ -61,8 +61,9 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
     return true;
 }
 
-void
+Matrix2D
 LUDecomposition::rearrangeDueToPivoting() const {
+    Matrix2D rearranged(*LU_);
     decltype(partial_pivoting_map_) physical_map(partial_pivoting_map_.size());
     for (auto i = 0; i < partial_pivoting_map_.size(); ++i) {
         physical_map[i] = physicalToLogicalRowIndex(i);
@@ -72,11 +73,12 @@ LUDecomposition::rearrangeDueToPivoting() const {
         if (i == j)
             continue;
         // Swap rows
-        for (auto col = 0; col < LU_->cols(); ++col)
-            std::swap((*LU_)(i, col), (*LU_)(j, col));
+        for (auto col = 0; col < rearranged.cols(); ++col)
+            std::swap(rearranged(i, col), rearranged(j, col));
         std::swap(physical_map[i], physical_map[j]);
-//        LU_->print();
+//        rearranged->print();
     }
+    return rearranged;
 }
 
 void
@@ -152,8 +154,48 @@ LUDecomposition::physicalToLogicalRowIndex(IMatrix2D::size_type physical_row_ind
     return logical_row_index;
 }
 
-// LinAlg_NS::Vector
-// LUDecomposition::solve(LinAlg_NS::Vector const & rhs) const {
-// }
+LinAlg_NS::Vector
+LUDecomposition::solve(LinAlg_NS::Vector const & rhs) const {
+    BOOST_ASSERT_MSG(LU_->cols() == rhs.size(), "LUDecomposition::solve: Vector row mismatch");
+    auto y = forwardSubstitute(rhs);
+    auto x = backwardSubstitute(y);
+    return x;
+}
+
+Vector
+LUDecomposition::forwardSubstitute(Vector const & rhs) const {
+    Vector x(rhs.size());
+    auto n = LU_->cols();
+    for (auto i = 0; i < n; ++i) {
+        auto mapped_i = logicalToPhysicalRowIndex(i);
+        double psum = 0.0;
+        for (auto j = 0; j < i; ++j) {
+            double lij = (*LU_)(mapped_i, j);
+            psum += lij * x(j);
+        }
+        x(i) = rhs(mapped_i) - psum;
+    }
+    return x;
+}
+
+Vector
+LUDecomposition::backwardSubstitute(Vector const & rhs) const {
+    Vector x(rhs.size());
+    auto n = LU_->cols();
+    for (auto mi = 0; mi < n; ++mi) {
+        auto i = n - mi - 1;
+        auto mapped_i = logicalToPhysicalRowIndex(i);
+//        mapped_i = i;
+        double psum = 0.0;
+        for (auto j = i + 1; j < n; ++j) {
+            double uij = (*LU_)(mapped_i, j);
+            psum += uij * x(j);
+        }
+        double uii = (*LU_)(mapped_i, i);
+//        x(i) = (rhs(mapped_i) - psum) / uii;
+        x(i) = (rhs(i) - psum) / uii;
+    }
+    return x;
+}
 
 } // LinearSolverLibrary_NS
