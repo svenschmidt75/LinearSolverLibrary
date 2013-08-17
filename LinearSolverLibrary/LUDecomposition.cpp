@@ -185,14 +185,12 @@ LUDecomposition::backwardSubstitute(Vector const & rhs) const {
     for (auto mi = 0; mi < n; ++mi) {
         auto i = n - mi - 1;
         auto mapped_i = logicalToPhysicalRowIndex(i);
-//        mapped_i = i;
         double psum = 0.0;
         for (auto j = i + 1; j < n; ++j) {
             double uij = (*LU_)(mapped_i, j);
             psum += uij * x(j);
         }
         double uii = (*LU_)(mapped_i, i);
-//        x(i) = (rhs(mapped_i) - psum) / uii;
         x(i) = (rhs(i) - psum) / uii;
     }
     return x;

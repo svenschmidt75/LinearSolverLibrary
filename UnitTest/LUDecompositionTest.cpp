@@ -219,7 +219,7 @@ LUDecompositionTest::Test3by3_4() {
     A(2, 1) = 6;
     A(2, 2) = 8;
 
-    A.print();
+//     A.print();
 
     LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
     bool success = ludecomp.decompose(A);
@@ -229,7 +229,7 @@ LUDecompositionTest::Test3by3_4() {
 
     auto const LU = ludecomp.rearrangeDueToPivoting();
 
-    LU.print();
+//     LU.print();
 
 /*
 Matrix U:
@@ -272,6 +272,82 @@ Permutation P:
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(0), 7.0 / 3.0));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(1), - 2.0 / 3.0));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(2), - 2.0 / 3.0));
+}
+
+void
+LUDecompositionTest::Test3by3_5() {
+    // Introduction to Algorithms, Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein
+    // page 818
+    // generated from http://comnuan.com/cmnn0100d/
+    Matrix2D A(3, 3);
+
+    A(0, 0) = 1;
+    A(0, 1) = 2;
+    A(0, 2) = 0;
+
+    A(1, 0) = 3;
+    A(1, 1) = 4;
+    A(1, 2) = 4;
+
+    A(2, 0) = 5;
+    A(2, 1) = 6;
+    A(2, 2) = 3;
+
+//     A.print();
+
+    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+//    ludecomp.LU_->print();
+
+    auto const LU = ludecomp.rearrangeDueToPivoting();
+
+//     LU.print();
+
+/*
+Matrix U:
+5.00000   6.00000   3.00000   
+0.00000   0.80000   -0.60000   
+0.00000   0.00000   2.50000   
+
+
+Matrix L:
+1.00000   0.00000   0.00000   
+0.20000   1.00000   0.00000   
+0.60000   0.50000   1.00000   
+
+
+Permutation P:
+3   1   2   
+*/
+
+    // check L part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 0), 0.2));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 0), 0.6));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 1), 0.5));
+
+    // check U part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), 5.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 1), 6.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 1), 0.8));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), 3.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), -0.6));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), 2.5));
+
+
+    // solve for rhs
+    Vector rhs(3);
+    rhs(0) = 3;
+    rhs(1) = 7;
+    rhs(2) = 8;
+    Vector x = ludecomp.solve(rhs);
+
+    // generated from http://bmanolov.free.fr/solve_lineq.php
+
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(0), - 7.0 / 5.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(1), 11.0 / 5.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(2), 3.0 / 5.0));
 }
 
 void
@@ -500,4 +576,94 @@ Permutation P:
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 3), -0.2));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 3), -0.5));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(3, 3), -3.0));
+}
+
+void
+LUDecompositionTest::Test4by4_4() {
+    // Example from generated from http://comnuan.com/cmnn0100d/
+    Matrix2D A(4, 4);
+
+    A(0, 0) = -1;
+    A(0, 1) = 9;
+    A(0, 2) = 2;
+    A(0, 3) = 3;
+
+    A(1, 0) = 5;
+    A(1, 1) = 6;
+    A(1, 2) = -5;
+    A(1, 3) = -2;
+
+    A(2, 0) = -9;
+    A(2, 1) = 0;
+    A(2, 2) = 1;
+    A(2, 3) = 9;
+
+    A(3, 0) = 0;
+    A(3, 1) = -3;
+    A(3, 2) = 7;
+    A(3, 3) = -4;
+
+//     A.print();
+
+    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+    auto const LU = ludecomp.rearrangeDueToPivoting();
+
+    LU.print();
+
+/*
+Matrix U:
+-9.00000   0.00000   1.00000   9.00000   
+0.00000   9.00000   1.88889   2.00000   
+0.00000   0.00000   7.62963   -3.33333   
+0.00000   0.00000   0.00000   -0.82524   
+
+
+Matrix L:
+1.00000   0.00000   0.00000   0.00000   
+0.11111   1.00000   0.00000   0.00000   
+0.00000   -0.33333   1.00000   0.00000   
+-0.55556   0.66667   -0.74757   1.00000   
+
+
+Permutation P:
+3   1   4   2   
+*/
+    // check L part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 0), 0.11111));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 0), 0.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(3, 0), -0.55556));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 1), -0.33333));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(3, 1), 0.66667));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(3, 2), -0.74757));
+
+    // check U part
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), -9.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 1), 0.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 1), 9.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 2), 1.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 2), 1.88889));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 2), 7.62963));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 3), 9.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(1, 3), 2.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(2, 3), -3.33333));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(3, 3), -0.82524));
+
+
+    // solve for rhs
+    Vector rhs(4);
+    rhs(0) = 3;
+    rhs(1) = 7;
+    rhs(2) = 8;
+    rhs(3) = 1;
+    Vector x = ludecomp.solve(rhs);
+
+    // generated from http://bmanolov.free.fr/solve_lineq.php
+
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(0), -259.0 / 17.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(1), 229.0 / 51.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(2), -98.0 / 17.0));
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(3), -233.0 / 17.0));
 }
