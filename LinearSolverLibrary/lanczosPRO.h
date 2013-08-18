@@ -4,6 +4,18 @@
  * Use   : Lanczos algorithm with partial reorthogonalization
  * Author: Sven Schmidt
  * Date  : 07/04/2013
+ * 
+ * A Shifted Block Lanczos Algorithm for Solving Sparse Symmetric Generalized Eigenproblems
+ * Roger G. Grimes, John G. Lewis, and Horst D. Simon
+ * SIAM. J. Matrix Anal. & Appl., 15(1), 228–272. (45 pages)
+ * pages 25, 28
+ * 
+ * The Lanczos algorithm with partial reorthogonalization, Horst D. Simon,
+ * Math. Comp. 42 (1984), 115-142
+ * 
+ * A filtered Lanczos procedure for extreme and interior eigenvalue problems,
+ * Report umsi-2011-xx, Minnesota Supercomputer Institute, University of Minnesota, Minneapolis, MN, 2011. 
+ * pages 5-7
  */
 #pragma once
 

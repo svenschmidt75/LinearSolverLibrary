@@ -4,6 +4,10 @@
  * Use   : Implements sparse linear solver algorithm MINRES
  * Author: Sven Schmidt
  * Date  : 08/03/2013
+ * 
+ * Introduction to Algorithms, Thomas H. Cormen, Charles E. Leiserson,
+ * Ronald L. Rivest, Clifford Stein, 2009
+ * Chapter 28 Matrix Operations
  */
 #pragma once
 

@@ -4,6 +4,9 @@
  * Use   : Lanczos algorithm
  * Author: Sven Schmidt
  * Date  : 07/04/2013
+ * 
+ * Iterative Methods For solving Linear Systems, Anne Greenbaum, SIAM, 1997
+ * p. 42
  */
 #pragma once
 

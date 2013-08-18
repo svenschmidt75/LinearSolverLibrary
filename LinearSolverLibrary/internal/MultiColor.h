@@ -5,6 +5,9 @@
  *         for a sparse matrix.
  * Author: Sven Schmidt
  * Date  : 09/22/2012
+ * 
+ * Iterative Methods for Sparse Linear Systems, 2nd ed., SIAM, 2003
+ * Chapter 3, page 87, Alg. 2.5 Greedy Multicoloring Algorithm
  */
 #pragma once
 

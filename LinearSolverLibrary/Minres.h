@@ -4,6 +4,8 @@
  * Use   : Implements sparse linear solver algorithm MINRES
  * Author: Sven Schmidt
  * Date  : 06/15/2013
+ * 
+ * Iterative Methods For solving Linear Systems, Anne Greenbaum, SIAM, 1997
  */
 #pragma once
 

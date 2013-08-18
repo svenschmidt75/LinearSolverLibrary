@@ -9,8 +9,6 @@
 using namespace LinAlg_NS;
 
 
-
-
 #define WRITE_TO_CONSOLE 0
 
 
