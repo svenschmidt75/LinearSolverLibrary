@@ -225,7 +225,7 @@ LUDecompositionTest::Test3by3_4() {
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
-    ludecomp.LU_->print();
+//     ludecomp.LU_->print();
 
     auto const LU = ludecomp.rearrangeDueToPivoting();
 
@@ -611,7 +611,7 @@ LUDecompositionTest::Test4by4_4() {
 
     auto const LU = ludecomp.rearrangeDueToPivoting();
 
-    LU.print();
+//     LU.print();
 
 /*
 Matrix U:
