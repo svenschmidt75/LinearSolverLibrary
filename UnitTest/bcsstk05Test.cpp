@@ -207,3 +207,43 @@ bcsstk05Test::MINRESLanProTest() {
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
 }
+
+void
+bcsstk05Test::GCRWithNoRestartTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonally dominant
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 152 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 10000, 10000);
+    }
+    CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
+}
+
+void
+bcsstk05Test::GCRWithRestartTest() {
+    // BCSSTK05 is symmetric pos. def., but not diagonally dominant
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 676 iterations vs 152 without restart
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 100, 10000);
+    }
+    CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 2 * 1E-9));
+}

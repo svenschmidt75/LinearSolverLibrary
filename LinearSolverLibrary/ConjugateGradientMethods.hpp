@@ -295,7 +295,7 @@ namespace LinearSolverLibrary_NS {
         }
 
         static Return_t GCR(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations = 10000) {
-            return GCR::solve(A, b, m, maxIterations, 1E-15);
+            return GCR::solve(A, b, m, maxIterations, 1E-14);
         }
 
     };

@@ -20,6 +20,8 @@ class bcsstk05Test : public CppUnit::TestFixture {
     CPPUNIT_TEST(BiCGSTABTest);
     CPPUNIT_TEST(MINRESTest);
     CPPUNIT_TEST(MINRESLanProTest);
+    CPPUNIT_TEST(GCRWithNoRestartTest);
+    CPPUNIT_TEST(GCRWithRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -33,6 +35,8 @@ protected:
     void BiCGSTABTest();
     void MINRESTest();
     void MINRESLanProTest();
+    void GCRWithNoRestartTest();
+    void GCRWithRestartTest();
 
 private:
     void initMatrix();
