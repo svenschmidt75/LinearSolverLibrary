@@ -314,3 +314,57 @@ VersteegMalalasekeraTest::TFQMRTest() {
 
     checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x);
 }
+
+void
+VersteegMalalasekeraTest::GCRWithNoRestartTest() {
+    bool success;
+    Vector x(x_ref_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    /************************************************************************/
+    /* Demonstrate what happens if restart too small                        */
+    /************************************************************************/
+
+    {
+        HighResTimer t;
+
+        // restart after 4 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 20, 10000);
+    }
+
+    // needs 4 iterations
+    CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-10));
+
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x);
+}
+
+void
+VersteegMalalasekeraTest::GCRWithRestartTest() {
+    bool success;
+    Vector x(x_ref_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    /************************************************************************/
+    /* Demonstrate what happens if restart too small                        */
+    /************************************************************************/
+
+    {
+        HighResTimer t;
+
+        // restart after 27 (!!!) iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 4, 10000);
+    }
+
+    // needs 27 iterations
+    CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-10));
+
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x);
+}

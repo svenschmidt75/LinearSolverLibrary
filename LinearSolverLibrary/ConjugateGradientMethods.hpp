@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include "GCR.h"
 #include "Minres.h"
 #include "MinresLanPro.h"
 #include "Gmres.h"
@@ -291,6 +292,10 @@ namespace LinearSolverLibrary_NS {
 
         static Return_t GMRES(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations = 10000) {
            return Gmres::solve(A, b, m, maxIterations, 1E-15);
+        }
+
+        static Return_t GCR(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations = 10000) {
+            return GCR::solve(A, b, m, maxIterations, 1E-15);
         }
 
     };

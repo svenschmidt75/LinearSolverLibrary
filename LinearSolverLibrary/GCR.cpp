@@ -13,53 +13,53 @@ namespace LinearSolverLibrary_NS {
 
 GCR::Return_t
 GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations, double tolerance) {
-    setUp(m);
-
     int iteration = 0;
 
     Vector r(b);
-
     Vector x(b.size());
+    std::vector<Vector> p;
+    p.reserve(b.size());
+    std::vector<Vector> Ap;
+    Ap.reserve(b.size());
 
     while (iteration <= maxIterations) {
         p.push_back(r);
+        Ap.push_back(A * r);
         for (IMatrix2D::size_type j = 0; j < m && iteration <= maxIterations; ++j, ++iteration) {
-            Vector const & pj = p[0];
-            Vector Apj = A * pj;
-            Ap.push_back(Apj);
+            Vector const & pj = p[j];
+            Vector const & Apj = Ap[j];
             double Apj2 = VectorMath::dotProduct(Apj, Apj);
             double alpha = VectorMath::dotProduct(r, Apj) / Apj2;
             x += alpha * pj;
             r -= alpha * Apj;
-            Vector const & Arj = A * r;
-            Vector pj1 = r;
-            Vector newApj(Apj.size());
+            Vector Arj = A * r;
+            Vector next_pj = r;
+            Vector next_Apj(Apj.size());
             for (IMatrix2D::size_type i = 0; i <= j; ++i) {
                 Vector const & Api = Ap[i];
                 double Api2 = VectorMath::dotProduct(Api, Api);
                 double beta = - VectorMath::dotProduct(Arj, Api) / Api2;
-                pj1 += beta * p[i];
-                newApj += beta * Api;
+                next_pj += beta * p[i];
+                next_Apj += beta * Api;
             }
-            p.push_back(pj1);
-            newApj += Arj;
-            Ap.push_back(newApj);
+            p.push_back(next_pj);
+            next_Apj += Arj;
+            Ap.push_back(next_Apj);
+
+            r = b - A * x;
+            double normr = VectorMath::norm(r);
+            double normb = VectorMath::norm(b);
+            double residual = normr / normb;
+            if (residual <= tolerance)
+                return std::make_tuple(true, x, iteration, residual);
         }
-        r = b - A * x;
-        double normr = VectorMath::norm(r);
-        double normb = VectorMath::norm(b);
-        double residual = normr / normb;
-        if (residual <= tolerance)
-            return std::make_tuple(true, x, iteration, residual);
+
+        // restart
+        p.clear();
+        Ap.clear();
     }
     // scheme did not converge
     return std::make_tuple(false, x, maxIterations, 0);
-}
-
-void
-GCR::setUp(IMatrix2D::size_type dim) {
-    p.reserve(dim);
-    Ap.reserve(dim);
 }
 
 } // LinearSolverLibrary_NS

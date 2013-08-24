@@ -24,6 +24,8 @@ class VersteegMalalasekeraTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(MINRESTest);
     CPPUNIT_TEST(MINRESLanProTest);
     CPPUNIT_TEST(TFQMRTest);
+    CPPUNIT_TEST(GCRWithNoRestartTest);
+    CPPUNIT_TEST(GCRWithRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,6 +43,8 @@ protected:
     void MINRESTest();
     void MINRESLanProTest();
     void TFQMRTest();
+    void GCRWithNoRestartTest();
+    void GCRWithRestartTest();
 
 private:
     void initMatrix();

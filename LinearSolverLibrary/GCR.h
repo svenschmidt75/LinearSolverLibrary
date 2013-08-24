@@ -33,15 +33,7 @@ namespace LinearSolverLibrary_NS {
         typedef std::tuple<bool, LinAlg_NS::Vector, LinAlg_NS::IMatrix2D::size_type, double> Return_t;
 
     public:
-        Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, LinAlg_NS::SparseMatrix2D::size_type m, int maxIterations, double tolerance);
-
-    private:
-        void setUp(LinAlg_NS::IMatrix2D::size_type dim);
-
-    private:
-        // search directions
-        mutable std::vector<LinAlg_NS::Vector> p;
-        mutable std::vector<LinAlg_NS::Vector> Ap;
+        static Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, LinAlg_NS::SparseMatrix2D::size_type m, int maxIterations, double tolerance);
     };
 
 } // LinearSolverLibrary_NS
