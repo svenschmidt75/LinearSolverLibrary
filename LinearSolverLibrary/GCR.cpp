@@ -14,9 +14,14 @@ namespace LinearSolverLibrary_NS {
 GCR::Return_t
 GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations, double tolerance) {
     int iteration = 0;
+
+    double old_residual = tolerance;
+
     double normb = VectorMath::norm(b);
+
     Vector r(b);
     Vector x(b.size());
+
     std::vector<Vector> p;
     p.reserve(m);
     std::vector<Vector> Ap;
@@ -46,11 +51,18 @@ GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type
             next_Apj += Arj;
             Ap.push_back(next_Apj);
 
-            r = b - A * x;
+//            r = b - A * x;
             double normr = VectorMath::norm(r);
             double residual = normr / normb;
             if (residual <= tolerance)
                 return std::make_tuple(true, x, iteration, residual);
+
+            double tmp = std::fabs(std::log(residual / old_residual));
+            if (tmp < tolerance)
+                return std::make_tuple(true, x, iteration, residual);
+
+            if (!(j % 50))
+                old_residual = residual;
         }
         // restart
         p.clear();

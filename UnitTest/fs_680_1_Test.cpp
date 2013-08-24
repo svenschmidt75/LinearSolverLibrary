@@ -159,3 +159,37 @@ fs_680_1_Test::TFQMRTest() {
     CPPUNIT_ASSERT_MESSAGE("TFQMR failed to solve linear system", success);
     CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-7));
 }
+
+void
+fs_680_1_Test::GCRWithNoRestartTest() {
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 151 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 680, 10000);
+    }
+    CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-8));
+}
+
+void
+fs_680_1_Test::GCRWithRestartTest() {
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 220 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 200, 10000);
+    }
+    CPPUNIT_ASSERT_MESSAGE("TFQMR failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-7));
+}

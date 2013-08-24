@@ -21,11 +21,13 @@
 
 class fs_680_1_Test : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(fs_680_1_Test);
-    CPPUNIT_TEST(CGTest);
-    CPPUNIT_TEST(BiCGTest);
-    CPPUNIT_TEST(BiCGSTABTest);
-    CPPUNIT_TEST(GMRESTest);
-    CPPUNIT_TEST(TFQMRTest);
+//     CPPUNIT_TEST(CGTest);
+//     CPPUNIT_TEST(BiCGTest);
+//     CPPUNIT_TEST(BiCGSTABTest);
+//     CPPUNIT_TEST(GMRESTest);
+//     CPPUNIT_TEST(TFQMRTest);
+    CPPUNIT_TEST(GCRWithNoRestartTest);
+//    CPPUNIT_TEST(GCRWithRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -38,6 +40,8 @@ protected:
     void BiCGSTABTest();
     void GMRESTest();
     void TFQMRTest();
+    void GCRWithNoRestartTest();
+    void GCRWithRestartTest();
 
 private:
     void initMatrix();

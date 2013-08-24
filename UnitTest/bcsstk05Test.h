@@ -14,13 +14,13 @@
 
 class bcsstk05Test : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(bcsstk05Test);
-    CPPUNIT_TEST(SORTest);
-    CPPUNIT_TEST(CGTest);
-    CPPUNIT_TEST(BiCGTest);
-    CPPUNIT_TEST(BiCGSTABTest);
-    CPPUNIT_TEST(MINRESTest);
-    CPPUNIT_TEST(MINRESLanProTest);
-    CPPUNIT_TEST(GCRWithNoRestartTest);
+//     CPPUNIT_TEST(SORTest);
+//     CPPUNIT_TEST(CGTest);
+//     CPPUNIT_TEST(BiCGTest);
+//     CPPUNIT_TEST(BiCGSTABTest);
+//     CPPUNIT_TEST(MINRESTest);
+//     CPPUNIT_TEST(MINRESLanProTest);
+//    CPPUNIT_TEST(GCRWithNoRestartTest);
     CPPUNIT_TEST(GCRWithRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
