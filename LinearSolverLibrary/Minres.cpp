@@ -96,11 +96,11 @@ Minres::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterat
     }
 
     // scheme did not converge
-    return std::make_tuple(false, x, 10000, 0);
+    return std::make_tuple(false, x, maxIterations, 0);
 }
 
 void
-Minres::setup(LinAlg_NS::SparseMatrix2D::size_type dim, double normr) const {
+Minres::setup(SparseMatrix2D::size_type dim, double normr) const {
     // search directions
     p.resize(3 + 1, Vector(dim));
 

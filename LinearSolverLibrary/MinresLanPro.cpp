@@ -95,7 +95,7 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
     }
 
     // scheme did not converge
-    return std::make_tuple(false, x, 10000, 0);
+    return std::make_tuple(false, x, maxIterations, 0);
 }
 
 void

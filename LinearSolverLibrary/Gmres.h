@@ -31,8 +31,6 @@ namespace LinearSolverLibrary_NS {
 
     public:
         static Return_t solve(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & b, LinAlg_NS::SparseMatrix2D::size_type m, int maxIterations, double tolerance);
-
-    private:
     };
 
 } // LinearSolverLibrary_NS

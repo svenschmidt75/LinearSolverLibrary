@@ -87,7 +87,7 @@ namespace LinearSolverLibrary_NS {
             }
 
             // scheme did not converge
-            return std::make_tuple(false, x, 10000, 0);
+            return std::make_tuple(false, x, max_iterations, 0);
         }
 
         static Return_t BiCG(SparseMatrix2D const & m, SparseMatrix2D const & m_transposed, Vector const & b, int max_iterations = 10000) {
@@ -143,7 +143,7 @@ namespace LinearSolverLibrary_NS {
             }
 
             // scheme did not converge
-            return std::make_tuple(false, x, 10000, 0);
+            return std::make_tuple(false, x, max_iterations, 0);
         }
 
         static Return_t BiCGSTAB(SparseMatrix2D const & m, Vector const & b, int max_iterations = 10000) {
@@ -204,7 +204,7 @@ namespace LinearSolverLibrary_NS {
             }
 
             // scheme did not converge
-            return std::make_tuple(false, x, 10000, 0);
+            return std::make_tuple(false, x, max_iterations, 0);
         }
 
         static Return_t TFQMR(SparseMatrix2D const & A, Vector const & b, int maxIterations = 10000) {
@@ -278,7 +278,7 @@ namespace LinearSolverLibrary_NS {
             }
 
             // scheme did not converge
-            return std::make_tuple(false, x, 10000, 0);
+            return std::make_tuple(false, x, maxIterations, 0);
         }
 
         static Return_t MINRES(SparseMatrix2D const & A, Vector const & b, int max_iterations = 10000) {

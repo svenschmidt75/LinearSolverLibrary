@@ -165,6 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GaussJordan.cpp" />
+    <ClCompile Include="GCR.cpp" />
     <ClCompile Include="Gmres.cpp" />
     <ClCompile Include="internal\BucketElement.cpp" />
     <ClCompile Include="internal\BucketList.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="GaussJordan.h" />
+    <ClInclude Include="GCR.h" />
     <ClInclude Include="Gmres.h" />
     <ClInclude Include="internal\BucketElement.h" />
     <ClInclude Include="internal\BucketList.h" />

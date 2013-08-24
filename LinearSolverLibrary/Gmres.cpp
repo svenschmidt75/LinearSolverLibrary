@@ -163,7 +163,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
     }
 
     // scheme did not converge
-    return std::make_tuple(false, x, 10000, 0);
+    return std::make_tuple(false, x, maxIterations, 0);
 }
 
 } // LinearSolverLibrary_NS
