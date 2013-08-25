@@ -172,5 +172,5 @@ spiralTest::GCRWithNoRestartTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 680, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 5 * 1E-7));
 }

@@ -43,6 +43,7 @@ namespace LinAlg_NS {
 
     LINALG_DECL_SYMBOLS Vector & operator-=(Vector & lhs, Vector const & rhs);
 
+    LINALG_DECL_SYMBOLS Vector operator*(double value, Vector && v);
     LINALG_DECL_SYMBOLS Vector operator*(double value, Vector const & v);
 
     template<typename VECTOR_EXPR, typename BINOP>

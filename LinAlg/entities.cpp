@@ -72,13 +72,20 @@ operator-=(Vector & lhs, Vector const & rhs) {
 }
 
 Vector
-operator*(double value, Vector const & v) {
+operator*(double value, Vector && v) {
     Vector tmp(v);
-
     std::transform(v.cbegin(), v.cend(), tmp.begin(), [value](double val){
         return value * val;
     });
+    return tmp;
+}
 
+Vector
+operator*(double value, Vector const & v) {
+    Vector tmp(v);
+    std::transform(v.cbegin(), v.cend(), tmp.begin(), [value](double val){
+        return value * val;
+    });
     return tmp;
 }
 
