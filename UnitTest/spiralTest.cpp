@@ -135,3 +135,42 @@ spiralTest::spiralMINRESLanProTest() {
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in MINRESLanPRO solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 9.8 * 1E-7));
 }
+
+void
+spiralTest::spiralGMRESTest() {
+    // spiral is symmetric, not pos. def.
+    // condition nr: 390841
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 1061 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m_, b_, 1200, 10000);
+    }
+
+    CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-8));
+}
+
+void
+spiralTest::GCRWithNoRestartTest() {
+    bool success;
+    Vector x(b_.size());
+    SparseMatrix2D::size_type iterations;
+    double tol;
+
+    {
+        HighResTimer t;
+
+        // needs 616 iterations
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 680, 10000);
+    }
+    CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
+}

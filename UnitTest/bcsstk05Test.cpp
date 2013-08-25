@@ -220,7 +220,7 @@ bcsstk05Test::GCRWithNoRestartTest() {
         HighResTimer t;
 
         // needs 152 iterations
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 10000, 10000);
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 175, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
 

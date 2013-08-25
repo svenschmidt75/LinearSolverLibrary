@@ -28,8 +28,8 @@ GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type
     Ap.reserve(m);
 
     while (iteration <= maxIterations) {
-        p.push_back(r);
-        Ap.push_back(A * r);
+        p.emplace_back(r);
+        Ap.emplace_back(A * r);
         for (IMatrix2D::size_type j = 0; j < m && iteration <= maxIterations; ++j, ++iteration) {
             Vector const & pj = p[j];
             Vector const & Apj = Ap[j];
@@ -47,9 +47,9 @@ GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type
                 next_pj += beta * p[i];
                 next_Apj += beta * Api;
             }
-            p.push_back(next_pj);
+            p.emplace_back(next_pj);
             next_Apj += Arj;
-            Ap.push_back(next_Apj);
+            Ap.emplace_back(next_Apj);
 
             double normr = VectorMath::norm(r);
             double residual = normr / normb;

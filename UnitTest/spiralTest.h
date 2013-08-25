@@ -16,6 +16,8 @@ class spiralTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(spiralTest);
     CPPUNIT_TEST(spiralMINRESTest);
     CPPUNIT_TEST(spiralMINRESLanProTest);
+    CPPUNIT_TEST(spiralGMRESTest);
+    CPPUNIT_TEST(GCRWithNoRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,6 +27,8 @@ public:
 protected:
     void spiralMINRESTest();
     void spiralMINRESLanProTest();
+    void spiralGMRESTest();
+    void GCRWithNoRestartTest();
 
 private:
     void initMatrix();
