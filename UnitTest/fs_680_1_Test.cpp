@@ -170,11 +170,11 @@ fs_680_1_Test::GCRWithNoRestartTest() {
     {
         HighResTimer t;
 
-        // needs 151 iterations
+        // needs 141 iterations
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 680, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-8));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
 }
 
 void

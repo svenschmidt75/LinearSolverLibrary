@@ -8,6 +8,7 @@
  * FS 680 1: Chemical kinetics problems
  * RCHEM radiation chemistry study -- 1st output time step
  * from set FACSIMILE, from the Harwell-Boeing Collection
+ * Cond(A) = 15405.2
  * 
  * Note: fs_680_1 is a 680x680 real unsymmetric matrix which
  * is not diagonally dominant.
@@ -21,13 +22,13 @@
 
 class fs_680_1_Test : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(fs_680_1_Test);
-//     CPPUNIT_TEST(CGTest);
-//     CPPUNIT_TEST(BiCGTest);
-//     CPPUNIT_TEST(BiCGSTABTest);
-//     CPPUNIT_TEST(GMRESTest);
-//     CPPUNIT_TEST(TFQMRTest);
+    CPPUNIT_TEST(CGTest);
+    CPPUNIT_TEST(BiCGTest);
+    CPPUNIT_TEST(BiCGSTABTest);
+    CPPUNIT_TEST(GMRESTest);
+    CPPUNIT_TEST(TFQMRTest);
     CPPUNIT_TEST(GCRWithNoRestartTest);
-//    CPPUNIT_TEST(GCRWithRestartTest);
+    CPPUNIT_TEST(GCRWithRestartTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:

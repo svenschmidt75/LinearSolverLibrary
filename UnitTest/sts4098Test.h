@@ -4,6 +4,8 @@
  * Use   : 
  * Author: Sven Schmidt
  * Date  : 07/27/2013
+ * 
+ * Cond(A) = 2.17087e+08
  */
 #pragma once
 

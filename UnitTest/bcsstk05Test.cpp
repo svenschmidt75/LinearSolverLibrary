@@ -239,7 +239,7 @@ bcsstk05Test::GCRWithRestartTest() {
     {
         HighResTimer t;
 
-        // needs 676 iterations vs 152 without restart
+        // needs 670 iterations vs 152 without restart
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 100, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);

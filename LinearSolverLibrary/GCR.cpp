@@ -15,7 +15,7 @@ GCR::Return_t
 GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type m, int maxIterations, double tolerance) {
     int iteration = 0;
 
-    double old_residual = tolerance;
+    double old_residual = 1.0;
 
     double normb = VectorMath::norm(b);
 
@@ -51,17 +51,21 @@ GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type
             next_Apj += Arj;
             Ap.push_back(next_Apj);
 
-//            r = b - A * x;
             double normr = VectorMath::norm(r);
             double residual = normr / normb;
             if (residual <= tolerance)
                 return std::make_tuple(true, x, iteration, residual);
 
+            /* The numerical scheme might get stuck, i.e. no improvements
+             * will be made w.r.t. the residual. In this case, there is
+             * no point in keeping the iteration running. This might happen
+             * for matrices with very high condition number.
+             */
             double tmp = std::fabs(std::log(residual / old_residual));
             if (tmp < tolerance)
                 return std::make_tuple(true, x, iteration, residual);
 
-            if (!(j % 50))
+            if (!(j % 20))
                 old_residual = residual;
         }
         // restart
