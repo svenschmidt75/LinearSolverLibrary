@@ -61,12 +61,12 @@ GCR::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_type
              * no point in keeping the iteration running. This might happen
              * for matrices with very high condition number.
              */
-            double tmp = std::fabs(std::log(residual / old_residual));
-            if (tmp < tolerance)
-                return std::make_tuple(true, x, iteration, residual);
-
-            if (!(j % 20))
+            if (!(j % 20)) {
+                double tmp = std::fabs(std::log(residual / old_residual));
+                if (tmp < tolerance)
+                    return std::make_tuple(true, x, iteration, residual);
                 old_residual = residual;
+            }
         }
         // restart
         p.clear();
