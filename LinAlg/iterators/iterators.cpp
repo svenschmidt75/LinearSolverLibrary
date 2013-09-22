@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "iterators.h"
-
+#include "ConstColumnIterator.h"
 
 namespace LinAlg_NS {
 

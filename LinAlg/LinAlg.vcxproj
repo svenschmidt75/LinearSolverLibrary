@@ -210,7 +210,7 @@
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="iterators\iterators.cpp" />
-    <ClCompile Include="iterators\iterator_internal.cpp" />
+    <ClCompile Include="iterators\ConstColumnIterator.cpp" />
     <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -237,7 +237,7 @@
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="iterators\iterators.h" />
-    <ClInclude Include="iterators\iterator_internal.h" />
+    <ClInclude Include="iterators\ConstColumnIterator.h" />
     <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />
     <ClInclude Include="VectorMath.h" />
