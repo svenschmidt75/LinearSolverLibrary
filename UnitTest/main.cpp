@@ -15,8 +15,10 @@
 #include "spiralTest.h"
 #include "GaussJordanTest.h"
 #include "LUDecompositionTest.h"
+#include "SparseMatrixIteratorTest.h"
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);
