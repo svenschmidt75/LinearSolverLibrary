@@ -206,7 +206,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConstRowIterator.cpp" />
+    <ClCompile Include="ConstRowIterator.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="ConstColumnIterator.cpp" />
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="helper.cpp" />

@@ -27,6 +27,16 @@ private:
 public:
     ConstColumnIterator(SparseMatrix2D const & m, size_type row, size_type column);
 
+//    explicit bool operator();
+
+    size_type column() const;
+
+    double operator*() const;
+
+private:
+    void jumpToFirstElement() const;
+    void jumpToNextElement() const;
+
 private:
     SparseMatrix2D    m_;
     mutable size_type column_;

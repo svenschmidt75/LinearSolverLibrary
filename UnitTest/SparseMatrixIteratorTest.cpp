@@ -49,13 +49,6 @@ SparseMatrixIteratorTest::RowIteratorReturnsCorrectRow() {
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
-    auto matrix = CreateSparseMatrix();
-    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
-}
-
-void
 SparseMatrixIteratorTest::RowIteratorPreIncrementReturnsNextRowIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
@@ -76,4 +69,41 @@ SparseMatrixIteratorTest::RowIteratorDereferenceReturnsColumnIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
+}
+
+void
+SparseMatrixIteratorTest::ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
+}
+
+namespace {
+
+    bool almostEqual(double d1, double d2, double tol = 1E-3) {
+        if (d1 == 0.0)
+            return true;
+        double diff = std::fabs((d1 - d2) / d1);
+        bool success = diff < tol;
+        return success;
+    }
+
+}
+
+void
+SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElements() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *rowit));
+}
+
+void
+SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
+//    ++rowit;
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
+//    CPPUNIT_ASSERT_MESSAGE("Element mismatch", 3.0ull, rowit.column());
 }
