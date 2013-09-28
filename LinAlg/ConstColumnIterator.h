@@ -27,7 +27,9 @@ private:
 public:
     ConstColumnIterator(SparseMatrix2D const & m, size_type row);
 
-//    explicit bool operator();
+//    explicit operator bool() const;
+
+    bool next() const;
 
     size_type column() const;
 

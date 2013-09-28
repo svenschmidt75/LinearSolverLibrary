@@ -107,3 +107,25 @@ SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() 
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Element mismatch", 2ull, rowit.column());
 }
+
+void
+SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextMatrixElements() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Element mismatch", 0ull, rowit.column());
+    auto val = rowit++;
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, val));
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Element mismatch", 2ull, rowit.column());
+}
+
+void
+SparseMatrixIteratorTest::ColumnIteratorCannotAdvancePastLastMatrixElement() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
+    rowit++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
+}

@@ -14,6 +14,14 @@ ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & 
     jumpToFirstElement();
 }
 
+bool
+ConstColumnIterator<SparseMatrix2D>::next() const {
+    common_NS::reporting::checkUppderBound(row_, m_.rows());
+    size_type offset = m_.nelements_[row_];
+    size_type ncol = m_.nelements_[row_ + 1] - offset;
+    return column_ < ncol - 1;
+}
+
 ConstColumnIterator<SparseMatrix2D>::size_type
 ConstColumnIterator<SparseMatrix2D>::column() const {
     common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
@@ -23,8 +31,8 @@ ConstColumnIterator<SparseMatrix2D>::column() const {
 double
 ConstColumnIterator<SparseMatrix2D>::operator++() const {
     // pre-increment
-    jumpToNextElement();
     common_NS::reporting::checkUppderBound(row_, m_.rows());
+    jumpToNextElement();
     common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
     return m_(row_, column_mapped_);
 }
@@ -32,10 +40,11 @@ ConstColumnIterator<SparseMatrix2D>::operator++() const {
 double
 ConstColumnIterator<SparseMatrix2D>::operator++(int) const {
     // post-increment
-    jumpToNextElement();
     common_NS::reporting::checkUppderBound(row_, m_.rows());
+    auto tmp = m_(row_, column_mapped_);
+    jumpToNextElement();
     common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
-    return m_(row_, column_mapped_);
+    return tmp;
 }
 
 double
