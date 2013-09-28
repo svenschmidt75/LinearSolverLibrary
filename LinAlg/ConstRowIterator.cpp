@@ -16,6 +16,12 @@ ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, siz
     :
     m_(m), row_(row) {}
 
+bool 
+ConstRowIterator<SparseMatrix2D>::next() const {
+    common_NS::reporting::checkUppderBound(row_, m_.rows());
+    return row_ < maxRows() - 1;
+}
+
 ConstRowIterator<SparseMatrix2D>::size_type
 ConstRowIterator<SparseMatrix2D>::maxRows() const {
     return m_.rows();

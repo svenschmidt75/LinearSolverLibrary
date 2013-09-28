@@ -14,8 +14,9 @@ class SparseMatrixIteratorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseMatrixIteratorTest);
     CPPUNIT_TEST(RowIteratorSizeEqualsNumberOfRows);
     CPPUNIT_TEST(RowIteratorReturnsCorrectRow);
+    CPPUNIT_TEST(RowIteratorPreIncrementReturnsNextRowIterator);
     CPPUNIT_TEST(RowIteratorPostIncrementReturnsNextRowIterator);
-    CPPUNIT_TEST(RowIteratorPostIncrementReturnsNextRowIterator);
+    CPPUNIT_TEST(RowIteratorCannotAdvancePastLastRow);
     CPPUNIT_TEST(RowIteratorDereferenceReturnsColumnIterator);
     CPPUNIT_TEST(ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow);
     CPPUNIT_TEST(ColumnIteratorDereferenceReturnsCorrectMatrixElements);
@@ -33,6 +34,7 @@ protected:
     void RowIteratorReturnsCorrectRow();
     void RowIteratorPreIncrementReturnsNextRowIterator();
     void RowIteratorPostIncrementReturnsNextRowIterator();
+    void RowIteratorCannotAdvancePastLastRow();
     void RowIteratorDereferenceReturnsColumnIterator();
     void ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow();
     void ColumnIteratorDereferenceReturnsCorrectMatrixElements();

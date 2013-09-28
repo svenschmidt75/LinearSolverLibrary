@@ -29,6 +29,8 @@ public:
     explicit ConstRowIterator(SparseMatrix2D const & m);
     explicit ConstRowIterator(SparseMatrix2D const & m, size_type row);
 
+    bool next() const;
+
     size_type maxRows() const;
     size_type row() const;
     size_type numberOfNonZeroMatrixElements() const;

@@ -65,6 +65,17 @@ SparseMatrixIteratorTest::RowIteratorPostIncrementReturnsNextRowIterator() {
 }
 
 void
+SparseMatrixIteratorTest::RowIteratorCannotAdvancePastLastRow() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator valid", !it.next());
+}
+
+void
 SparseMatrixIteratorTest::RowIteratorDereferenceReturnsColumnIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
