@@ -20,7 +20,7 @@ namespace {
         m(1, 1) = 0;
         m(1, 2) = 6;
         m(2, 0) = 7;
-        m(2, 1) = 0;
+        m(2, 1) = 1;
         m(2, 2) = 0;
         m.finalize();
         return m;
@@ -156,4 +156,42 @@ SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElementsI
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
+}
+
+void
+SparseMatrixIteratorTest::IterateThroughAllElements() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+
+    // row 1
+    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, rowit.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *rowit));
+    rowit++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
+
+    rowit = *++it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+
+    // row 2
+    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(6.0, *rowit));
+
+    it++;
+    rowit = *it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator valid", !it.next());
+
+    // row 3
+    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, rowit.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(7.0, *rowit));
+    rowit++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, rowit.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *rowit));
 }
