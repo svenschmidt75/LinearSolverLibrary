@@ -8,19 +8,15 @@
 #pragma once
 
 
-#include "..\DeclSpec.h"
-#include "..\SparseMatrix2D.h"
+#include "DeclSpec.h"
+#include "SparseMatrix2D.h"
+#include "ConstColumnIteratorBase.h"
+#include "ConstRowIteratorBase.h"
 
 
 namespace LinAlg_NS {
 
 namespace iterator_internal {
-
-    template<typename T>
-    class ConstColumnIterator;
-
-    template<typename T>
-    class ConstRowIterator;
 
     template<>
     class LINALG_DECL_SYMBOLS ConstColumnIterator<SparseMatrix2D> {
@@ -32,7 +28,7 @@ namespace iterator_internal {
 
     public:
         explicit ConstColumnIterator(SparseMatrix2D const & m);
-        explicit ConstColumnIterator(SparseMatrix2D const & m_, size_type startColumn);
+        explicit ConstColumnIterator(SparseMatrix2D const & m, size_type startColumn);
 
         size_type maxColumns() const;
         size_type column() const;

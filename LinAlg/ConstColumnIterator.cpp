@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "ConstColumnIterator.h"
+#include "ConstRowIterator.h"
 
 
 namespace LinAlg_NS {
@@ -42,7 +43,7 @@ ConstColumnIterator<SparseMatrix2D>::operator++(int) const {
 
 ConstRowIterator<SparseMatrix2D>
 ConstColumnIterator<SparseMatrix2D>::operator*() const {
-    return ConstRowIterator<SparseMatrix2D>(*this);
+    return ConstRowIterator<SparseMatrix2D>(m_, current_column_, 0);
 }
 
 } // namespace iterator_internal

@@ -8,9 +8,9 @@
 #pragma once
 
 
-#include "..\DeclSpec.h"
-#include "..\SparseMatrix2D.h"
-#include "iterator_internal.h"
+#include "DeclSpec.h"
+#include "SparseMatrix2D.h"
+#include "ConstColumnIterator.h"
 
 
 namespace LinAlg_NS {

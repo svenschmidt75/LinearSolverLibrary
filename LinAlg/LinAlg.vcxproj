@@ -206,11 +206,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConstColumnIterator.cpp" />
+    <ClCompile Include="ConstRowIterator.cpp" />
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
-    <ClCompile Include="iterators\iterators.cpp" />
-    <ClCompile Include="iterators\ConstColumnIterator.cpp" />
+    <ClCompile Include="iterators.cpp" />
     <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -227,6 +228,10 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstColumnIterator.h" />
+    <ClInclude Include="ConstColumnIteratorBase.h" />
+    <ClInclude Include="ConstRowIterator.h" />
+    <ClInclude Include="ConstRowIteratorBase.h" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\expression_traits.h" />
@@ -236,8 +241,7 @@
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
-    <ClInclude Include="iterators\iterators.h" />
-    <ClInclude Include="iterators\ConstColumnIterator.h" />
+    <ClInclude Include="iterators.h" />
     <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />
     <ClInclude Include="VectorMath.h" />

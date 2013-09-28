@@ -3,7 +3,7 @@
 #include "SparseMatrixIteratorTest.h"
 
 #include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/iterators/iterators.h"
+#include "LinAlg/iterators.h"
 
 
 using namespace LinAlg_NS;
@@ -68,5 +68,5 @@ void
 SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsRowIterator() {
     auto matrix = CreateSparseMatrix();
     ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
-    ConstRowIterator<SparseMatrix2D> rowit = *it;
+    //ConstRowIterator<SparseMatrix2D> rowit = *it;
 }
