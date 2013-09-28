@@ -19,7 +19,7 @@ namespace LinAlg_NS {
 
 class LINALG_DECL_SYMBOLS iterators {
 public:
-    static ConstColumnIterator<SparseMatrix2D> getConstIterator(SparseMatrix2D const & matrix);
+    static ConstRowIterator<SparseMatrix2D> getConstRowIterator(SparseMatrix2D const & matrix);
 
 };
 

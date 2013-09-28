@@ -6,9 +6,9 @@
 namespace LinAlg_NS {
 
 
-ConstColumnIterator<SparseMatrix2D>
-iterators::getConstIterator(SparseMatrix2D const & matrix) {
-    return ConstColumnIterator<SparseMatrix2D>(matrix);
+ConstRowIterator<SparseMatrix2D>
+iterators::getConstRowIterator(SparseMatrix2D const & matrix) {
+    return ConstRowIterator<SparseMatrix2D>(matrix);
 }
 
 

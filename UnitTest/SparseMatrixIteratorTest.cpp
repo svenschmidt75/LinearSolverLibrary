@@ -37,28 +37,28 @@ SparseMatrixIteratorTest::tearDown() {}
 void
 SparseMatrixIteratorTest::ColumnIteratorSizeEqualsNumberOfColumns() {
     auto matrix = CreateSparseMatrix();
-    ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column mismatch", 3ull, it.maxColumns());
 }
 
 void
 SparseMatrixIteratorTest::ColumnIteratorReturnsCorrectColumn() {
     auto matrix = CreateSparseMatrix();
-    ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Current column mismatch", 0ull, it.column());
 }
 
 void
 SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextColumnIterator() {
     auto matrix = CreateSparseMatrix();
-    ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, (++it).column());
 }
 
 void
 SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextColumnIterator() {
     auto matrix = CreateSparseMatrix();
-    ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     auto next_it = it++;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, next_it.column());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, it.column());
@@ -67,6 +67,6 @@ SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextColumnIterator()
 void
 SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsRowIterator() {
     auto matrix = CreateSparseMatrix();
-    ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
-    ConstRowIterator<SparseMatrix2D> rowit = *it;
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    ConstColumnIterator<SparseMatrix2D> rowit = *it;
 }

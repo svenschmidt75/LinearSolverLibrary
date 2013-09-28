@@ -206,8 +206,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConstColumnIterator.cpp" />
     <ClCompile Include="ConstRowIterator.cpp" />
+    <ClCompile Include="ConstColumnIterator.cpp" />
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
@@ -228,10 +228,10 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConstColumnIterator.h" />
-    <ClInclude Include="ConstColumnIteratorBase.h" />
     <ClInclude Include="ConstRowIterator.h" />
     <ClInclude Include="ConstRowIteratorBase.h" />
+    <ClInclude Include="ConstColumnIterator.h" />
+    <ClInclude Include="ConstColumnIteratorBase.h" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\expression_traits.h" />
