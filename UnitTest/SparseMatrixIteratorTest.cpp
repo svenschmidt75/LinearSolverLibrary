@@ -103,7 +103,7 @@ SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() 
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
-//    ++rowit;
+    ++rowit;
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
-//    CPPUNIT_ASSERT_MESSAGE("Element mismatch", 3.0ull, rowit.column());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Element mismatch", 2ull, rowit.column());
 }

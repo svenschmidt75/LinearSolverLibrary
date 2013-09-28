@@ -48,7 +48,7 @@ ConstRowIterator<SparseMatrix2D>::operator++(int) const {
 
 ConstColumnIterator<SparseMatrix2D>
 ConstRowIterator<SparseMatrix2D>::operator*() const {
-    return ConstColumnIterator<SparseMatrix2D>(m_, row_, 0);
+    return ConstColumnIterator<SparseMatrix2D>(m_, row_);
 }
 
 
