@@ -6,7 +6,6 @@
 
 namespace LinAlg_NS {
 
-namespace iterator_internal {
 
 ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & m)
     :
@@ -46,6 +45,5 @@ ConstColumnIterator<SparseMatrix2D>::operator*() const {
     return ConstRowIterator<SparseMatrix2D>(m_, current_column_, 0);
 }
 
-} // namespace iterator_internal
 
 } // namespace LinAlg_NS

@@ -15,25 +15,23 @@
 
 namespace LinAlg_NS {
 
-namespace iterator_internal {
 
-    template<>
-    class LINALG_DECL_SYMBOLS ConstRowIterator<SparseMatrix2D> {
-    public:
-        typedef SparseMatrix2D::size_type size_type;
+template<>
+class LINALG_DECL_SYMBOLS ConstRowIterator<SparseMatrix2D> {
+public:
+    typedef SparseMatrix2D::size_type size_type;
 
-    private:
-        typedef ConstRowIterator<SparseMatrix2D> iter;
+private:
+    typedef ConstRowIterator<SparseMatrix2D> iter;
 
-    public:
-        ConstRowIterator(SparseMatrix2D const & m, size_type column, size_type row);
+public:
+    ConstRowIterator(SparseMatrix2D const & m, size_type column, size_type row);
 
-    private:
-        SparseMatrix2D    m_;
-        mutable size_type column_;
-        mutable size_type row_;
-    };
+private:
+    SparseMatrix2D    m_;
+    mutable size_type column_;
+    mutable size_type row_;
+};
 
-} // namespace iterator_internal
 
 } // namespace LinAlg_NS

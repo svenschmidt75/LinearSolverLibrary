@@ -11,11 +11,10 @@
 #include "DeclSpec.h"
 #include "SparseMatrix2D.h"
 #include "ConstColumnIterator.h"
+#include "ConstRowIterator.h"
 
 
 namespace LinAlg_NS {
-
-using namespace iterator_internal;
 
 
 class LINALG_DECL_SYMBOLS iterators {

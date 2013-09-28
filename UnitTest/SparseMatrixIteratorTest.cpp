@@ -68,5 +68,5 @@ void
 SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsRowIterator() {
     auto matrix = CreateSparseMatrix();
     ConstColumnIterator<SparseMatrix2D> it = iterators::getConstIterator(matrix);
-    //ConstRowIterator<SparseMatrix2D> rowit = *it;
+    ConstRowIterator<SparseMatrix2D> rowit = *it;
 }
