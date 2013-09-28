@@ -16,12 +16,12 @@ ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, siz
     m_(m), row_(row) {}
 
 ConstRowIterator<SparseMatrix2D>::size_type
-ConstRowIterator<SparseMatrix2D>::maxColumns() const {
-    return m_.cols();
+ConstRowIterator<SparseMatrix2D>::maxRows() const {
+    return m_.rows();
 }
 
 ConstRowIterator<SparseMatrix2D>::size_type
-ConstRowIterator<SparseMatrix2D>::column() const {
+ConstRowIterator<SparseMatrix2D>::row() const {
     return row_;
 }
 
