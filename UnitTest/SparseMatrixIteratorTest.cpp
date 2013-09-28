@@ -14,14 +14,14 @@ namespace {
     {
         SparseMatrix2D m(3);
         m(0, 0) = 1;
-        m(0, 1) = 2;
+        m(0, 1) = 0;
         m(0, 2) = 3;
-        m(1, 0) = 4;
-        m(1, 1) = 5;
+        m(1, 0) = 0;
+        m(1, 1) = 0;
         m(1, 2) = 6;
         m(2, 0) = 7;
-        m(2, 1) = 8;
-        m(2, 2) = 9;
+        m(2, 1) = 0;
+        m(2, 2) = 0;
         m.finalize();
         return m;
     }
@@ -38,7 +38,7 @@ void
 SparseMatrixIteratorTest::RowIteratorSizeEqualsNumberOfRows() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column mismatch", 3ull, it.maxRows());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column mismatch", matrix.rows(), it.maxRows());
 }
 
 void
@@ -46,6 +46,13 @@ SparseMatrixIteratorTest::RowIteratorReturnsCorrectRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Current row mismatch", 0ull, it.row());
+}
+
+void
+SparseMatrixIteratorTest::RowIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
+    auto matrix = CreateSparseMatrix();
+    ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
 }
 
 void
@@ -65,7 +72,7 @@ SparseMatrixIteratorTest::RowIteratorPostIncrementReturnsNextRowIterator() {
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorDereferenceReturnsRowIterator() {
+SparseMatrixIteratorTest::RowIteratorDereferenceReturnsColumnIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;

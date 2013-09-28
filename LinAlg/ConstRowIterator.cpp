@@ -25,6 +25,12 @@ ConstRowIterator<SparseMatrix2D>::row() const {
     return row_;
 }
 
+ConstRowIterator<SparseMatrix2D>::size_type
+ConstRowIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
+    size_type ncol = m_.nelements_[row_ + 1] - m_.nelements_[row_];
+    return ncol;
+}
+
 ConstRowIterator<SparseMatrix2D> const &
 ConstRowIterator<SparseMatrix2D>::operator++() const {
     row_++;

@@ -57,6 +57,9 @@ namespace LinAlg_NS {
 
     class Vector;
 
+    template<typename T>
+    class ConstRowIterator;
+
 
     class LINALG_DECL_SYMBOLS SparseMatrix2D : public IMatrix2D {
 
@@ -75,7 +78,7 @@ namespace LinAlg_NS {
         friend class LinearSolverLibrary_NS::SparseLinearSolverLibrary;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
-
+        friend class ConstRowIterator<SparseMatrix2D>;
 
     public:
         SparseMatrix2D();

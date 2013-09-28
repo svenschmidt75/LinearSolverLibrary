@@ -31,6 +31,7 @@ public:
 
     size_type maxRows() const;
     size_type row() const;
+    size_type numberOfNonZeroMatrixElements() const;
 
     iter const & operator++() const;
     iter operator++(int) const;

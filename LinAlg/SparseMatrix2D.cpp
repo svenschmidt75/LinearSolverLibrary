@@ -113,9 +113,7 @@ SparseMatrix2D::operator=(SparseMatrix2D && in) {
 
     // force move copy-construction, is exception safe
     SparseMatrix2D temp(std::move(in));
-
     swap(temp);
-
     return *this;
 }
 
@@ -241,6 +239,8 @@ SparseMatrix2D::finalize() const {
         for (; col_it != col_it_end; ++col_it) {
             size_type col = (*col_it).first;
             double value = (*col_it).second;
+            if (!value)
+                continue;
 
             elements_.push_back(value);
             columns_.push_back(col);
