@@ -58,7 +58,7 @@ void
 ConstColumnIterator<SparseMatrix2D>::jumpToFirstElement() const {
     size_type offset = m_.nelements_[row_];
     column_ = m_.columns_[offset];
-    column_mapped_ = 0;
+    column_mapped_ = column_;
 }
 
 void
