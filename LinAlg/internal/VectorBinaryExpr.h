@@ -8,6 +8,7 @@
 #pragma once
 
 #include <boost/assert.hpp>
+#include <boost/noncopyable.hpp>
 
 
 namespace LinAlg_NS {
@@ -15,7 +16,7 @@ namespace LinAlg_NS {
     namespace internal {
 
         template<typename T1, typename T2, typename BINOP>
-        class VectorBinaryExpr {
+        class VectorBinaryExpr : boost::noncopyable {
         public:
             VectorBinaryExpr(T1 const & op1, T2 const & op2)
                 :
@@ -40,8 +41,8 @@ namespace LinAlg_NS {
             }
 
         private:
-            T1 op1_;
-            T2 op2_;
+            T1 const & op1_;
+            T2 const & op2_;
         };
 
 

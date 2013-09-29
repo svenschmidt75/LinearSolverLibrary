@@ -12,6 +12,7 @@
 #include "expression_traits.h"
 
 #include <boost/assert.hpp>
+#include <boost/noncopyable.hpp>
 
 
 namespace LinAlg_NS {
@@ -19,7 +20,7 @@ namespace LinAlg_NS {
     namespace internal {
 
         template<typename MATRIX_EXPR, typename BINOP>
-        class ScalarMatrixExpr {
+        class ScalarMatrixExpr : boost::noncopyable {
         public:
             ScalarMatrixExpr(ScalarExpression const & lhs, MATRIX_EXPR const & rhs)
                 :
@@ -48,8 +49,8 @@ namespace LinAlg_NS {
             }
 
         private:
-            ScalarExpression op1_;
-            MATRIX_EXPR      op2_;
+            ScalarExpression    op1_;
+            MATRIX_EXPR const & op2_;
         };
 
 
