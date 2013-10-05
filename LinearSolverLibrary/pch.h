@@ -13,3 +13,4 @@
 #include <numeric>
 
 #include <boost/math/special_functions/round.hpp>
+#include <boost/assert.hpp>

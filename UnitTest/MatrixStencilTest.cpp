@@ -55,6 +55,41 @@ MatrixStencilTest::TestIndexTo2DMapping() {
 }
 
 void
+MatrixStencilTest::Test2DToIndexMapping() {
+    MatrixStencil stencil;
+    stencil << -1, -1, -1,
+               -1,  8, -1,
+               -1, -1, -1;
+
+    short expected = 4;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.MapToIndex(0, 0));
+}
+
+void
 MatrixStencilTest::TestThatThrowsOnEvenStencilDimension() {
-//    CPPUNIT_ASSERT_THROW_MESSAGE("Invalid access axpected", MatrixStencil stencil(2), std::runtime_error);
+    MatrixStencil stencil;
+    stencil << -1, -1, -1,
+               -1,  8, -1;
+
+    CPPUNIT_ASSERT_THROW_MESSAGE("Matrix stencil must have odd dimension", stencil.generateMatrix(5), std::runtime_error);
+}
+
+void
+MatrixStencilTest::TestThatThrowsOnInconsistentStencilDimension() {
+    MatrixStencil stencil;
+    stencil << -1, -1, -1,
+               -1, 8, -1,
+               -1;
+
+    CPPUNIT_ASSERT_THROW_MESSAGE("Matrix stencil must be of type n x n", stencil.generateMatrix(5), std::runtime_error);
+}
+
+void
+MatrixStencilTest::TestGeneratedMatrix() {
+    MatrixStencil stencil;
+    stencil << -1, -1, -1,
+               -1,  8, -1,
+               -1, -1, -1;
+
+    SparseMatrix2D m = stencil.generateMatrix(5);
 }

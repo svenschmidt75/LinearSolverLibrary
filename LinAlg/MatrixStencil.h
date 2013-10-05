@@ -9,6 +9,7 @@
 
 
 #include "LinAlg/IMatrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/DeclSpec.h"
 
 #include <vector>
@@ -36,7 +37,9 @@ public:
     MatrixStencil & operator<<(double value);
     MatrixStencil & operator,(double value);
 
-    maptype_t MapTo2D(unsigned short index);
+    maptype_t                 MapTo2D(unsigned short index) const;
+    LinAlg_NS::SparseMatrix2D generateMatrix(short matrixDimension) const;
+    unsigned short            MapToIndex(short i, short j) const;
 
 private:
     std::vector<double> values_;

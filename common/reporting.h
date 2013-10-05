@@ -11,6 +11,10 @@
 
 #include <string>
 #include <functional>
+#include <stdexcept>
+
+#include <boost/assert.hpp>
+#include <boost/format.hpp>
 
 
 namespace common_NS {
@@ -22,11 +26,10 @@ namespace common_NS {
         template<typename T, typename OP>
         static void checkBound(T value, T maxValue) {
             bool condition = OP()(value, maxValue);
-            BOOST_ASSERT_MSG(condition, "bound check failure");
             if (!condition) {
                 boost::format format = boost::format("bound check failure\n");
-                (format.str());
-                throw std::out_of_range(format.str());
+                format.str();
+                throw std::runtime_error(format.str());
             }
         }
 
@@ -38,6 +41,14 @@ namespace common_NS {
         template<typename T>
         static void checkUppderBound(T value, T maxValue) {
             checkBound<T, std::less_equal<T>>(value, maxValue);
+        }
+
+        static void checkConditional(bool condition) {
+            if (!condition) {
+                boost::format format = boost::format("condition failure\n");
+                format.str();
+                throw std::runtime_error(format.str());
+            }
         }
 
     };
