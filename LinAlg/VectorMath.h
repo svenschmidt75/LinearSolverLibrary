@@ -1,9 +1,9 @@
 /*
  * Name  : math
  * Path  : 
- * Use   : Implements various conjugate gradient methods
+ * Use   : Implements common methods on vectors.
  * Author: Sven Schmidt
- * Date  : 23/11/2012
+ * Date  : 11/23/2012
  */
 #pragma once
 

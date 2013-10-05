@@ -16,8 +16,11 @@
 #include "GaussJordanTest.h"
 #include "LUDecompositionTest.h"
 #include "SparseMatrixIteratorTest.h"
+#include "MatrixStencilTest.h"
 
+CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
@@ -36,7 +39,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(MultiColorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FloridaVectorReaderTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FloridaSparseMatrixReaderTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
-
+#endif
 
 int main(int /*argc*/, char ** /*argv*/) {
     // informs test-listener about testresults
