@@ -34,24 +34,24 @@ MatrixStencilTest::TestIndexTo2DMapping() {
                -1, -1, -1;
 
     short expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.MapTo2D(4)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(4)));
     expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.MapTo2D(4)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(4)));
 
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.MapTo2D(0)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(0)));
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.MapTo2D(0)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(0)));
 
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.MapTo2D(6)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(6)));
     expected = 1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.MapTo2D(6)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(6)));
 
     expected = 1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.MapTo2D(5)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(5)));
     expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.MapTo2D(5)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(5)));
 }
 
 void
@@ -61,8 +61,17 @@ MatrixStencilTest::Test2DToIndexMapping() {
                -1,  8, -1,
                -1, -1, -1;
 
-    short expected = 4;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.MapToIndex(0, 0));
+    unsigned short expected = 4;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(0, 0));
+
+    expected = 0;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(-1, -1));
+
+    expected = 3;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(-1, 0));
+
+    expected = 7;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(0, 1));
 }
 
 void
@@ -91,5 +100,10 @@ MatrixStencilTest::TestGeneratedMatrix() {
                -1,  8, -1,
                -1, -1, -1;
 
-    SparseMatrix2D m = stencil.generateMatrix(5);
+    SparseMatrix2D const & m = stencil.generateMatrix(5);
+    double expected = 8;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
+
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
 }
