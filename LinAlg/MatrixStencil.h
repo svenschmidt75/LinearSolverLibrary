@@ -8,16 +8,43 @@
 #pragma once
 
 
+#include "LinAlg/IMatrix2D.h"
+#include "LinAlg/DeclSpec.h"
+
+#include <vector>
+#include <tuple>
+
+
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+
+
 namespace LinAlg_NS {
 
 
-class MatrixStencil
+class LINALG_DECL_SYMBOLS MatrixStencil
 {
+    friend class MatrixStencilTest;
+
+
+public:
+    typedef std::tuple<short, short> maptype_t;
+
 public:
     MatrixStencil();
-    ~MatrixStencil();
+
+    MatrixStencil & operator<<(double value);
+    MatrixStencil & operator,(double value);
+
+    maptype_t MapTo2D(unsigned short index);
+
+private:
+    std::vector<double> values_;
 };
 
 
 } // namespace LinAlg_NS
 
+
+#pragma warning(default:4275)
+#pragma warning(default:4251)

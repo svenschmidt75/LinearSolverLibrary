@@ -12,7 +12,9 @@
 
 class MatrixStencilTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(MatrixStencilTest);
-    CPPUNIT_TEST(Test1);
+    CPPUNIT_TEST(TestInitialization);
+    CPPUNIT_TEST(TestIndexTo2DMapping);
+    CPPUNIT_TEST(TestThatThrowsOnEvenStencilDimension);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +22,8 @@ public:
     void tearDown();
 
 protected:
-    void Test1();
+    void TestInitialization();
+    void TestIndexTo2DMapping();
+
+    void TestThatThrowsOnEvenStencilDimension();
 };

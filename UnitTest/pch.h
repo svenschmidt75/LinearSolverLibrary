@@ -24,3 +24,4 @@
 #include <numeric>
 #include <iostream>
 #include <tuple>
+#include <stdexcept>
