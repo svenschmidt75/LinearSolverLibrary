@@ -17,7 +17,10 @@ class MatrixStencilTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(Test2DToIndexMapping);
     CPPUNIT_TEST(TestThatThrowsOnEvenStencilDimension);
     CPPUNIT_TEST(TestThatThrowsOnInconsistentStencilDimension);
-    CPPUNIT_TEST(TestGeneratedMatrix);
+    CPPUNIT_TEST(TestGenerated3By3MatrixForFivePointStencil);
+    CPPUNIT_TEST(TestGenerated3By3MatrixForNinePointStencil);
+    CPPUNIT_TEST(TestGenerated3By3MatrixFor25PointStencil);
+    CPPUNIT_TEST(TestGenerated4By4MatrixForFivePointStencil);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -30,5 +33,8 @@ protected:
     void Test2DToIndexMapping();
     void TestThatThrowsOnEvenStencilDimension();
     void TestThatThrowsOnInconsistentStencilDimension();
-    void TestGeneratedMatrix();
+    void TestGenerated3By3MatrixForFivePointStencil();
+    void TestGenerated3By3MatrixForNinePointStencil();
+    void TestGenerated3By3MatrixFor25PointStencil();
+    void TestGenerated4By4MatrixForFivePointStencil();
 };

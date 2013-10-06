@@ -39,7 +39,7 @@ public:
 
     maptype_t                 mapTo2D(unsigned short index) const;
     unsigned short            mapToIndex(short i, short j) const;
-    LinAlg_NS::SparseMatrix2D generateMatrix(short matrixDimension) const;
+    LinAlg_NS::SparseMatrix2D generateMatrix(unsigned short matrixDimension) const;
 
 private:
     std::vector<double> values_;

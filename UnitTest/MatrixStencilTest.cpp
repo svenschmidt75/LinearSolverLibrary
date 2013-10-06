@@ -94,13 +94,60 @@ MatrixStencilTest::TestThatThrowsOnInconsistentStencilDimension() {
 }
 
 void
-MatrixStencilTest::TestGeneratedMatrix() {
+MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencil() {
     MatrixStencil stencil;
-    stencil << -1, -1, -1,
-               -1,  8, -1,
-               -1, -1, -1;
+    stencil <<  0, -1,  0,
+               -1,  4, -1,
+                0, -1,  0;
 
-    SparseMatrix2D const & m = stencil.generateMatrix(5);
+    SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
+    double expected = 8;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
+
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+}
+
+void
+MatrixStencilTest::TestGenerated3By3MatrixForNinePointStencil() {
+    MatrixStencil stencil;
+    stencil << -1, -4, -1,
+               -4, 20, -4,
+               -1, -4, -1;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
+    double expected = 8;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
+
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+}
+
+void
+MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencil() {
+    MatrixStencil stencil;
+    stencil << 0, 0, -1, 0, 0,
+        0, 0, -4, 0, 0,
+        -1, -4, 20, -4, -1,
+        0, 0, -4, 0, 0,
+        0, 0, -1, 0, 0;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
+    double expected = 8;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
+
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+}
+
+void
+MatrixStencilTest::TestGenerated4By4MatrixForFivePointStencil() {
+    MatrixStencil stencil;
+    stencil << 0, -1,  0,
+              -1,  4, -1,
+               0, -1,  0;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(4 * 4);
     double expected = 8;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
 
