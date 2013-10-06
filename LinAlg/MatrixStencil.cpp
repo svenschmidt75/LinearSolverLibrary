@@ -57,7 +57,7 @@ LinAlg_NS::MatrixStencil::generateMatrix(unsigned short matrixDimension) const {
     for (IMatrix2D::size_type currentRow = 0; currentRow < matrixDimension; ++currentRow)
         applyStencil(currentRow, m);
     m.finalize();
-    m.print();
+//    m.print();
     return m;
 }
 

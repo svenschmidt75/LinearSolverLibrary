@@ -18,9 +18,9 @@
 #include "SparseMatrixIteratorTest.h"
 #include "MatrixStencilTest.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 
-#if 0
+#if 1
+CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);

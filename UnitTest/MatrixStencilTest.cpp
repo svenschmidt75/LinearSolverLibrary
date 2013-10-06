@@ -195,16 +195,35 @@ MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencil() {
 }
 
 void
-MatrixStencilTest::TestGenerated4By4MatrixForFivePointStencil() {
+MatrixStencilTest::TestGenerated4By4MatrixFor25PointStencil() {
     MatrixStencil stencil;
-    stencil << 0, -1,  0,
-              -1,  4, -1,
-               0, -1,  0;
+    stencil << 
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
 
     SparseMatrix2D const & m = stencil.generateMatrix(4 * 4);
-    double expected = 8;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
 
-    expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+    Matrix2D reference_matrix(16, 16);
+    reference_matrix <<
+         3, -7, -8,  0, -8, -9, -3,  0, -2,  7,  2,  0,  0,  0,  0,  0,
+        -1,  3, -7, -8,  5, -8, -9, -3,  1, -2,  7,  2,  0,  0,  0,  0,
+         7, -1,  3, -7,  3,  5, -8, -9,  0,  1, -2,  7,  0,  0,  0,  0,
+         0,  7, -1,  3,  0,  3,  5, -8,  0,  0,  1, -2,  0,  0,  0,  0,
+        -1, -6, -3,  0,  3, -7, -8,  0, -8, -9, -3,  0, -2,  7,  2,  0,
+         4, -1, -6, -3, -1,  3, -7, -8,  5, -8, -9, -3,  1, -2,  7,  2,
+        -1,  4, -1, -6,  7, -1,  3, -7,  3,  5, -8, -9,  0,  1, -2,  7,
+         0, -1,  4, -1,  0,  7, -1,  3,  0,  3,  5, -8,  0,  0,  1, -2,
+         9,  2,  1,  0, -1, -6, -3,  0,  3, -7, -8,  0, -8, -9, -3,  0,
+        -1,  9,  2,  1,  4, -1, -6, -3, -1,  3, -7, -8,  5, -8, -9, -3,
+         2, -1,  9,  2, -1,  4, -1, -6,  7, -1,  3, -7,  3,  5, -8, -9,
+         0,  2, -1,  9,  0, -1,  4, -1,  0,  7, -1,  3,  0,  3,  5, -8,
+         0,  0,  0,  0,  9,  2,  1,  0, -1, -6, -3,  0,  3, -7, -8,  0,
+         0,  0,  0,  0, -1,  9,  2,  1,  4, -1, -6, -3, -1,  3, -7, -8,
+         0,  0,  0,  0,  2, -1,  9,  2, -1,  4, -1, -6,  7, -1,  3, -7,
+         0,  0,  0,  0,  0,  2, -1,  9,  0, -1,  4, -1,  0,  7, -1,  3;
+
+    compareMatrices(m, reference_matrix);
 }

@@ -6,6 +6,8 @@
           we place the stencil and insert the stencil values in the
           current row corresponding to the grid point in the matrix.
           The ordering is such that the upper left corner is the origin.
+          All b.c. are assumed to be Dirichlet-type. The stencil then only
+          applies to inner (non-boundary) grid nodes.
 * Author: Sven Schmidt
 * Date  : 10/05/2013
 */
