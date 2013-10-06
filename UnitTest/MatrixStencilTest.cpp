@@ -101,12 +101,39 @@ MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencil() {
                 0, -1,  0;
 
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
-    double expected = 8;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
 
+    // row 1
+    double expected = 4;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 1));
+    expected = 0;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 2));
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 3));
+
+    // row 2
+    expected = 4;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 1));
+    expected = 0;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 2));
+    expected = -1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 3));
 }
+
+/*
+   4       -1        0       -1        0        0        0        0        0
+   -1        4       -1        0       -1        0        0        0        0
+   0       -1        4        0        0       -1        0        0        0
+   -1        0        0        4       -1        0       -1        0        0
+   0       -1        0       -1        4       -1        0       -1        0
+   0        0       -1        0       -1        4        0        0       -1
+   0        0        0       -1        0        0        4       -1        0
+   0        0        0        0       -1        0       -1        4       -1
+   0        0        0        0        0       -1        0       -1        4
+*/
 
 void
 MatrixStencilTest::TestGenerated3By3MatrixForNinePointStencil() {
