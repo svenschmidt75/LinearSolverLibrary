@@ -61,6 +61,8 @@ Matrix2D::operator=(Matrix2D && in) {
 
 Matrix2D &
 Matrix2D::operator<<(double value) {
+    // The ordering is such that the upper left corner is the origin.
+
     // free memory allocated in constructor
     data_.resize(0);
     common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_ - 1);
@@ -70,6 +72,7 @@ Matrix2D::operator<<(double value) {
 
 Matrix2D &
 Matrix2D::operator,(double value) {
+    // The ordering is such that the upper left corner is the origin.
     common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_ - 1);
     data_.push_back(value);
     return *this;

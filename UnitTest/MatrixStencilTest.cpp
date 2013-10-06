@@ -170,18 +170,28 @@ MatrixStencilTest::TestGenerated3By3MatrixForNinePointStencil() {
 void
 MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencil() {
     MatrixStencil stencil;
-    stencil << 0, 0, -1, 0, 0,
-        0, 0, -4, 0, 0,
+    stencil <<
+         0,  0, -1,  0,  0,
+         0,  0, -4,  0,  0,
         -1, -4, 20, -4, -1,
-        0, 0, -4, 0, 0,
-        0, 0, -1, 0, 0;
+         0,  0, -4,  0,  0,
+         0,  0, -1,  0,  0;
 
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
-    double expected = 8;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, 0));
 
-    expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil matrix error", expected, m(0, -1));
+    Matrix2D reference_matrix(9, 9);
+    reference_matrix <<
+        20, -4, -1, -4,  0,  0, -1,  0,  0,
+        -4, 20, -4,  0, -4,  0,  0, -1,  0,
+        -1, -4, 20,  0,  0, -4,  0,  0, -1,
+        -4,  0,  0, 20, -4, -1, -4,  0,  0,
+         0, -4,  0, -4, 20, -4,  0, -4,  0,
+         0,  0, -4, -1, -4, 20,  0,  0, -4,
+        -1,  0,  0, -4,  0,  0, 20, -4, -1,
+         0, -1,  0,  0, -4,  0, -4, 20, -4,
+         0,  0, -1,  0,  0, -4, -1, -4, 20;
+
+    compareMatrices(m, reference_matrix);
 }
 
 void
