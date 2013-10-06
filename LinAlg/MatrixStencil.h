@@ -2,6 +2,9 @@
 * Name  : MatrixStencil
 * Path  :
 * Use   : Constructs a sparse matrix from a stencil.
+          For each grid point (in the geometric grid, NOT the matrix),
+          we place the stencil and insert the stencil values in the
+          current row corresponding to the grid point in the matrix.
 * Author: Sven Schmidt
 * Date  : 10/05/2013
 */
@@ -37,9 +40,11 @@ public:
     MatrixStencil & operator<<(double value);
     MatrixStencil & operator,(double value);
 
+private:
     maptype_t                 mapTo2D(unsigned short index) const;
     unsigned short            mapToIndex(short i, short j) const;
     LinAlg_NS::SparseMatrix2D generateMatrix(unsigned short matrixDimension) const;
+    void                      applyStencil(IMatrix2D::size_type currentRow, LinAlg_NS::SparseMatrix2D & m) const;
 
 private:
     std::vector<double> values_;

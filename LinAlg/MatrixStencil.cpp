@@ -47,6 +47,20 @@ LinAlg_NS::MatrixStencil::mapToIndex(short i, short j) const {
     return index;
 }
 
+LinAlg_NS::SparseMatrix2D
+LinAlg_NS::MatrixStencil::generateMatrix(unsigned short matrixDimension) const {
+    short dim = static_cast<short>(std::sqrt(values_.size()));
+//    common_NS::reporting::checkLowerBound(matrixDimension, dim);
+    common_NS::reporting::checkConditional(values_.size() % 2);
+    common_NS::reporting::checkConditional(dim * dim == values_.size());
+    SparseMatrix2D m(matrixDimension);
+    for (IMatrix2D::size_type currentRow = 0; currentRow < matrixDimension; ++currentRow)
+        applyStencil(currentRow, m);
+    m.finalize();
+    m.print();
+    return m;
+}
+
 namespace {
 
     std::tuple<short, short> mapIndexTo2D(unsigned short index, unsigned short dimension) {
@@ -54,7 +68,6 @@ namespace {
         short column = index % dimension;
         return std::make_tuple(row, column);
     }
-
 
     bool isStencilLocationWithinGridBounds(short currentMatrixColumn, short currentMatrixRow, short stencilX, short stencilY, short matrixRowSize) {
         if (currentMatrixColumn + stencilX < 0 || currentMatrixColumn + stencilX >= matrixRowSize)
@@ -66,34 +79,25 @@ namespace {
 
 }
 
-LinAlg_NS::SparseMatrix2D
-LinAlg_NS::MatrixStencil::generateMatrix(unsigned short matrixDimension) const {
-    short dim = static_cast<short>(std::sqrt(values_.size()));
-//    common_NS::reporting::checkLowerBound(matrixDimension, dim);
-    common_NS::reporting::checkConditional(values_.size() % 2);
-    common_NS::reporting::checkConditional(dim * dim == values_.size());
+void
+MatrixStencil::applyStencil(IMatrix2D::size_type currentRow, SparseMatrix2D & m) const {
+    // Insert the stencil values for the grid point into the matrix.
+    // Note that the grid point is represented in the matrix via the
+    // row currentRow, i.e. only that row is modified in the matrix.
+    short row_size = static_cast<short>(std::sqrt(m.rows()));
+    short row;
+    short col;
+    std::tie(row, col) = mapIndexTo2D(static_cast<short>(currentRow), row_size);
 
-    SparseMatrix2D m(matrixDimension);
-    short row_size = static_cast<short>(std::sqrt(matrixDimension));
-
-    for (IMatrix2D::size_type i = 0; i < matrixDimension; ++i) {
-        short row;
-        short col;
-        std::tie(row, col) = mapIndexTo2D(static_cast<short>(i), row_size);
-
-        for (size_t index = 0; index < values_.size(); ++index) {
-            short x;
-            short y;
-            std::tie(x, y) = mapTo2D(static_cast<short>(index));
-            if (isStencilLocationWithinGridBounds(col, row, x, y, row_size) == false)
-                continue;
-            IMatrix2D::size_type x_offset = i + x;
-            IMatrix2D::size_type y_offset = i + y;
-            y_offset = x_offset + y * row_size;
-            m(i, y_offset) = values_[index];
-        }
+    for (size_t index = 0; index < values_.size(); ++index) {
+        short x;
+        short y;
+        std::tie(x, y) = mapTo2D(static_cast<short>(index));
+        if (isStencilLocationWithinGridBounds(col, row, x, y, row_size) == false)
+            continue;
+        IMatrix2D::size_type x_offset = currentRow + x;
+        IMatrix2D::size_type y_offset = currentRow + y;
+        y_offset = x_offset + y * row_size;
+        m(currentRow, y_offset) = values_[index];
     }
-    m.finalize();
-    m.print();
-    return m;
 }

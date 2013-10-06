@@ -1,7 +1,8 @@
 #include "pch.h"
 
-#include "Matrix2D.h"
+#include "common/reporting.h"
 
+#include "Matrix2D.h"
 #include "Vector.h"
 
 
@@ -54,9 +55,21 @@ Matrix2D::operator=(Matrix2D && in) {
 
     // force move copy-construction, is exception safe
     Matrix2D temp(std::move(in));
-
     swap(temp);
+    return *this;
+}
 
+Matrix2D &
+Matrix2D::operator<<(double value) {
+    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_);
+    data_.push_back(value);
+    return *this;
+}
+
+Matrix2D &
+Matrix2D::operator,(double value) {
+    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_);
+    data_.push_back(value);
     return *this;
 }
 
@@ -95,7 +108,7 @@ Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) const {
     return data_[index];
 }
 
-double&
+double &
 Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) {
     Matrix2D::size_type index = row * cols_ + col;
     bool assert_cond = index >= 0 && index < rows_ * cols_;
