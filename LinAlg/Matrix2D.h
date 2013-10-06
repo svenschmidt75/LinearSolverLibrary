@@ -35,6 +35,7 @@ namespace LinAlg_NS {
         Matrix2D(Matrix2D && in);
         Matrix2D & operator=(Matrix2D && in);
 
+        // allow easy initialization
         Matrix2D & operator<<(double value);
         Matrix2D & operator,(double value);
 

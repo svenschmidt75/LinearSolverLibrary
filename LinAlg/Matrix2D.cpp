@@ -61,14 +61,16 @@ Matrix2D::operator=(Matrix2D && in) {
 
 Matrix2D &
 Matrix2D::operator<<(double value) {
-    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_);
+    // free memory allocated in constructor
+    data_.resize(0);
+    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_ - 1);
     data_.push_back(value);
     return *this;
 }
 
 Matrix2D &
 Matrix2D::operator,(double value) {
-    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_);
+    common_NS::reporting::checkUppderBound(data_.size(), rows_ * cols_ - 1);
     data_.push_back(value);
     return *this;
 }
