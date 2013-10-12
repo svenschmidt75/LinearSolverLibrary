@@ -19,7 +19,7 @@ void
 AMGStandardCoarseningTest::tearDown() {}
 
 void
-AMGStandardCoarseningTest::Test1() {
+AMGStandardCoarseningTest::TestStrongConnectionsForRow() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -40,7 +40,14 @@ AMGStandardCoarseningTest::Test1() {
         0, 0, 0, 0, 0, -1, 0, -1, 4;
 
     AMGStandardCoarseningStrengthPolicy strength_policy(m);
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should depend on variable 1", strength_policy.VariableDependsOn(0, 1));
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should depend on variable 3", strength_policy.VariableDependsOn(0, 3));
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not depend on itself", strength_policy.VariableDependsOn(0, 0));
+
+    // row 0
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 1", strength_policy.VariableDependsOn(0, 1));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 3", strength_policy.VariableDependsOn(0, 3));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection on itself", !strength_policy.VariableDependsOn(0, 0));
+
+    // row 3
+    CPPUNIT_ASSERT_MESSAGE("Variable 3 should not have a strong connection to variable 0", strength_policy.VariableDependsOn(3, 0));
+    CPPUNIT_ASSERT_MESSAGE("Variable 3 should not have a strong connection to variable 4", strength_policy.VariableDependsOn(3, 4));
+    CPPUNIT_ASSERT_MESSAGE("Variable 3 should not have a strong connection to variable 6", strength_policy.VariableDependsOn(3, 6));
 }

@@ -30,7 +30,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void computeConnections();
-        void computeConnectionsForVariable(LinAlg_NS::IMatrix2D::size_type row, double max_element);
+        void computeConnectionsForVariable(LinAlg_NS::IMatrix2D::size_type i, double max_element);
 
     private:
         std::unique_ptr<LinAlg_NS::SparseMatrix2D> strength_matrix_;

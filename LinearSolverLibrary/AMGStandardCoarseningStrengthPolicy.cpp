@@ -36,31 +36,32 @@ namespace {
 }
 
 void
-AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::size_type row, double max_element) {
-    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(m_, row);
-    BOOST_ASSERT_MSG(row_it.row() == row, "Index range error");
+AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::size_type i, double max_element) {
+    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(m_, i);
+    BOOST_ASSERT_MSG(row_it.row() == i, "Index range error");
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
-        if (j == row)
+        if (j == i)
             continue;
         double matrix_value = - *column_it;
         if (matrix_value > max_element)
-            (*strength_matrix_)(row, j) = 1.0;
+            // variable i has a strong dependency on variable j
+            (*strength_matrix_)(i, j) = 1.0;
     }
 
 }
 
 void
 AMGStandardCoarseningStrengthPolicy::computeConnections() {
-    for (IMatrix2D::size_type row = 0; row < m_.rows(); ++row) {
-        auto max_element = computeMaxElementForRow(m_, row);
+    for (IMatrix2D::size_type i = 0; i < m_.rows(); ++i) {
+        auto max_element = computeMaxElementForRow(m_, i);
         if (max_element == 0)
-            // Variable 'row' has no strong connections to other variables,
-            // it will become a F variable.
+            // Variable i has no strong connections to other variables,
+            // hence it will become an F variable.
             continue;
         max_element *= eps_;
-        computeConnectionsForVariable(row, max_element);
+        computeConnectionsForVariable(i, max_element);
     }
     strength_matrix_->finalize();
 }
@@ -69,5 +70,6 @@ bool
 AMGStandardCoarseningStrengthPolicy::VariableDependsOn(LinAlg_NS::IMatrix2D::size_type source, LinAlg_NS::IMatrix2D::size_type dest) const {
     common_NS::reporting::checkUppderBound(source, m_.rows());
     common_NS::reporting::checkUppderBound(dest, m_.rows());
-    return (*strength_matrix_)(source, dest) != 0;
+    SparseMatrix2D const & strength_matrix = *strength_matrix_;
+    return strength_matrix(source, dest) != 0;
 }
