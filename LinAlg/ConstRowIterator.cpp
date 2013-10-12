@@ -17,9 +17,9 @@ ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, siz
     m_(m), row_(row) {}
 
 bool 
-ConstRowIterator<SparseMatrix2D>::next() const {
+ConstRowIterator<SparseMatrix2D>::isValid() const {
     common_NS::reporting::checkUppderBound(row_, m_.rows());
-    return row_ < maxRows() - 1;
+    return row_ < maxRows();
 }
 
 ConstRowIterator<SparseMatrix2D>::size_type
@@ -39,14 +39,14 @@ ConstRowIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
     return ncol;
 }
 
-ConstRowIterator<SparseMatrix2D> const &
-ConstRowIterator<SparseMatrix2D>::operator++() const {
+ConstRowIterator<SparseMatrix2D> &
+ConstRowIterator<SparseMatrix2D>::operator++() {
     row_++;
     return *this;
 }
 
 ConstRowIterator<SparseMatrix2D>
-ConstRowIterator<SparseMatrix2D>::operator++(int) const {
+ConstRowIterator<SparseMatrix2D>::operator++(int) {
     iter tmp(*this);
     row_++;
     return tmp;

@@ -29,12 +29,12 @@ public:
 
 //    explicit operator bool() const;
 
-    bool next() const;
+    bool isValid() const;
 
     size_type column() const;
 
-    double operator++() const;
-    double operator++(int) const;
+    iter & operator++();
+    iter   operator++(int);
 
     double operator*() const;
 

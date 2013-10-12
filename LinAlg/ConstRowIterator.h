@@ -29,14 +29,14 @@ public:
     explicit ConstRowIterator(SparseMatrix2D const & m);
     explicit ConstRowIterator(SparseMatrix2D const & m, size_type row);
 
-    bool next() const;
+    bool isValid() const;
 
     size_type maxRows() const;
     size_type row() const;
     size_type numberOfNonZeroMatrixElements() const;
 
-    iter const & operator++() const;
-    iter operator++(int) const;
+    iter & operator++();
+    iter   operator++(int);
         
     ConstColumnIterator<SparseMatrix2D> operator*() const;
 

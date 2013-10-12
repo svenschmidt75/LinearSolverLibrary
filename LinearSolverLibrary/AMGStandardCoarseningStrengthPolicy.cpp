@@ -24,7 +24,7 @@ namespace {
         BOOST_ASSERT_MSG(row_it.row() == row, "Index range error");
         auto column_it = *row_it;
         double max_value = 0;
-        for (; column_it.next(); ++column_it) {
+        for (; column_it.isValid(); ++column_it) {
             if (column_it.column() == row)
                 continue;
             double matrix_value = std::abs(*column_it);
@@ -40,7 +40,7 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
     ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(m_, row);
     BOOST_ASSERT_MSG(row_it.row() == row, "Index range error");
     auto column_it = *row_it;
-    for (; column_it.next(); ++column_it) {
+    for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
         if (j == row)
             continue;

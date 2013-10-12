@@ -71,11 +71,13 @@ void
 SparseMatrixIteratorTest::RowIteratorCannotAdvancePastLastRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
-    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
     it++;
-    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
     it++;
-    CPPUNIT_ASSERT_MESSAGE("Row iterator valid", !it.next());
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be invalid", !it.isValid());
 }
 
 void
@@ -128,7 +130,7 @@ SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextMatrixElements()
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, rowit.column());
-    auto val = rowit++;
+    auto val = *rowit++;
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, val));
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
@@ -139,9 +141,11 @@ SparseMatrixIteratorTest::ColumnIteratorCannotAdvancePastLastMatrixElement() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
-    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", rowit.isValid());
     rowit++;
-    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", rowit.isValid());
+    rowit++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be invalid", !rowit.isValid());
 }
 
 void
@@ -165,36 +169,45 @@ void
 SparseMatrixIteratorTest::IterateThroughAllElements() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
-    ConstColumnIterator<SparseMatrix2D> rowit = *it;
-    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    ConstColumnIterator<SparseMatrix2D> column_it = *it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
 
     // row 1
-    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, rowit.column());
-    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *rowit));
-    rowit++;
-    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
-    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *rowit));
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", column_it.isValid());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, column_it.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *column_it));
+    column_it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", column_it.isValid());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, column_it.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(3.0, *column_it));
+    column_it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be invalid", !column_it.isValid());
 
-    rowit = *++it;
-    CPPUNIT_ASSERT_MESSAGE("Row iterator invalid", it.next());
+    column_it = *++it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
 
     // row 2
-    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, rowit.column());
-    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(6.0, *rowit));
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", column_it.isValid());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 2ull, column_it.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(6.0, *column_it));
+    column_it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be invalid", !column_it.isValid());
 
     it++;
-    rowit = *it;
-    CPPUNIT_ASSERT_MESSAGE("Row iterator valid", !it.next());
+    column_it = *it;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
 
     // row 3
-    CPPUNIT_ASSERT_MESSAGE("Column iterator invalid", rowit.next());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, rowit.column());
-    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(7.0, *rowit));
-    rowit++;
-    CPPUNIT_ASSERT_MESSAGE("Column iterator valid", !rowit.next());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, rowit.column());
-    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *rowit));
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", column_it.isValid());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, column_it.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(7.0, *column_it));
+    column_it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", column_it.isValid());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, column_it.column());
+    CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(1.0, *column_it));
+    column_it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be invalid", !column_it.isValid());
+
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Row iterator should be invalid", !it.isValid());
 }
