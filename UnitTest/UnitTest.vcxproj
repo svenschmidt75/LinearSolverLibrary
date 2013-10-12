@@ -23,6 +23,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AMGStandardCoarseningTest.cpp" />
     <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGStandardCoarseningTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />

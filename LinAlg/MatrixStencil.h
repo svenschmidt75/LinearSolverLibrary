@@ -43,10 +43,11 @@ public:
     MatrixStencil & operator<<(double value);
     MatrixStencil & operator,(double value);
 
+    LinAlg_NS::SparseMatrix2D generateMatrix(unsigned short matrixDimension) const;
+
 private:
     maptype_t                 mapTo2D(unsigned short index) const;
     unsigned short            mapToIndex(short i, short j) const;
-    LinAlg_NS::SparseMatrix2D generateMatrix(unsigned short matrixDimension) const;
     void                      applyStencil(IMatrix2D::size_type currentRow, LinAlg_NS::SparseMatrix2D & m) const;
 
 private:

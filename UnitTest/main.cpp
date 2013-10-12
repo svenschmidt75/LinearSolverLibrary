@@ -17,9 +17,11 @@
 #include "LUDecompositionTest.h"
 #include "SparseMatrixIteratorTest.h"
 #include "MatrixStencilTest.h"
+#include "AMGStandardCoarseningTest.h"
 
 
-#if 1
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
