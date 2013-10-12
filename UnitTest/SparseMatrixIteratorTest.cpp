@@ -46,6 +46,9 @@ SparseMatrixIteratorTest::RowIteratorReturnsCorrectRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Current row mismatch", 0ull, it.row());
+
+    it = iterators::getConstRowIterator(matrix, 2);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Current row mismatch", 2ull, it.row());
 }
 
 void

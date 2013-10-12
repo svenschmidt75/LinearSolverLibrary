@@ -5,8 +5,11 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.h"
 
+#include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
+
 
 using namespace LinAlg_NS;
+using namespace LinearSolverLibrary_NS;
 
 
 void
@@ -36,6 +39,8 @@ AMGStandardCoarseningTest::Test1() {
         0, 0, 0, 0, -1, 0, -1, 4, -1,
         0, 0, 0, 0, 0, -1, 0, -1, 4;
 
-
-
+    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should depend on variable 1", strength_policy.VariableDependsOn(0, 1));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should depend on variable 3", strength_policy.VariableDependsOn(0, 3));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not depend on itself", strength_policy.VariableDependsOn(0, 0));
 }

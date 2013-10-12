@@ -205,6 +205,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
     <ClCompile Include="GCR.cpp" />
     <ClCompile Include="Gmres.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="GaussJordan.h" />

@@ -88,7 +88,6 @@ MatrixStencil::applyStencil(IMatrix2D::size_type currentRow, SparseMatrix2D & m)
     short row;
     short col;
     std::tie(row, col) = mapIndexTo2D(static_cast<short>(currentRow), row_size);
-
     for (size_t index = 0; index < values_.size(); ++index) {
         short x;
         short y;

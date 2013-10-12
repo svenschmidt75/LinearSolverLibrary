@@ -20,7 +20,7 @@ namespace LinAlg_NS {
 class LINALG_DECL_SYMBOLS iterators {
 public:
     static ConstRowIterator<SparseMatrix2D> getConstRowIterator(SparseMatrix2D const & matrix);
-
+    static ConstRowIterator<SparseMatrix2D> getConstRowIterator(SparseMatrix2D const & matrix, IMatrix2D::size_type row);
 };
 
 } // namespace LinAlg_NS
