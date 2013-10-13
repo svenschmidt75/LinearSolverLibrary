@@ -229,6 +229,7 @@
     <ClCompile Include="ResHelper.cpp" />
     <ClCompile Include="SparseLinearSolverLibrary.cpp" />
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
+    <ClCompile Include="VariableSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="SparseLinearSolverLibrary.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
+    <ClInclude Include="VariableSet.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">

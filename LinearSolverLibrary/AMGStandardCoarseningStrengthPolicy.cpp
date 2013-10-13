@@ -12,7 +12,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 AMGStandardCoarseningStrengthPolicy::AMGStandardCoarseningStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m)
-    : m_(m), strength_matrix_(new SparseMatrix2D(m.cols())), eps_(0.25) {
+    : m_(m), Si_(new SparseMatrix2D(m.cols())), Sit_(new SparseMatrix2D(m.cols())), eps_(0.25) {
 
     computeConnections();
 }
@@ -45,9 +45,13 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
         if (j == i)
             continue;
         double matrix_value = - *column_it;
-        if (matrix_value >= max_element)
+        if (matrix_value >= max_element) {
             // variable i has a strong dependency on variable j
-            (*strength_matrix_)(i, j) = 1.0;
+            (*Si_)(i, j) = 1.0;
+
+            // variable j strongly influences on variable i
+            (*Sit_)(j, i) = 1.0;
+        }
     }
 
 }
@@ -63,13 +67,42 @@ AMGStandardCoarseningStrengthPolicy::computeConnections() {
         max_element *= eps_;
         computeConnectionsForVariable(i, max_element);
     }
-    strength_matrix_->finalize();
+    Si_->finalize();
+    Sit_->finalize();
 }
 
 bool
-AMGStandardCoarseningStrengthPolicy::VariableDependsOn(LinAlg_NS::IMatrix2D::size_type source, LinAlg_NS::IMatrix2D::size_type dest) const {
+AMGStandardCoarseningStrengthPolicy::isVariableDependentOn(LinAlg_NS::IMatrix2D::size_type source, LinAlg_NS::IMatrix2D::size_type dest) const {
     common_NS::reporting::checkUppderBound(source, m_.rows());
     common_NS::reporting::checkUppderBound(dest, m_.rows());
-    SparseMatrix2D const & strength_matrix = *strength_matrix_;
+    SparseMatrix2D const & strength_matrix = *Si_;
     return strength_matrix(source, dest) != 0;
+}
+
+VariableSet
+AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+    common_NS::reporting::checkUppderBound(variable, m_.rows());
+    // return the variables that strongly influence variable 'variable'
+    VariableSet variable_set;
+    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Si_, variable);
+    auto column_it = *row_it;
+    for (; column_it.isValid(); ++column_it) {
+        auto j = column_it.column();
+        variable_set.add(j);
+    }
+    return variable_set;
+}
+
+VariableSet 
+AMGStandardCoarseningStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+    common_NS::reporting::checkUppderBound(variable, m_.rows());
+    // return the variables that variable 'variable' strongly influences
+    VariableSet variable_set;
+    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Sit_, variable);
+    auto column_it = *row_it;
+    for (; column_it.isValid(); ++column_it) {
+        auto j = column_it.column();
+        variable_set.add(j);
+    }
+    return variable_set;
 }
