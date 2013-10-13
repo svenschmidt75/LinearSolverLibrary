@@ -12,7 +12,8 @@
 
 class AMGStandardCoarseningTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(AMGStandardCoarseningTest);
-    CPPUNIT_TEST(TestStrongConnectionsForRow);
+    CPPUNIT_TEST(TestStrongConnectionsForRowForFivePointStencil);
+    CPPUNIT_TEST(TestStrongConnectionsForRowForNinePointStencil);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +21,6 @@ public:
     void tearDown();
 
 protected:
-    void TestStrongConnectionsForRow();
+    void TestStrongConnectionsForRowForFivePointStencil();
+    void TestStrongConnectionsForRowForNinePointStencil();
 };

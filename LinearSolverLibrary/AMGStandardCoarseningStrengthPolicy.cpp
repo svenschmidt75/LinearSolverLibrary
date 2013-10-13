@@ -45,7 +45,7 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
         if (j == i)
             continue;
         double matrix_value = - *column_it;
-        if (matrix_value > max_element)
+        if (matrix_value >= max_element)
             // variable i has a strong dependency on variable j
             (*strength_matrix_)(i, j) = 1.0;
     }
