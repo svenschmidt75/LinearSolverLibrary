@@ -71,14 +71,6 @@ AMGStandardCoarseningStrengthPolicy::computeConnections() {
     Sit_->finalize();
 }
 
-bool
-AMGStandardCoarseningStrengthPolicy::isVariableDependentOn(LinAlg_NS::IMatrix2D::size_type source, LinAlg_NS::IMatrix2D::size_type dest) const {
-    common_NS::reporting::checkUppderBound(source, m_.rows());
-    common_NS::reporting::checkUppderBound(dest, m_.rows());
-    SparseMatrix2D const & strength_matrix = *Si_;
-    return strength_matrix(source, dest) != 0;
-}
-
 VariableSet
 AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());

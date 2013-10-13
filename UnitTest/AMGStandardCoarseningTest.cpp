@@ -82,29 +82,32 @@ AMGStandardCoarseningTest::TestStrongConnectionsForRowForNinePointStencil() {
     AMGStandardCoarseningStrengthPolicy strength_policy(m);
 
     // row 0
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 1", strength_policy.isVariableDependentOn(0, 1));
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 3", strength_policy.isVariableDependentOn(0, 3));
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 4", strength_policy.isVariableDependentOn(0, 4));
-    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection on itself", !strength_policy.isVariableDependentOn(0, 0));
+    auto variable_set = strength_policy.GetInfluencedByVariables(0);
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 1", variable_set.contains(1));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 3", variable_set.contains(3));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection to variable 4", variable_set.contains(4));
+    CPPUNIT_ASSERT_MESSAGE("Variable 0 should not have a strong connection on itself", variable_set.size() == 3);
 
     // row 1
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 0", strength_policy.isVariableDependentOn(1, 0));
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 2", strength_policy.isVariableDependentOn(1, 2));
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 3", strength_policy.isVariableDependentOn(1, 3));
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 4", strength_policy.isVariableDependentOn(1, 4));
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 5", strength_policy.isVariableDependentOn(1, 5));
-    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection on itself", !strength_policy.isVariableDependentOn(1, 1));
+    variable_set = strength_policy.GetInfluencedByVariables(1);
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 0", variable_set.contains(0));
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 2", variable_set.contains(2));
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 3", variable_set.contains(3));
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 4", variable_set.contains(4));
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection to variable 5", variable_set.contains(5));
+    CPPUNIT_ASSERT_MESSAGE("Variable 1 should not have a strong connection on itself", variable_set.size() == 5);
 
     // row 4
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 0", strength_policy.isVariableDependentOn(4, 0));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 1", strength_policy.isVariableDependentOn(4, 1));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 2", strength_policy.isVariableDependentOn(4, 2));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 3", strength_policy.isVariableDependentOn(4, 3));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 5", strength_policy.isVariableDependentOn(4, 5));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 6", strength_policy.isVariableDependentOn(4, 6));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 7", strength_policy.isVariableDependentOn(4, 7));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 8", strength_policy.isVariableDependentOn(4, 8));
-    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection on itself", !strength_policy.isVariableDependentOn(4, 4));
+    variable_set = strength_policy.GetInfluencedByVariables(4);
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 0", variable_set.contains(0));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 1", variable_set.contains(1));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 2", variable_set.contains(2));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 3", variable_set.contains(3));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 5", variable_set.contains(5));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 6", variable_set.contains(6));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 7", variable_set.contains(7));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection to variable 8", variable_set.contains(8));
+    CPPUNIT_ASSERT_MESSAGE("Variable 4 should not have a strong connection on itself", variable_set.size() == 8);
 
     CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
 }
