@@ -7,7 +7,9 @@ using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGStandardCoarsening::AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m)
+AMGStandardCoarsening::AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m, VariableCategorizer & categorizer)
     :
-    m_(m), strength_policy_(m_) {
+    m_(m), categorizer_(categorizer), strength_policy_(m_) {
+
+    categorizer_.initializeVariablesToUndefined();
 }

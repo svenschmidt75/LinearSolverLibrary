@@ -230,6 +230,7 @@
     <ClCompile Include="ResHelper.cpp" />
     <ClCompile Include="SparseLinearSolverLibrary.cpp" />
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
+    <ClCompile Include="VariableCategorizer.cpp" />
     <ClCompile Include="VariableSet.cpp" />
   </ItemGroup>
   <ItemGroup>

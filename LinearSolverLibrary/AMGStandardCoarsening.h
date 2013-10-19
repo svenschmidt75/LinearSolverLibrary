@@ -11,6 +11,7 @@
 #include "DeclSpec.h"
 
 #include "AMGStandardCoarseningStrengthPolicy.h"
+#include "VariableCategorizer.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 
@@ -24,10 +25,11 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarsening : boost::noncopyable {
     public:
-        AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m);
+        AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m, VariableCategorizer & categorizer);
 
     private:
         LinAlg_NS::SparseMatrix2D const &   m_;
+        VariableCategorizer &               categorizer_;
         AMGStandardCoarseningStrengthPolicy strength_policy_;
     };
 

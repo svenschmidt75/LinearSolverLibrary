@@ -15,10 +15,12 @@
 #include "IVariableSet.h"
 #include "LinAlg/IMatrix2D.h"
 
-#include <set>
+#include <vector>
 
 #include <boost/noncopyable.hpp>
 
+
+#pragma warning(disable:4251)
 
 namespace LinearSolverLibrary_NS {
 
@@ -26,9 +28,20 @@ namespace LinearSolverLibrary_NS {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
-        enum class Type {UNDEFINED, COARSE, FINE};
+        enum class Type : char {UNDEFINED = 'U', COARSE = 'C', FINE = 'F'};
 
     public:
+        VariableCategorizer(size_type numberOfVariables);
+
+        void initializeVariablesToUndefined();
+
+    private:
+        typedef std::vector<Type> VariableData_t;
+
+    private:
+        VariableData_t data_;
     };
 
 } // LinearSolverLibrary_NS
+
+#pragma warning(default:4251)
