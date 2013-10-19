@@ -1,7 +1,7 @@
 /*
-* Name  : CoarseVariableSet
+* Name  : CoarseVariableSetDecorator
 * Path  :
-* Use   : Contains sets of coarse "grid" indices
+* Use   : Decorates a VariableSet and filters the coarse grid indices.
 * Author: Sven Schmidt
 * Date  : 10/19/2013
 */
@@ -22,7 +22,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSet : public IVariableSet, private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator : public IVariableSet, private boost::noncopyable {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 

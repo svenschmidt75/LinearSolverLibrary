@@ -10,6 +10,8 @@
 
 #include "DeclSpec.h"
 
+#include "AMGStandardCoarseningStrengthPolicy.h"
+
 #include "LinAlg/SparseMatrix2D.h"
 
 #include <boost/noncopyable.hpp>
@@ -23,6 +25,10 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarsening : boost::noncopyable {
     public:
         AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m);
+
+    private:
+        LinAlg_NS::SparseMatrix2D const &   m_;
+        AMGStandardCoarseningStrengthPolicy strength_policy_;
     };
 
 } // LinearSolverLibrary_NS

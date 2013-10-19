@@ -235,7 +235,7 @@
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
-    <ClInclude Include="CoarseVariableSet.h" />
+    <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="GaussJordan.h" />
@@ -255,6 +255,7 @@
     <ClInclude Include="SparseLinearSolverLibrary.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
+    <ClInclude Include="VariableCategorizer.h" />
     <ClInclude Include="VariableSet.h" />
     <ClInclude Include="IVariableSet.h" />
   </ItemGroup>

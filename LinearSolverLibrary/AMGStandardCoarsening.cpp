@@ -7,5 +7,7 @@ using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGStandardCoarsening::AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & /*m*/) {
+AMGStandardCoarsening::AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m)
+    :
+    m_(m), strength_policy_(m_) {
 }
