@@ -1,9 +1,9 @@
 /*
-* Name  : VariableSet
+* Name  : CoarseVariableSet
 * Path  :
-* Use   : Contains a set of "grid" indices
+* Use   : Contains sets of coarse "grid" indices
 * Author: Sven Schmidt
-* Date  : 10/13/2013
+* Date  : 10/19/2013
 */
 #pragma once
 
@@ -14,13 +14,15 @@
 
 #include <set>
 
+#include <boost/noncopyable.hpp>
+
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSet : public IVariableSet {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSet : public IVariableSet, private boost::noncopyable {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
@@ -29,11 +31,8 @@ namespace LinearSolverLibrary_NS {
         bool      contains(size_type variable) const;
         size_type size() const;
 
-        // LOCAL methods
-        void      add(size_type variable);
-
     private:
-        std::set<size_type> data_;
+        IVariableSet const & data_;
     };
 
 } // LinearSolverLibrary_NS

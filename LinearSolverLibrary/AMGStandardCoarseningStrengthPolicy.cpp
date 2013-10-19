@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "AMGStandardCoarseningStrengthPolicy.h"
+#include "VariableSet.h"
 
 #include "LinAlg/iterators.h"
 
@@ -71,30 +72,40 @@ AMGStandardCoarseningStrengthPolicy::computeConnections() {
     Sit_->finalize();
 }
 
-VariableSet
+namespace {
+
+    template<typename U, typename T>
+    std::unique_ptr<U> unique_pointer_cast(std::unique_ptr<T> & in) {
+        return std::unique_ptr<U>(std::move(in));
+    }
+
+}
+
+std::unique_ptr<IVariableSet>
 AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that strongly influence variable 'variable'
-    VariableSet variable_set;
+    // TODO SS: Use std::make_unique
+    std::unique_ptr<VariableSet> variable_set(new VariableSet());
     ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Si_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
-        variable_set.add(j);
+        variable_set->add(j);
     }
-    return variable_set;
+    return unique_pointer_cast<IVariableSet>(variable_set);
 }
 
-VariableSet 
+std::unique_ptr<IVariableSet>
 AMGStandardCoarseningStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that variable 'variable' strongly influences
-    VariableSet variable_set;
+    std::unique_ptr<VariableSet> variable_set(new VariableSet());
     ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Sit_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
-        variable_set.add(j);
+        variable_set->add(j);
     }
-    return variable_set;
+    return unique_pointer_cast<IVariableSet>(variable_set);
 }

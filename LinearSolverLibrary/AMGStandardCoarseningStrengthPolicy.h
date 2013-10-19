@@ -13,7 +13,7 @@
 #include "DeclSpec.h"
 
 #include "LinAlg/SparseMatrix2D.h"
-#include "VariableSet.h"
+#include "IVariableSet.h"
 
 #include <boost/noncopyable.hpp>
 
@@ -29,8 +29,8 @@ namespace LinearSolverLibrary_NS {
     public:
         AMGStandardCoarseningStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
 
-        VariableSet GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
-        VariableSet GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
+        std::unique_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
+        std::unique_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
 
     private:
         void computeConnections();

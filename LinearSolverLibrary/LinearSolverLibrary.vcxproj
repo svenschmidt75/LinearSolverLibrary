@@ -205,6 +205,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
     <ClCompile Include="GCR.cpp" />
@@ -232,7 +233,9 @@
     <ClCompile Include="VariableSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
+    <ClInclude Include="CoarseVariableSet.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="GaussJordan.h" />
@@ -253,6 +256,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
     <ClInclude Include="VariableSet.h" />
+    <ClInclude Include="IVariableSet.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
