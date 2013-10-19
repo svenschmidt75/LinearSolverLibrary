@@ -4,6 +4,8 @@
 
 #include "LinearSolverLibrary/VariableCategorizer.h"
 #include "LinearSolverLibrary/VariableCardinalityPolicy.h"
+#include "LinearSolverLibrary/VariableInfluenceAccessor.h"
+#include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.h"
@@ -40,6 +42,10 @@ AMGVariableCardinalityTest::Test1() {
       0        0        0        0       -1        0       -1        4       -1
       0        0        0        0        0       -1        0       -1        4
 */
-    VariableCategorizer variableCategorizer(m.rows());
-    VariableCardinalityPolicy cardinalityPolicy(variableCategorizer);
+
+    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+
+    VariableCategorizer variable_categorizer(m.rows());
+    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
 }

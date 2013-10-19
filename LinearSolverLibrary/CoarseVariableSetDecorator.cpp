@@ -18,17 +18,22 @@ CoarseVariableSetDecorator::contains(size_type variable) const {
 
 CoarseVariableSetDecorator::size_type
 CoarseVariableSetDecorator::size() const {
-//     size_type count = 0;
-//     std::count_if(std::begin(variable_set_), std::end(variable_set_), []() -> bool {
-//     });
+    auto filter = [&](size_type variable) -> bool {
+        return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
+    };
+    size_type count = std::count_if(std::begin(variable_set_), std::end(variable_set_), filter);
+    return count;
 }
 
 CoarseVariableSetDecorator::Iterator
 CoarseVariableSetDecorator::begin() const {
-
+    auto filter = [&](size_type variable) -> bool {
+        return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
+    };
+    return IteratorAdapter(variable_set_, filter);
 }
 
 CoarseVariableSetDecorator::Iterator
 CoarseVariableSetDecorator::end() const {
-
+    return variable_set_.end();
 }

@@ -13,6 +13,7 @@
 #include "IVariableInfluenceAccessor.h"
 #include "IVariableSet.h"
 #include "AMGStandardCoarseningStrengthPolicy.h"
+#include "VariableCategorizer.h"
 
 #include <boost/noncopyable.hpp>
 
@@ -24,7 +25,7 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        VariableInfluenceAccessor(AMGStandardCoarseningStrengthPolicy const & strength_policy);
+        VariableInfluenceAccessor(AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
 
         // FROM VariableInfluenceAccessor
         std::unique_ptr<IVariableSet> GetVariableInfluencedUndefined(size_type variable) const;
@@ -32,6 +33,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         AMGStandardCoarseningStrengthPolicy const & strength_policy_;
+        VariableCategorizer const &                 categorizer_;
     };
 
 } // LinearSolverLibrary_NS

@@ -1,8 +1,8 @@
 /*
 * Name  : VariableCardinalityPolicy
-* Path  :
+* Path  : IVariableInfluenceAccessor
 * Use   : Computes the cardinality for each undefined variable.
-          see Trottenberg, page 474, formula for \lambda_{i}
+          see Trottenberg, page 474, formula for \lambda_{i}.
 * Author: Sven Schmidt
 * Date  : 10/19/2013
 */
