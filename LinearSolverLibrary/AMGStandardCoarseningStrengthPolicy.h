@@ -2,7 +2,9 @@
 * Name  : AMGStandardCoarseningStrengthPolicy
 * Path  :
 * Use   : Determines that strong connections of a variable on others, i.e.
-          S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474
+          S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
+          The strength variable i is connected to variables j is measured
+          based on the smallest negative value a_{ij} * eps.
 * Author: Sven Schmidt
 * Date  : 10/12/2013
 */
