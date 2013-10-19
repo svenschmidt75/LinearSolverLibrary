@@ -8,6 +8,7 @@ using namespace LinearSolverLibrary_NS;
 
 VariableCategorizer::VariableCategorizer(size_type numberOfVariables) {
     data_.resize(numberOfVariables);
+    initializeVariablesToUndefined();
 }
 
 void

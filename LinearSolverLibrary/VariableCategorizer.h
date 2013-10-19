@@ -12,7 +12,6 @@
 
 #include "DeclSpec.h"
 
-#include "IVariableSet.h"
 #include "LinAlg/IMatrix2D.h"
 
 #include <vector>
@@ -33,6 +32,7 @@ namespace LinearSolverLibrary_NS {
     public:
         VariableCategorizer(size_type numberOfVariables);
 
+    private:
         void initializeVariablesToUndefined();
 
     private:

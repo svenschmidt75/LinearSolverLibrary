@@ -230,6 +230,7 @@
     <ClCompile Include="ResHelper.cpp" />
     <ClCompile Include="SparseLinearSolverLibrary.cpp" />
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
+    <ClCompile Include="VariableCardinalityPolicy.cpp" />
     <ClCompile Include="VariableCategorizer.cpp" />
     <ClCompile Include="VariableSet.cpp" />
   </ItemGroup>
@@ -256,6 +257,7 @@
     <ClInclude Include="SparseLinearSolverLibrary.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseLinearSolverUtil.h" />
+    <ClInclude Include="VariableCardinalityPolicy.h" />
     <ClInclude Include="VariableCategorizer.h" />
     <ClInclude Include="VariableSet.h" />
     <ClInclude Include="IVariableSet.h" />
