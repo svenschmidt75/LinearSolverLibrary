@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AMGStandardCoarseningTest.cpp" />
+    <ClCompile Include="AMGVariableCardinalityTest.cpp" />
     <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
@@ -55,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarseningTest.h" />
+    <ClInclude Include="AMGVariableCardinalityTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />

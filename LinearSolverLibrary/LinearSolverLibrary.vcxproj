@@ -207,6 +207,7 @@
   <ItemGroup>
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
+    <ClCompile Include="CoarseVariableSetDecorator.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
     <ClCompile Include="GCR.cpp" />
     <ClCompile Include="Gmres.cpp" />
@@ -232,6 +233,7 @@
     <ClCompile Include="SparseLinearSolverUtil.cpp" />
     <ClCompile Include="VariableCardinalityPolicy.cpp" />
     <ClCompile Include="VariableCategorizer.cpp" />
+    <ClCompile Include="VariableInfluenceAccessor.cpp" />
     <ClCompile Include="VariableSet.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +249,7 @@
     <ClInclude Include="internal\BucketList.h" />
     <ClInclude Include="internal\MultiColor.h" />
     <ClInclude Include="internal\MultiColor_internal.h" />
+    <ClInclude Include="IVariableInfluenceAccessor.h" />
     <ClInclude Include="lanczos.h" />
     <ClInclude Include="lanczosPRO.h" />
     <ClInclude Include="LUDecomposition.h" />
@@ -259,6 +262,7 @@
     <ClInclude Include="SparseLinearSolverUtil.h" />
     <ClInclude Include="VariableCardinalityPolicy.h" />
     <ClInclude Include="VariableCategorizer.h" />
+    <ClInclude Include="VariableInfluenceAccessor.h" />
     <ClInclude Include="VariableSet.h" />
     <ClInclude Include="IVariableSet.h" />
   </ItemGroup>

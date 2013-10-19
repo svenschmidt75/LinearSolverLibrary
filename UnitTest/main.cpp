@@ -18,9 +18,11 @@
 #include "SparseMatrixIteratorTest.h"
 #include "MatrixStencilTest.h"
 #include "AMGStandardCoarseningTest.h"
+#include "AMGVariableCardinalityTest.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 #if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);

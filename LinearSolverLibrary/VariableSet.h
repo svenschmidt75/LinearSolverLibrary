@@ -22,18 +22,17 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSet : public IVariableSet {
     public:
-        typedef LinAlg_NS::IMatrix2D::size_type size_type;
-
-    public:
         // FROM IVariableSet
         bool      contains(size_type variable) const;
         size_type size() const;
+        Iterator  begin() const;
+        Iterator  end() const;
 
         // LOCAL methods
         void      add(size_type variable);
 
     private:
-        std::set<size_type> data_;
+        Set_t data_;
     };
 
 } // LinearSolverLibrary_NS

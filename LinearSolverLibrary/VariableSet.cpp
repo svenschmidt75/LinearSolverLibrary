@@ -18,6 +18,16 @@ VariableSet::contains(size_type variable) const {
     return it != std::end(data_);
 }
 
+VariableSet::Iterator
+VariableSet::begin() const {
+    return std::begin(data_);
+}
+
+VariableSet::Iterator
+VariableSet::end() const {
+    return std::end(data_);
+}
+
 VariableSet::size_type
 VariableSet::size() const {
     return data_.size();

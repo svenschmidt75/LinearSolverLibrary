@@ -21,9 +21,15 @@ namespace LinearSolverLibrary_NS {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
+    protected:
+        typedef std::set<size_type> Set_t;
+        typedef Set_t::const_iterator Iterator;
+
     public:
         virtual bool      contains(size_type variable) const = 0;
         virtual size_type size() const = 0;
+        virtual Iterator  begin() const = 0;
+        virtual Iterator  end() const = 0;
     };
 
 } // LinearSolverLibrary_NS

@@ -11,6 +11,7 @@
 #include "DeclSpec.h"
 
 #include "VariableCategorizer.h"
+#include "IVariableInfluenceAccessor.h"
 
 #include "LinAlg/IMatrix2D.h"
 
@@ -29,15 +30,19 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        VariableCardinalityPolicy(VariableCategorizer const & categorizer);
+        VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
 
     private:
         // node index, priority
         typedef std::pair<size_type, size_type> QueueItem_t;
 
     private:
+        void initializeCardinality();
+
+    private:
+        IVariableInfluenceAccessor const & variable_influence_accessor_;
+            VariableCategorizer const &      categorizer_;
         std::priority_queue<QueueItem_t> queue_;
-        VariableCategorizer const &      categorizer_;
     };
 
 } // LinearSolverLibrary_NS

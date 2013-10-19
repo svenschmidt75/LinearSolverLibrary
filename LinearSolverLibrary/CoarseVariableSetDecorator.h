@@ -10,6 +10,7 @@
 #include "DeclSpec.h"
 
 #include "IVariableSet.h"
+#include "VariableCategorizer.h"
 #include "LinAlg/IMatrix2D.h"
 
 #include <set>
@@ -27,12 +28,17 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
+        CoarseVariableSetDecorator(IVariableSet const & variable_set, VariableCategorizer const & categorizer);
+
         // FROM IVariableSet
         bool      contains(size_type variable) const;
         size_type size() const;
+        Iterator  begin() const;
+        Iterator  end() const;
 
     private:
-        IVariableSet const & data_;
+        IVariableSet const &        variable_set_;
+        VariableCategorizer const & categorizer_;
     };
 
 } // LinearSolverLibrary_NS
