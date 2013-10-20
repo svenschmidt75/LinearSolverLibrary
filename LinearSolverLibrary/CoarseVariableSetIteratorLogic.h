@@ -10,8 +10,9 @@
 
 #include "DeclSpec.h"
 
-#include "common/IIteratorLogic.h"
 #include "IVariableSet.h"
+#include "common/IIteratorLogic.h"
+#include "common/Iterator.hpp"
 
 #include <set>
 #include <functional>
@@ -29,7 +30,7 @@ namespace LinearSolverLibrary_NS {
         public common_NS::IIteratorLogic<IVariableSet::size_type>,
         private boost::noncopyable {
     public:
-        CoarseVariableSetIteratorLogic(IVariableSet const & variable_set, std::function<bool ()> filter);
+        CoarseVariableSetIteratorLogic(IVariableSet const & variable_set, std::function<bool (IVariableSet::size_type)> filter);
 
         // FROM IIteratorLogic
         bool                    isValid() const;
@@ -37,9 +38,9 @@ namespace LinearSolverLibrary_NS {
         IVariableSet::size_type get() const;
 
     private:
-        IVariableSet const &   variable_set_;
-        Iterator               it_;
-        std::function<bool ()> filter_;
+        IVariableSet const &                          variable_set_;
+        common_NS::Iterator<IVariableSet::size_type>  it_;
+        std::function<bool (IVariableSet::size_type)> filter_;
     };
 
 } // LinearSolverLibrary_NS

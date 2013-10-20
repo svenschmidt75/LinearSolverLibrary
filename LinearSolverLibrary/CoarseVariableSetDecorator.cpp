@@ -18,23 +18,18 @@ CoarseVariableSetDecorator::contains(size_type variable) const {
 
 CoarseVariableSetDecorator::size_type
 CoarseVariableSetDecorator::size() const {
-    auto filter = [&](size_type variable) -> bool {
-        return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
-    };
-    size_type count = std::count_if(std::begin(variable_set_), std::end(variable_set_), filter);
-    return count;
+//     auto filter = [&](size_type variable) -> bool {
+//         return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
+//     };
+//     size_type count = std::count_if(std::begin(variable_set_), std::end(variable_set_), filter);
+//     return count;
 }
 
-Iterator
-CoarseVariableSetDecorator::begin() const {
-    auto filter = [&](size_type variable) -> bool {
-        return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
-    };
-    CoarseVariableSetIteratorLogic logic(variable_set_, filter);
-    return Iterator(logic);
-}
-
-CoarseVariableSetDecorator::Iterator
-CoarseVariableSetDecorator::end() const {
-    return variable_set_.end();
+common_NS::Iterator<CoarseVariableSetDecorator::size_type>
+CoarseVariableSetDecorator::GetIterator() const {
+//     auto filter = [&](size_type variable) -> bool {
+//         return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
+//     };
+//     CoarseVariableSetIteratorLogic logic(variable_set_, filter);
+//     return Iterator(logic);
 }

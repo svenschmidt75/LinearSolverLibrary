@@ -6,7 +6,7 @@
 using namespace LinearSolverLibrary_NS;
 
 
-CoarseVariableSetIteratorLogic::CoarseVariableSetIteratorLogic(IVariableSet const & variable_set, std::function<bool()> filter)
+CoarseVariableSetIteratorLogic::CoarseVariableSetIteratorLogic(IVariableSet const & variable_set, std::function<bool (IVariableSet::size_type)> filter)
     :
     variable_set_(variable_set),
     filter_(filter),
@@ -14,15 +14,16 @@ CoarseVariableSetIteratorLogic::CoarseVariableSetIteratorLogic(IVariableSet cons
 
 bool
 CoarseVariableSetIteratorLogic::isValid() const {
-    return it_.isValid();
+//    return it_ != it.end();
+    return true;
 }
 
 void
 CoarseVariableSetIteratorLogic::next() {
-
+    ++it_;
 }
 
 IVariableSet::size_type
 CoarseVariableSetIteratorLogic::get() const {
-
+    return *it_;
 }

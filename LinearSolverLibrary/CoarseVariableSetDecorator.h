@@ -36,9 +36,9 @@ namespace LinearSolverLibrary_NS {
         CoarseVariableSetDecorator(IVariableSet const & variable_set, VariableCategorizer const & categorizer);
 
         // FROM IVariableSet
-        bool      contains(size_type variable) const;
-        size_type size() const;
-        Iterator  GetIterator() const;
+        bool                           contains(size_type variable) const;
+        size_type                      size() const;
+        common_NS::Iterator<size_type> GetIterator() const;
 
     private:
         IVariableSet const &        variable_set_;

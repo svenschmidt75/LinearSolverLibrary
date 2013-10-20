@@ -10,17 +10,23 @@
 namespace common_NS {
 
     template<typename T>
+    class IIteratorLogic;
+
+
+    template<typename T>
     class Iterator {
     public:
-    public:
-        Iterator(IIteratorLogic<T> & logic, std::function<bool(double)> filter) : logic_(logic), filter_(filter) {}
+        Iterator(IIteratorLogic<T> & logic) : logic_(logic) {}
+
+        Iterator(Iterator const & in) : logic_(in.logic_) {}
+
+        Iterator & operator=(Iterator const & in) {
+            logic_ = in.logic_;
+            return *this;
+        }
 
         Iterator & operator++() {
-            while (logic_.isValid()) {
-                if (filter_(logic_.get()))
-                    break;
-                logic_.next();
-            }
+            logic_.next();
             return *this;
         }
 
@@ -30,13 +36,12 @@ namespace common_NS {
             return this_;
         }
 
-        double operator*() const {
+        T operator*() const {
             return logic_.get();
         }
 
     private:
-        IIteratorLogic<double> &         logic_;
-        std::function<bool(double)>     filter_;
+        IIteratorLogic<T> & logic_;
     };
 
 } // common_NS

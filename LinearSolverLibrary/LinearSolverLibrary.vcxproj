@@ -236,6 +236,7 @@
     <ClCompile Include="VariableCategorizer.cpp" />
     <ClCompile Include="VariableInfluenceAccessor.cpp" />
     <ClCompile Include="VariableSet.cpp" />
+    <ClCompile Include="VariableSetIteratorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarsening.h" />
@@ -267,6 +268,7 @@
     <ClInclude Include="VariableInfluenceAccessor.h" />
     <ClInclude Include="VariableSet.h" />
     <ClInclude Include="IVariableSet.h" />
+    <ClInclude Include="VariableSetIteratorLogic.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">

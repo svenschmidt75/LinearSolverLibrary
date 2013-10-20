@@ -1,16 +1,12 @@
 #include "pch.h"
 
 #include "VariableSet.h"
+#include "VariableSetIteratorLogic.h"
+#include "common/Iterator.hpp"
 
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
-
-
-void
-VariableSet::add(size_type variable) {
-    data_.insert(variable);
-}
 
 bool
 VariableSet::contains(size_type variable) const {
@@ -18,17 +14,18 @@ VariableSet::contains(size_type variable) const {
     return it != std::end(data_);
 }
 
-VariableSet::Iterator
-VariableSet::begin() const {
-    return std::begin(data_);
-}
-
-VariableSet::Iterator
-VariableSet::end() const {
-    return std::end(data_);
+common_NS::Iterator<IVariableSet::size_type>
+VariableSet::GetIterator() const {
+    VariableSetIteratorLogic logic(*this);
+    return common_NS::Iterator<IVariableSet::size_type>(logic);
 }
 
 VariableSet::size_type
 VariableSet::size() const {
     return data_.size();
+}
+
+void
+VariableSet::add(size_type variable) {
+    data_.insert(variable);
 }

@@ -9,6 +9,7 @@
 
 #include "DeclSpec.h"
 
+#include "common/Iterator.hpp"
 #include "LinAlg/IMatrix2D.h"
 
 
@@ -26,9 +27,9 @@ namespace LinearSolverLibrary_NS {
         typedef Set_t::const_iterator Iterator;
 
     public:
-        virtual bool      contains(size_type variable) const = 0;
-        virtual size_type size() const = 0;
-        virtual Iterator  GetIterator() const = 0;
+        virtual bool                           contains(size_type variable) const = 0;
+        virtual size_type                      size() const = 0;
+        virtual common_NS::Iterator<size_type> GetIterator() const = 0;
     };
 
 } // LinearSolverLibrary_NS
