@@ -14,8 +14,7 @@ CoarseVariableSetIteratorLogic::CoarseVariableSetIteratorLogic(IVariableSet cons
 
 bool
 CoarseVariableSetIteratorLogic::isValid() const {
-//    return it_ != it.end();
-    return true;
+    return it_ != it_.end();
 }
 
 void

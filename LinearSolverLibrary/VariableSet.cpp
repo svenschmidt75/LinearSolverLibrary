@@ -16,8 +16,8 @@ VariableSet::contains(size_type variable) const {
 
 common_NS::Iterator<IVariableSet::size_type>
 VariableSet::GetIterator() const {
-    VariableSetIteratorLogic logic(*this);
-    return common_NS::Iterator<IVariableSet::size_type>(logic);
+    std::unique_ptr<common_NS::IIteratorLogic<IVariableSet::size_type>> logic(new VariableSetIteratorLogic(*this));
+    return common_NS::Iterator<IVariableSet::size_type>(std::move(logic));
 }
 
 VariableSet::size_type

@@ -30,6 +30,8 @@ namespace LinearSolverLibrary_NS {
         bool isValid() const;
         void next();
         IVariableSet::size_type get() const;
+        std::unique_ptr<IIteratorLogic<IVariableSet::size_type>> end() const;
+        bool equalTo(IIteratorLogic<IVariableSet::size_type> const & in) const;
 
     private:
         VariableSet const &                variable_set_;

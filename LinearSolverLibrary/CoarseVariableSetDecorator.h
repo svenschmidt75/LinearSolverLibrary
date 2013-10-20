@@ -25,8 +25,8 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator : public IVariableSet, private boost::noncopyable {
 
-
-        friend class CoarseVariableSetIterator;
+        // for iterator support
+        friend class CoarseVariableSetIteratorLogic;
 
 
     public:

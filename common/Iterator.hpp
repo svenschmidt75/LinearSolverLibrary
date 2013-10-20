@@ -7,6 +7,9 @@
 */
 #pragma once
 
+#include <memory>
+
+
 namespace common_NS {
 
     template<typename T>
@@ -16,7 +19,7 @@ namespace common_NS {
     template<typename T>
     class Iterator {
     public:
-        Iterator(IIteratorLogic<T> & logic) : logic_(logic) {}
+        Iterator(std::unique_ptr<IIteratorLogic<T>> && logic) : logic_(std::move(logic)) {}
 
         Iterator(Iterator const & in) : logic_(in.logic_) {}
 
@@ -25,8 +28,16 @@ namespace common_NS {
             return *this;
         }
 
+        bool operator==(Iterator const & in) const {
+            return logic_->equalTo(*(in.logic_));
+        }
+
+        bool operator!=(Iterator const & in) const {
+            return !(*this == in);
+        }
+
         Iterator & operator++() {
-            logic_.next();
+            logic_->next();
             return *this;
         }
 
@@ -37,11 +48,15 @@ namespace common_NS {
         }
 
         T operator*() const {
-            return logic_.get();
+            return logic_->get();
+        }
+
+        Iterator end() const {
+            return Iterator(logic_->end());
         }
 
     private:
-        IIteratorLogic<T> & logic_;
+        std::unique_ptr<IIteratorLogic<T>> logic_;
     };
 
 } // common_NS

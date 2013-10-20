@@ -31,3 +31,27 @@ IVariableSet::size_type
 VariableSetIteratorLogic::get() const {
     return *it_;
 }
+
+namespace {
+
+    template<typename U, typename T>
+    std::unique_ptr<U> unique_pointer_cast(std::unique_ptr<T> & in) {
+        return std::unique_ptr<U>(std::move(in));
+    }
+
+}
+
+std::unique_ptr<common_NS::IIteratorLogic<IVariableSet::size_type>>
+VariableSetIteratorLogic::end() const {
+    std::unique_ptr<VariableSetIteratorLogic> end_logic(new VariableSetIteratorLogic(variable_set_));
+    end_logic->it_ = std::end(variable_set_.data_);
+    return unique_pointer_cast<common_NS::IIteratorLogic<IVariableSet::size_type>>(end_logic);
+}
+
+bool
+VariableSetIteratorLogic::equalTo(IIteratorLogic<IVariableSet::size_type> const & in) const {
+    VariableSetIteratorLogic const * this_ = dynamic_cast<VariableSetIteratorLogic const *>(&in);
+    if (this_ == nullptr)
+        return false;
+    return it_ == this_->it_;
+}

@@ -23,6 +23,7 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSet : public IVariableSet {
 
+        // for iterator support
         friend class VariableSetIteratorLogic;
 
 
