@@ -24,6 +24,11 @@
 namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator : public IVariableSet, private boost::noncopyable {
+
+
+        friend class CoarseVariableSetIterator;
+
+
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
@@ -33,8 +38,7 @@ namespace LinearSolverLibrary_NS {
         // FROM IVariableSet
         bool      contains(size_type variable) const;
         size_type size() const;
-        Iterator  begin() const;
-        Iterator  end() const;
+        Iterator  GetIterator() const;
 
     private:
         IVariableSet const &        variable_set_;

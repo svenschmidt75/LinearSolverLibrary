@@ -208,6 +208,7 @@
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
+    <ClCompile Include="CoarseVariableSetIteratorLogic.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
     <ClCompile Include="GCR.cpp" />
     <ClCompile Include="Gmres.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
+    <ClInclude Include="CoarseVariableSetIteratorLogic.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="GaussJordan.h" />

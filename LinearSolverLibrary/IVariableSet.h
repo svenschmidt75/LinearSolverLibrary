@@ -28,8 +28,7 @@ namespace LinearSolverLibrary_NS {
     public:
         virtual bool      contains(size_type variable) const = 0;
         virtual size_type size() const = 0;
-        virtual Iterator  begin() const = 0;
-        virtual Iterator  end() const = 0;
+        virtual Iterator  GetIterator() const = 0;
     };
 
 } // LinearSolverLibrary_NS

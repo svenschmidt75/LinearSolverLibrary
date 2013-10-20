@@ -25,12 +25,13 @@ CoarseVariableSetDecorator::size() const {
     return count;
 }
 
-CoarseVariableSetDecorator::Iterator
+Iterator
 CoarseVariableSetDecorator::begin() const {
     auto filter = [&](size_type variable) -> bool {
         return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
     };
-    return IteratorAdapter(variable_set_, filter);
+    CoarseVariableSetIteratorLogic logic(variable_set_, filter);
+    return Iterator(logic);
 }
 
 CoarseVariableSetDecorator::Iterator
