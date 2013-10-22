@@ -21,15 +21,15 @@ CoarseVariableSetDecorator::size() const {
     auto filter = [&](size_type variable) -> bool {
         return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
     };
-    size_type count = std::count_if(variable_set_.GetIterator(), std::end(variable_set_), filter);
+    size_type count = std::count_if(std::begin(variable_set_), std::end(variable_set_), filter);
     return count;
 }
 
 common_NS::Iterator<CoarseVariableSetDecorator::size_type>
 CoarseVariableSetDecorator::GetIterator() const {
-//     auto filter = [&](size_type variable) -> bool {
-//         return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
-//     };
-//     CoarseVariableSetIteratorLogic logic(variable_set_, filter);
-//     return Iterator(logic);
+    auto filter = [&](size_type variable) -> bool {
+        return categorizer_.GetType(variable) == VariableCategorizer::Type::COARSE;
+    };
+    CoarseVariableSetIteratorLogic logic(variable_set_, filter);
+    return Iterator(logic);
 }

@@ -30,6 +30,17 @@ namespace LinearSolverLibrary_NS {
         virtual bool                           contains(size_type variable) const = 0;
         virtual size_type                      size() const = 0;
         virtual common_NS::Iterator<size_type> GetIterator() const = 0;
+
+
+        virtual std::iterator<std::forward_iterator_tag, size_type> begin() const = 0;
+        virtual std::iterator<std::forward_iterator_tag, size_type> end() const = 0;
+    };
+
+
+    // in std namespace?
+    template<>
+    class iterator_traits<std::iterator<std::forward_iterator_tag, IVariableSet::size_type>> {
+
     };
 
 } // LinearSolverLibrary_NS
