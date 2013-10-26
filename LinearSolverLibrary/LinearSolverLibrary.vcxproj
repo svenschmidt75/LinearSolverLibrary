@@ -208,7 +208,8 @@
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
-    <ClCompile Include="CoarseVariableSetDecoratorIteratorLogic.cpp" />
+    <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
+    <ClCompile Include="FineVariableSetDecorator.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
     <ClCompile Include="GCR.cpp" />
     <ClCompile Include="Gmres.cpp" />
@@ -236,15 +237,17 @@
     <ClCompile Include="VariableCategorizer.cpp" />
     <ClCompile Include="VariableInfluenceAccessor.cpp" />
     <ClCompile Include="VariableSet.cpp" />
+    <ClCompile Include="VariableSetDecoratorBase.cpp" />
     <ClCompile Include="VariableSetIteratorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
-    <ClInclude Include="CoarseVariableSetDecoratorIteratorLogic.h" />
+    <ClInclude Include="VariableSetDecoratorIteratorLogic.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />
+    <ClInclude Include="FineVariableSetDecorator.h" />
     <ClInclude Include="GaussJordan.h" />
     <ClInclude Include="GCR.h" />
     <ClInclude Include="Gmres.h" />
@@ -268,6 +271,7 @@
     <ClInclude Include="VariableInfluenceAccessor.h" />
     <ClInclude Include="VariableSet.h" />
     <ClInclude Include="IVariableSet.h" />
+    <ClInclude Include="VariableSetDecoratorBase.h" />
     <ClInclude Include="VariableSetIteratorLogic.h" />
   </ItemGroup>
   <ItemGroup>

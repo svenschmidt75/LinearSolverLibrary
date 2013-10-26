@@ -23,14 +23,14 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecoratorIteratorLogic
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSetDecoratorIteratorLogic
         : public common_NS::IInputIteratorLogic<IVariableSet::size_type> {
     public:
         typedef IVariableSet::size_type size_type;
         typedef IInputIteratorLogic<size_type> This_t;
 
     public:
-        CoarseVariableSetDecoratorIteratorLogic(common_NS::InputIterator<IVariableSet::size_type> begin_it_, common_NS::InputIterator<IVariableSet::size_type> end_it_, std::function<bool (IVariableSet::size_type)> filter);
+        VariableSetDecoratorIteratorLogic(common_NS::InputIterator<IVariableSet::size_type> begin_it_, common_NS::InputIterator<IVariableSet::size_type> end_it_, std::function<bool (IVariableSet::size_type)> filter);
 
         // FROM IInputIteratorLogic
         size_type               get() const override;
@@ -44,8 +44,8 @@ namespace LinearSolverLibrary_NS {
         std::function<bool (IVariableSet::size_type)>      predicate_;
 
     private:
-        CoarseVariableSetDecoratorIteratorLogic(CoarseVariableSetDecoratorIteratorLogic const &) = default;
-        CoarseVariableSetDecoratorIteratorLogic & operator=(CoarseVariableSetDecoratorIteratorLogic const &) = default;
+        VariableSetDecoratorIteratorLogic(VariableSetDecoratorIteratorLogic const &) = default;
+        VariableSetDecoratorIteratorLogic & operator=(VariableSetDecoratorIteratorLogic const &) = default;
     };
 
 } // LinearSolverLibrary_NS

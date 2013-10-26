@@ -21,7 +21,10 @@ namespace LinearSolverLibrary_NS {
     class AMGStandardCoarseningStrengthPolicy;
     class VariableCategorizer;
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor : public IVariableInfluenceAccessor, private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor
+        :
+        public IVariableInfluenceAccessor,
+        private boost::noncopyable {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
