@@ -30,10 +30,10 @@ namespace common_NS {
             return *this;
         }
 
-        InputIterator operator++(int) const {
+        InputIterator operator++(int) {
             auto this_ = *this;
             ++(*this);
-            return *this;
+            return this_;
         }
 
         T operator*() const {
