@@ -23,7 +23,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator : public IVariableSet, private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator final : public IVariableSet, private boost::noncopyable {
 
         // for iterator support
         friend class CoarseVariableSetIteratorLogic;
@@ -36,9 +36,10 @@ namespace LinearSolverLibrary_NS {
         CoarseVariableSetDecorator(IVariableSet const & variable_set, VariableCategorizer const & categorizer);
 
         // FROM IVariableSet
-        bool                           contains(size_type variable) const;
-        size_type                      size() const;
-        common_NS::Iterator<size_type> GetIterator() const;
+        bool                           contains(size_type variable) const override;
+        size_type                      size() const override;
+        common_NS::InputIterator<size_type> begin() const override;
+        common_NS::InputIterator<size_type> end() const override;
 
     private:
         IVariableSet const &        variable_set_;
