@@ -11,31 +11,30 @@
 
 #include "VariableSet.h"
 
-#include "common/Iterator.hpp"
-#include "common/IIteratorLogic.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
+
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSetIteratorLogic : public common_NS::IIteratorLogic<IVariableSet::size_type> {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSetIteratorLogic
+        : public common_NS::IInputIteratorLogic<IVariableSet::size_type> {
     public:
-        VariableSetIteratorLogic(VariableSet const & variable_set);
+        typedef IVariableSet::size_type size_type;
+        typedef IInputIteratorLogic<size_type> This_t;
 
-        VariableSetIteratorLogic & operator=(VariableSetIteratorLogic const & in);
+    public:
+        VariableSetIteratorLogic(VariableSet::DataIterator_t iterator);
 
-        // FROM IIteratorLogic
-        bool isValid() const;
-        void next();
-        IVariableSet::size_type get() const;
-        std::unique_ptr<IIteratorLogic<IVariableSet::size_type>> end() const;
-        bool equalTo(IIteratorLogic<IVariableSet::size_type> const & in) const;
+        // FROM IInputIteratorLogic
+        size_type               get() const override;
+        void                    next() override;
+        bool                    equal(IInputIteratorLogic const & in) const override;
+        std::unique_ptr<This_t> clone() const override;
 
     private:
-        VariableSet const &                variable_set_;
-        VariableSet::Set_t::const_iterator it_;
+        VariableSet::DataIterator_t iterator_;
     };
 
 } // LinearSolverLibrary_NS

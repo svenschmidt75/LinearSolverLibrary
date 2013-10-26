@@ -2,11 +2,14 @@
 
 #include "VariableSet.h"
 #include "VariableSetIteratorLogic.h"
-#include "common/Iterator.hpp"
+#include "common/InputIterator.hpp"
+#include "common/IInputIteratorLogic.h"
 
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
+using namespace common_NS;
+
 
 bool
 VariableSet::contains(size_type variable) const {
@@ -14,15 +17,30 @@ VariableSet::contains(size_type variable) const {
     return it != std::end(data_);
 }
 
-common_NS::Iterator<IVariableSet::size_type>
-VariableSet::GetIterator() const {
-    std::unique_ptr<common_NS::IIteratorLogic<IVariableSet::size_type>> logic(new VariableSetIteratorLogic(*this));
-    return common_NS::Iterator<IVariableSet::size_type>(std::move(logic));
-}
-
 VariableSet::size_type
 VariableSet::size() const {
     return data_.size();
+}
+
+namespace {
+
+    template<typename U, typename T>
+    std::unique_ptr<U> unique_pointer_cast(std::unique_ptr<T> && in) {
+        return std::unique_ptr<U>(std::move(in));
+    }
+
+}
+
+VariableSet::InputIterator_t
+VariableSet::begin() const {
+    std::unique_ptr<VariableSetIteratorLogic> logic(new VariableSetIteratorLogic(std::begin(data_)));
+    return InputIterator<IVariableSet::size_type>(unique_pointer_cast<IInputIteratorLogic<IVariableSet::size_type>>(std::move(logic)));
+}
+
+VariableSet::InputIterator_t
+VariableSet::end() const {
+    std::unique_ptr<VariableSetIteratorLogic> logic(new VariableSetIteratorLogic(std::end(data_)));
+    return InputIterator<IVariableSet::size_type>(unique_pointer_cast<IInputIteratorLogic<IVariableSet::size_type>>(std::move(logic)));
 }
 
 void

@@ -5,53 +5,32 @@
 
 using namespace LinearSolverLibrary_NS;
 
-VariableSetIteratorLogic::VariableSetIteratorLogic(VariableSet const & variable_set)
+VariableSetIteratorLogic::VariableSetIteratorLogic(VariableSet::DataIterator_t iterator)
     :
-    variable_set_(variable_set),
-    it_(std::begin(variable_set_.data_)) {}
+    iterator_(iterator) {}
 
-VariableSetIteratorLogic &
-VariableSetIteratorLogic::operator=(VariableSetIteratorLogic const & in) {
-    VariableSet & variable_set = const_cast<VariableSet &>(variable_set_);
-    variable_set = in.variable_set_;
-    return *this;
-}
-
-bool
-VariableSetIteratorLogic::isValid() const {
-    return it_ != std::end(variable_set_.data_);
+VariableSetIteratorLogic::size_type
+VariableSetIteratorLogic::get() const {
+    return *iterator_;
 }
 
 void
 VariableSetIteratorLogic::next() {
-    ++it_;
-}
-
-IVariableSet::size_type
-VariableSetIteratorLogic::get() const {
-    return *it_;
-}
-
-namespace {
-
-    template<typename U, typename T>
-    std::unique_ptr<U> unique_pointer_cast(std::unique_ptr<T> & in) {
-        return std::unique_ptr<U>(std::move(in));
-    }
-
-}
-
-std::unique_ptr<common_NS::IIteratorLogic<IVariableSet::size_type>>
-VariableSetIteratorLogic::end() const {
-    std::unique_ptr<VariableSetIteratorLogic> end_logic(new VariableSetIteratorLogic(variable_set_));
-    end_logic->it_ = std::end(variable_set_.data_);
-    return unique_pointer_cast<common_NS::IIteratorLogic<IVariableSet::size_type>>(end_logic);
+    ++iterator_;
 }
 
 bool
-VariableSetIteratorLogic::equalTo(IIteratorLogic<IVariableSet::size_type> const & in) const {
-    VariableSetIteratorLogic const * this_ = dynamic_cast<VariableSetIteratorLogic const *>(&in);
-    if (this_ == nullptr)
-        return false;
-    return it_ == this_->it_;
+VariableSetIteratorLogic::equal(IInputIteratorLogic const & in) const {
+    // No need for dynamic_cast here as this must only be called by
+    // ForwardIterator for the SAME iterator type, i.e.
+    // it1 !=/== it2, where it1 and it2 must have the same type.
+    auto other = static_cast<VariableSetIteratorLogic const *>(&in);
+    return iterator_ == other->iterator_;
+}
+
+std::unique_ptr<VariableSetIteratorLogic::This_t>
+VariableSetIteratorLogic::clone() const {
+    // uses default copy constructor
+    auto clone = std::unique_ptr<This_t>(new VariableSetIteratorLogic(*this));
+    return clone;
 }

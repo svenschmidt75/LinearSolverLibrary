@@ -24,7 +24,6 @@ namespace LinearSolverLibrary_NS {
 
     protected:
         typedef std::set<size_type> Set_t;
-        typedef Set_t::const_iterator Iterator;
 
     public:
         virtual bool                                contains(size_type variable) const = 0;

@@ -11,7 +11,6 @@
 
 #include "IVariableSet.h"
 #include "LinAlg/IMatrix2D.h"
-#include "common/Iterator.hpp"
 
 #include <set>
 
@@ -21,20 +20,28 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSet : public IVariableSet {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSet final : public IVariableSet {
 
         // for iterator support
         friend class VariableSetIteratorLogic;
 
 
     public:
+        typedef IVariableSet::size_type size_type;
+        typedef common_NS::InputIterator<size_type> InputIterator_t;
+
+    public:
         // FROM IVariableSet
-        bool                                         contains(size_type variable) const;
-        size_type                                    size() const;
-        common_NS::Iterator<IVariableSet::size_type> GetIterator() const;
+        bool            contains(size_type variable) const override;
+        size_type       size() const override;
+        InputIterator_t begin() const override;
+        InputIterator_t end() const override;
 
         // LOCAL methods
-        void      add(size_type variable);
+        void            add(size_type variable);
+
+    protected:
+        typedef Set_t::const_iterator DataIterator_t;
 
     private:
         Set_t data_;
