@@ -17,8 +17,6 @@
 #include <set>
 #include <functional>
 
-#include <boost/noncopyable.hpp>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -26,9 +24,7 @@
 namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecoratorIteratorLogic
-        :
-        public common_NS::IInputIteratorLogic<IVariableSet::size_type>,
-        private boost::noncopyable {
+        : public common_NS::IInputIteratorLogic<IVariableSet::size_type> {
     public:
         typedef IVariableSet::size_type size_type;
         typedef IInputIteratorLogic<size_type> This_t;
@@ -45,7 +41,11 @@ namespace LinearSolverLibrary_NS {
     private:
         common_NS::InputIterator<IVariableSet::size_type>  iterator_;
         common_NS::InputIterator<IVariableSet::size_type>  end_iterator_;
-        std::function<bool (IVariableSet::size_type)>      filter_;
+        std::function<bool (IVariableSet::size_type)>      predicate_;
+
+    private:
+        CoarseVariableSetDecoratorIteratorLogic(CoarseVariableSetDecoratorIteratorLogic const &) = default;
+        CoarseVariableSetDecoratorIteratorLogic & operator=(CoarseVariableSetDecoratorIteratorLogic const &) = default;
     };
 
 } // LinearSolverLibrary_NS
