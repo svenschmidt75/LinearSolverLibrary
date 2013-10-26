@@ -12,15 +12,16 @@
 
 #include "IVariableInfluenceAccessor.h"
 #include "IVariableSet.h"
-#include "AMGStandardCoarseningStrengthPolicy.h"
-#include "VariableCategorizer.h"
 
 #include <boost/noncopyable.hpp>
 
 
 namespace LinearSolverLibrary_NS {
 
-    class VariableInfluenceAccessor : public IVariableInfluenceAccessor, private boost::noncopyable {
+    class AMGStandardCoarseningStrengthPolicy;
+    class VariableCategorizer;
+
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor : public IVariableInfluenceAccessor, private boost::noncopyable {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 

@@ -35,6 +35,10 @@ namespace LinearSolverLibrary_NS {
 
     private:
         VariableSet::DataIterator_t iterator_;
+
+    private:
+        VariableSetIteratorLogic(VariableSetIteratorLogic const &) = default;
+        VariableSetIteratorLogic & operator=(VariableSetIteratorLogic const &) = default;
     };
 
 } // LinearSolverLibrary_NS

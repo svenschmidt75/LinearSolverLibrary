@@ -2,6 +2,7 @@
 
 #include "VariableInfluenceAccessor.h"
 #include "CoarseVariableSetDecorator.h"
+#include "AMGStandardCoarseningStrengthPolicy.h"
 
 
 using namespace LinearSolverLibrary_NS;
