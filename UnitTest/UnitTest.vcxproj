@@ -53,6 +53,7 @@
     <ClCompile Include="sts4098Test.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
+    <ClCompile Include="VariableInfluenceAccessorTest.cpp" />
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +77,7 @@
     <ClInclude Include="sts4098Test.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
+    <ClInclude Include="VariableInfluenceAccessorTest.h" />
     <ClInclude Include="VersteegMalalasekeraTest.h" />
   </ItemGroup>
   <ItemGroup>

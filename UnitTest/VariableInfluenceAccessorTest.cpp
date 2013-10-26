@@ -1,11 +1,9 @@
 #include "pch.h"
 
-#include "AMGVariableCardinalityTest.h"
-
-#include "LinearSolverLibrary/VariableCategorizer.h"
-#include "LinearSolverLibrary/VariableCardinalityPolicy.h"
-#include "LinearSolverLibrary/VariableInfluenceAccessor.h"
+#include "VariableInfluenceAccessorTest.h"
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
+#include "LinearSolverLibrary/VariableInfluenceAccessor.h"
+#include "LinearSolverLibrary/VariableCategorizer.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.h"
 
@@ -15,13 +13,13 @@ using namespace LinearSolverLibrary_NS;
 
 
 void
-AMGVariableCardinalityTest::setUp() {}
+VariableInfluenceAccessorTest::setUp() {}
 
 void
-AMGVariableCardinalityTest::tearDown() {}
+VariableInfluenceAccessorTest::tearDown() {}
 
 void
-AMGVariableCardinalityTest::Test1() {
+VariableInfluenceAccessorTest::Test1() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -43,10 +41,11 @@ AMGVariableCardinalityTest::Test1() {
 */
 
     AMGStandardCoarseningStrengthPolicy strength_policy(m);
-
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
+
+//    influence_accessor.GetVariableInfluencedFine()
+//    influence_accessor.GetVariableInfluencedUndefined()
 
 
 
