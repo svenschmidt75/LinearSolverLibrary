@@ -19,7 +19,7 @@ void
 VariableInfluenceAccessorTest::tearDown() {}
 
 void
-VariableInfluenceAccessorTest::Test1() {
+VariableInfluenceAccessorTest::TestVariablesInfluencedByVariable0() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -43,6 +43,19 @@ VariableInfluenceAccessorTest::Test1() {
     AMGStandardCoarseningStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+
+    // S_{0}^{T}: The set of variables strongly influenced by variable 0
+    // S_{0}^{T} = {1, 3}
+    auto fineGridVariablesInfluencedBy = influence_accessor.GetVariableInfluencedFine(0);
+    auto it = std::begin(*fineGridVariablesInfluencedBy);
+    decltype(*it) expected = 1;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Variable 0 should influence this variable", expected, *it);
+    expected = 3;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Variable 0 should influence this variable", expected, *it);
+    expected = fineGridVariablesInfluencedBy->size();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Variable 0 should influence this variable", expected, 2ull);
+
+
 
 //    influence_accessor.GetVariableInfluencedFine()
 //    influence_accessor.GetVariableInfluencedUndefined()

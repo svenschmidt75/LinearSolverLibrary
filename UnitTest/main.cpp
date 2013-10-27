@@ -20,12 +20,16 @@
 #include "AMGStandardCoarseningTest.h"
 #include "AMGVariableCardinalityTest.h"
 #include "InputIteratorTest.h"
+#include "VariableInfluenceAccessorTest.h"
 
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
+
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
-#if 0
+
 CPPUNIT_TEST_SUITE_REGISTRATION(InputIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);

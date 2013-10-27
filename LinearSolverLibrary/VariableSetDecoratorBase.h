@@ -13,6 +13,7 @@
 #include "common/InputIterator.hpp"
 
 #include <functional>
+#include <memory>
 
 #include <boost/noncopyable.hpp>
 
@@ -31,7 +32,7 @@ namespace LinearSolverLibrary_NS {
         typedef common_NS::InputIterator<size_type> InputIterator_t;
 
     public:
-        VariableSetDecoratorBase(IVariableSet const & variable_set);
+        VariableSetDecoratorBase(std::shared_ptr<IVariableSet> const & variable_set);
 
         // FROM IVariableSet
         bool            contains(size_type variable) const override;
@@ -43,7 +44,7 @@ namespace LinearSolverLibrary_NS {
         virtual std::function<bool(size_type)> predicate() const = 0;
 
     private:
-        IVariableSet const & variable_set_;
+        std::shared_ptr<IVariableSet> variable_set_;
     };
 
 } // LinearSolverLibrary_NS

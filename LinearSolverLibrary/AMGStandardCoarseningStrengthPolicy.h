@@ -29,8 +29,8 @@ namespace LinearSolverLibrary_NS {
     public:
         AMGStandardCoarseningStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
+        std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
+        std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
 
     private:
         void computeConnections();

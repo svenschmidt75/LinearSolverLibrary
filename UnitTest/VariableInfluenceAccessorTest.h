@@ -12,7 +12,7 @@
 
 class VariableInfluenceAccessorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(VariableInfluenceAccessorTest);
-    CPPUNIT_TEST(Test1);
+    CPPUNIT_TEST(TestVariablesInfluencedByVariable0);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +20,5 @@ public:
     void tearDown();
 
 protected:
-    void Test1();
+    void TestVariablesInfluencedByVariable0();
 };

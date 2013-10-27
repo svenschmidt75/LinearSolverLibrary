@@ -10,19 +10,19 @@ using namespace LinearSolverLibrary_NS;
 using namespace common_NS;
 
 
-VariableSetDecoratorBase::VariableSetDecoratorBase(IVariableSet const & variable_set)
+VariableSetDecoratorBase::VariableSetDecoratorBase(std::shared_ptr<IVariableSet> const & variable_set)
     : variable_set_(variable_set) {}
 
 bool
 VariableSetDecoratorBase::contains(size_type variable) const {
-    if (variable_set_.contains(variable) == false)
+    if (variable_set_->contains(variable) == false)
         return false;
     return predicate()(variable);
 }
 
 VariableSetDecoratorBase::size_type
 VariableSetDecoratorBase::size() const {
-    size_type count = std::count_if(std::begin(variable_set_), std::end(variable_set_), predicate());
+    size_type count = std::count_if(std::begin(*variable_set_), std::end(*variable_set_), predicate());
     return count;
 }
 
@@ -37,12 +37,12 @@ namespace {
 
 InputIterator<VariableSetDecoratorBase::size_type>
 VariableSetDecoratorBase::begin() const {
-    std::unique_ptr<VariableSetDecoratorIteratorLogic> logic(new VariableSetDecoratorIteratorLogic(std::begin(variable_set_), std::end(variable_set_), predicate()));
+    std::unique_ptr<VariableSetDecoratorIteratorLogic> logic(new VariableSetDecoratorIteratorLogic(std::begin(*variable_set_), std::end(*variable_set_), predicate()));
     return InputIterator_t(unique_pointer_cast<IInputIteratorLogic<size_type>>(std::move(logic)));
 }
 
 InputIterator<VariableSetDecoratorBase::size_type>
 VariableSetDecoratorBase::end() const {
-    std::unique_ptr<VariableSetDecoratorIteratorLogic> logic(new VariableSetDecoratorIteratorLogic(std::end(variable_set_), std::end(variable_set_), predicate()));
+    std::unique_ptr<VariableSetDecoratorIteratorLogic> logic(new VariableSetDecoratorIteratorLogic(std::end(*variable_set_), std::end(*variable_set_), predicate()));
     return InputIterator_t(unique_pointer_cast<IInputIteratorLogic<size_type>>(std::move(logic)));
 }

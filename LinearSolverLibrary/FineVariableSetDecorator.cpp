@@ -8,7 +8,7 @@ using namespace LinearSolverLibrary_NS;
 using namespace common_NS;
 
 
-FineVariableSetDecorator::FineVariableSetDecorator(IVariableSet const & variable_set, VariableCategorizer const & categorizer)
+FineVariableSetDecorator::FineVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer)
     :
     VariableSetDecoratorBase(variable_set),
     categorizer_(categorizer) {}

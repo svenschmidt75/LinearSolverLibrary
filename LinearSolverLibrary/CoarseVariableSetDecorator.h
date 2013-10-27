@@ -12,6 +12,7 @@
 #include "VariableSetDecoratorBase.h"
 
 #include <functional>
+#include <memory>
 
 #include <boost/noncopyable.hpp>
 
@@ -22,11 +23,12 @@
 namespace LinearSolverLibrary_NS {
 
     class VariableCategorizer;
+    class IVariableSet;
 
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS CoarseVariableSetDecorator final : public VariableSetDecoratorBase {
     public:
-        CoarseVariableSetDecorator(IVariableSet const & variable_set, VariableCategorizer const & categorizer);
+        CoarseVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer);
 
     protected:
         std::function<bool(size_type)> predicate() const override;
