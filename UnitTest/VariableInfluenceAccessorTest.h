@@ -12,7 +12,8 @@
 
 class VariableInfluenceAccessorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(VariableInfluenceAccessorTest);
-    CPPUNIT_TEST(TestVariablesInfluencedByVariable0);
+    CPPUNIT_TEST(TestFineGridVariablesInfluencedByVariable0WhenAllUndefined);
+    CPPUNIT_TEST(TestUndefinedVariablesInfluencedByVariable0AllUndefined);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +21,6 @@ public:
     void tearDown();
 
 protected:
-    void TestVariablesInfluencedByVariable0();
+    void TestFineGridVariablesInfluencedByVariable0WhenAllUndefined();
+    void TestUndefinedVariablesInfluencedByVariable0AllUndefined();
 };

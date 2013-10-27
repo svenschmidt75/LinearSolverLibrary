@@ -208,6 +208,7 @@
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
+    <ClCompile Include="UndefinedVariableSetDecorator.cpp" />
     <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
     <ClCompile Include="FineVariableSetDecorator.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
+    <ClInclude Include="UndefinedVariableSetDecorator.h" />
     <ClInclude Include="VariableSetDecoratorIteratorLogic.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />
     <ClInclude Include="DeclSpec.h" />

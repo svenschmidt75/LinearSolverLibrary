@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "VariableInfluenceAccessor.h"
-#include "CoarseVariableSetDecorator.h"
+#include "UndefinedVariableSetDecorator.h"
 #include "FineVariableSetDecorator.h"
 #include "AMGStandardCoarseningStrengthPolicy.h"
 
@@ -14,7 +14,7 @@ VariableInfluenceAccessor::VariableInfluenceAccessor(AMGStandardCoarseningStreng
 
 std::unique_ptr<IVariableSet>
 VariableInfluenceAccessor::GetVariableInfluencedUndefined(size_type variable) const {
-    std::unique_ptr<IVariableSet> variable_set(new CoarseVariableSetDecorator(strength_policy_.GetInfluencedByVariables(variable), categorizer_));
+    std::unique_ptr<IVariableSet> variable_set(new UndefinedVariableSetDecorator(strength_policy_.GetInfluencedByVariables(variable), categorizer_));
     return variable_set;
 }
 
