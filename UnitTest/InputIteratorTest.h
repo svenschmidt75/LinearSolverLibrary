@@ -19,7 +19,9 @@ class InputIteratorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(TestPreIncrementWithAssignment);
     CPPUNIT_TEST(TestIteratorEquality);
     CPPUNIT_TEST(TestIteratorInEquality);
+    CPPUNIT_TEST(TestIteratorCopyConstruction);
     CPPUNIT_TEST(TestIteratorAssignment);
+    CPPUNIT_TEST(TestIteratorEnd);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -34,6 +36,8 @@ protected:
     void TestPreIncrementWithAssignment();
     void TestIteratorEquality();
     void TestIteratorInEquality();
+    void TestIteratorCopyConstruction();
     void TestIteratorAssignment();
+    void TestIteratorEnd();
 };
 

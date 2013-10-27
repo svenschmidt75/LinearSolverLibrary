@@ -14,6 +14,7 @@ class VariableInfluenceAccessorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(VariableInfluenceAccessorTest);
     CPPUNIT_TEST(TestFineGridVariablesInfluencedByVariable0WhenAllUndefined);
     CPPUNIT_TEST(TestUndefinedVariablesInfluencedByVariable0AllUndefined);
+    CPPUNIT_TEST(TestVariablesInfluencedByVariable4);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -23,4 +24,5 @@ public:
 protected:
     void TestFineGridVariablesInfluencedByVariable0WhenAllUndefined();
     void TestUndefinedVariablesInfluencedByVariable0AllUndefined();
+    void TestVariablesInfluencedByVariable4();
 };

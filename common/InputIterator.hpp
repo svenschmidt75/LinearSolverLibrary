@@ -21,8 +21,14 @@ namespace common_NS {
         InputIterator(std::unique_ptr<IInputIteratorLogic<T>> && logic) : logic_(std::move(logic)) {}
 
         InputIterator(InputIterator const & in) {
-            // move assignment
+            // next line: move assignment
             logic_ = std::move(in.logic_->clone());
+        }
+
+        InputIterator operator=(InputIterator const & in) {
+            // next line: move assignment
+            logic_ = std::move(in.logic_->clone());
+            return *this;
         }
 
         InputIterator & operator++() {
