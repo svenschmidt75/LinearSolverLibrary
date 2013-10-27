@@ -19,7 +19,7 @@ void
 VariableInfluenceAccessorTest::tearDown() {}
 
 void
-VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByVariable0WhenAllUndefined() {
+VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByCornerGridVariableWhenAllUndefined() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -53,7 +53,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByVariable0WhenAll
 }
 
 void
-VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByVariable0AllUndefined() {
+VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByCornerGridVariableAllUndefined() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -91,7 +91,7 @@ VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByVariable0AllUnd
 }
 
 void
-VariableInfluenceAccessorTest::TestVariablesInfluencedByVariable4() {
+VariableInfluenceAccessorTest::TestVariablesInfluencedByCenterVariable() {
     MatrixStencil stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -146,7 +146,7 @@ VariableInfluenceAccessorTest::TestVariablesInfluencedByVariable4() {
 }
 
 void
-VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByVariable5WhenAllUndefined() {
+VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByBoundaryCenterVariableWhenAllUndefined() {
     MatrixStencil stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
@@ -184,7 +184,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByVariable5WhenAll
 }
 
 void
-VariableInfluenceAccessorTest::TestInfluencedByVariable4() {
+VariableInfluenceAccessorTest::TestInfluencedByCenterVariable() {
     MatrixStencil stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,

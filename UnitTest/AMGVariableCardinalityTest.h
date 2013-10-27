@@ -12,7 +12,10 @@
 
 class AMGVariableCardinalityTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(AMGVariableCardinalityTest);
-    CPPUNIT_TEST(Test1);
+    CPPUNIT_TEST(TestCardinalityOfCornerGridVariable);
+    CPPUNIT_TEST(TestCardinalityOfBoundaryGridVariable);
+    CPPUNIT_TEST(TestCardinalityOfBoundaryGridVariableWithUnrelatedChanges);
+    CPPUNIT_TEST(TestCardinalityOfCenterGridVariable);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +23,8 @@ public:
     void tearDown();
 
 protected:
-    void Test1();
+    void TestCardinalityOfCornerGridVariable();
+    void TestCardinalityOfBoundaryGridVariable();
+    void TestCardinalityOfBoundaryGridVariableWithUnrelatedChanges();
+    void TestCardinalityOfCenterGridVariable();
 };

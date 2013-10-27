@@ -32,6 +32,8 @@ namespace LinearSolverLibrary_NS {
     public:
         VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
 
+        size_t GetCardinalityForVariable(size_type variable) const;
+
     private:
         // node index, priority
         typedef std::pair<size_type, size_type> QueueItem_t;
@@ -41,8 +43,8 @@ namespace LinearSolverLibrary_NS {
 
     private:
         IVariableInfluenceAccessor const & variable_influence_accessor_;
-            VariableCategorizer const &      categorizer_;
-        std::priority_queue<QueueItem_t> queue_;
+        VariableCategorizer const &        categorizer_;
+        std::priority_queue<QueueItem_t>   queue_;
     };
 
 } // LinearSolverLibrary_NS

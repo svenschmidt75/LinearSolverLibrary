@@ -12,11 +12,11 @@
 
 class VariableInfluenceAccessorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(VariableInfluenceAccessorTest);
-    CPPUNIT_TEST(TestFineGridVariablesInfluencedByVariable0WhenAllUndefined);
-    CPPUNIT_TEST(TestUndefinedVariablesInfluencedByVariable0AllUndefined);
-    CPPUNIT_TEST(TestVariablesInfluencedByVariable4);
-    CPPUNIT_TEST(TestFineGridVariablesInfluencedByVariable5WhenAllUndefined);
-    CPPUNIT_TEST(TestInfluencedByVariable4);
+    CPPUNIT_TEST(TestFineGridVariablesInfluencedByCornerGridVariableWhenAllUndefined);
+    CPPUNIT_TEST(TestUndefinedVariablesInfluencedByCornerGridVariableAllUndefined);
+    CPPUNIT_TEST(TestVariablesInfluencedByCenterVariable);
+    CPPUNIT_TEST(TestFineGridVariablesInfluencedByBoundaryCenterVariableWhenAllUndefined);
+    CPPUNIT_TEST(TestInfluencedByCenterVariable);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,9 +24,9 @@ public:
     void tearDown();
 
 protected:
-    void TestFineGridVariablesInfluencedByVariable0WhenAllUndefined();
-    void TestUndefinedVariablesInfluencedByVariable0AllUndefined();
-    void TestVariablesInfluencedByVariable4();
-    void TestFineGridVariablesInfluencedByVariable5WhenAllUndefined();
-    void TestInfluencedByVariable4();
+    void TestFineGridVariablesInfluencedByCornerGridVariableWhenAllUndefined();
+    void TestUndefinedVariablesInfluencedByCornerGridVariableAllUndefined();
+    void TestVariablesInfluencedByCenterVariable();
+    void TestFineGridVariablesInfluencedByBoundaryCenterVariableWhenAllUndefined();
+    void TestInfluencedByCenterVariable();
 };
