@@ -1,8 +1,7 @@
 /*
-* Name  : VariableCardinalityPolicy
+* Name  : AMGStandardSplitting
 * Path  : 
-* Use   : Computes the cardinality for each undefined variable.
-          see Trottenberg, page 474, formula for \lambda_{i}.
+* Use   : Computes
 * Author: Sven Schmidt
 * Date  : 10/19/2013
 */
@@ -11,6 +10,8 @@
 #include "DeclSpec.h"
 
 #include "LinAlg/IMatrix2D.h"
+
+#include <queue>
 
 #include <boost/noncopyable.hpp>
 
@@ -24,18 +25,21 @@ namespace LinearSolverLibrary_NS {
     class VariableCategorizer;
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCardinalityPolicy : private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplitting : private boost::noncopyable {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
+        AMGStandardSplitting(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
 
-        size_t GetCardinalityForVariable(size_type variable) const;
+    private:
+        // node index, priority
+        typedef std::pair<size_type, size_type> QueueItem_t;
 
     private:
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer const &        categorizer_;
+        std::priority_queue<QueueItem_t>   queue_;
     };
 
 } // LinearSolverLibrary_NS

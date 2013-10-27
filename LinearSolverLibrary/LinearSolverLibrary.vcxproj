@@ -207,6 +207,7 @@
   <ItemGroup>
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
+    <ClCompile Include="AMGStandardSplitting.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
     <ClCompile Include="UndefinedVariableSetDecorator.cpp" />
     <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
@@ -244,6 +245,7 @@
   <ItemGroup>
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
+    <ClInclude Include="AMGStandardSplitting.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="UndefinedVariableSetDecorator.h" />
     <ClInclude Include="VariableSetDecoratorIteratorLogic.h" />

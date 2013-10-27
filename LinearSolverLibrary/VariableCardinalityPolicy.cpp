@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "VariableCardinalityPolicy.h"
+#include "IVariableInfluenceAccessor.h"
+#include "VariableCategorizer.h"
 
 
 using namespace LinearSolverLibrary_NS;
@@ -9,13 +11,7 @@ using namespace LinearSolverLibrary_NS;
 VariableCardinalityPolicy::VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer)
     :
     variable_influence_accessor_(variable_influence_accessor),
-    categorizer_(categorizer) {
-    initializeCardinality();
-}
-
-void
-VariableCardinalityPolicy::initializeCardinality() {
-}
+    categorizer_(categorizer) {}
 
 size_t
 VariableCardinalityPolicy::GetCardinalityForVariable(size_type variable) const {
