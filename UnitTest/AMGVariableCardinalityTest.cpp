@@ -46,7 +46,7 @@ AMGVariableCardinalityTest::TestCardinalityOfCornerGridVariable() {
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor);
 
     IVariableSet::size_type variable = 0;
     auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
@@ -86,7 +86,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariable() {
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor);
 
     IVariableSet::size_type variable = 7;
     auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
@@ -126,7 +126,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariableWithUnrelatedCh
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor);
 
     IVariableSet::size_type variable = 7;
     auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
@@ -168,7 +168,7 @@ AMGVariableCardinalityTest::TestCardinalityOfCenterGridVariable() {
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    VariableCardinalityPolicy cardinalityPolicy(influence_accessor, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor);
 
     IVariableSet::size_type variable = 4;
     auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);

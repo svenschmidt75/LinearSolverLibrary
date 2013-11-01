@@ -8,10 +8,9 @@
 using namespace LinearSolverLibrary_NS;
 
 
-VariableCardinalityPolicy::VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer)
+VariableCardinalityPolicy::VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor)
     :
-    variable_influence_accessor_(variable_influence_accessor),
-    categorizer_(categorizer) {}
+    variable_influence_accessor_(variable_influence_accessor) {}
 
 size_t
 VariableCardinalityPolicy::GetCardinalityForVariable(size_type variable) const {

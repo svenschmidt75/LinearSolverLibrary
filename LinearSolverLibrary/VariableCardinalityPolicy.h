@@ -21,7 +21,6 @@
 namespace LinearSolverLibrary_NS {
 
     class IVariableInfluenceAccessor;
-    class VariableCategorizer;
 
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCardinalityPolicy : private boost::noncopyable {
@@ -29,13 +28,12 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
+        VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor);
 
         size_t GetCardinalityForVariable(size_type variable) const;
 
     private:
         IVariableInfluenceAccessor const & variable_influence_accessor_;
-        VariableCategorizer const &        categorizer_;
     };
 
 } // LinearSolverLibrary_NS
