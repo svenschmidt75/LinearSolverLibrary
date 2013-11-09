@@ -13,6 +13,7 @@
 #include "LinAlg/SparseMatrix2D.h"
 
 #include <queue>
+#include <set>
 
 #include <boost/noncopyable.hpp>
 
@@ -33,7 +34,8 @@ namespace LinearSolverLibrary_NS {
     public:
         AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
-                             VariableCategorizer const & categorizer);
+                             VariableCategorizer & categorizer);
+        void generateSplitting();
 
     private:
         // node index, priority
@@ -41,13 +43,14 @@ namespace LinearSolverLibrary_NS {
         typedef std::priority_queue<QueueItem_t> Queue_t;
 
     private:
-        void generateSplitting();
         Queue_t initializeVariableCardinality();
+        void categorizeVariablesStronglyInfluencing(LinAlg_NS::IMatrix2D::size_type variable);
+        void adjustCardinalityOfStrongInfluencers(std::set<LinAlg_NS::IMatrix2D::size_type> const & variable);
 
     private:
         LinAlg_NS::SparseMatrix2D const &  m_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
-        VariableCategorizer const &        categorizer_;
+        VariableCategorizer &              categorizer_;
         Queue_t                            queue_;
     };
 
