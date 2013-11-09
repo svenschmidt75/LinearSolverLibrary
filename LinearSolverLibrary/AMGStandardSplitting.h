@@ -10,6 +10,7 @@
 #include "DeclSpec.h"
 
 #include "LinAlg/IMatrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
 
 #include <queue>
 
@@ -30,16 +31,24 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        AMGStandardSplitting(IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer const & categorizer);
+        AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
+                             IVariableInfluenceAccessor const & variable_influence_accessor,
+                             VariableCategorizer const & categorizer);
 
     private:
         // node index, priority
         typedef std::pair<size_type, size_type> QueueItem_t;
+        typedef std::priority_queue<QueueItem_t> Queue_t;
 
     private:
+        void generateSplitting();
+        Queue_t initializeVariableCardinality();
+
+    private:
+        LinAlg_NS::SparseMatrix2D const &  m_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer const &        categorizer_;
-        std::priority_queue<QueueItem_t>   queue_;
+        Queue_t                            queue_;
     };
 
 } // LinearSolverLibrary_NS

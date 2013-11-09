@@ -21,9 +21,11 @@
 #include "AMGVariableCardinalityTest.h"
 #include "InputIteratorTest.h"
 #include "VariableInfluenceAccessorTest.h"
+#include "AMGStandardSplittingTest.h"
 
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
 
