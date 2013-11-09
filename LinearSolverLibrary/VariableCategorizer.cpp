@@ -4,7 +4,6 @@
 
 #include "common/reporting.h"
 
-
 using namespace LinearSolverLibrary_NS;
 
 
@@ -28,4 +27,18 @@ void
 VariableCategorizer::SetType(size_type variable, Type type) {
     common_NS::reporting::checkUppderBound(variable, data_.size());
     data_[variable] = type;
+}
+
+void
+VariableCategorizer::print() const {
+    int row_size = static_cast<int>(std::sqrt(data_.size()));
+    std::cout << std::endl;
+    for (size_t row = 0; row < row_size; ++row) {
+        std::cout << std::endl;
+        for (size_t col = 0; col < row_size; ++col) {
+            auto index = row * row_size + col;
+            std::cout << std::setw(2) << static_cast<char>(data_[index]);
+        }
+    }
+    std::cout << std::endl;
 }

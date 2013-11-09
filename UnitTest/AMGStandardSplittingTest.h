@@ -12,7 +12,9 @@
 
 class AMGStandardSplittingTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(AMGStandardSplittingTest);
-    CPPUNIT_TEST(Test1);
+    CPPUNIT_TEST(TestSplittingForSimple5ptStencil);
+    CPPUNIT_TEST(TestSplittingForSimple9ptStencil);
+    CPPUNIT_TEST(TestSplittingForNontrivial9ptStencil);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +22,7 @@ public:
     void tearDown();
 
 protected:
-    void Test1();
+    void TestSplittingForSimple5ptStencil();
+    void TestSplittingForSimple9ptStencil();
+    void TestSplittingForNontrivial9ptStencil();
 };

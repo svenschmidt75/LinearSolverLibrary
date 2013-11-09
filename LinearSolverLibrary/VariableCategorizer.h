@@ -34,6 +34,7 @@ namespace LinearSolverLibrary_NS {
 
         Type GetType(size_type variable) const;
         void SetType(size_type variable, Type type);
+        void print() const;
 
     private:
         void initializeVariablesToUndefined();
