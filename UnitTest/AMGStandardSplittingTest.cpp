@@ -48,7 +48,7 @@ AMGStandardSplittingTest::TestSplittingForSimple5ptStencil() {
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
     splitting.generateSplitting();
-    variable_categorizer.print();
+//    variable_categorizer.print();
 
 /*
     C F C
@@ -113,7 +113,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencil() {
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
     splitting.generateSplitting();
-    variable_categorizer.print();
+//    variable_categorizer.print();
 
 /*
     F F F F F
@@ -213,6 +213,8 @@ AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
     F F F F F F F
     C C C C C C C
     F F F F F F F
+
+    no coarsening in the x direction, only y!
 */
     for (auto variable : {7, 8, 9, 10, 11, 12, 13, 21, 22, 23, 24, 25, 26, 27, 35, 36, 37, 38, 39, 40, 41}) {
         auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
