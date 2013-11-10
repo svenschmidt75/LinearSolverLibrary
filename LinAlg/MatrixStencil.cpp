@@ -8,8 +8,7 @@
 using namespace LinAlg_NS;
 
 
-MatrixStencil::MatrixStencil() {
-}
+MatrixStencil::MatrixStencil() {}
 
 MatrixStencil &
 MatrixStencil::operator<<(double value) {
