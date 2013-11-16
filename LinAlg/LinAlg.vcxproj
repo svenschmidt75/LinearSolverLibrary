@@ -220,7 +220,6 @@
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="iterators.cpp" />
-    <ClCompile Include="PeriodicBCMatrixStencil.cpp" />
     <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -253,7 +252,7 @@
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="iterators.h" />
     <ClInclude Include="MatrixStencil.hpp" />
-    <ClInclude Include="PeriodicBCMatrixStencil.h" />
+    <ClInclude Include="PeriodicBoundaryConditionPolicy.hpp" />
     <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />
     <ClInclude Include="VectorMath.h" />

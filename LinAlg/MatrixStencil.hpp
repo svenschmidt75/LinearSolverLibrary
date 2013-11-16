@@ -65,7 +65,7 @@ public:
         for (IMatrix2D::size_type currentRow{0}; currentRow < matrix_size; ++currentRow)
             applyStencil(currentRow, m);
         m.finalize();
-//        m.print();
+        m.print();
         return m;
     }
 

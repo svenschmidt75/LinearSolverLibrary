@@ -4,6 +4,7 @@
 
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
+#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
 #include "LinAlg/iterators.h"
 
 
@@ -225,6 +226,30 @@ MatrixStencilTest::TestGenerated4By4MatrixFor25PointStencil() {
          0,  0,  0,  0, -1,  9,  2,  1,  4, -1, -6, -3, -1,  3, -7, -8,
          0,  0,  0,  0,  2, -1,  9,  2, -1,  4, -1, -6,  7, -1,  3, -7,
          0,  0,  0,  0,  0,  2, -1,  9,  0, -1,  4, -1,  0,  7, -1,  3;
+
+    compareMatrices(m, reference_matrix);
+}
+
+void
+MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencilWithPeriodicBoundaryConditions() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil << 0, -1,  0,
+              -1,  4, -1,
+               0, -1,  0;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
+
+    Matrix2D reference_matrix(9, 9);
+    reference_matrix <<
+         4, -1,  0, -1,  0,  0,  0,  0,  0,
+        -1,  4, -1,  0, -1,  0,  0,  0,  0,
+        -1, -1,  4,  0,  0, -1,  0,  0,  0,
+        -1,  0,  0,  4, -1,  0, -1,  0,  0,
+         0, -1,  0, -1,  4, -1,  0, -1,  0,
+         0,  0, -1, -1, -1,  4,  0,  0, -1,
+        -1,  0,  0, -1,  0,  0,  4, -1,  0,
+         0, -1,  0,  0, -1,  0, -1,  4, -1,
+         0,  0, -1,  0,  0, -1, -1, -1,  4;
 
     compareMatrices(m, reference_matrix);
 }
