@@ -5,6 +5,7 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/helper.h"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 
@@ -21,7 +22,7 @@ AMGStandardCoarseningTest::tearDown() {}
 
 void
 AMGStandardCoarseningTest::TestStrongConnectionsForRowForFivePointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -59,7 +60,7 @@ AMGStandardCoarseningTest::TestStrongConnectionsForRowForFivePointStencil() {
 
 void
 AMGStandardCoarseningTest::TestStrongConnectionsForRowForNinePointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -4,  -1,
                -4, 20,  -4,
                -1, -4,  -1;
@@ -114,7 +115,7 @@ AMGStandardCoarseningTest::TestStrongConnectionsForRowForNinePointStencil() {
 
 void
 AMGStandardCoarseningTest::TestStrongConnectionsForRowForNinePointStencil2() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1.0 / 2.0,  -2,          -1.0 / 2.0,
                -1,           29.0 / 4.0, -1,
                -1.0 / 8.0,   -2,         -1.0 / 8.0;

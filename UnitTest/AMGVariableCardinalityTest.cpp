@@ -8,6 +8,7 @@
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 
 
 using namespace LinAlg_NS;
@@ -22,7 +23,7 @@ AMGVariableCardinalityTest::tearDown() {}
 
 void
 AMGVariableCardinalityTest::TestCardinalityOfCornerGridVariable() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -62,7 +63,7 @@ AMGVariableCardinalityTest::TestCardinalityOfCornerGridVariable() {
 
 void
 AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariable() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -102,7 +103,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariable() {
 
 void
 AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariableWithUnrelatedChanges() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -144,7 +145,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariableWithUnrelatedCh
 
 void
 AMGVariableCardinalityTest::TestCardinalityOfCenterGridVariable() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;

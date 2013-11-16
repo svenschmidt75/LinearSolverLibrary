@@ -6,6 +6,7 @@
 #include "LinearSolverLibrary/VariableCategorizer.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 
 
 using namespace LinAlg_NS;
@@ -20,7 +21,7 @@ VariableInfluenceAccessorTest::tearDown() {}
 
 void
 VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByCornerGridVariableWhenAllUndefined() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -54,7 +55,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByCornerGridVariab
 
 void
 VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByCornerGridVariableAllUndefined() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -92,7 +93,7 @@ VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByCornerGridVaria
 
 void
 VariableInfluenceAccessorTest::TestVariablesInfluencedByCenterVariable() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -147,7 +148,7 @@ VariableInfluenceAccessorTest::TestVariablesInfluencedByCenterVariable() {
 
 void
 VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByBoundaryCenterVariableWhenAllUndefined() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
                -1, -1, -1;
@@ -185,7 +186,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByBoundaryCenterVa
 
 void
 VariableInfluenceAccessorTest::TestInfluencedByCenterVariable() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
                -1, -1, -1;

@@ -9,6 +9,8 @@
 #include "LinearSolverLibrary/AMGStandardSplitting.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
+
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
@@ -23,7 +25,7 @@ AMGStandardSplittingTest::tearDown() {}
 void
 AMGStandardSplittingTest::TestSplittingForSimple5ptStencil() {
     // from Trottenberg, p. 475, Fig. A.12 top
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
                0, -1,  0;
@@ -72,7 +74,7 @@ AMGStandardSplittingTest::TestSplittingForSimple5ptStencil() {
 void
 AMGStandardSplittingTest::TestSplittingForSimple9ptStencil() {
     // from Trottenberg, p. 475, Fig. A.12 bottom
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
                -1, -1, -1;
@@ -139,7 +141,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencil() {
 void
 AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
     // from Multigrid Tutorial, p. 151, Fig. 8.7
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -4, -1,
                 2,  8,  2,
                -1, -4, -1;
