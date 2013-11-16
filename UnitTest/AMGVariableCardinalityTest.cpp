@@ -7,7 +7,7 @@
 #include "LinearSolverLibrary/VariableInfluenceAccessor.h"
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 #include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/MatrixStencil.h"
+#include "LinAlg/MatrixStencil.hpp"
 
 
 using namespace LinAlg_NS;

@@ -3,7 +3,7 @@
 #include "AMGStandardCoarseningTest.h"
 
 #include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/MatrixStencil.h"
+#include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/helper.h"
 
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"

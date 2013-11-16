@@ -2,7 +2,8 @@
 
 #include "MatrixStencilTest.h"
 
-#include "LinAlg/MatrixStencil.h"
+#include "LinAlg/MatrixStencil.hpp"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 #include "LinAlg/iterators.h"
 
 
@@ -17,7 +18,7 @@ MatrixStencilTest::tearDown() {}
 
 void
 MatrixStencilTest::TestInitialization() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, 3, -17.5;
     double expected = -1;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil error", expected, stencil.values_[0]);
@@ -29,55 +30,55 @@ MatrixStencilTest::TestInitialization() {
 
 void
 MatrixStencilTest::TestIndexTo2DMapping() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
                -1, -1, -1;
 
     short expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(4)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapIndexToStencilCoordinates(4)));
     expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(4)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapIndexToStencilCoordinates(4)));
 
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(0)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapIndexToStencilCoordinates(0)));
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(0)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapIndexToStencilCoordinates(0)));
 
     expected = -1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(6)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapIndexToStencilCoordinates(6)));
     expected = 1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(6)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapIndexToStencilCoordinates(6)));
 
     expected = 1;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapTo2D(5)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<0>(stencil.mapIndexToStencilCoordinates(5)));
     expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapTo2D(5)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, std::get<1>(stencil.mapIndexToStencilCoordinates(5)));
 }
 
 void
 MatrixStencilTest::Test2DToIndexMapping() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1,
                -1, -1, -1;
 
     unsigned short expected = 4;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(0, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapStencilCoordinatesToIndex(0, 0));
 
     expected = 0;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(-1, -1));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapStencilCoordinatesToIndex(-1, -1));
 
     expected = 3;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(-1, 0));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapStencilCoordinatesToIndex(-1, 0));
 
     expected = 7;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapToIndex(0, 1));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Stencil index mapping error", expected, stencil.mapStencilCoordinatesToIndex(0, 1));
 }
 
 void
 MatrixStencilTest::TestThatThrowsOnEvenStencilDimension() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1,  8, -1;
 
@@ -86,7 +87,7 @@ MatrixStencilTest::TestThatThrowsOnEvenStencilDimension() {
 
 void
 MatrixStencilTest::TestThatThrowsOnInconsistentStencilDimension() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -1, -1,
                -1, 8, -1,
                -1;
@@ -121,7 +122,7 @@ namespace {
 
 void
 MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil <<  0, -1,  0,
                -1,  4, -1,
                 0, -1,  0;
@@ -145,7 +146,7 @@ MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencil() {
 
 void
 MatrixStencilTest::TestGenerated3By3MatrixForNinePointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1, -4, -1,
                -4, 20, -4,
                -1, -4, -1;
@@ -169,7 +170,7 @@ MatrixStencilTest::TestGenerated3By3MatrixForNinePointStencil() {
 
 void
 MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil <<
          0,  0, -1,  0,  0,
          0,  0, -4,  0,  0,
@@ -196,7 +197,7 @@ MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencil() {
 
 void
 MatrixStencilTest::TestGenerated4By4MatrixFor25PointStencil() {
-    MatrixStencil stencil;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 
          2, -1,  9,  2,  1,
         -1,  4, -1, -6, -3,

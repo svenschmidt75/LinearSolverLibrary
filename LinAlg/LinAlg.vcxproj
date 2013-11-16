@@ -220,7 +220,6 @@
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="iterators.cpp" />
-    <ClCompile Include="MatrixStencil.cpp" />
     <ClCompile Include="PeriodicBCMatrixStencil.cpp" />
     <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
@@ -242,6 +241,7 @@
     <ClInclude Include="ConstRowIteratorBase.h" />
     <ClInclude Include="ConstColumnIterator.h" />
     <ClInclude Include="ConstColumnIteratorBase.h" />
+    <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\expression_traits.h" />
@@ -252,7 +252,7 @@
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
     <ClInclude Include="iterators.h" />
-    <ClInclude Include="MatrixStencil.h" />
+    <ClInclude Include="MatrixStencil.hpp" />
     <ClInclude Include="PeriodicBCMatrixStencil.h" />
     <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />

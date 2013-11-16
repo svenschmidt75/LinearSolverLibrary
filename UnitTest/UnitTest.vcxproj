@@ -27,9 +27,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AMGStandardCoarseningTest.cpp" />
-    <ClCompile Include="AMGStandardSplittingTest.cpp" />
-    <ClCompile Include="AMGVariableCardinalityTest.cpp" />
+    <ClCompile Include="AMGStandardCoarseningTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="AMGStandardSplittingTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="AMGVariableCardinalityTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
@@ -58,7 +64,9 @@
     <ClCompile Include="sts4098Test.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
-    <ClCompile Include="VariableInfluenceAccessorTest.cpp" />
+    <ClCompile Include="VariableInfluenceAccessorTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +95,9 @@
     <ClInclude Include="VersteegMalalasekeraTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{04def9ae-5b98-47e2-9fce-35897574eea9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FloridaSparseMatrixReaderLib\FloridaSparseMatrixReaderLib.vcxproj">
       <Project>{bbdd266d-6e3f-48c1-8fc6-d5d0b61727b7}</Project>
     </ProjectReference>

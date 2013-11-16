@@ -51,6 +51,7 @@ private:
     maptype_t                 mapTo2D(unsigned short index) const;
     unsigned short            mapToIndex(short i, short j) const;
     void                      applyStencil(IMatrix2D::size_type currentRow, LinAlg_NS::SparseMatrix2D & m) const;
+    void                      generateGridNodeMapping();
 
 private:
     std::vector<double> values_;
