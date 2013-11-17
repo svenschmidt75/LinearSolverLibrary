@@ -253,3 +253,49 @@ MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencilWithPeriodicBoundar
 
     compareMatrices(m, reference_matrix);
 }
+
+void
+MatrixStencilTest::TestGenerated3By3MatrixFor25PointStencilWithPeriodicBoundaryConditions() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         0,  0, -1,  0,  0,
+         0,  0, -4,  0,  0,
+        -1, -4, 20, -4, -1,
+         0,  0, -4,  0,  0,
+         0,  0, -1,  0,  0;
+
+    CPPUNIT_ASSERT_THROW(stencil.generateMatrix(3 * 3), std::runtime_error);
+}
+void
+MatrixStencilTest::TestGenerated4By4MatrixFor25PointStencilWithPeriodicBoundaryConditions() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(4 * 4);
+
+    Matrix2D reference_matrix(16, 16);
+    reference_matrix <<
+        3, -7, -8, 0, -8, -9, -3, 0, -2, 7, 2, 0, 0, 0, 0, 0,
+        -1, 3, -7, -8, 5, -8, -9, -3, 1, -2, 7, 2, 0, 0, 0, 0,
+        7, -1, 3, -7, 3, 5, -8, -9, 0, 1, -2, 7, 0, 0, 0, 0,
+        0, 7, -1, 3, 0, 3, 5, -8, 0, 0, 1, -2, 0, 0, 0, 0,
+        -1, -6, -3, 0, 3, -7, -8, 0, -8, -9, -3, 0, -2, 7, 2, 0,
+        4, -1, -6, -3, -1, 3, -7, -8, 5, -8, -9, -3, 1, -2, 7, 2,
+        -1, 4, -1, -6, 7, -1, 3, -7, 3, 5, -8, -9, 0, 1, -2, 7,
+        0, -1, 4, -1, 0, 7, -1, 3, 0, 3, 5, -8, 0, 0, 1, -2,
+        9, 2, 1, 0, -1, -6, -3, 0, 3, -7, -8, 0, -8, -9, -3, 0,
+        -1, 9, 2, 1, 4, -1, -6, -3, -1, 3, -7, -8, 5, -8, -9, -3,
+        2, -1, 9, 2, -1, 4, -1, -6, 7, -1, 3, -7, 3, 5, -8, -9,
+        0, 2, -1, 9, 0, -1, 4, -1, 0, 7, -1, 3, 0, 3, 5, -8,
+        0, 0, 0, 0, 9, 2, 1, 0, -1, -6, -3, 0, 3, -7, -8, 0,
+        0, 0, 0, 0, -1, 9, 2, 1, 4, -1, -6, -3, -1, 3, -7, -8,
+        0, 0, 0, 0, 2, -1, 9, 2, -1, 4, -1, -6, 7, -1, 3, -7,
+        0, 0, 0, 0, 0, 2, -1, 9, 0, -1, 4, -1, 0, 7, -1, 3;
+
+    compareMatrices(m, reference_matrix);
+}

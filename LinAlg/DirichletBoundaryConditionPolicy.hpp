@@ -28,8 +28,6 @@ public:
     typedef std::tuple<IMatrix2D::size_type, IMatrix2D::size_type> MapType_t;
 
 public:
-    DirichletBoundaryConditionPolicy() {}
-
     bool
     isMatrixPositionValid(IMatrix2D::size_type matrixRow, IMatrix2D::size_type matrixColumn, short stencilX, short stencilY) const {
         if (matrixColumn + stencilX >= row_size_)

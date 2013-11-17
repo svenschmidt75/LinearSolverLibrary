@@ -62,6 +62,7 @@ public:
         common_NS::reporting::checkConditional(stencil_dimension * stencil_dimension == values_.size());
         bc_policy_.setRowSize(matrix_dimension);
         SparseMatrix2D m{matrix_size};
+        SparseMatrix2D check_matrix{matrix_size};
         for (IMatrix2D::size_type currentRow{0}; currentRow < matrix_size; ++currentRow)
             applyStencil(currentRow, m);
         m.finalize();
@@ -123,12 +124,23 @@ private:
             IMatrix2D::size_type matrixColumn;
             std::tie(matrixRow, matrixColumn) = bc_policy_.getMappedColumnIndex(baseMatrixRow, baseMatrixColumn, stencilX, stencilY);
             auto mapped_column_index = matrixColumn + matrixRow * row_size;
+            if (check_matrix_(matrix_row, mapped_column_index)) {
+                // Matrix element m(matrix_row, mapped_column_index) already set.
+                // Either then stencil is too large, or the matrix is too small.
+                // This happens if the stencil is larger than the matrix, i.e.
+                // the stencil is 5x5, but the matrix is only 4x4.
+                boost::format format = boost::format("\nMatrixStencil::applyStencil: Matrix element (%1%, %2%)=%3% already set while applying stencil at (%4%, %5%)=%6%") % matrix_row % mapped_column_index % m(matrix_row, mapped_column_index) % stencilX % stencilY % values_[stencil_index];
+                common_NS::reporting::error(format.str());
+                throw std::runtime_error(format.str());
+            }
             m(matrix_row, mapped_column_index) = values_[stencil_index];
+            check_matrix_(matrix_row, mapped_column_index) = 1.0;
         }
     }
 
 private:
     std::vector<double>               values_;
+    mutable SparseMatrix2D            check_matrix_;
     mutable BOUNDARY_CONDITION_POLICY bc_policy_;
 };
 

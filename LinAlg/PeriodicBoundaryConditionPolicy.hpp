@@ -3,6 +3,10 @@
 * Path  :
 * Use   : Policy for periodic b.c. for generating
 *         matrices from matrix stencils.
+*         The 1st column is mapped to the last column, which is only virtual.
+*         The 1st row is mapped to the last row, which is also virtual.
+*         The virtual column and row are NOT part of the matrix, i.e.
+*         a 3x3 matrix with periodic b.c. is virtually extended to 4x4.
 * Author: Sven Schmidt
 * Date  : 11/16/2013
 */
@@ -28,8 +32,6 @@ namespace LinAlg_NS {
         typedef std::tuple<IMatrix2D::size_type, IMatrix2D::size_type> MapType_t;
 
     public:
-        PeriodicBoundaryConditionPolicy() {}
-
         bool
         isMatrixPositionValid(IMatrix2D::size_type matrixRow, IMatrix2D::size_type matrixColumn, short stencilX, short stencilY) const {
             if (matrixColumn + stencilX >= row_size_ + 1)
