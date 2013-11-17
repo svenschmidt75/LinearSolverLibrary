@@ -237,7 +237,7 @@ AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
 void
 AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryConditions() {
     // from Multigrid Tutorial, p. 150, Fig. 8.5
-    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
 
     // stencil on page 147, equ. 8.14
     stencil << -1, -1, -1,
