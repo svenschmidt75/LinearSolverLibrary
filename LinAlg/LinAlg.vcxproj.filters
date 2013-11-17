@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="entities">
+      <UniqueIdentifier>{691105ab-1cd7-4606-98bf-40196e596d30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{f3e3025a-8fd4-4b42-a630-4e2c1682b48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iterators">
+      <UniqueIdentifier>{5b96fc9f-7f9e-481b-ae97-ada33cd749bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UHMatrix.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="UTMatrix.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="TransposeVector.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="SparseMatrix2D.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix2D.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities.cpp">
+      <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="helper.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="VectorMath.cpp" />
+    <ClCompile Include="internal\ScalarExpression.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="iterators.cpp">
+      <Filter>iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstColumnIterator.cpp">
+      <Filter>iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstRowIterator.cpp">
+      <Filter>iterators</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="internal\primitiveOperators.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ScalarExpression.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\expression_traits.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include=".\internal\VectorBinaryExpr.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ScalarVectorBinaryExpr.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ScalarMatrixExpr.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include=".\internal\MatrixVectorExpr.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UTMatrix.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UHMatrix.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TransposeVector.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseMatrix2D.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="operators.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix2D.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="IMatrix2D.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="entities.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DeclSpec.h" />
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="VectorMath.h" />
+    <ClInclude Include="iterators.h">
+      <Filter>iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnIterator.h">
+      <Filter>iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnIteratorBase.h">
+      <Filter>iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstRowIterator.h">
+      <Filter>iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstRowIteratorBase.h">
+      <Filter>iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixStencil.hpp" />
+    <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
+    <ClInclude Include="PeriodicBoundaryConditionPolicy.hpp" />
+  </ItemGroup>
+</Project>

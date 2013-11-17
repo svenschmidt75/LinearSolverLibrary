@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Lanczos">
+      <UniqueIdentifier>{f792f31b-6b76-4a86-911d-ea589bf0caa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MultiColor">
+      <UniqueIdentifier>{c3f1f8f0-aa45-4fb5-b160-52e3f144c5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MultiColor\internal">
+      <UniqueIdentifier>{50201bb8-7fc3-472b-8360-168bdcd7c9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AMG">
+      <UniqueIdentifier>{76663ce7-a933-4239-b1e0-1504968764b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="internal\MultiColor_internal.cpp">
+      <Filter>MultiColor\internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\BucketList.cpp">
+      <Filter>MultiColor\internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\BucketElement.cpp">
+      <Filter>MultiColor\internal</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussJordan.cpp" />
+    <ClCompile Include="GCR.cpp" />
+    <ClCompile Include="Gmres.cpp" />
+    <ClCompile Include="LUDecomposition.cpp" />
+    <ClCompile Include="Minres.cpp" />
+    <ClCompile Include="MinresLanPro.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ResHelper.cpp" />
+    <ClCompile Include="SparseLinearSolverLibrary.cpp" />
+    <ClCompile Include="SparseLinearSolverUtil.cpp" />
+    <ClCompile Include="MatrixDecomposition.cpp">
+      <Filter>MultiColor</Filter>
+    </ClCompile>
+    <ClCompile Include="lanczos.cpp">
+      <Filter>Lanczos</Filter>
+    </ClCompile>
+    <ClCompile Include="lanczosPRO.cpp">
+      <Filter>Lanczos</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\MultiColor.cpp">
+      <Filter>MultiColor</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableSet.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGStandardCoarsening.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableCategorizer.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableCardinalityPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableInfluenceAccessor.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="CoarseVariableSetDecorator.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableSetIteratorLogic.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="FineVariableSetDecorator.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableSetDecoratorBase.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="UndefinedVariableSetDecorator.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGStandardSplitting.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="internal\MultiColor.h">
+      <Filter>MultiColor</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixDecomposition.h">
+      <Filter>MultiColor</Filter>
+    </ClInclude>
+    <ClInclude Include="lanczos.h">
+      <Filter>Lanczos</Filter>
+    </ClInclude>
+    <ClInclude Include="lanczosPRO.h">
+      <Filter>Lanczos</Filter>
+    </ClInclude>
+    <ClInclude Include="DeclSpec.h" />
+    <ClInclude Include="GaussJordan.h" />
+    <ClInclude Include="GCR.h" />
+    <ClInclude Include="Gmres.h" />
+    <ClInclude Include="LUDecomposition.h" />
+    <ClInclude Include="Minres.h" />
+    <ClInclude Include="MinresLanPro.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="ResHelper.h" />
+    <ClInclude Include="SparseLinearSolverLibrary.h" />
+    <ClInclude Include="SparseLinearSolverUtil.h" />
+    <ClInclude Include="ConjugateGradientMethods.hpp" />
+    <ClInclude Include="internal\BucketElement.h">
+      <Filter>MultiColor\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\BucketList.h">
+      <Filter>MultiColor\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\MultiColor_internal.h">
+      <Filter>MultiColor\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableSet.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardCoarsening.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="IVariableSet.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="CoarseVariableSetDecorator.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableCategorizer.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableCardinalityPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="IVariableInfluenceAccessor.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableInfluenceAccessor.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableSetIteratorLogic.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="FineVariableSetDecorator.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableSetDecoratorBase.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableSetDecoratorIteratorLogic.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="UndefinedVariableSetDecorator.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardSplitting.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
