@@ -230,6 +230,63 @@ MatrixStencilTest::TestGenerated4By4MatrixFor25PointStencil() {
     compareMatrices(m, reference_matrix);
 }
 
+namespace {
+
+    void TestPeriodicBoundaryConditionMapping(PeriodicBoundaryConditionPolicy const & policy,
+                                              IMatrix2D::size_type matrixRow,
+                                              IMatrix2D::size_type matrixColumn,
+                                              short stencilX,
+                                              short stencilY,
+                                              IMatrix2D::size_type expected_row,
+                                              IMatrix2D::size_type expected_column) {
+        auto result = policy.getMappedColumnIndex(matrixRow, matrixColumn, stencilX, stencilY);
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("mapping error", expected_row, std::get<0>(result));
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("mapping error", expected_column, std::get<1>(result));
+    }
+
+}
+
+void
+MatrixStencilTest::TestMappingForPeriodicBoundaryConditions() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         0,  0, -1,  0,  0,
+         0,  0, -4,  0,  0,
+        -1, -4, 20, -4, -1,
+         0,  0, -4,  0,  0,
+         0,  0, -1,  0,  0;
+
+    PeriodicBoundaryConditionPolicy policy;
+    policy.setRowSize(3);
+
+    // no under/overflow column
+    TestPeriodicBoundaryConditionMapping(policy, 0, 0, 0, 0, 0, 0);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 1, 1, 0, 0, 2);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 2, -1, 0, 0, 1);
+
+    // underflow column
+    TestPeriodicBoundaryConditionMapping(policy, 0, 0, -1, 0, 0, 2);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 0, -7, 0, 0, 2);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 2, -4, 0, 0, 1);
+
+    // overflow column
+    TestPeriodicBoundaryConditionMapping(policy, 0, 0, 7, 0, 0, 1);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 2, 1, 0, 0, 0);
+    TestPeriodicBoundaryConditionMapping(policy, 0, 1, 2, 0, 0, 0);
+
+
+    // no under/overflow row
+    TestPeriodicBoundaryConditionMapping(policy, 2, 1, 0, 0, 2, 1);
+
+    // underflow row
+    TestPeriodicBoundaryConditionMapping(policy, 1, 1, 0, -2, 2, 1);
+    TestPeriodicBoundaryConditionMapping(policy, 1, 1, -2, -5, 2, 2);
+
+    // overflow row
+    TestPeriodicBoundaryConditionMapping(policy, 2, 1, 0, 1, 0, 1);
+    TestPeriodicBoundaryConditionMapping(policy, 2, 2, 1, 1, 0, 0);
+}
+
 void
 MatrixStencilTest::TestGenerated3By3MatrixForFivePointStencilWithPeriodicBoundaryConditions() {
     MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
