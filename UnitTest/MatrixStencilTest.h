@@ -23,7 +23,7 @@ class MatrixStencilTest : public CppUnit::TestFixture {
 //     CPPUNIT_TEST(TestGenerated4By4MatrixFor25PointStencil);
 //     CPPUNIT_TEST(TestGenerated3By3MatrixForFivePointStencilWithPeriodicBoundaryConditions);
 //    CPPUNIT_TEST(TestGenerated3By3MatrixFor25PointStencilWithPeriodicBoundaryConditions);
-     CPPUNIT_TEST(TestGenerated4By4MatrixFor25PointStencilWithPeriodicBoundaryConditions);
+     CPPUNIT_TEST(TestGenerated5By5MatrixFor25PointStencilWithPeriodicBoundaryConditions);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -42,5 +42,5 @@ protected:
     void TestGenerated4By4MatrixFor25PointStencil();
     void TestGenerated3By3MatrixForFivePointStencilWithPeriodicBoundaryConditions();
     void TestGenerated3By3MatrixFor25PointStencilWithPeriodicBoundaryConditions();
-    void TestGenerated4By4MatrixFor25PointStencilWithPeriodicBoundaryConditions();
+    void TestGenerated5By5MatrixFor25PointStencilWithPeriodicBoundaryConditions();
 };
