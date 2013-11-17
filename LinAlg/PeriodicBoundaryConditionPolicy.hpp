@@ -34,10 +34,10 @@ namespace LinAlg_NS {
     public:
         bool
         isMatrixPositionValid(IMatrix2D::size_type matrixRow, IMatrix2D::size_type matrixColumn, short stencilX, short stencilY) const {
-            if (matrixColumn + stencilX >= row_size_ + 1)
-                return false;
-            if (matrixRow + stencilY >= row_size_ + 1)
-                return false;
+//             if (matrixColumn + stencilX >= row_size_ + 1)
+//                 return false;
+//             if (matrixRow + stencilY >= row_size_ + 1)
+//                 return false;
             return true;
         }
 

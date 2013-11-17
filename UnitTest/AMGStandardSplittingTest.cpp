@@ -10,6 +10,7 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
+#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
 
 
 using namespace LinAlg_NS;
@@ -142,6 +143,8 @@ void
 AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
     // from Multigrid Tutorial, p. 151, Fig. 8.7
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+
+    // stencil on page 149, bottom
     stencil << -1, -4, -1,
                 2,  8,  2,
                -1, -4, -1;
@@ -225,6 +228,50 @@ AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
     }
 
     for (auto variable : {0, 1, 2, 3, 4, 5, 6, 14, 15, 16, 17, 18, 19, 20, 28, 29, 30, 31, 32, 33, 34, 42, 43, 44, 45, 46, 47, 48}) {
+        auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
+        auto expected = static_cast<char>(VariableCategorizer::Type::FINE);
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+    }
+}
+
+void
+AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryConditions() {
+    // from Multigrid Tutorial, p. 150, Fig. 8.5
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+
+    // stencil on page 147, equ. 8.14
+    stencil << -1, -1, -1,
+               -1,  8, -1,
+               -1, -1, -1;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(7 * 7);
+
+    m.print();
+/*
+*/
+
+    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    VariableCategorizer variable_categorizer(m.rows());
+    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+    AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
+    splitting.generateSplitting();
+    variable_categorizer.print();
+
+/*
+    F F F F F
+    F C F C F
+    F F F F F
+    F C F C F
+    F F F F F
+*/
+
+    for (auto variable : {6, 8, 16, 18}) {
+        auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
+        auto expected = static_cast<char>(VariableCategorizer::Type::COARSE);
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+    }
+
+    for (auto variable : {0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24}) {
         auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
         auto expected = static_cast<char>(VariableCategorizer::Type::FINE);
         CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
