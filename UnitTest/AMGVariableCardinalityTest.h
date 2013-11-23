@@ -16,6 +16,7 @@ class AMGVariableCardinalityTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(TestCardinalityOfBoundaryGridVariable);
     CPPUNIT_TEST(TestCardinalityOfBoundaryGridVariableWithUnrelatedChanges);
     CPPUNIT_TEST(TestCardinalityOfCenterGridVariable);
+    CPPUNIT_TEST(TestThatCardinalityIsSameForAllVariablesWithPeriodicBoundaryConditions);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -27,4 +28,5 @@ protected:
     void TestCardinalityOfBoundaryGridVariable();
     void TestCardinalityOfBoundaryGridVariableWithUnrelatedChanges();
     void TestCardinalityOfCenterGridVariable();
+    void TestThatCardinalityIsSameForAllVariablesWithPeriodicBoundaryConditions();
 };

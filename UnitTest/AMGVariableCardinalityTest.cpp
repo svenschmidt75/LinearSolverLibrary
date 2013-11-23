@@ -9,6 +9,7 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
+#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
 
 
 using namespace LinAlg_NS;
@@ -183,4 +184,35 @@ AMGVariableCardinalityTest::TestCardinalityOfCenterGridVariable() {
     cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
     expected_cardinality = 7;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong cardinality", expected_cardinality, cardinality);
+}
+
+void
+AMGVariableCardinalityTest::TestThatCardinalityIsSameForAllVariablesWithPeriodicBoundaryConditions() {
+    // from Multigrid Tutorial, p. 150, Fig. 8.5
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+
+    // stencil on page 147, equ. 8.14
+    stencil << -1, -1, -1,
+               -1,  8, -1,
+               -1, -1, -1;
+
+    SparseMatrix2D const & m = stencil.generateMatrix(7 * 7);
+//    m.print();
+
+
+    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    VariableCategorizer variable_categorizer(m.rows());
+    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+    VariableCardinalityPolicy cardinalityPolicy(influence_accessor);
+
+    auto matrix_dim = 7;
+    Matrix2D coeff(matrix_dim, matrix_dim);
+    for (int i = 0; i < matrix_dim; ++i) {
+        for (int j = 0; j < matrix_dim; ++j) {
+            auto variable = i * matrix_dim + j;
+            auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
+            decltype(cardinality) expected_cardinality = 8;
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong cardinality", expected_cardinality, cardinality);
+        }
+    }
 }

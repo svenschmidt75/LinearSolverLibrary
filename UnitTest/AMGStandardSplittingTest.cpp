@@ -245,10 +245,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryCo
                -1, -1, -1;
 
     SparseMatrix2D const & m = stencil.generateMatrix(7 * 7);
-
 //    m.print();
-/*
-*/
 
     AMGStandardCoarseningStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
