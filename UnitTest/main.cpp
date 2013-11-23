@@ -24,11 +24,7 @@
 #include "AMGStandardSplittingTest.h"
 
 
-
-CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
-
-#if 0
-
+#if 1
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);

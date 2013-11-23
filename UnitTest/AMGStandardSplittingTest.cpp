@@ -246,7 +246,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryCo
 
     SparseMatrix2D const & m = stencil.generateMatrix(7 * 7);
 
-    m.print();
+//    m.print();
 /*
 */
 
@@ -255,25 +255,52 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryCo
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
     splitting.generateSplitting();
-    variable_categorizer.print();
+//    variable_categorizer.print();
 
 /*
-    F F F F F
-    F C F C F
-    F F F F F
-    F C F C F
-    F F F F F
-*/
+ F F F F F F F
+ F F F F F F F
+ F F C F C F C
+ F F F F F F F
+ F F C F C F C
+ F F F F F F F
+ F F C F C F C
+ */
 
-    for (auto variable : {6, 8, 16, 18}) {
-        auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
-        auto expected = static_cast<char>(VariableCategorizer::Type::COARSE);
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+    int const matrix_dim = 7;
+
+    // 1: Fine
+    // 0: Coarse
+    Matrix2D coeff(matrix_dim, matrix_dim);
+    for (int i = 0; i < matrix_dim; ++i) {
+        for (int j = 0; j < matrix_dim; ++j) {
+            coeff(i, j) = 1;
+        }
     }
 
-    for (auto variable : {0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24}) {
-        auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
-        auto expected = static_cast<char>(VariableCategorizer::Type::FINE);
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+    // set coarse
+    coeff(2, 2) = 0;
+    coeff(2, 4) = 0;
+    coeff(2, 6) = 0;
+    coeff(4, 2) = 0;
+    coeff(4, 4) = 0;
+    coeff(4, 6) = 0;
+    coeff(6, 2) = 0;
+    coeff(6, 4) = 0;
+    coeff(6, 6) = 0;
+
+    for (int i = 0; i < matrix_dim; ++i) {
+        for (int j = 0; j < matrix_dim; ++j) {
+            auto variable = i * matrix_dim + j;
+            auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
+            if (coeff(i, j)) {
+                auto expected = static_cast<char>(VariableCategorizer::Type::FINE);
+                CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+            }
+            else {
+                auto expected = static_cast<char>(VariableCategorizer::Type::COARSE);
+                CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
+            }
+        }
     }
 }
