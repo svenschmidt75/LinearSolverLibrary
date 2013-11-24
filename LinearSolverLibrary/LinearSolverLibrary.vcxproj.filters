@@ -165,5 +165,8 @@
     <ClInclude Include="AMGStandardSplitting.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="AMGDirectInterpolation.hpp">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

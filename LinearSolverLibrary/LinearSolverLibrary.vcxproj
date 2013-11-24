@@ -210,6 +210,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AMGDirectInterpolation.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="AMGStandardSplitting.cpp" />

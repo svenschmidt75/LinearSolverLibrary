@@ -15,17 +15,17 @@
 
 #include "LinAlg/SparseMatrix2D.h"
 
-#include <boost/noncopyable.hpp>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarsening : boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarsening {
     public:
         AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m, VariableCategorizer & categorizer);
+        AMGStandardCoarsening(AMGStandardCoarsening const &) = delete;
+        AMGStandardCoarsening & operator=(AMGStandardCoarsening const &) = delete;
 
     private:
         LinAlg_NS::SparseMatrix2D const &   m_;
