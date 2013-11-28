@@ -21,7 +21,7 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 
 #include <functional>
 

@@ -3,7 +3,7 @@
 #include "Gmres.h"
 #include "ResHelper.h"
 #include "LinAlg/VectorMath.h"
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 #include "LinAlg/UHMatrix.h"
 

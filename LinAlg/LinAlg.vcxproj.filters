@@ -30,9 +30,6 @@
     <ClCompile Include="Matrix2D.cpp">
       <Filter>entities</Filter>
     </ClCompile>
-    <ClCompile Include="entities.cpp">
-      <Filter>entities</Filter>
-    </ClCompile>
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -47,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="ConstRowIterator.cpp">
       <Filter>iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicEntityOperators.cpp">
+      <Filter>entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +95,6 @@
     <ClInclude Include="IMatrix2D.h">
       <Filter>entities</Filter>
     </ClInclude>
-    <ClInclude Include="entities.h">
-      <Filter>entities</Filter>
-    </ClInclude>
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="pch.h" />
@@ -120,5 +117,8 @@
     <ClInclude Include="MatrixStencil.hpp" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="PeriodicBoundaryConditionPolicy.hpp" />
+    <ClInclude Include="BasicEntityOperators.h">
+      <Filter>entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 #include "spiralTest.h"
 
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 
 #include "LinearSolverLibrary/ConjugateGradientMethods.hpp"

@@ -2,7 +2,7 @@
 
 #include "fs_680_1_Test.h"
 
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 
 #include "LinearSolverLibrary/ConjugateGradientMethods.hpp"

@@ -5,7 +5,7 @@
 #include "LinearSolverLibrary/GaussJordan.h"
 #include "LinearSolverLibrary/SparseLinearSolverUtil.h"
 
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 
 

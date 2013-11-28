@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "lanczosPRO.h"
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 #include "LinAlg/VectorMath.h"
 

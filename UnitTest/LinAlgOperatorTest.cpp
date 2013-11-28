@@ -3,7 +3,7 @@
 #include "LinAlgOperatorTest.h"
 
 #include "LinAlg/Vector.h"
-#include "LinAlg/entities.h"
+#include "LinAlg/BasicEntityOperators.h"
 #include "LinAlg/operators.h"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"

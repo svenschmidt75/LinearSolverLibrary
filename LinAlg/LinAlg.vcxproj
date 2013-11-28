@@ -216,7 +216,7 @@
       <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
     </ClCompile>
     <ClCompile Include="ConstColumnIterator.cpp" />
-    <ClCompile Include="entities.cpp" />
+    <ClCompile Include="BasicEntityOperators.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
     <ClCompile Include="iterators.cpp" />
@@ -241,7 +241,7 @@
     <ClInclude Include="ConstColumnIterator.h" />
     <ClInclude Include="ConstColumnIteratorBase.h" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
-    <ClInclude Include="entities.h" />
+    <ClInclude Include="BasicEntityOperators.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\expression_traits.h" />
     <ClInclude Include="internal\primitiveOperators.h" />

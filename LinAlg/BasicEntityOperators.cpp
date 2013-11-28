@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "entities.h"
+#include "BasicEntityOperators.h"
 
 #include "common/reporting.h"
 

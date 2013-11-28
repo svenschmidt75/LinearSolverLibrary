@@ -17,8 +17,6 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "LinAlg/entities.h"
-
 
 class fs_680_1_Test : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(fs_680_1_Test);

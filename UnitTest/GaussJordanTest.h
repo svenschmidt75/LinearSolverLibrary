@@ -9,8 +9,6 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "LinAlg/entities.h"
-
 
 class GaussJordanTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(GaussJordanTest);
