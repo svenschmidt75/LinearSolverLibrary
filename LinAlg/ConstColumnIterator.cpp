@@ -23,12 +23,20 @@ ConstColumnIterator<SparseMatrix2D>::operator=(ConstColumnIterator const & in) {
     return *this;
 }
 
+ConstColumnIterator<SparseMatrix2D>::operator bool() const {
+    return isValid();
+}
+
 bool
 ConstColumnIterator<SparseMatrix2D>::isValid() const {
+    return column_ < numberOfNonZeroMatrixElements();
+}
+
+ConstColumnIterator<SparseMatrix2D>::size_type
+ConstColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
     common_NS::reporting::checkUppderBound(row_, m_.rows());
-    size_type offset = m_.nelements_[row_];
-    size_type ncol = m_.nelements_[row_ + 1] - offset;
-    return column_ < ncol;
+    size_type ncol = m_.nelements_[row_ + 1] - m_.nelements_[row_];
+    return ncol;
 }
 
 ConstColumnIterator<SparseMatrix2D>::size_type
@@ -74,7 +82,7 @@ void
 ConstColumnIterator<SparseMatrix2D>::jumpToNextElement() const {
     common_NS::reporting::checkUppderBound(row_, m_.rows());
     size_type offset = m_.nelements_[row_];
-    size_type ncol = m_.nelements_[row_ + 1] - offset;
+    size_type ncol = numberOfNonZeroMatrixElements();
     column_++;
     if (!isValid())
         return;

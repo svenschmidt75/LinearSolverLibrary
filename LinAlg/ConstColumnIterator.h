@@ -28,10 +28,10 @@ public:
     ConstColumnIterator(SparseMatrix2D const & m, size_type row);
     ConstColumnIterator & operator=(ConstColumnIterator const & in);
 
-//    explicit operator bool() const;
+    explicit operator bool() const;
 
     bool isValid() const;
-
+    size_type numberOfNonZeroMatrixElements() const;
     size_type column() const;
 
     iter & operator++();
