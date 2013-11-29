@@ -1,5 +1,5 @@
 /*
-* Name  : SparseMatrixIteratorTest
+* Name  : SparseMatrixRowIteratorTest
 * Path  :
 * Use   :
 * Author: Sven Schmidt
@@ -10,8 +10,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class SparseMatrixIteratorTest : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(SparseMatrixIteratorTest);
+class SparseMatrixRowIteratorTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(SparseMatrixRowIteratorTest);
     CPPUNIT_TEST(RowIteratorSizeEqualsNumberOfRows);
     CPPUNIT_TEST(RowIteratorReturnsCorrectRow);
     CPPUNIT_TEST(RowIteratorPreIncrementReturnsNextRowIterator);

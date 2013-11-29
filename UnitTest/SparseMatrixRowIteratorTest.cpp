@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "SparseMatrixIteratorTest.h"
+#include "SparseMatrixRowIteratorTest.h"
 
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/iterators.h"
@@ -29,20 +29,20 @@ namespace {
 }
 
 void
-SparseMatrixIteratorTest::setUp() {}
+SparseMatrixRowIteratorTest::setUp() {}
 
 void
-SparseMatrixIteratorTest::tearDown() {}
+SparseMatrixRowIteratorTest::tearDown() {}
 
 void
-SparseMatrixIteratorTest::RowIteratorSizeEqualsNumberOfRows() {
+SparseMatrixRowIteratorTest::RowIteratorSizeEqualsNumberOfRows() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column mismatch", matrix.rows(), it.maxRows());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", matrix.rows(), it.maxRows());
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorReturnsCorrectRow() {
+SparseMatrixRowIteratorTest::RowIteratorReturnsCorrectRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Current row mismatch", 0ull, it.row());
@@ -52,14 +52,14 @@ SparseMatrixIteratorTest::RowIteratorReturnsCorrectRow() {
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorPreIncrementReturnsNextRowIterator() {
+SparseMatrixRowIteratorTest::RowIteratorPreIncrementReturnsNextRowIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Row mismatch", 1ull, (++it).row());
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorPostIncrementReturnsNextRowIterator() {
+SparseMatrixRowIteratorTest::RowIteratorPostIncrementReturnsNextRowIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     auto next_it = it++;
@@ -68,7 +68,7 @@ SparseMatrixIteratorTest::RowIteratorPostIncrementReturnsNextRowIterator() {
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorCannotAdvancePastLastRow() {
+SparseMatrixRowIteratorTest::RowIteratorCannotAdvancePastLastRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", it.isValid());
@@ -81,14 +81,14 @@ SparseMatrixIteratorTest::RowIteratorCannotAdvancePastLastRow() {
 }
 
 void
-SparseMatrixIteratorTest::RowIteratorDereferenceReturnsColumnIterator() {
+SparseMatrixRowIteratorTest::RowIteratorDereferenceReturnsColumnIterator() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
+SparseMatrixRowIteratorTest::ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
@@ -107,7 +107,7 @@ namespace {
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElements() {
+SparseMatrixRowIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElements() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
@@ -115,7 +115,7 @@ SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElements(
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() {
+SparseMatrixRowIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
@@ -125,7 +125,7 @@ SparseMatrixIteratorTest::ColumnIteratorPreIncrementReturnsNextMatrixElements() 
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextMatrixElements() {
+SparseMatrixRowIteratorTest::ColumnIteratorPostIncrementReturnsNextMatrixElements() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
@@ -137,7 +137,7 @@ SparseMatrixIteratorTest::ColumnIteratorPostIncrementReturnsNextMatrixElements()
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorCannotAdvancePastLastMatrixElement() {
+SparseMatrixRowIteratorTest::ColumnIteratorCannotAdvancePastLastMatrixElement() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;
@@ -149,7 +149,7 @@ SparseMatrixIteratorTest::ColumnIteratorCannotAdvancePastLastMatrixElement() {
 }
 
 void
-SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull() {
+SparseMatrixRowIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull() {
     SparseMatrix2D matrix(3);
     matrix(0, 2) = 3;
     matrix(1, 0) = 0;
@@ -166,7 +166,7 @@ SparseMatrixIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElementsI
 }
 
 void
-SparseMatrixIteratorTest::IterateThroughAllElements() {
+SparseMatrixRowIteratorTest::IterateThroughAllElements() {
     auto matrix = CreateSparseMatrix();
     ConstRowIterator<SparseMatrix2D> it = iterators::getConstRowIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> column_it = *it;

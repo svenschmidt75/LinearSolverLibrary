@@ -7,7 +7,7 @@
     <Filter Include="internal">
       <UniqueIdentifier>{f3e3025a-8fd4-4b42-a630-4e2c1682b48e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iterators">
+    <Filter Include="MatrixIterators">
       <UniqueIdentifier>{5b96fc9f-7f9e-481b-ae97-ada33cd749bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -37,13 +37,13 @@
       <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="iterators.cpp">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClCompile>
     <ClCompile Include="ConstColumnIterator.cpp">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClCompile>
     <ClCompile Include="ConstRowIterator.cpp">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClCompile>
     <ClCompile Include="BasicEntityOperators.cpp">
       <Filter>entities</Filter>
@@ -100,19 +100,19 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="iterators.h">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="ConstColumnIterator.h">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="ConstColumnIteratorBase.h">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="ConstRowIterator.h">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="ConstRowIteratorBase.h">
-      <Filter>iterators</Filter>
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="MatrixStencil.hpp" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />

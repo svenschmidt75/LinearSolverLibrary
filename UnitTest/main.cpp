@@ -15,7 +15,7 @@
 #include "spiralTest.h"
 #include "GaussJordanTest.h"
 #include "LUDecompositionTest.h"
-#include "SparseMatrixIteratorTest.h"
+#include "SparseMatrixRowIteratorTest.h"
 #include "MatrixStencilTest.h"
 #include "AMGStandardCoarseningTest.h"
 #include "AMGVariableCardinalityTest.h"
@@ -32,7 +32,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 
 CPPUNIT_TEST_SUITE_REGISTRATION(InputIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixIteratorTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixRowIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);

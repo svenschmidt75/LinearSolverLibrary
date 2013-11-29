@@ -14,6 +14,15 @@ ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & 
     jumpToFirstElement();
 }
 
+ConstColumnIterator<SparseMatrix2D> &
+ConstColumnIterator<SparseMatrix2D>::operator=(ConstColumnIterator const & in) {
+    const_cast<SparseMatrix2D &>(m_) = in.m_;
+    column_                          = in.column_;
+    column_mapped_                   = in.column_mapped_;
+    row_                             = in.row_;
+    return *this;
+}
+
 bool
 ConstColumnIterator<SparseMatrix2D>::isValid() const {
     common_NS::reporting::checkUppderBound(row_, m_.rows());
