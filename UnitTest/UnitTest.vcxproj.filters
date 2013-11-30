@@ -54,7 +54,7 @@
     <ClCompile Include="AMGStandardCoarseningTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="SparseMatrixRowIteratorTest.cpp" />
+    <ClCompile Include="SparseMatrixColumnIteratorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -101,6 +101,6 @@
     <ClInclude Include="AMGStandardSplittingTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="SparseMatrixRowIteratorTest.h" />
+    <ClInclude Include="SparseMatrixColumnIteratorTest.h" />
   </ItemGroup>
 </Project>
