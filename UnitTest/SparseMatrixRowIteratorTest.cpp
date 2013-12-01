@@ -1,9 +1,11 @@
+#include "pch.h"
+
 #include "SparseMatrixRowIteratorTest.h"
 
-#include "SparseMatrix2D.h"
-#include "ConstColumnRowIterator.h"
-#include "ConstRowIterator.h"
-#include "MatrixIterators.h"
+#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/ConstColumnRowIterator.h"
+#include "LinAlg/ConstRowIterator.h"
+#include "LinAlg/MatrixIterators.h"
 
 
 using namespace LinAlg_NS;

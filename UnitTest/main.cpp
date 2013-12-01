@@ -22,9 +22,13 @@
 #include "InputIteratorTest.h"
 #include "VariableInfluenceAccessorTest.h"
 #include "AMGStandardSplittingTest.h"
+#include "SparseMatrixRowIteratorTest.h"
+#include "SparseMatrixTest.h"
 
 
-#if 1
+CPPUNIT_TEST_SUITE_REGISTRATION(spiralTest);
+
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
@@ -33,6 +37,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(InputIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixColumnIteratorTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixRowIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LUDecompositionTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VersteegMalalasekeraTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(GaussJordanTest);
@@ -50,6 +55,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(MultiColorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FloridaVectorReaderTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FloridaSparseMatrixReaderTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixTest);
 #endif
 
 int main(int /*argc*/, char ** /*argv*/) {

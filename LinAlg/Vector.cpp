@@ -50,9 +50,7 @@ Vector::operator=(Vector && in) {
 
     // force move copy-construction, is exception safe
     Vector temp(std::move(in));
-
     swap(temp);
-
     return *this;
 }
 

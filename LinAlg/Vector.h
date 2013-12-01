@@ -63,15 +63,6 @@ namespace LinAlg_NS {
         template<typename AR>
         friend void serialize_helper(AR & ar, Vector & m, const unsigned int /*version*/);
 
-        // operators
-        friend LINALG_DECL_SYMBOLS Vector operator*(Vector const & lhs, double value);
-
-//         template<typename VECTOR_EXPR>
-//         friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
-// 
-//         template<typename VECTOR_EXPR, typename BINOP>
-//         friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
-
         // other
         friend class helper;
 
@@ -94,9 +85,6 @@ namespace LinAlg_NS {
             for (size_type i = 0; i < in.size(); ++i)
                 (*this)(i) = in(i);
         }
-
-//         template <int otherN, class = typename std::enable_if<otherN >= N>::type>
-//         explicit A(A<otherN> const &);
 
         Vector & operator=(Vector const & in);
         Vector & operator=(Vector && in);

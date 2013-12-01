@@ -1,12 +1,11 @@
+#include "pch.h"
+
 #include "SparseMatrixTest.h"
 
-#include "Vector.h"
-#include "SparseMatrix2D.h"
-#include "Matrix2D.h"
-#include "EntityOperators.h"
-
-#include <numeric>
-#include <stdexcept>
+#include "LinAlg/Vector.h"
+#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/Matrix2D.h"
+#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;
