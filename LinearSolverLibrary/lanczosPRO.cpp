@@ -23,10 +23,9 @@ namespace {
          * Example: <q_i, q_j> = 10^{-12}
          * Result: 4, i.e. -12 + 16 (from eps) = 4
          */
-        double const machine_eps = std::numeric_limits<double>::epsilon();
 #if WRITE_TO_CONSOLE
+        double const machine_eps = std::numeric_limits<double>::epsilon();
         std::cout << std::endl;
-#endif
         for (IMatrix2D::size_type i = 0; i < size - 1; ++i) {
             double angle = VectorMath::dotProduct(q[i], q[size - 1]);
             int int_deviation = 0;
@@ -38,10 +37,12 @@ namespace {
                     deviation = 0;
                 int_deviation = static_cast<int>(boost::math::round(deviation));
             }
-#if WRITE_TO_CONSOLE
             std::cout << int_deviation << " ";
-#endif
         }
+#else
+        size = size;
+        q.size();
+#endif
     }
 }
 

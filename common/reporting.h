@@ -16,6 +16,9 @@
 #include <boost/assert.hpp>
 #include <boost/format.hpp>
 
+#ifndef DEBUG
+  #pragma warning(disable:4100)
+#endif
 
 namespace common_NS {
 
@@ -25,12 +28,14 @@ namespace common_NS {
 
         template<typename T, typename OP>
         static void checkBound(T value, T maxValue, std::string const & error_message) {
+#ifdef DEBUG
             bool condition = OP()(value, maxValue);
             if (!condition) {
                 boost::format format = boost::format(error_message);
                 format.str();
                 throw std::runtime_error(format.str());
             }
+#endif
         }
 
         template<typename T>
@@ -44,13 +49,20 @@ namespace common_NS {
         }
 
         static void checkConditional(bool condition, std::string const & error_message = "bound check failure\n") {
+#ifdef DEBUG
             if (!condition) {
                 boost::format format = boost::format(error_message);
                 format.str();
                 throw std::runtime_error(format.str());
             }
+#endif
         }
 
     };
 
 } // namespace common_NS
+
+#ifndef DEBUG
+#pragma warning(default:4100)
+#endif
+

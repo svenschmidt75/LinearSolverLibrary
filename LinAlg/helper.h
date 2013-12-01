@@ -45,8 +45,9 @@ namespace LinAlg_NS {
             /* Multiply one row of the sparse matrix with
              * the vector.
              */
+#ifdef DEBUG
             common_NS::reporting::checkConditional(m.cols() == v.size(), "MatrixVectorExpr: Matrix and vector incompatible");
-
+#endif
             // Number of non-zero columns for this row
             IMatrix2D::size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
             IMatrix2D::size_type offset = m.nelements_[row];
@@ -68,7 +69,9 @@ namespace LinAlg_NS {
             /* Multiply one row of the sparse matrix with
              * the vector.
              */
+#ifdef DEBUG
             common_NS::reporting::checkConditional(m.cols() == v.size(), "MatrixVectorExpr: Matrix and vector incompatible");
+#endif
             double value = 0;
             for (IMatrix2D::size_type col = 0; col < m.cols(); ++col) {
                 double a_ij = m(row, col);
