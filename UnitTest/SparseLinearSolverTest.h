@@ -12,10 +12,10 @@
 
 class SparseLinearSolverTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseLinearSolverTest);
-#ifdef INTEGRATION_TEST
-    CPPUNIT_TEST(SimonExample1Test);
+//#ifdef INTEGRATION_TEST
+//    CPPUNIT_TEST(SimonExample1Test);
     CPPUNIT_TEST(OffshoreSORTest);
-#endif
+//#endif
     CPPUNIT_TEST_SUITE_END();
 
 public:

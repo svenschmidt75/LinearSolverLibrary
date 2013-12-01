@@ -48,18 +48,15 @@ helper::get_value(MATRIX_EXPR const & m, IMatrix2D::size_type row, IMatrix2D::si
 bool
 helper::isSymmetric(SparseMatrix2D const & m) {
     static double const tol = 1E-10;
-
     for (IMatrix2D::size_type row = 1; row < m.cols(); ++row) {
         for (IMatrix2D::size_type col = 0; col < row; ++col) {
             double a_ij = m(row, col);
             double a_ji = m(col, row);
             double delta = std::fabs(a_ij - a_ji);
-
             if (delta > tol)
                 return false;
         }
     }
-
     return true;
 }
 

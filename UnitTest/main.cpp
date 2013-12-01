@@ -26,7 +26,9 @@
 #include "SparseMatrixTest.h"
 
 
-#if 1
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
+
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);

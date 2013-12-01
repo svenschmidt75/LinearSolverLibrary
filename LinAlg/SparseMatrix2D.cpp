@@ -148,8 +148,10 @@ SparseMatrix2D::cols() const {
 double
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) const {
     // i: x, j: y
+#ifdef DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
+#endif
     if (finalized_) {
         // Number of non-zero columns for this row
         size_type ncol = nelements_[row + 1] - nelements_[row];
@@ -180,9 +182,11 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
     // i: x, j: y
+#ifdef DEBUG
     common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
+#endif
     Col_t & col = data_[row];
     return col[column];
 }
@@ -190,8 +194,10 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 void
 SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     /* compute A x = b */
+#ifdef DEBUG
     common_NS::reporting::checkConditional(finalized_, "SparseMatrix2D::solve(): Matrix not yet finalized");
     common_NS::reporting::checkConditional(b.size() == ncols_ && b.size() == x.size());
+#endif
 
     size_type nrows = nelements_.size() - 1;
 

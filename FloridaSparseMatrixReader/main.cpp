@@ -59,5 +59,5 @@ int main(int argc, char* argv[])
     oa << BOOST_SERIALIZATION_NVP(tmp);
     file.close();
 
-	return 0;
+    return 0;
 }
