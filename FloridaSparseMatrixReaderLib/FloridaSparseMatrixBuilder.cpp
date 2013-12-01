@@ -28,16 +28,16 @@ void
 FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
 #ifdef _DEBUG
     bool assert_cond = row < dim_ && col < dim_ && bool(data_);
-    BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::insertMatrixElement: pre-condition error");
+    BOOST_ASSERT_MSG(assert_cond, "FloridaSparseMatrixBuilder::insertMatrixElement: pre-condition error");
 #endif
     if (row >= dim_)
-        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: row index out of bounds");
+        throw std::range_error("FloridaSparseMatrixBuilder::insertMatrixElement: row index out of bounds");
 
     if (col >= dim_)
-        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: column index out of bounds");
+        throw std::range_error("FloridaSparseMatrixBuilder::insertMatrixElement: column index out of bounds");
 
     if (!data_)
-        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: init needs to be called first");
+        throw std::range_error("FloridaSparseMatrixBuilder::insertMatrixElement: init needs to be called first");
 
     symmetry_strategy_->insert(row, col, value);
 }
@@ -46,10 +46,10 @@ void
 FloridaSparseMatrixBuilder::finalize() const {
 #ifdef DEBUG
     bool assert_cond = bool(data_);
-    BOOST_ASSERT_MSG(assert_cond, "SparseMatrixBuilder::finalize: pre-condition error");
+    BOOST_ASSERT_MSG(assert_cond, "FloridaSparseMatrixBuilder::finalize: pre-condition error");
 #endif
     if (!data_)
-        throw std::range_error("SparseMatrixBuilder::finalize: sparse matrix uninitialized");
+        throw std::range_error("FloridaSparseMatrixBuilder::finalize: sparse matrix uninitialized");
 
     data_->finalize();
 

@@ -21,7 +21,7 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/BasicEntityOperators.h"
+#include "LinAlg/internal/ScalarVectorBinaryExpr.h"
 
 #include <functional>
 

@@ -3,8 +3,7 @@
 #include "MinresLanPro.h"
 #include "ResHelper.h"
 #include "LinAlg/VectorMath.h"
-#include "LinAlg/BasicEntityOperators.h"
-#include "LinAlg/operators.h"
+#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;
@@ -39,7 +38,7 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
     auto dim = A.cols();
     BOOST_ASSERT_MSG(dim == b.size(), "MinresLanPro: Size mismatch");
 
-    lanczos.init(A, r * (1.0 / normr));
+    lanczos.init(A, (1.0 / normr) * r);
 
     setup(dim, normr);
     iteration1();
@@ -80,7 +79,7 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
         // compute search vector
-        p[k_current] = (q - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]) * (1.0 / T[k_current]);
+        p[k_current] = (1.0 / T[k_current]) * (q - T[k_prev_1] * p[k_prev_1] - T[k_prev_2] * p[k_prev_2]);
 
         // new approximate solution
         x += s(k_current) * p[k_current];
@@ -137,7 +136,7 @@ MinresLanPro::iteration1() const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = q * (1.0 / T[k_current]);
+    p[k_current] = (1.0 / T[k_current]) * q;
 
     // new approximate solution
     x += s(k_current) * p[k_current];
@@ -190,7 +189,7 @@ MinresLanPro::iteration2() const {
     ResHelper::ApplyPlaneRotation(T[k_current], T[k_next], cs(k_current), sn(k_current));
 
     // compute search vector
-    p[k_current] = (q - T[k_prev_1] * p[k_prev_1]) * (1.0 / T[k_current]);
+    p[k_current] = (1.0 / T[k_current]) * (q - T[k_prev_1] * p[k_prev_1]);
 
     // new approximate solution
     x += s(k_current) * p[k_current];

@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Vector.h"
-
 #include "common/reporting.h"
 
 
@@ -32,9 +31,7 @@ Vector::operator=(Vector const & in) {
 
     // copy-construction is exception safe
     Vector temp(in);
-
     swap(temp);
-
     return *this;
 }
 
@@ -67,21 +64,13 @@ Vector::swap(Vector const & in) {
 
 double &
 Vector::operator()(size_type index) {
-    bool assert_cond = index < data_.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("Vector::operator(): Out of range error");
-
+    common_NS::reporting::checkUppderBound(index, data_.size() - 1);
     return data_[index];
 }
 
 double
 Vector::operator()(size_type index) const {
-    bool assert_cond = index < data_.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("Vector::operator(): Out of range error");
-
+    common_NS::reporting::checkUppderBound(index, data_.size() - 1);
     return data_[index];
 }
 

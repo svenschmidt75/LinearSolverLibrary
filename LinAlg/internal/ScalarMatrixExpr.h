@@ -9,7 +9,7 @@
 
 #include "ScalarExpression.h"
 
-#include "expression_traits.h"
+#include "entity_traits.h"
 
 #include <boost/assert.hpp>
 #include <boost/noncopyable.hpp>
@@ -26,7 +26,7 @@ namespace LinAlg_NS {
                 :
                 op1_(lhs),
                 op2_(rhs) {
-					static_assert(typename expression_traits<MATRIX_EXPR>::is_matrix_expression::value == std::true_type::value, "rhs not a matrix-like type");
+                    static_assert(typename entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "rhs not a matrix-like type");
                 }
 
             ScalarMatrixExpr(ScalarMatrixExpr const & in)

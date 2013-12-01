@@ -1,10 +1,10 @@
 /*
- * Name  : LinAlgOperatorTest
- * Path  : 
- * Use   : 
- * Author: Sven Schmidt
- * Date  : 07/29/2012
- */
+* Name  : LinAlgOperatorTest
+* Path  :
+* Use   :
+* Author: Sven Schmidt
+* Date  : 11/28/2013
+*/
 #pragma once
 
 #include <cppunit/extensions/HelperMacros.h>
@@ -12,39 +12,59 @@
 
 class LinAlgOperatorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(LinAlgOperatorTest);
+    CPPUNIT_TEST(vectorMulScalarTest);
     CPPUNIT_TEST(vectorAddScalarMulVectorTest);
+    CPPUNIT_TEST(vectorMulEqualScalarTest);
+    CPPUNIT_TEST(vectorAddVectorTest);
+    CPPUNIT_TEST(vectorSubVectorTest);
+    CPPUNIT_TEST(vectorExprMulScalarTest);
+    CPPUNIT_TEST(vectorPlusEqualVectorTest);
+    CPPUNIT_TEST(vectorPlusEqualVectorScalarExprTest);
+    CPPUNIT_TEST(vectorPlusEqualVectorMulTest);
     CPPUNIT_TEST(addScalarMulVectorTest);
-    CPPUNIT_TEST(addVectorTest);
-    CPPUNIT_TEST(subVectorTest);
-    CPPUNIT_TEST(scalarVectorMulTest);
-    CPPUNIT_TEST(scalarVectorExprMulTest);
-    CPPUNIT_TEST(vectorExprAddTest);
-    CPPUNIT_TEST(vectorAddVectorMulTest);
+    CPPUNIT_TEST(vectorPlusEqualVectorBinaryExprTest);
+    CPPUNIT_TEST(vectorExprDivScalarTest);
+    CPPUNIT_TEST(vectorExprAddVectorExprTest);
+    CPPUNIT_TEST(vectorExprAddVectorScalarExprTest);
+    CPPUNIT_TEST(vectorMinusEqualVectorTest);
+    CPPUNIT_TEST(complexVectorAddExprTest);
     CPPUNIT_TEST(scalarMatrixMulTest);
     CPPUNIT_TEST(scalarSparseMatrixMulTest);
-    CPPUNIT_TEST(sparseMatrixVectorMulTest);
     CPPUNIT_TEST(matrixVectorMulTest);
+    CPPUNIT_TEST(sparseMatrixVectorMulTest);
     CPPUNIT_TEST(matrixVectorExprMulTest);
     CPPUNIT_TEST(sparseMatrixVectorExprMulTest);
+    CPPUNIT_TEST(sparseSquareMatrixMulSparseSquareMatrixTest);
+    CPPUNIT_TEST(sparseSquareMatrixMulSparseNonSquareMatrixTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp();
+    void SparseMatrixRowIteratorTest();
     void tearDown();
 
 protected:
+    void vectorMulScalarTest();
     void vectorAddScalarMulVectorTest();
+    void vectorMulEqualScalarTest();
+    void vectorAddVectorTest();
+    void vectorSubVectorTest();
+    void vectorExprMulScalarTest();
+    void vectorPlusEqualVectorTest();
+    void vectorPlusEqualVectorScalarExprTest();
+    void vectorPlusEqualVectorMulTest();
     void addScalarMulVectorTest();
-    void addVectorTest();
-    void subVectorTest();
-    void scalarVectorMulTest();
-    void scalarVectorExprMulTest();
-    void vectorExprAddTest();
-    void vectorAddVectorMulTest();
+    void vectorPlusEqualVectorBinaryExprTest();
+    void vectorExprDivScalarTest();
+    void vectorExprAddVectorExprTest();
+    void vectorExprAddVectorScalarExprTest();
+    void vectorMinusEqualVectorTest();
+    void complexVectorAddExprTest();
     void scalarMatrixMulTest();
     void scalarSparseMatrixMulTest();
-    void sparseMatrixVectorMulTest();
     void matrixVectorMulTest();
+    void sparseMatrixVectorMulTest();
     void matrixVectorExprMulTest();
     void sparseMatrixVectorExprMulTest();
+    void sparseSquareMatrixMulSparseSquareMatrixTest();
+    void sparseSquareMatrixMulSparseNonSquareMatrixTest();
 };

@@ -211,15 +211,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConstColumnRowIterator.cpp" />
+    <ClCompile Include="ConstRowColumnIterator.cpp" />
     <ClCompile Include="ConstRowIterator.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
       <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
     </ClCompile>
     <ClCompile Include="ConstColumnIterator.cpp" />
-    <ClCompile Include="BasicEntityOperators.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="internal\ScalarExpression.cpp" />
-    <ClCompile Include="iterators.cpp" />
+    <ClCompile Include="MatrixIterators.cpp" />
+    <ClCompile Include="TrivialEntityOperators.cpp" />
     <ClCompile Include="UHMatrix.cpp" />
     <ClCompile Include="UTMatrix.cpp" />
     <ClCompile Include="VectorMath.cpp" />
@@ -236,27 +238,32 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstColumnRowIterator.h" />
+    <ClInclude Include="ConstColumnRowIteratorBase.h" />
+    <ClInclude Include="ConstRowColumnIterator.h" />
+    <ClInclude Include="ConstRowColumnIteratorBase.h" />
     <ClInclude Include="ConstRowIterator.h" />
     <ClInclude Include="ConstRowIteratorBase.h" />
     <ClInclude Include="ConstColumnIterator.h" />
     <ClInclude Include="ConstColumnIteratorBase.h" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
-    <ClInclude Include="BasicEntityOperators.h" />
     <ClInclude Include="helper.h" />
-    <ClInclude Include="internal\expression_traits.h" />
+    <ClInclude Include="internal\entity_traits.h" />
     <ClInclude Include="internal\primitiveOperators.h" />
     <ClInclude Include="internal\ScalarExpression.h" />
     <ClInclude Include="internal\ScalarMatrixExpr.h" />
     <ClInclude Include="internal\ScalarVectorBinaryExpr.h" />
     <ClInclude Include=".\internal\VectorBinaryExpr.h" />
     <ClInclude Include=".\internal\MatrixVectorExpr.h" />
-    <ClInclude Include="iterators.h" />
+    <ClInclude Include="internal\ScalarVectorExpr.h" />
+    <ClInclude Include="MatrixIterators.h" />
     <ClInclude Include="MatrixStencil.hpp" />
+    <ClInclude Include="NonTrivialEntityOperators.h" />
     <ClInclude Include="PeriodicBoundaryConditionPolicy.hpp" />
+    <ClInclude Include="TrivialEntityOperators.h" />
     <ClInclude Include="UHMatrix.h" />
     <ClInclude Include="UTMatrix.h" />
     <ClInclude Include="VectorMath.h" />
-    <ClInclude Include="operators.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SparseMatrix2D.h" />

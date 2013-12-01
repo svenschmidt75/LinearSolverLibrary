@@ -1,8 +1,7 @@
 #include "pch.h"
 
 #include "lanczos.h"
-#include "LinAlg/BasicEntityOperators.h"
-#include "LinAlg/operators.h"
+#include "LinAlg/EntityOperators.h"
 #include "LinAlg/VectorMath.h"
 
 
@@ -25,7 +24,7 @@ Lanczos::init(LinAlg_NS::SparseMatrix2D const & A, Vector const & q0) const {
     double alpha = VectorMath::dotProduct(w, q0);
     w -= alpha * q0;
     double beta = VectorMath::norm(w);
-    q.emplace_back(w * (1.0 / beta));
+    q.emplace_back((1.0 / beta) * w);
 
     a.push_back(0);
     a.push_back(alpha);
@@ -46,7 +45,7 @@ Lanczos::computeNextLanczosVector() const {
     double alpha = VectorMath::dotProduct(w, qn);
     w -= alpha * qn;
     beta = VectorMath::norm(w);
-    q.emplace_back(w * (1.0 / beta));
+    q.emplace_back((1.0 / beta) * w);
 
     a.push_back(alpha);
     b.push_back(beta);

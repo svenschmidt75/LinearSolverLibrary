@@ -3,7 +3,7 @@
 #include "MultiColorTest.h"
 
 #include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/operators.h"
+#include "LinAlg/EntityOperators.h"
 
 #include "LinearSolverLibrary/internal/MultiColor_internal.h"
 #include "LinearSolverLibrary/internal/BucketList.h"

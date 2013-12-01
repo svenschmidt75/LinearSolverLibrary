@@ -23,8 +23,8 @@ namespace LinAlg_NS {
                 op1_(op1),
                 op2_(op2) {
                     BOOST_ASSERT_MSG(op1.size() == op2.size(), "VectorBinaryExpression: Vector size mismatch");
-					static_assert(typename expression_traits<T1>::is_vector_expression::value == std::true_type::value, "op1 not a vector-like type");
-					static_assert(typename expression_traits<T2>::is_vector_expression::value == std::true_type::value, "op2 not a vector-like type");
+                    static_assert(typename entity_traits<T1>::is_vector_expression == true, "op1 not a vector-like type");
+                    static_assert(typename entity_traits<T2>::is_vector_expression == true, "op2 not a vector-like type");
                 }
 
             VectorBinaryExpr(VectorBinaryExpr const & in)

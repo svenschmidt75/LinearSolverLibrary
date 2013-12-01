@@ -13,8 +13,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/BasicEntityOperators.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

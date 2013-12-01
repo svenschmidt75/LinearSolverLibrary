@@ -3,7 +3,6 @@
 #include "LUDecomposition.h"
 
 
-
 using namespace LinAlg_NS;
 
 

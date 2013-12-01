@@ -1,7 +1,6 @@
 #include "pch.h"
 
-#include "internal/ScalarExpression.h"
-
+#include "ScalarExpression.h"
 #include "Vector.h"
 
 

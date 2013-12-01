@@ -1,7 +1,7 @@
 /*
 * Name  : ConstColumnIteratorBase
 * Path  :
-* Use   :
+* Use   : forward declaration
 * Author: Sven Schmidt
 * Date  : 09/28/2013
 */

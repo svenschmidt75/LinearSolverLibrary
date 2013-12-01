@@ -13,8 +13,8 @@
 #pragma once
 
 #include "DeclSpec.h"
-
-#include "internal/expression_traits.h"
+#include "internal/entity_traits.h"
+#include "common/reporting.h"
 
 #include <boost/cstdint.hpp>
 #include <boost/assert.hpp>
@@ -53,32 +53,27 @@ namespace LinAlg_NS {
     class LINALG_DECL_SYMBOLS Vector {
 
         // support for boost::serialize
-        friend class boost::serialization::access; 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, Vector & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, Vector & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, Vector & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, Vector & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, Vector & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int version); 
+        friend class boost::serialization::access;
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, Vector & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, Vector & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, Vector & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, Vector & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, Vector & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, Vector & m, const unsigned int version);
         template<typename AR>
         friend void serialize_helper(AR & ar, Vector & m, const unsigned int /*version*/);
 
         // operators
-        friend LINALG_DECL_SYMBOLS Vector operator-(Vector const & lhs, Vector const & rhs);
-        
-        template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-        friend Vector operator-(Vector const & lhs, internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> const & rhs);
+        friend LINALG_DECL_SYMBOLS Vector operator*(Vector const & lhs, double value);
 
-        friend LINALG_DECL_SYMBOLS Vector operator*(double value, Vector const & v);
-
-        friend LINALG_DECL_SYMBOLS Vector & operator+=(Vector & lhs, Vector const & rhs);
-
-        template<typename VECTOR_EXPR, typename BINOP>
-        friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
+//         template<typename VECTOR_EXPR>
+//         friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
+// 
+//         template<typename VECTOR_EXPR, typename BINOP>
+//         friend Vector & operator+=(Vector & lhs, internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> const & rhs);
 
         // other
         friend class helper;
-
 
     public:
         typedef boost::uint64_t                     size_type;
@@ -89,39 +84,22 @@ namespace LinAlg_NS {
         Vector();
         Vector(size_type dim);
         Vector(Vector const & in);
+        Vector(Vector && in);
 
-        template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-        Vector(internal::MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR> && in) {
+        template<typename VECTOR_EXPR, typename = typename std::enable_if<internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true>::type>
+        Vector(VECTOR_EXPR && in) {
+            static_assert(typename internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true, "in is not a vector-like type");
             dim_ = in.size();
             data_.resize(dim_);
             for (size_type i = 0; i < in.size(); ++i)
                 (*this)(i) = in(i);
         }
 
-        template<typename VECTOR_EXPR, typename BINOP>
-        Vector(internal::ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP> && in) {
-            dim_ = in.size();
-            data_.resize(dim_);
-            for (size_type i = 0; i < in.size(); ++i)
-                (*this)(i) = in(i);
-        }
+//         template <int otherN, class = typename std::enable_if<otherN >= N>::type>
+//         explicit A(A<otherN> const &);
 
         Vector & operator=(Vector const & in);
-
-        // enable move semantics
-        Vector(Vector && in);
         Vector & operator=(Vector && in);
-
-        template<typename VECTOR_EXPR>
-        Vector & operator=(VECTOR_EXPR const & in) {
-            // could use SFINAE instead
-            static_assert(typename internal::expression_traits<VECTOR_EXPR>::is_vector_expression::value == std::true_type::value, "in is not a vector-like type");
-            dim_ = in.size();
-            data_.resize(dim_);
-            for (Vector::size_type i = 0; i < in.size(); ++i)
-                (*this)(i) = in(i);
-            return *this;
-        }
 
         double & operator()(size_type index);
         double   operator()(size_type index) const;

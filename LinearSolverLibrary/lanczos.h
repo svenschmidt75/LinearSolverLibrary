@@ -12,11 +12,23 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/BasicEntityOperators.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
+
+
+
+namespace LinAlg_NS {
+
+    namespace internal {
+
+        template<typename VECTOR_EXPR, typename BINOP>
+        class ScalarVectorBinaryExpr;
+
+    } // namespace internal
+
+} // namespace LinAlg_NS
+
 
 namespace LinearSolverLibrary_NS {
 

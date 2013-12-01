@@ -11,6 +11,8 @@
 
 #include "IMatrix2D.h"
 
+#include "common/reporting.h"
+
 #include <vector>
 
 #include <boost/cstdint.hpp>
@@ -41,7 +43,7 @@ namespace LinAlg_NS {
 
         template<typename MATRIX_EXPR>
         Matrix2D & operator=(MATRIX_EXPR const & in) {
-            static_assert(typename expression_traits<MATRIX_EXPR>::is_matrix_expression::value == std::true_type::value, "rhs is not a matrix-like type");
+            static_assert(typename entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "Matrix2D::operator=(): Input is not a matrix-like type");
             data_.resize(in.rows() * in.cols());
             for (IMatrix2D::size_type row = 0; row < in.rows(); ++row) {
                 for (IMatrix2D::size_type col = 0; col < in.cols(); ++col) {

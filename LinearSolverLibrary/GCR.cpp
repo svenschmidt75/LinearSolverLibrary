@@ -2,8 +2,7 @@
 
 #include "GCR.h"
 #include "LinAlg/VectorMath.h"
-#include "LinAlg/BasicEntityOperators.h"
-#include "LinAlg/operators.h"
+#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;

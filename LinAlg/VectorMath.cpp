@@ -1,9 +1,7 @@
 #include "pch.h"
 
 #include "Vector.h"
-
 #include "VectorMath.h"
-
 #include "common/reporting.h"
 
 

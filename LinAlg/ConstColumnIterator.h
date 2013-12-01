@@ -1,5 +1,5 @@
 /*
-* Name  : ConstRowIterator
+* Name  : ConstColumnIterator<SparseMatrix2D>
 * Path  :
 * Use   :
 * Author: Sven Schmidt
@@ -7,8 +7,8 @@
 */
 #pragma once
 
-
 #include "DeclSpec.h"
+
 #include "SparseMatrix2D.h"
 #include "ConstColumnIteratorBase.h"
 

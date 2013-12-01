@@ -3,8 +3,7 @@
 #include "Gmres.h"
 #include "ResHelper.h"
 #include "LinAlg/VectorMath.h"
-#include "LinAlg/BasicEntityOperators.h"
-#include "LinAlg/operators.h"
+#include "LinAlg/EntityOperators.h"
 #include "LinAlg/UHMatrix.h"
 
 
@@ -41,7 +40,7 @@ static void Update(Vector & x, typename MATRIX::size_type k, MATRIX const & H, V
 
     // compute approximate new solution
     for (typename MATRIX::size_type j = 0; j <= k; ++j)
-        x += q[j] * y(j);
+        x += y(j) * q[j];
 }
 
 }
@@ -95,7 +94,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
     Vector x(b.size());
 
     while (j <= maxIterations) {
-        q.emplace_back(r * (1.0 / beta));
+        q.emplace_back((1.0 / beta) * r);
         s(0) = beta;
 
         for (SparseMatrix2D::size_type i = 0; i < m && j <= maxIterations; ++i, ++j) {
@@ -113,7 +112,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
             H(i + 1, i) = normw;
 
             // next normalized basis vector of Krylov space
-            q.emplace_back(w * (1.0 / normw));
+            q.emplace_back((1.0 / normw) * w);
 
 //             H.print();
 

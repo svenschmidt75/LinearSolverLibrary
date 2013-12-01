@@ -1,49 +1,53 @@
 /*
-* Name  : ConstRowIterator
+* Name  : ConstRowIterator<SparseMatrix2D>
 * Path  :
 * Use   :
 * Author: Sven Schmidt
-* Date  : 09/22/2013
+* Date  : 11/29/2013
 */
 #pragma once
 
-
 #include "DeclSpec.h"
+
 #include "SparseMatrix2D.h"
 #include "ConstRowIteratorBase.h"
-#include "ConstColumnIteratorBase.h"
 
 
 namespace LinAlg_NS {
 
 
-template<>
-class LINALG_DECL_SYMBOLS ConstRowIterator<SparseMatrix2D> {
-public:
-    typedef SparseMatrix2D::size_type size_type;
+    template<>
+    class LINALG_DECL_SYMBOLS ConstRowIterator<SparseMatrix2D> {
+    public:
+        typedef SparseMatrix2D::size_type size_type;
 
-private:
-    typedef ConstRowIterator<SparseMatrix2D> iter;
+    private:
+        typedef ConstRowIterator<SparseMatrix2D> iter;
 
-public:
-    explicit ConstRowIterator(SparseMatrix2D const & m);
-    explicit ConstRowIterator(SparseMatrix2D const & m, size_type row);
+    public:
+        ConstRowIterator(SparseMatrix2D const & m, size_type column);
+        ConstRowIterator & operator=(ConstRowIterator const & in);
 
-    bool isValid() const;
+        explicit operator bool() const;
 
-    size_type maxRows() const;
-    size_type row() const;
-    size_type numberOfNonZeroMatrixElements() const;
+        bool isValid() const;
+        size_type numberOfNonZeroMatrixElements() const;
+        size_type row() const;
 
-    iter & operator++();
-    iter   operator++(int);
-        
-    ConstColumnIterator<SparseMatrix2D> operator*() const;
+        iter & operator++();
+        iter   operator++(int);
 
-private:
-    SparseMatrix2D    m_;
-    mutable size_type row_;
-};
+        double operator*() const;
+
+    private:
+        void jumpToFirstElement() const;
+        void jumpToNextElement() const;
+
+    private:
+        SparseMatrix2D const & m_;
+        size_type              column_;
+        mutable size_type      row_;
+    };
 
 
 } // namespace LinAlg_NS

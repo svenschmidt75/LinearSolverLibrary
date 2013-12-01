@@ -1,59 +1,120 @@
 #include "pch.h"
 
-#include "common/reporting.h"
 #include "ConstRowIterator.h"
-#include "ConstColumnIterator.h"
+#include "common/reporting.h"
 
 
-namespace LinAlg_NS {
+using namespace LinAlg_NS;
 
 
-ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m)
+ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, size_type column)
     :
-    m_(m), row_(0) {}
+    m_(m),
+    column_(column),
+    row_(0) {
 
-ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, size_type row)
-    :
-    m_(m), row_(row) {}
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+    jumpToFirstElement();
+}
 
-bool 
+ConstRowIterator<SparseMatrix2D> &
+ConstRowIterator<SparseMatrix2D>::operator=(ConstRowIterator const & in) {
+    const_cast<SparseMatrix2D &>(m_) = in.m_;
+    column_                          = in.column_;
+    row_                             = in.row_;
+    return *this;
+}
+
+ConstRowIterator<SparseMatrix2D>::operator bool() const {
+    return isValid();
+}
+
+bool
 ConstRowIterator<SparseMatrix2D>::isValid() const {
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
-    return row_ < maxRows();
-}
-
-ConstRowIterator<SparseMatrix2D>::size_type
-ConstRowIterator<SparseMatrix2D>::maxRows() const {
-    return m_.rows();
-}
-
-ConstRowIterator<SparseMatrix2D>::size_type
-ConstRowIterator<SparseMatrix2D>::row() const {
-    return row_;
+    return row_ < m_.rows();
 }
 
 ConstRowIterator<SparseMatrix2D>::size_type
 ConstRowIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
-    return (*(*this)).numberOfNonZeroMatrixElements();
+    auto nelements = 0;
+    for (auto row = 0; row < m_.rows(); ++row) {
+        size_type ncolumns = m_.nelements_[row + 1] - m_.nelements_[row];
+        size_type offset = m_.nelements_[row];
+        size_type column;
+        for (auto ncol = 0; ncol < ncolumns; ++ncol) {
+            column = m_.columns_[offset + ncol];
+            if (column == column_) {
+                nelements++;
+                break;
+            }
+            if (column > column_)
+                break;
+        }
+    }
+    return nelements;
 }
 
-ConstRowIterator<SparseMatrix2D> &
+ConstRowIterator<SparseMatrix2D>::size_type
+ConstRowIterator<SparseMatrix2D>::row() const {
+    common_NS::reporting::checkConditional(isValid(), "Iterator is in an invalid state");
+    return row_;
+}
+
+ConstRowIterator<SparseMatrix2D>::iter &
 ConstRowIterator<SparseMatrix2D>::operator++() {
-    row_++;
+    // pre-increment
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+    jumpToNextElement();
+    common_NS::reporting::checkUppderBound(row_, m_.rows());
     return *this;
 }
 
-ConstRowIterator<SparseMatrix2D>
+ConstRowIterator<SparseMatrix2D>::iter
 ConstRowIterator<SparseMatrix2D>::operator++(int) {
-    iter tmp(*this);
-    row_++;
+    // post-increment
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+    auto tmp = *this;
+    jumpToNextElement();
+    common_NS::reporting::checkUppderBound(row_, m_.rows());
     return tmp;
 }
 
-ConstColumnIterator<SparseMatrix2D>
+double
 ConstRowIterator<SparseMatrix2D>::operator*() const {
-    return ConstColumnIterator<SparseMatrix2D>(m_, row_);
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+    common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+    return m_(row_, column_);
 }
 
+void
+ConstRowIterator<SparseMatrix2D>::jumpToFirstElement() const {
+    for (row_ = 0; row_ < m_.rows(); ++row_) {
+        size_type ncolumns = m_.nelements_[row_ + 1] - m_.nelements_[row_];
+        size_type offset = m_.nelements_[row_];
+        size_type column;
+        for (auto ncol = 0; ncol < ncolumns; ++ncol) {
+            column = m_.columns_[offset + ncol];
+            if (column == column_)
+                return;
+            if (column > column_)
+                break;
+        }
+    }
+}
 
-} // namespace LinAlg_NS
+void
+ConstRowIterator<SparseMatrix2D>::jumpToNextElement() const {
+    ++row_;
+    for (; row_ < m_.rows(); ++row_) {
+        size_type ncolumns = m_.nelements_[row_ + 1] - m_.nelements_[row_];
+        size_type offset = m_.nelements_[row_];
+        size_type column;
+        for (auto ncol = 0; ncol < ncolumns; ++ncol) {
+            column = m_.columns_[offset + ncol];
+            if (column == column_)
+                return;
+            if (column > column_)
+                break;
+        }
+    }
+}

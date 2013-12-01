@@ -32,9 +32,7 @@ UHMatrix::operator=(UHMatrix const & in) {
 
     // copy-construction is exception safe
     UHMatrix temp(in);
-
     swap(temp);
-
     return *this;
 }
 
@@ -53,9 +51,7 @@ UHMatrix::operator=(UHMatrix && in) {
 
     // force move copy-construction, is exception safe
     UHMatrix temp(std::move(in));
-
     swap(temp);
-
     return *this;
 }
 
@@ -120,18 +116,13 @@ UHMatrix::print() const {
                 std::cout << boost::format("%14s") % " ";
                 continue;
             }
-
             double value = data_[index(row, col)];
 //             std::cout << boost::format("%8d") % value;
 
             std::cout << boost::format("%|14.6d|") % value;
-
-            
         }
-
         std::cout << std::endl;
     }    
-
     std::cout << std::endl;
 }
 

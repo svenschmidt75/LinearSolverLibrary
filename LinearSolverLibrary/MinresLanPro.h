@@ -11,8 +11,6 @@
 #pragma once
 
 #include "DeclSpec.h"
-
-#include "LinAlg/BasicEntityOperators.h"
 #include "lanczosPRO.h"
 
 

@@ -13,8 +13,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/BasicEntityOperators.h"
-
 #include <vector>
 #include <memory>
 

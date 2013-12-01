@@ -5,8 +5,9 @@
  *         The matrix elements are first inserted and once finished,
  *         the internal matrix representation is converted into the
  *         compressed storage format.
- *         Note: We are storing matrices in row-major format, hence here,
+ *         Note 1: We are storing matrices in row-major format, hence here,
  *               we implement the compressed row format.
+ *         Note 2: Empty rows are NOT supported!
  * Author: Sven Schmidt
  * Date  : 12/26/2011
  */
@@ -58,22 +59,21 @@ namespace LinAlg_NS {
     class Vector;
 
     template<typename T>
-    class ConstRowIterator;
-
-    template<typename T>
     class ConstColumnIterator;
 
+    template<typename T>
+    class ConstRowIterator;
 
     class LINALG_DECL_SYMBOLS SparseMatrix2D : public IMatrix2D {
 
         // support for boost::serialize
-        friend class boost::serialization::access; 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, SparseMatrix2D & m, const unsigned int version); 
-        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, SparseMatrix2D & m, const unsigned int version); 
+        friend class boost::serialization::access;
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_oarchive & ar, SparseMatrix2D & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::text_iarchive & ar, SparseMatrix2D & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_oarchive & ar, SparseMatrix2D & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::xml_iarchive & ar, SparseMatrix2D & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_oarchive & ar, SparseMatrix2D & m, const unsigned int version);
+        friend LINALG_DECL_SYMBOLS void serialize(boost::archive::binary_iarchive & ar, SparseMatrix2D & m, const unsigned int version);
         template<typename AR>
         friend void serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/);
 
@@ -81,13 +81,13 @@ namespace LinAlg_NS {
         friend class LinearSolverLibrary_NS::SparseLinearSolverLibrary;
         friend class helper;
         friend class FloridaSparseMatrixReaderTest;
-        friend class ConstRowIterator<SparseMatrix2D>;
         friend class ConstColumnIterator<SparseMatrix2D>;
-
+        friend class ConstRowIterator<SparseMatrix2D>;
 
     public:
         SparseMatrix2D();
-        SparseMatrix2D(size_type ncols);
+        SparseMatrix2D(size_type dimension);
+        SparseMatrix2D(size_type rows, size_type columns);
         SparseMatrix2D(SparseMatrix2D const & in);
 
         SparseMatrix2D & operator=(SparseMatrix2D const & in);
@@ -99,8 +99,8 @@ namespace LinAlg_NS {
         // FROM IMatrix2D
         size_type rows() const;
         size_type cols() const;
-        double    operator()(size_type row, size_type col) const;
-        double &  operator()(size_type row, size_type col);
+        double    operator()(size_type row, size_type column) const;
+        double &  operator()(size_type row, size_type column);
 
         // Local methods
         void solve(Vector const & b, Vector & x) const;
@@ -116,6 +116,9 @@ namespace LinAlg_NS {
         void swap(SparseMatrix2D const & in);
 
     private:
+        // Number of rows
+        size_type     nrows_;
+
         // Number of columns
         size_type     ncols_;
 

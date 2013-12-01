@@ -24,28 +24,28 @@ namespace common_NS {
         static bool error(std::string const & msg);
 
         template<typename T, typename OP>
-        static void checkBound(T value, T maxValue) {
+        static void checkBound(T value, T maxValue, std::string const & error_message) {
             bool condition = OP()(value, maxValue);
             if (!condition) {
-                boost::format format = boost::format("bound check failure\n");
+                boost::format format = boost::format(error_message);
                 format.str();
                 throw std::runtime_error(format.str());
             }
         }
 
         template<typename T>
-        static void checkLowerBound(T value, T maxValue) {
-            checkBound<T, std::greater_equal<T>>(value, maxValue);
+        static void checkLowerBound(T value, T maxValue, std::string const & error_message = "bound check failure\n") {
+            checkBound<T, std::greater_equal<T>>(value, maxValue, error_message);
         }
 
         template<typename T>
-        static void checkUppderBound(T value, T maxValue) {
-            checkBound<T, std::less_equal<T>>(value, maxValue);
+        static void checkUppderBound(T value, T maxValue, std::string const & error_message = "bound check failure\n") {
+            checkBound<T, std::less_equal<T>>(value, maxValue, error_message);
         }
 
-        static void checkConditional(bool condition) {
+        static void checkConditional(bool condition, std::string const & error_message = "bound check failure\n") {
             if (!condition) {
-                boost::format format = boost::format("condition failure\n");
+                boost::format format = boost::format(error_message);
                 format.str();
                 throw std::runtime_error(format.str());
             }

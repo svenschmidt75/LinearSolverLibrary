@@ -1,8 +1,11 @@
 #include "pch.h"
 
 #include "SparseMatrix2D.h"
-
 #include "Vector.h"
+#include "common/reporting.h"
+
+#include <iostream>
+#include <iomanip>
 
 
 /* The following specializations are needed for serializing
@@ -55,22 +58,26 @@
 // }
 
 
-
 namespace LinAlg_NS {
 
 
 SparseMatrix2D::SparseMatrix2D()
     :
-    ncols_(0),
-    finalized_(false) {}
+    SparseMatrix2D(0, 0) {}
 
-SparseMatrix2D::SparseMatrix2D(size_type ncols)
+SparseMatrix2D::SparseMatrix2D(size_type dimension)
     :
-    ncols_(ncols),
+    SparseMatrix2D(dimension, dimension) {}
+
+SparseMatrix2D::SparseMatrix2D(size_type rows, size_type columns)
+    :
+    nrows_(rows),
+    ncols_(columns),
     finalized_(false) {}
 
 SparseMatrix2D::SparseMatrix2D(SparseMatrix2D const & in)
     :
+    nrows_(in.nrows_),
     ncols_(in.ncols_),
     data_(in.data_),
     finalized_(in.finalized_),
@@ -88,14 +95,13 @@ SparseMatrix2D::operator=(SparseMatrix2D const & in) {
 
     // copy-construction is exception safe
     SparseMatrix2D temp(in);
-
     swap(temp);
-
     return *this;
 }
 
 SparseMatrix2D::SparseMatrix2D(SparseMatrix2D && in)
     :
+    nrows_(in.nrows_),              // value semantics: no move necessary
     ncols_(in.ncols_),              // value semantics: no move necessary
     data_(std::move(in.data_)),
     finalized_(in.finalized_),
@@ -120,6 +126,7 @@ SparseMatrix2D::operator=(SparseMatrix2D && in) {
 void
 SparseMatrix2D::swap(SparseMatrix2D const & in) {
     // to enable the safe exception guarantee
+    nrows_     = in.nrows_;
     ncols_     = in.ncols_;
     data_      = in.data_;
     finalized_ = in.finalized_;
@@ -130,7 +137,7 @@ SparseMatrix2D::swap(SparseMatrix2D const & in) {
 
 SparseMatrix2D::size_type
 SparseMatrix2D::rows() const {
-    return ncols_;
+    return nrows_;
 }
 
 SparseMatrix2D::size_type
@@ -139,65 +146,55 @@ SparseMatrix2D::cols() const {
 }
 
 double
-SparseMatrix2D::operator()(SparseMatrix2D::size_type i, SparseMatrix2D::size_type j) const {
+SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) const {
     // i: x, j: y
-
+    common_NS::reporting::checkUppderBound(row, rows() - 1);
+    common_NS::reporting::checkUppderBound(column, cols() - 1);
     if (finalized_) {
         // Number of non-zero columns for this row
-        size_type ncol = nelements_[i + 1] - nelements_[i];
-        size_type offset = nelements_[i];
+        size_type ncol = nelements_[row + 1] - nelements_[row];
 
-        // column has zero elements
+        // row has zero elements
         if (!ncol)
             return 0.0;
 
         double value = 0.0;
+        size_type offset = nelements_[row];
 
-        // check all columns for elements in row i
+        // check all columns for elements in row 'row'
         for (size_type col = 0; col < ncol; ++col) {
-            if (columns_[offset + col] < j)
+            if (columns_[offset + col] < column)
                 continue;
-
-            if (columns_[offset + col] > j)
+            if (columns_[offset + col] > column)
                 break;
-
             value = elements_[offset + col];
             break;
         }
-
         return value;
     }
-
     // if not yet finalized
-    Col_t & col = data_[i];
-    return col[j];
+    Col_t & col = data_[row];
+    return col[column];
 }
 
 double &
-SparseMatrix2D::operator()(SparseMatrix2D::size_type i, SparseMatrix2D::size_type j) {
+SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
     // i: x, j: y
-
-    if (finalized_)
-        throw std::exception("SparseMatrix2D::operator(): Matrix already finalized");
-
-    Col_t & col = data_[i];
-    return col[j];
+    common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
+    common_NS::reporting::checkUppderBound(row, rows() - 1);
+    common_NS::reporting::checkUppderBound(column, cols() - 1);
+    Col_t & col = data_[row];
+    return col[column];
 }
 
 void
 SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     /* compute A x = b */
-    if (!finalized_)
-        throw std::exception("SparseMatrix2D::solve(): Matrix not yet finalized");
-
-    bool assert_cond = b.size() == ncols_ && b.size() == x.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("SparseMatrix2D::solve(): Out of range error");
+    common_NS::reporting::checkConditional(finalized_, "SparseMatrix2D::solve(): Matrix not yet finalized");
+    common_NS::reporting::checkConditional(b.size() == ncols_ && b.size() == x.size());
 
     size_type nrows = nelements_.size() - 1;
 
-    // All rows
     for (size_type row = 0; row < nrows; ++row) {
         // Number of non-zero columns for this row
         size_type ncol = nelements_[row + 1] - nelements_[row];
@@ -209,10 +206,8 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
         for (size_type icol = 0; icol < ncol; ++icol) {
             size_type col = columns_[offset + icol];
             double a_ij = elements_[offset + icol];
-
             tmp += (a_ij * b(col));
         }
-
         x(row) = tmp;
     }
 }
@@ -260,23 +255,25 @@ SparseMatrix2D::finalize() const {
 
 void
 SparseMatrix2D::print() const {
-    // number of rows
-    size_type nrows = nelements_.size() - 1;
-
     std::cout << std::endl;
 
-    for (size_type row = 0; row < nrows; ++row) {
+    for (size_type row = 0; row < nrows_; ++row) {
         // Number of non-zero columns for this row
         size_type ncol = nelements_[row + 1] - nelements_[row];
         size_type offset = nelements_[row];
 
+        size_type column = columns_[offset];
         size_type icol = 0;
-        for (size_type col = 0; col < nrows; ++col) {
-            // leading zeros
-            if (columns_[offset + icol] > col) {
+        for (size_type col = 0; col < ncols_; ++col) {
+            column = columns_[offset + icol];
+
+            // print leading 0
+            if (column > col) {
                 std::cout << std::setw(8) << 0 << " ";
                 continue;
             }
+
+            common_NS::reporting::checkConditional(col == column);
 
             double a_ij = elements_[offset + icol];
             std::cout << std::setw(8) << a_ij << " ";
@@ -285,7 +282,7 @@ SparseMatrix2D::print() const {
 
             if (icol == ncol) {
                 // trailing zeros
-                size_type diff = nrows - col;
+                size_type diff = ncols_ - col;
 
                 while(--diff)
                     std::cout << std::setw(8) << 0 << " ";
@@ -301,6 +298,7 @@ SparseMatrix2D::print() const {
 template<typename AR>
 void
 serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/) {
+    ar & BOOST_SERIALIZATION_NVP(m.nrows_);
     ar & BOOST_SERIALIZATION_NVP(m.ncols_);
     ar & BOOST_SERIALIZATION_NVP(m.data_);
     ar & BOOST_SERIALIZATION_NVP(m.finalized_);

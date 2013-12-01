@@ -113,6 +113,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -221,7 +222,10 @@
     <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
     <ClCompile Include="FineVariableSetDecorator.cpp" />
     <ClCompile Include="GaussJordan.cpp" />
-    <ClCompile Include="GCR.cpp" />
+    <ClCompile Include="GCR.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="Gmres.cpp" />
     <ClCompile Include="internal\BucketElement.cpp" />
     <ClCompile Include="internal\BucketList.cpp" />
@@ -287,6 +291,9 @@
     <ClInclude Include="VariableSetIteratorLogic.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{04def9ae-5b98-47e2-9fce-35897574eea9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LinAlg\LinAlg.vcxproj">
       <Project>{8cc4c61b-665d-4d19-9c74-2c65316e545d}</Project>
     </ProjectReference>

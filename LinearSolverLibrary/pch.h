@@ -1,7 +1,7 @@
 /* all common and stable header files */
 
 // in this project, we assume SparseMatrix2D is stable
-#include "LinAlg/BasicEntityOperators.h"
+#include "LinAlg/EntityOperators.h"
 
 #include <iostream>
 #include <tuple>

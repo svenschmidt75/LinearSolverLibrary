@@ -1,5 +1,5 @@
 /*
- * Name  : expression_traits
+ * Name  : entity_traits
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
@@ -29,7 +29,7 @@ namespace internal {
     class ScalarVectorExpr;
 
     template<typename VECTOR_EXPR, typename BINOP>
-    class ScalarVectorBinaryExpr;
+    class ScalarVectorExpr;
 
     template<typename MATRIX_EXPR, typename BINOP>
     class ScalarMatrixExpr;
@@ -37,53 +37,65 @@ namespace internal {
     template<typename MATRIX_EXPR, typename VECTOR_EXPR>
     class MatrixVectorExpr;
 
+    template<typename MATRIX_EXPR1, typename MATRIX_EXPR2>
+    class MatrixMatrixExpr;
+
     //////////////////////////////////////////////////////////////////////////////
 
     template<typename T>
-    struct expression_traits {
-        typedef std::false_type is_vector_expression;
+    struct entity_traits {
+        enum { is_vector_expression = false };
+        enum { is_matrix_expression = false };
     };
 
     template<>
-    struct expression_traits<Vector> {
-        typedef std::true_type is_vector_expression;
+    struct entity_traits<Vector> {
+        enum { is_vector_expression = true };
+        enum { is_matrix_expression = false };
     };
 
     template<typename VECTOR_EXPR, typename BINOP>
-    struct expression_traits<ScalarVectorExpr<VECTOR_EXPR, BINOP>> {
-        typedef std::true_type is_vector_expression;
+    struct entity_traits<ScalarVectorExpr<VECTOR_EXPR, BINOP>> {
+        enum { is_vector_expression = true };
+        enum { is_matrix_expression = false };
     };
 
-    template<typename VECTOR_EXPR, typename BINOP>
-    struct expression_traits<ScalarVectorBinaryExpr<VECTOR_EXPR, BINOP>> {
-        typedef std::true_type is_vector_expression;
+    template<typename VECTOR_EXPR1, typename VECTOR_EXPR2, typename BINOP>
+    struct entity_traits<VectorBinaryExpr<VECTOR_EXPR1, VECTOR_EXPR2, BINOP>> {
+        enum { is_vector_expression = true };
+        enum { is_matrix_expression = false };
     };
 
-	template<typename T1, typename T2, typename BINOP>
-	struct expression_traits<VectorBinaryExpr<T1, T2, BINOP>> {
-		typedef std::true_type is_vector_expression;
-	};
+    template<typename MATRIX_EXPR, typename VECTOR_EXPR>
+    struct entity_traits<MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR>> {
+        enum { is_vector_expression = true };
+        enum { is_matrix_expression = false };
+    };
 
     //////////////////////////////////////////////////////////////////////////////
 
     template<>
-    struct expression_traits<Matrix2D> {
-        typedef std::true_type is_matrix_expression;
+    struct entity_traits<Matrix2D> {
+        enum { is_vector_expression = false };
+        enum { is_matrix_expression = true };
     };
 
     template<>
-    struct expression_traits<SparseMatrix2D> {
-        typedef std::true_type is_matrix_expression;
+    struct entity_traits<SparseMatrix2D> {
+        enum { is_vector_expression = false };
+        enum { is_matrix_expression = true };
     };
 
     template<typename MATRIX_EXPR, typename BINOP>
-    struct expression_traits<ScalarMatrixExpr<MATRIX_EXPR, BINOP>> {
-        typedef std::true_type is_matrix_expression;
+    struct entity_traits<ScalarMatrixExpr<MATRIX_EXPR, BINOP>> {
+        enum { is_vector_expression = false };
+        enum { is_matrix_expression = true };
     };
 
-    template<typename MATRIX_EXPR, typename VECTOR_EXPR>
-    struct expression_traits<MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR>> {
-        typedef std::true_type is_vector_expression;
+    template<typename MATRIX_EXPR1, typename MATRIX_EXPR2>
+    struct entity_traits<MatrixMatrixExpr<MATRIX_EXPR1, MATRIX_EXPR2>> {
+        enum { is_vector_expression = false };
+        enum { is_matrix_expression = true };
     };
 
     //////////////////////////////////////////////////////////////////////////////
@@ -119,6 +131,13 @@ namespace internal {
                  * for sparse matrices.
                  */
                 return LinAlg_NS::helper::matrix_vector_mul<VECTOR_EXPR>(m, v, row);
+            }
+        };
+
+        template<typename MATRIX_EXPR>
+        struct matrix_mul_apply {
+            static double op(SparseMatrix2D const & lhs, MATRIX_EXPR const & rhs, IMatrix2D::size_type row, IMatrix2D::size_type col) {
+                return LinAlg_NS::helper::sparse_matrix_product_with(lhs, rhs, row, col);
             }
         };
 

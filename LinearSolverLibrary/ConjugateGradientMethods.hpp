@@ -11,7 +11,7 @@
 #include "Minres.h"
 #include "MinresLanPro.h"
 #include "Gmres.h"
-#include "LinAlg/BasicEntityOperators.h"
+#include "LinAlg/EntityOperators.h"
 #include "LinAlg/VectorMath.h"
 #include "LinAlg/UHMatrix.h"
 

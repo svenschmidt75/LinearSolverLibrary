@@ -5,7 +5,7 @@
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 #include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
-#include "LinAlg/iterators.h"
+#include "LinAlg/MatrixIterators.h"
 
 
 using namespace LinAlg_NS;

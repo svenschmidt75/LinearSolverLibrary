@@ -1,12 +1,14 @@
 #include "pch.h"
 
 #include "common/reporting.h"
-
 #include "Matrix2D.h"
 #include "Vector.h"
 
+#include <iomanip>
+
 
 namespace LinAlg_NS {
+
 
 Matrix2D::Matrix2D(Matrix2D::size_type rows, Matrix2D::size_type cols)
     :
@@ -32,9 +34,7 @@ Matrix2D::operator=(Matrix2D const & in) {
 
     // force move copy-construction, is exception safe
     Matrix2D temp(in);
-
     swap(temp);
-
     return *this;
 }
 
@@ -105,38 +105,28 @@ namespace {
 
 double
 Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) const {
+    common_NS::reporting::checkUppderBound(row, rows() - 1, "Matrix2D::operator(): Out of range error");
+    common_NS::reporting::checkUppderBound(col, cols() - 1, "Matrix2D::operator(): Out of range error");
     size_type index = row * cols_ + col;
-    bool assert_cond = index >= 0 && index < rows_ * cols_;
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("Matrix2D::operator(): Out of range error");
     return data_[index];
 }
 
 double &
 Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) {
+    common_NS::reporting::checkUppderBound(row, rows() - 1, "Matrix2D::operator(): Out of range error");
+    common_NS::reporting::checkUppderBound(col, cols() - 1, "Matrix2D::operator(): Out of range error");
     Matrix2D::size_type index = row * cols_ + col;
-    bool assert_cond = index >= 0 && index < rows_ * cols_;
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("Matrix2D::operator(): Out of range error");
     return data_[index];
 }
 
 void
 Matrix2D::solve(Vector const & b, Vector & x) const {
     // solve A b, return in x
-    bool assert_cond = b.size() == cols_ && b.size() == x.size();
-    BOOST_ASSERT_MSG(assert_cond, "Index range error");
-    if (!assert_cond)
-        throw std::out_of_range("Matrix2D::solve(): Out of range error");
-
+    common_NS::reporting::checkConditional(b.size() == cols_ && b.size() == x.size());
     for (size_type row = 0; row < rows_; ++row) {
         double tmp = 0;
-
         for (size_type col = 0; col < cols_; ++col)
             tmp += (*this)(row, col) * b(col);
-
         x(row) = tmp;
     }
 }

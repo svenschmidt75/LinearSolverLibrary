@@ -36,17 +36,23 @@
     <ClCompile Include="internal\ScalarExpression.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="iterators.cpp">
-      <Filter>MatrixIterators</Filter>
-    </ClCompile>
     <ClCompile Include="ConstColumnIterator.cpp">
       <Filter>MatrixIterators</Filter>
     </ClCompile>
     <ClCompile Include="ConstRowIterator.cpp">
       <Filter>MatrixIterators</Filter>
     </ClCompile>
-    <ClCompile Include="BasicEntityOperators.cpp">
+    <ClCompile Include="TrivialEntityOperators.cpp">
       <Filter>entities</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixIterators.cpp">
+      <Filter>MatrixIterators</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstColumnRowIterator.cpp">
+      <Filter>MatrixIterators</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstRowColumnIterator.cpp">
+      <Filter>MatrixIterators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +60,6 @@
       <Filter>internal</Filter>
     </ClInclude>
     <ClInclude Include="internal\ScalarExpression.h">
-      <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="internal\expression_traits.h">
       <Filter>internal</Filter>
     </ClInclude>
     <ClInclude Include=".\internal\VectorBinaryExpr.h">
@@ -86,9 +89,6 @@
     <ClInclude Include="SparseMatrix2D.h">
       <Filter>entities</Filter>
     </ClInclude>
-    <ClInclude Include="operators.h">
-      <Filter>entities</Filter>
-    </ClInclude>
     <ClInclude Include="Matrix2D.h">
       <Filter>entities</Filter>
     </ClInclude>
@@ -99,9 +99,6 @@
     <ClInclude Include="helper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="VectorMath.h" />
-    <ClInclude Include="iterators.h">
-      <Filter>MatrixIterators</Filter>
-    </ClInclude>
     <ClInclude Include="ConstColumnIterator.h">
       <Filter>MatrixIterators</Filter>
     </ClInclude>
@@ -117,8 +114,32 @@
     <ClInclude Include="MatrixStencil.hpp" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="PeriodicBoundaryConditionPolicy.hpp" />
-    <ClInclude Include="BasicEntityOperators.h">
+    <ClInclude Include="NonTrivialEntityOperators.h">
       <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TrivialEntityOperators.h">
+      <Filter>entities</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixIterators.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnRowIterator.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnRowIteratorBase.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstRowColumnIterator.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstRowColumnIteratorBase.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\entity_traits.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ScalarVectorExpr.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

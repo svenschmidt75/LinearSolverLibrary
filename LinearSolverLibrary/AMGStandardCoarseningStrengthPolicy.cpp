@@ -3,7 +3,9 @@
 #include "AMGStandardCoarseningStrengthPolicy.h"
 #include "VariableSet.h"
 
-#include "LinAlg/iterators.h"
+#include "LinAlg/MatrixIterators.h"
+#include "LinAlg/ConstRowColumnIterator.h"
+#include "LinAlg/ConstColumnIterator.h"
 
 #include "common/reporting.h"
 
@@ -21,7 +23,7 @@ AMGStandardCoarseningStrengthPolicy::AMGStandardCoarseningStrengthPolicy(LinAlg_
 namespace {
 
     double computeMaxElementForRow(SparseMatrix2D const & m, IMatrix2D::size_type row) {
-        ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(m, row);
+        ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m, row);
         BOOST_ASSERT_MSG(row_it.row() == row, "Index range error");
         auto column_it = *row_it;
         double max_value = 0;
@@ -38,7 +40,7 @@ namespace {
 
 void
 AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::size_type i, double max_element) {
-    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(m_, i);
+    ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m_, i);
     BOOST_ASSERT_MSG(row_it.row() == i, "Index range error");
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
@@ -78,7 +80,7 @@ AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix
     // return the variables that strongly influence variable 'variable'
     // TODO SS: Use std::make_unique
     std::shared_ptr<VariableSet> variable_set(new VariableSet());
-    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Si_, variable);
+    ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(*Si_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
@@ -92,7 +94,7 @@ AMGStandardCoarseningStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that variable 'variable' strongly influences
     std::shared_ptr<VariableSet> variable_set(new VariableSet());
-    ConstRowIterator<SparseMatrix2D> row_it = iterators::getConstRowIterator(*Sit_, variable);
+    ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(*Sit_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();

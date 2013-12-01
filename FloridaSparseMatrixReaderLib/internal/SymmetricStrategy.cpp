@@ -13,8 +13,8 @@ SymmetricStrategy::SymmetricStrategy(LinAlg_NS::SparseMatrix2D & m) : m_(m) {}
 
 void
 SymmetricStrategy::insert(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) {
-    if (col > row)
-        throw std::range_error("SparseMatrixBuilder::insertMatrixElement: Row index must be bigger than column index");
+//     if (col > row)
+//         throw std::range_error("SymmetricStrategy::insertMatrixElement: Row index must be bigger than column index");
 
     m_(row, col) = value;
 

@@ -11,7 +11,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/BasicEntityOperators.h"
 #include "lanczos.h"
 
 
