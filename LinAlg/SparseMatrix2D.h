@@ -89,7 +89,6 @@ namespace LinAlg_NS {
         SparseMatrix2D(size_type dimension);
         SparseMatrix2D(size_type rows, size_type columns);
         SparseMatrix2D(SparseMatrix2D const & in);
-
         SparseMatrix2D & operator=(SparseMatrix2D const & in);
 
         // enable move semantics

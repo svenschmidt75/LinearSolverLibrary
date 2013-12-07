@@ -35,6 +35,7 @@ SparseLinearSolverLibrary::sparseSOR(SparseMatrix2D const & m, Vector const & f,
     // maximum allowed error
     double max_linfinity_norm = 1E-16;
     double l_infinity_norm;
+//    double old_l_infinity_norm = 1.0;
 
     // Iteration count
     int k = 0;
@@ -79,6 +80,15 @@ SparseLinearSolverLibrary::sparseSOR(SparseMatrix2D const & m, Vector const & f,
         }
     
         k++;
+
+        // check for stalling iteration
+//         if (!(k % 15)) {
+//             double tmp = std::fabs(std::log10(l_infinity_norm / old_l_infinity_norm));
+//             tmp = tmp;
+//             if (std::fabs(std::log10(l_infinity_norm / old_l_infinity_norm)) < 0.00135)
+//                 return std::make_tuple(true, x, k);
+//             old_l_infinity_norm = l_infinity_norm;
+//         }
 
     } while (l_infinity_norm > max_linfinity_norm && k < max_iterations);
 

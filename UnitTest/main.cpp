@@ -24,11 +24,12 @@
 #include "AMGStandardSplittingTest.h"
 #include "SparseMatrixRowIteratorTest.h"
 #include "SparseMatrixTest.h"
+#include "OffshoreTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(OffshoreTest);
 
-#if 0
+#if 1
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
@@ -47,7 +48,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);
 CPPUNIT_TEST_SUITE_REGISTRATION(sts4098Test);
 CPPUNIT_TEST_SUITE_REGISTRATION(fs_680_1_Test);
 #endif
-CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(SparseLinearSolverTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(UHMatrixTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(UTMatrixTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgTest);

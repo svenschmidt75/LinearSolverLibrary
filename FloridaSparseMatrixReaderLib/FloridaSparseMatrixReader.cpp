@@ -93,7 +93,6 @@ FloridaSparseMatrixReader::read() const {
 
         if (!token_arr.empty()) {
             std::string const & t = *(token_arr.begin());
-
             if (t[0] != '%')
                 break;
         }
@@ -109,12 +108,12 @@ FloridaSparseMatrixReader::read() const {
     // print line
 
     // read matrix dimension and number of non-zero elements
-    LinAlg_NS::IMatrix2D::size_type dim = boost::lexical_cast<std::uint64_t>(token_arr[0]);
+    LinAlg_NS::IMatrix2D::size_type rows = boost::lexical_cast<std::uint64_t>(token_arr[0]);
+    LinAlg_NS::IMatrix2D::size_type cols = boost::lexical_cast<std::uint64_t>(token_arr[1]);
     LinAlg_NS::IMatrix2D::size_type nelem = boost::lexical_cast<std::uint64_t>(token_arr[2]);
 
     // initialize builder
-    builder_.init(dim, symmetry_str);
-
+    builder_.init(rows, cols, symmetry_str);
 
     boost::progress_display show_progress((unsigned long)nelem);
 
@@ -141,8 +140,6 @@ FloridaSparseMatrixReader::read() const {
         double value = boost::lexical_cast<double>(token_arr[2]);
         builder_.insertMatrixElement(row, col, value);
     }
-
     builder_.finalize();
-
     return true;
 }

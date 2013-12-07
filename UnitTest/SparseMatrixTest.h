@@ -13,8 +13,6 @@
 class SparseMatrixTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SparseMatrixTest);
     CPPUNIT_TEST(testCreateSquareSparseMatrix);
-    CPPUNIT_TEST(testAccessorThrowsAfterFinalized);
-    CPPUNIT_TEST(testThatMatrixAccessBeyondBoundsThrows);
     CPPUNIT_TEST(testCreateNonSquareSparseMatrix);
     CPPUNIT_TEST(testAccessToNonExistingElementReturnsNull);
     CPPUNIT_TEST(sparseSquareMatrixTranspose);
@@ -27,8 +25,6 @@ public:
 
 protected:
     void testCreateSquareSparseMatrix();
-    void testAccessorThrowsAfterFinalized();
-    void testThatMatrixAccessBeyondBoundsThrows();
     void testCreateNonSquareSparseMatrix();
     void testAccessToNonExistingElementReturnsNull();
     void sparseSquareMatrixTranspose();

@@ -17,7 +17,7 @@ namespace LinAlg_NS {
 
     class IMatrix2D {
     public:
-        typedef std::uint64_t size_type;
+        using size_type = std::uint64_t;
 
     public:
         // To be used as base class

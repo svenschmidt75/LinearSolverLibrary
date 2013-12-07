@@ -147,7 +147,6 @@ SparseMatrix2D::cols() const {
 
 double
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) const {
-    // i: x, j: y
 #ifdef DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
@@ -181,8 +180,7 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
-    // i: x, j: y
-#ifdef DEBUG
+#if defined(DEBUG)
     common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
@@ -224,18 +222,17 @@ SparseMatrix2D::finalize() const {
     size_type nelements = 0;
     size_type nelements_total = 0;
 
-    Row_t::const_iterator row_it(data_.begin());
-    Row_t::const_iterator row_it_end(data_.end());
+    Row_t::const_iterator row_it(std::cbegin(data_));
+    Row_t::const_iterator row_it_end(std::cend(data_));
 
     // all rows
     for (; row_it != row_it_end; ++row_it) {
 //        int row = (*row_it).first;
-
         Col_t const & col = (*row_it).second;
 
         // all columns
-        Col_t::const_iterator col_it(col.begin());
-        Col_t::const_iterator col_it_end(col.end());
+        Col_t::const_iterator col_it(std::cbegin(col));
+        Col_t::const_iterator col_it_end(std::cend(col));
 
         for (; col_it != col_it_end; ++col_it) {
             size_type col = (*col_it).first;

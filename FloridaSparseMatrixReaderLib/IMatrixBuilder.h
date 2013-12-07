@@ -18,12 +18,12 @@ namespace EntityReader_NS {
     template<typename T>
     class IMatrixBuilder {
     public:
-        typedef std::shared_ptr<T> result_t;
+        using result_t = std::shared_ptr<T>;
 
     public:
         virtual ~IMatrixBuilder() {}
 
-        virtual void     init(LinAlg_NS::IMatrix2D::size_type dim, std::string const & symmetry_strategy) const = 0;
+        virtual void     init(LinAlg_NS::IMatrix2D::size_type rows, LinAlg_NS::IMatrix2D::size_type cols, std::string const & symmetry_strategy) const = 0;
         virtual void     insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const = 0;
         virtual void     finalize() const = 0;
         virtual result_t result() const = 0;

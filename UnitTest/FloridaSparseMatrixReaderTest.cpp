@@ -100,11 +100,14 @@ FloridaSparseMatrixReaderTest::readFS6801Test() {
 
     CPPUNIT_ASSERT_MESSAGE("Matrix should not be symmetric", !LinAlg_NS::helper::isSymmetric(m));
 
+    /* Note: The number of non-zero entries is NOT 2646 as this matrix
+     * contains explicitly stored 0, which are skipped here.
+     */
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2646ull, m.elements_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2184ull, m.elements_.size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 681ull, m.nelements_.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2646ull, m.columns_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2184ull, m.columns_.size());
 
     // check some values
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("sparse matrix data error", -2828956861.694, m(81 - 1, 1 - 1), 1E-10);

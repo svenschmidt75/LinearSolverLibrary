@@ -13,9 +13,10 @@ using namespace EntityReader_NS;
 
 
 void
-FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim, std::string const & symmetry_strategy) const {
-    data_.reset(new SparseMatrix2D(dim));
-    dim_ = dim;
+FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type rows, LinAlg_NS::IMatrix2D::size_type cols, std::string const & symmetry_strategy) const {
+    data_.reset(new SparseMatrix2D(rows, cols));
+    rows_ = rows;
+    cols_ = cols;
 
     // create symmetry strategy
     // Note: We don't have to explicitly move here, because SymmetryStrategyFactory::create
@@ -27,13 +28,13 @@ FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type dim, std::strin
 void
 FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
 #ifdef _DEBUG
-    bool assert_cond = row < dim_ && col < dim_ && bool(data_);
+    bool assert_cond = row < rows_ && col < cols_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "FloridaSparseMatrixBuilder::insertMatrixElement: pre-condition error");
 #endif
-    if (row >= dim_)
+    if (row >= rows_)
         throw std::range_error("FloridaSparseMatrixBuilder::insertMatrixElement: row index out of bounds");
 
-    if (col >= dim_)
+    if (col >= cols_)
         throw std::range_error("FloridaSparseMatrixBuilder::insertMatrixElement: column index out of bounds");
 
     if (!data_)
@@ -55,12 +56,7 @@ FloridaSparseMatrixBuilder::finalize() const {
 
     // check matrix
     bool symmetry_strategy_check = symmetry_strategy_->check();
-    BOOST_ASSERT_MSG(symmetry_strategy_check, "FloridaSparseMatrixBuilder::finalize: Matrix error");
-    if (!symmetry_strategy_check) {
-        boost::format format = boost::format("FloridaSparseMatrixBuilder::finalize: Matrix error!\n");
-        common_NS::reporting::error(format.str());
-        throw std::runtime_error(format.str());
-    }
+    common_NS::reporting::checkConditional(symmetry_strategy_check, "FloridaSparseMatrixBuilder::finalize: Matrix error");
 }
 
 FloridaSparseMatrixBuilder::result_t

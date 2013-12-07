@@ -53,19 +53,6 @@ SparseMatrixTest::testCreateSquareSparseMatrix() {
 }
 
 void
-SparseMatrixTest::testAccessorThrowsAfterFinalized() {
-    SparseMatrix2D m = createSquareSparseMatrix();
-    CPPUNIT_ASSERT_THROW_MESSAGE("Exception non thrown on invalid access", m(0, 0), std::runtime_error);
-}
-
-void
-SparseMatrixTest::testThatMatrixAccessBeyondBoundsThrows() {
-    SparseMatrix2D const m = createSquareSparseMatrix();
-    CPPUNIT_ASSERT_THROW_MESSAGE("Exception non thrown on invalid row access", m(3, 0), std::runtime_error);
-    CPPUNIT_ASSERT_THROW_MESSAGE("Exception non thrown on invalid column access", m(0, 3), std::runtime_error);
-}
-
-void
 SparseMatrixTest::testCreateNonSquareSparseMatrix() {
     SparseMatrix2D m = createNonSquareSparseMatrix();
     auto expected = 3ull;

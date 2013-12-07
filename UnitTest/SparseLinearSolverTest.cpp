@@ -78,9 +78,9 @@ SparseLinearSolverTest::SimonExample1Test() {
 }
 
 void
-SparseLinearSolverTest::OffshoreSORTest() {
+SparseLinearSolverTest::OffshoreLowerTriangularSORTest() {
     // read matrix m
-    FS::path filename("\\Develop\\SparseMatrixData\\offshore\\offshore.ar");
+    FS::path filename("\\Develop\\SparseMatrixData\\offshoreLowerTriangular\\offshoreLowerTriangular.ar");
     ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
     CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
@@ -95,7 +95,7 @@ SparseLinearSolverTest::OffshoreSORTest() {
 
 
     // read rhs vector b
-    filename = "\\Develop\\SparseMatrixData\\offshore\\offshore_b.ar";
+    filename = "\\Develop\\SparseMatrixData\\offshoreLowerTriangular\\offshore_b.ar";
     IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename.string());
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
 

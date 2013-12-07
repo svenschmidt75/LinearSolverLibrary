@@ -1,23 +1,18 @@
 /*
- * Name  : sts4098Test
+ * Name  : OffshoreTest
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
- * Date  : 07/27/2013
- * 
- * Cond(A) = 2.17087e+08
+ * Date  : 12/02/2013
  */
 #pragma once
 
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class sts4098Test : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(sts4098Test);
-    CPPUNIT_TEST(SORTest);
-    CPPUNIT_TEST(MINRESTest);
-    CPPUNIT_TEST(MINRESLanProTest);
-    CPPUNIT_TEST(GMRESTest);
+class OffshoreTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(OffshoreTest);
+    CPPUNIT_TEST(offshoreGCTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,10 +20,10 @@ public:
     void tearDown();
 
 protected:
-    void SORTest();
-    void MINRESTest();
-    void MINRESLanProTest();
-    void GMRESTest();
+//     void offshoreMINRESTest();
+//     void offshoreMINRESLanProTest();
+//     void offshoreGMRESTest();
+    void offshoreGCTest();
 
 private:
     void initMatrix();
@@ -38,4 +33,5 @@ private:
 private:
     LinAlg_NS::SparseMatrix2D m_;
     LinAlg_NS::Vector         b_;
+    LinAlg_NS::Vector         x_ref_;
 };

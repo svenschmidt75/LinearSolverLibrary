@@ -39,8 +39,8 @@ namespace LinearSolverLibrary_NS {
 
     private:
         // node index, priority
-        typedef std::pair<size_type, size_type> QueueItem_t;
-        typedef std::priority_queue<QueueItem_t> Queue_t;
+        using QueueItem_t = std::pair<size_type, size_type>;
+        using Queue_t = std::priority_queue<QueueItem_t>;
 
     private:
         Queue_t initializeVariableCardinality();

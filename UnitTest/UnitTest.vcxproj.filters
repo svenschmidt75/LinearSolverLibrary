@@ -57,6 +57,9 @@
     <ClCompile Include="SparseMatrixColumnIteratorTest.cpp" />
     <ClCompile Include="SparseMatrixRowIteratorTest.cpp" />
     <ClCompile Include="SparseMatrixTest.cpp" />
+    <ClCompile Include="OffshoreTest.cpp">
+      <Filter>Solver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -106,5 +109,8 @@
     <ClInclude Include="SparseMatrixColumnIteratorTest.h" />
     <ClInclude Include="SparseMatrixRowIteratorTest.h" />
     <ClInclude Include="SparseMatrixTest.h" />
+    <ClInclude Include="OffshoreTest.h">
+      <Filter>Solver</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

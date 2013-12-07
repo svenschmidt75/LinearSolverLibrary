@@ -1,5 +1,5 @@
 /*
- * Name  : spiral
+ * Name  : spiralTest
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt

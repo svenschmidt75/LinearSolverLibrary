@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">
-    <LocalDebuggerCommandArguments>D:\Develop\SparseMatrixData\offshore\offshore_b.mtx</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>D:\Develop\SparseMatrixData\OPF_6000\OPF_6000_b.mtx</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
