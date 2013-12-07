@@ -48,6 +48,6 @@ private:
 
 private:
     LinAlg_NS::SparseMatrix2D m_;
-    LinAlg_NS::Vector b_;
-    LinAlg_NS::Vector x_ref_;
+    LinAlg_NS::Vector         b_;
+    LinAlg_NS::Vector         x_ref_;
 };

@@ -43,6 +43,19 @@ FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type 
     symmetry_strategy_->insert(row, col, value);
 }
 
+namespace {
+
+    bool hasMatrixZeroDiagonalElements(SparseMatrix2D const & m) {
+        for (IMatrix2D::size_type row = 0; row < m.rows(); ++row) {
+            auto value = m(row, row);
+            if (!value)
+                return true;
+        }
+        return false;
+    }
+
+}
+
 void 
 FloridaSparseMatrixBuilder::finalize() const {
 #ifdef DEBUG
@@ -55,8 +68,10 @@ FloridaSparseMatrixBuilder::finalize() const {
     data_->finalize();
 
     // check matrix
-    bool symmetry_strategy_check = symmetry_strategy_->check();
-    common_NS::reporting::checkConditional(symmetry_strategy_check, "FloridaSparseMatrixBuilder::finalize: Matrix error");
+//     bool symmetry_strategy_check = symmetry_strategy_->check();
+//     common_NS::reporting::checkConditional(symmetry_strategy_check, "FloridaSparseMatrixBuilder::finalize: Matrix error");
+
+    common_NS::reporting::checkConditional(hasMatrixZeroDiagonalElements(*data_) == false, "FloridaSparseMatrixBuilder::finalize: Matrix contains zero diagonal elements!");
 }
 
 FloridaSparseMatrixBuilder::result_t

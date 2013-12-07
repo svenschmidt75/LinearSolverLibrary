@@ -1,27 +1,25 @@
 /*
- * Name  : bcsstk05Test
+ * Name  : FIDAP_EX5_Test
  * Path  : 
  * Use   : 
  * Author: Sven Schmidt
- * Date  : 07/27/2013
- * 
- * Cond(A) = 14281.1
+ * Date  : 12/07/2013
  */
 #pragma once
 
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class bcsstk05Test : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(bcsstk05Test);
-    CPPUNIT_TEST(SORTest);
+class FIDAP_EX5_Test : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(FIDAP_EX5_Test);
     CPPUNIT_TEST(CGTest);
     CPPUNIT_TEST(BiCGTest);
-    CPPUNIT_TEST(BiCGSTABTest);
-    CPPUNIT_TEST(MINRESTest);
-    CPPUNIT_TEST(MINRESLanProTest);
+    CPPUNIT_TEST(GMRESTest);
+    CPPUNIT_TEST(TFQMRTest);
     CPPUNIT_TEST(GCRWithNoRestartTest);
     CPPUNIT_TEST(GCRWithRestartTest);
+    CPPUNIT_TEST(MINRESTest);
+    CPPUNIT_TEST(MINRESLanProTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -29,19 +27,17 @@ public:
     void tearDown();
 
 protected:
-    void SORTest();
     void CGTest();
     void BiCGTest();
-    void BiCGSTABTest();
-    void MINRESTest();
-    void MINRESLanProTest();
+    void GMRESTest();
+    void TFQMRTest();
     void GCRWithNoRestartTest();
     void GCRWithRestartTest();
+    void MINRESTest();
+    void MINRESLanProTest();
 
 private:
     void initMatrix();
-    void matrixIsDiagonallyDominant();
-    void matrixIsSymmetric();
 
 private:
     LinAlg_NS::SparseMatrix2D m_;

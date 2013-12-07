@@ -54,7 +54,7 @@ OffshoreTest::initMatrix() {
 
 void
 OffshoreTest::initRHS() {
-    b_ = std::move(readRHS());
+    b_ = readRHS();
 }
 
 void

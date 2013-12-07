@@ -65,6 +65,7 @@
     <ClCompile Include="SparseMatrixTest.cpp" />
     <ClCompile Include="spiralTest.cpp" />
     <ClCompile Include="sts4098Test.cpp" />
+    <ClCompile Include="FIDAP_EX5_Test.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
     <ClCompile Include="VariableInfluenceAccessorTest.cpp">
@@ -95,6 +96,7 @@
     <ClInclude Include="SparseMatrixTest.h" />
     <ClInclude Include="spiralTest.h" />
     <ClInclude Include="sts4098Test.h" />
+    <ClInclude Include="FIDAP_EX5_Test.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="VariableInfluenceAccessorTest.h" />

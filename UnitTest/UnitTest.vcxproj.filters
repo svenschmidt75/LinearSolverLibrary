@@ -16,7 +16,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultiColorTest.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="SparseLinearSolverTest.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
     <ClCompile Include="bcsstk05Test.cpp">
@@ -60,6 +59,12 @@
     <ClCompile Include="OffshoreTest.cpp">
       <Filter>Solver</Filter>
     </ClCompile>
+    <ClCompile Include="SparseLinearSolverTest.cpp">
+      <Filter>Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="FIDAP_EX5_Test.cpp">
+      <Filter>Solver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -89,7 +94,6 @@
     <ClInclude Include="LinAlgTest.h" />
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="SparseLinearSolverTest.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="MatrixStencilTest.h" />
@@ -110,6 +114,12 @@
     <ClInclude Include="SparseMatrixRowIteratorTest.h" />
     <ClInclude Include="SparseMatrixTest.h" />
     <ClInclude Include="OffshoreTest.h">
+      <Filter>Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseLinearSolverTest.h">
+      <Filter>Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="FIDAP_EX5_Test.h">
       <Filter>Solver</Filter>
     </ClInclude>
   </ItemGroup>

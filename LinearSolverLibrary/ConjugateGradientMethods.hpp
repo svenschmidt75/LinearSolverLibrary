@@ -160,7 +160,7 @@ namespace LinearSolverLibrary_NS {
             double normb = VectorMath::norm(b);
 
             // guessed x = null vector
-            Vector r(b);
+            Vector r{b};
 
             double residual = VectorMath::norm(r) / normb;
             if (residual <= tol)
@@ -168,9 +168,9 @@ namespace LinearSolverLibrary_NS {
 
             Vector x(b.size());
             Vector x_half(b.size());
-            Vector r0(b);
+            Vector r0{b};
             Vector r_half(b.size());
-            Vector p(r);
+            Vector p{r};
             double alpha;
             double rho;
             double rho_prev = VectorMath::dotProduct(r, r0);
@@ -184,7 +184,7 @@ namespace LinearSolverLibrary_NS {
                 x_half = x + alpha * p;
                 r_half = r - alpha * q;
 
-                Vector q2 = m * r_half;
+                Vector q2{m * r_half};
 
                 double omega = VectorMath::dotProduct(r_half, q2) / VectorMath::dotProduct(q2, q2);
                 x = x_half + omega * r_half;
@@ -196,9 +196,13 @@ namespace LinearSolverLibrary_NS {
 
 //                std::cout << "Iteration " << i << ": " << residual << std::endl;
 
+                if (!omega)
+                    // breakdown
+                    return std::make_tuple(false, x, max_iterations, 0);
+
                 rho = VectorMath::dotProduct(r, r0);
 
-                double beta = alpha / omega * rho / rho_prev;
+                double beta{alpha / omega * rho / rho_prev};
                 p = r + beta * (p - omega * q);
 
                 rho_prev = rho;
