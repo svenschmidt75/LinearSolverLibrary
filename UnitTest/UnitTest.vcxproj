@@ -66,6 +66,7 @@
     <ClCompile Include="spiralTest.cpp" />
     <ClCompile Include="sts4098Test.cpp" />
     <ClCompile Include="FIDAP_EX5_Test.cpp" />
+    <ClCompile Include="ParallelLinAlgOperationsTest.cpp" />
     <ClCompile Include="UHMatrixTest.cpp" />
     <ClCompile Include="UTMatrixTest.cpp" />
     <ClCompile Include="VariableInfluenceAccessorTest.cpp">
@@ -97,6 +98,7 @@
     <ClInclude Include="spiralTest.h" />
     <ClInclude Include="sts4098Test.h" />
     <ClInclude Include="FIDAP_EX5_Test.h" />
+    <ClInclude Include="ParallelLinAlgOperationsTest.h" />
     <ClInclude Include="UHMatrixTest.h" />
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="VariableInfluenceAccessorTest.h" />
@@ -255,6 +257,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(CPPUNIT_DIR)\cppunit\lib;$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>cppunit.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/Profile %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">

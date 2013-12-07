@@ -65,6 +65,7 @@
     <ClCompile Include="FIDAP_EX5_Test.cpp">
       <Filter>Solver</Filter>
     </ClCompile>
+    <ClCompile Include="ParallelLinAlgOperationsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -122,5 +123,6 @@
     <ClInclude Include="FIDAP_EX5_Test.h">
       <Filter>Solver</Filter>
     </ClInclude>
+    <ClInclude Include="ParallelLinAlgOperationsTest.h" />
   </ItemGroup>
 </Project>

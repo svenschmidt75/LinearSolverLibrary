@@ -26,10 +26,13 @@
 #include "SparseMatrixTest.h"
 #include "OffshoreTest.h"
 #include "FIDAP_EX5_Test.h"
+#include "ParallelLinAlgOperationsTest.h"
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 
-#if 1
+
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
