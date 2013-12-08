@@ -62,45 +62,97 @@ namespace {
         return result;
     }
 
+    /*
+
+    Vector
+    ParallelMatrixVectorMultiplication2(SparseMatrix2D const & m, Vector const & x) {
+    int numberOfProcessors = std::thread::hardware_concurrency();
+    numberOfProcessors = 8;
+
+    int size = 23;
+
+    int size_per_chunk = size / numberOfProcessors;
+    int diff = size % numberOfProcessors;
+    if (diff > numberOfProcessors) {
+    size_per_chunk++;
+    diff -= numberOfProcessors;
+    }
+
+    for (int i = 0; i < size - diff; i += size_per_chunk) {
+
+    int start_index = i;
+    int end_size = i + size_per_chunk;
+    int chunk_index = i / size_per_chunk;
+    int i_copy = i;
+    if (diff) {
+    if (chunk_index < diff) {
+    i_copy += chunk_index;
+    end_size = i_copy + size_per_chunk + 1;
+    }
+    else {
+    i_copy += diff;
+    end_size = i_copy + size_per_chunk;
+    }
+    }
+
+    std::cout << "Chunk index: " << chunk_index << std::endl;
+    std::cout << "Start index: " << start_index << std::endl;
+    std::cout << "Adjusted start index: " << i_copy << std::endl;
+    std::cout << "End index: " << i + size_per_chunk << std::endl;
+    std::cout << "Adjusted end index: " << end_size << std::endl;
+
+    for (int j = i_copy; j < end_size; ++j) {
+    std::cout << "i, j: " << i_copy << ", " << j << std::endl;
+    }
+
+    }
+
+    return Vector{1};
+    }
+
+    */
+
+    template<typename T>
+    std::tuple<T, T>
+    getChunkStartEndIndex(T total_size, T nchunks, T current_start_index) {
+        auto chunk_size = total_size / nchunks;
+        auto diff = total_size % nchunks;
+
+        auto chunk_index = current_start_index / chunk_size;
+        auto start_index = current_start_index;
+        auto end_size = current_start_index + chunk_size;
+
+        if (diff) {
+            if (chunk_index < diff) {
+                start_index += chunk_index;
+                end_size = start_index + chunk_size + 1;
+            }
+            else {
+                start_index += diff;
+                end_size = start_index + chunk_size;
+            }
+        }
+        return std::make_tuple(start_index, end_size);
+    }
+
     Vector
     ParallelMatrixVectorMultiplication2(SparseMatrix2D const & m, Vector const & x) {
         int numberOfProcessors = std::thread::hardware_concurrency();
         numberOfProcessors = 3;
-
-        int size = 22;
+        int size = 19;
 
         int size_per_chunk = size / numberOfProcessors;
         int diff = size % numberOfProcessors;
-        if (diff > numberOfProcessors) {
-            size_per_chunk++;
-            diff -= numberOfProcessors;
-        }
 
         for (int i = 0; i < size - diff; i += size_per_chunk) {
 
-            int start_index = i;
-            int end_size = i + size_per_chunk;
             int chunk_index = i / size_per_chunk;
-            int i_copy = i;
-            if (diff) {
-                if (chunk_index < diff) {
-                    i_copy += chunk_index;
-                    end_size = i_copy + size_per_chunk + 1;
-                }
-                else {
-                    i_copy += diff;
-                    end_size = i_copy + size_per_chunk;
-                }
-            }
+            int start_index, end_size;
+            std::tie(start_index, end_size) = getChunkStartEndIndex(size, numberOfProcessors, i);
 
             std::cout << "Chunk index: " << chunk_index << std::endl;
-            std::cout << "Start index: " << start_index << std::endl;
-            std::cout << "Adjusted start index: " << i_copy << std::endl;
-            std::cout << "End index: " << i + size_per_chunk << std::endl;
-            std::cout << "Adjusted end index: " << end_size << std::endl;
-
-            for (int j = i_copy; j < end_size; ++j) {
-                std::cout << "i, j: " << i_copy << ", " << j << std::endl;
+            for (int j = start_index; j < end_size; ++j) {
+                std::cout << "i, j: " << start_index << ", " << j << std::endl;
             }
 
         }
