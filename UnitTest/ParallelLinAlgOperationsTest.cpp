@@ -9,6 +9,11 @@
 #include <ppl.h>
 
 
+
+#include <atomic>
+
+
+
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
@@ -26,8 +31,8 @@ namespace {
 
     SparseMatrix2D
     readMatrix() {
-        FS::path filename("\\Develop\\SparseMatrixData\\bcsstk05\\bcsstk05.ar");
-//        FS::path filename("\\Develop\\SparseMatrixData\\language\\language.ar");
+//        FS::path filename("\\Develop\\SparseMatrixData\\bcsstk05\\bcsstk05.ar");
+        FS::path filename("\\Develop\\SparseMatrixData\\language\\language.ar");
         ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename.string());
         CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
         CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
@@ -135,6 +140,14 @@ namespace {
         return std::make_tuple(start_index, end_size);
     }
 
+    template<typename T1, typename T2>
+    auto
+    getAdjustedSize(T1 total_size, T2 nchunks) -> decltype(T1() - T2()) {
+        auto chunk_size = total_size / nchunks;
+        auto diff = total_size % nchunks;
+        return total_size - diff;
+    }
+
     Vector
     ParallelMatrixVectorMultiplication2(SparseMatrix2D const & m, Vector const & x) {
         int numberOfProcessors = std::thread::hardware_concurrency();
@@ -160,6 +173,27 @@ namespace {
         return Vector{1};
     }
 
+    Vector
+    ParallelMatrixVectorMultiplication3(SparseMatrix2D const & m, Vector const & x) {
+        using size_type = IMatrix2D::size_type;
+        Vector result{x.size()};
+
+        size_type numberOfProcessors = std::thread::hardware_concurrency();
+        IMatrix2D::size_type chunk_size = x.size() / numberOfProcessors;
+
+        auto size = getAdjustedSize(x.size(), numberOfProcessors);
+
+        concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &x, &result, numberOfProcessors](size_type row) {
+            size_type start_index, end_size;
+            std::tie(start_index, end_size) = getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
+            for (size_type i = start_index; i < end_size; ++i) {
+                double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, i);
+                result(i) = result_row;
+            }
+        }, concurrency::static_partitioner());
+        return result;
+    }
+
     class HighResTimer {
     public:
         HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
@@ -177,8 +211,8 @@ namespace {
 
 void
 ParallelLinAlgOperationsTest::TestParallelMatrixVectorMultiplication() {
-    IMatrix2D::size_type const dim = 153;
-//    IMatrix2D::size_type const dim = 399130;
+//    IMatrix2D::size_type const dim = 153;
+    IMatrix2D::size_type const dim = 399130;
     Vector x = createVectorOfSize(dim);
     SparseMatrix2D const & m = readMatrix();
 
@@ -198,14 +232,27 @@ ParallelLinAlgOperationsTest::TestParallelMatrixVectorMultiplication() {
 
 void
 ParallelLinAlgOperationsTest::TestParallelChunkedMatrixVectorMultiplication() {
-    IMatrix2D::size_type const dim = 153;
-    //    IMatrix2D::size_type const dim = 399130;
+//    IMatrix2D::size_type const dim = 153;
+    IMatrix2D::size_type const dim = 399130;
     Vector x = createVectorOfSize(dim);
     SparseMatrix2D const & m = readMatrix();
 
-    Vector parallel_result2;
+    Vector serial_result;
     {
         HighResTimer t;
-        parallel_result2 = ParallelMatrixVectorMultiplication2(m, x);
+        serial_result = SerialMatrixVectorMultiplication(m, x);
     }
+
+    Vector parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = ParallelMatrixVectorMultiplication(m, x);
+    }
+    CPPUNIT_ASSERT_MESSAGE("mismatch in linear solver result", SparseLinearSolverUtil::isVectorEqual(serial_result, parallel_result, 1E-15));
+
+    {
+        HighResTimer t;
+        parallel_result = ParallelMatrixVectorMultiplication3(m, x);
+    }
+    CPPUNIT_ASSERT_MESSAGE("mismatch in linear solver result", SparseLinearSolverUtil::isVectorEqual(serial_result, parallel_result, 1E-15));
 }

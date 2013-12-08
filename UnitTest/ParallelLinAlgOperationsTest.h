@@ -12,7 +12,7 @@
 
 class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ParallelLinAlgOperationsTest);
-//    CPPUNIT_TEST(TestParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(TestParallelMatrixVectorMultiplication);
     CPPUNIT_TEST(TestParallelChunkedMatrixVectorMultiplication);
     CPPUNIT_TEST_SUITE_END();
 
