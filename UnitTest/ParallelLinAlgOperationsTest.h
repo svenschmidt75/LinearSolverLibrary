@@ -12,8 +12,10 @@
 
 class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ParallelLinAlgOperationsTest);
-    CPPUNIT_TEST(TestParallelMatrixVectorMultiplication);
-    CPPUNIT_TEST(TestParallelChunkedMatrixVectorMultiplication);
+    CPPUNIT_TEST(TestNonChunkedParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(TestChunkedParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(TestNonChunkedParallelDotProduct);
+    CPPUNIT_TEST(TestChunkedParallelDotProduct);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -21,6 +23,8 @@ public:
     void tearDown();
 
 protected:
-    void TestParallelMatrixVectorMultiplication();
-    void TestParallelChunkedMatrixVectorMultiplication();
+    void TestNonChunkedParallelMatrixVectorMultiplication();
+    void TestChunkedParallelMatrixVectorMultiplication();
+    void TestNonChunkedParallelDotProduct();
+    void TestChunkedParallelDotProduct();
 };
