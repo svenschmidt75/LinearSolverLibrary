@@ -6,11 +6,15 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/EntityOperators.h"
+#include "LinAlg/MatrixStencil.hpp"
+#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
+#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
 
 #include <numeric>
 
 
 using namespace LinAlg_NS;
+using namespace LinearSolverLibrary_NS;
 
 
 void
@@ -480,7 +484,7 @@ LinAlgOperatorTest::sparseSquareMatrixMulSparseSquareMatrixTest() {
     SparseMatrix2D b = createSparseMatrix2D();
     SparseMatrix2D const c{helper::matrixMul(a, b)};
 
-    c.print();
+//    c.print();
 
     // 1st row
     auto expected = 1.0;
@@ -514,7 +518,7 @@ LinAlgOperatorTest::sparseSquareMatrixMulSparseNonSquareMatrixTest() {
     a(2, 0) = 1.9;
     a(2, 1) = 2.3;
     a.finalize();
-    a.print();
+//    a.print();
 
     SparseMatrix2D b(3, 2);
     b(0, 0) = 0.7;
@@ -522,13 +526,13 @@ LinAlgOperatorTest::sparseSquareMatrixMulSparseNonSquareMatrixTest() {
     b(1, 0) = 3.4;
     b(2, 1) = 0.12;
     b.finalize();
-    b.print();
+//    b.print();
 
     SparseMatrix2D const c{ helper::matrixMul(a, b) };
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of rows mismatch", 3ull, c.rows());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", 2ull, c.cols());
 
-    c.print();
+//    c.print();
 
 
     // 1st row
@@ -548,4 +552,90 @@ LinAlgOperatorTest::sparseSquareMatrixMulSparseNonSquareMatrixTest() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(2, 0), 1E-10);
     expected = 23.37;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(2, 1), 1E-10);
+}
+
+void
+LinAlgOperatorTest::test3by3MatrixTimes3by3MatrixEqualsIdentity() {
+    // example from http://www.purplemath.com/modules/mtrxinvr.htm
+    SparseMatrix2D a(3, 3);
+    a(0, 0) = 7.0;
+    a(0, 1) = -3.0;
+    a(0, 2) = -3.0;
+    a(1, 0) = -1.0;
+    a(1, 1) = 1.0;
+    a(2, 0) = -1.0;
+    a(2, 2) = 1.0;
+    a.finalize();
+//    a.print();
+
+    SparseMatrix2D b(3, 3);
+    b(0, 0) = 1.0;
+    b(0, 1) = 3.0;
+    b(0, 2) = 3.0;
+    b(1, 0) = 1.0;
+    b(1, 1) = 4.0;
+    b(1, 2) = 3.0;
+    b(2, 0) = 1.0;
+    b(2, 1) = 3.0;
+    b(2, 2) = 4.0;
+    b.finalize();
+ //   b.print();
+
+    SparseMatrix2D const c{ helper::matrixMul(a, b) };
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of rows mismatch", 3ull, c.rows());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", 3ull, c.cols());
+
+//    c.print();
+
+
+    // 1st row
+    auto expected = 1.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(0, 0), 1E-10);
+    expected = 0.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(0, 1), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(0, 2), 1E-10);
+
+    // 2ndst row
+    expected = 1.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(1, 1), 1E-10);
+    expected = 0.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(1, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(1, 2), 1E-10);
+
+    // 3rd row
+    expected = 1.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(2, 2), 1E-10);
+    expected = 0.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(2, 0), 1E-10);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("error in matrix-matrix multiplication", expected, c(2, 1), 1E-10);
+}
+
+void
+LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
+    // A * (A * v) == A^{2} * v
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+
+    Vector v{m.cols()};
+    std::iota(std::begin(v), std::end(v), 1);
+
+    // compute m * (m * (m * v))
+    Vector result1;
+    result1 = m * v;
+    result1 = m * result1;
+    result1 = m * result1;
+
+    // compute (m * m * m) * v
+    SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
+//    m2.print();
+    Vector result2;
+    result2 = m2 * v;
+    
+    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-15));
 }

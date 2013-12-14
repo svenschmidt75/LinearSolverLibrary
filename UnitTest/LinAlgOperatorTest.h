@@ -36,6 +36,8 @@ class LinAlgOperatorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(sparseMatrixVectorExprMulTest);
     CPPUNIT_TEST(sparseSquareMatrixMulSparseSquareMatrixTest);
     CPPUNIT_TEST(sparseSquareMatrixMulSparseNonSquareMatrixTest);
+    CPPUNIT_TEST(test3by3MatrixTimes3by3MatrixEqualsIdentity);
+    CPPUNIT_TEST(testMatrixTimesMatrixTimesVector);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -67,4 +69,6 @@ protected:
     void sparseMatrixVectorExprMulTest();
     void sparseSquareMatrixMulSparseSquareMatrixTest();
     void sparseSquareMatrixMulSparseNonSquareMatrixTest();
+    void test3by3MatrixTimes3by3MatrixEqualsIdentity();
+    void testMatrixTimesMatrixTimesVector();
 };

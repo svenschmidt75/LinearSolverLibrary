@@ -362,5 +362,5 @@ MatrixStencilTest::TestGenerated5By5MatrixFor25PointStencilWithPeriodicBoundaryC
          3,  5, -8, -9, -3,  0,  1, -2,  7,  2,  2, -1,  9,  2,  1, -1,  4, -1, -6, -3,  7, -1,  3, -7, -8,
         -3,  3,  5, -8, -9,  2,  0,  1, -2,  7,  1,  2, -1,  9,  2, -3, -1,  4, -1, -6, -8,  7, -1,  3, -7,
         -9, -3,  3,  5, -8,  7,  2,  0,  1, -2,  2,  1,  2, -1,  9, -6, -3, -1,  4, -1, -7, -8,  7, -1,  3;
-compareMatrices(m, reference_matrix);
+    compareMatrices(m, reference_matrix);
 }
