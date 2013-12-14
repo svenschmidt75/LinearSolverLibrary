@@ -12,12 +12,14 @@
 
 class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ParallelLinAlgOperationsTest);
-    CPPUNIT_TEST(TestNonChunkedParallelMatrixVectorMultiplication);
-    CPPUNIT_TEST(TestChunkedParallelMatrixVectorMultiplication);
-    CPPUNIT_TEST(TestNonChunkedParallelDotProduct);
-    CPPUNIT_TEST(TestChunkedParallelDotProduct);
-    CPPUNIT_TEST(TestNonChunkedParallelMatrixProduct);
-    CPPUNIT_TEST(TestChunkedParallelMatrixProduct);
+    CPPUNIT_TEST(testChunkGenerationAlgorithmUneven);
+    CPPUNIT_TEST(testChunkGenerationAlgorithmEven);
+    CPPUNIT_TEST(testNonChunkedParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(testChunkedParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(testNonChunkedParallelDotProduct);
+    CPPUNIT_TEST(testChunkedParallelDotProduct);
+    CPPUNIT_TEST(testNonChunkedParallelMatrixProduct);
+    CPPUNIT_TEST(testChunkedParallelMatrixProduct);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,10 +27,12 @@ public:
     void tearDown();
 
 protected:
-    void TestNonChunkedParallelMatrixVectorMultiplication();
-    void TestChunkedParallelMatrixVectorMultiplication();
-    void TestNonChunkedParallelDotProduct();
-    void TestChunkedParallelDotProduct();
-    void TestNonChunkedParallelMatrixProduct();
-    void TestChunkedParallelMatrixProduct();
+    void testChunkGenerationAlgorithmUneven();
+    void testChunkGenerationAlgorithmEven();
+    void testNonChunkedParallelMatrixVectorMultiplication();
+    void testChunkedParallelMatrixVectorMultiplication();
+    void testNonChunkedParallelDotProduct();
+    void testChunkedParallelDotProduct();
+    void testNonChunkedParallelMatrixProduct();
+    void testChunkedParallelMatrixProduct();
 };

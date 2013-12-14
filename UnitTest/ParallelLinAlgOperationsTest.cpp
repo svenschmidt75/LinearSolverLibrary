@@ -109,6 +109,8 @@ namespace {
     template<typename T>
     std::tuple<T, T>
     getChunkStartEndIndex(T total_size, T nchunks, T current_start_index) {
+        // Note: current_start_index MUST be a multiple of chunk_size.
+        // This method returns nonsense otherwise!!!
         auto chunk_size = total_size / nchunks;
         auto diff = total_size % nchunks;
 
@@ -311,7 +313,98 @@ namespace {
 }
 
 void
-ParallelLinAlgOperationsTest::TestNonChunkedParallelMatrixVectorMultiplication() {
+ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmUneven() {
+    using size_type = IMatrix2D::size_type;
+    size_type numberOfProcessors = std::thread::hardware_concurrency();
+    size_type total_size = 19;
+    IMatrix2D::size_type chunk_size = total_size / numberOfProcessors;
+    auto adjusted_size = getAdjustedSize(total_size, numberOfProcessors);
+    
+    size_type expected = 19 / numberOfProcessors * numberOfProcessors;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk adjusted size mismatch", expected, adjusted_size);
+
+    /* 19 / 8 = 2 mod 3, so
+     * 8 chunks with indices
+     * 1. 0, 1, 2
+     * 2. 3, 4, 5
+     * 3. 6, 7, 8
+     * 4. 9, 10
+     * 5. 11, 12
+     * 6. 13, 14
+     * 7. 15, 16
+     * 8. 17, 18
+     */
+
+    // chunk 2
+    size_type start_index, end_size;
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
+    expected = 3;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 6;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+
+    // chunk 4
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
+    expected = 9;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 11;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+
+    // chunk 8
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 7 * chunk_size });
+    expected = 17;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 19;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+}
+
+void
+ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmEven() {
+    using size_type = IMatrix2D::size_type;
+    size_type numberOfProcessors = 7;
+    size_type total_size = 21;
+    IMatrix2D::size_type chunk_size = total_size / numberOfProcessors;
+    auto adjusted_size = getAdjustedSize(total_size, numberOfProcessors);
+    
+    size_type expected = 21 / numberOfProcessors * numberOfProcessors;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk adjusted size mismatch", expected, adjusted_size);
+
+    /* 21 / 7 = 3 mod 0, so
+     * 8 chunks with indices
+     * 1. 0, 1, 2
+     * 2. 3, 4, 5
+     * 3. 6, 7, 8
+     * 4. 9, 10, 11
+     * 5. 12, 13, 14
+     * 5. 15, 16, 17
+     * 6. 18, 19, 20
+     */
+
+    // chunk 2
+    size_type start_index, end_size;
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
+    expected = 3;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 6;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+
+    // chunk 4
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
+    expected = 9;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 12;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+
+    // chunk 7
+    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 6 * chunk_size });
+    expected = 18;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
+    expected = 21;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
+}
+
+void
+ParallelLinAlgOperationsTest::testNonChunkedParallelMatrixVectorMultiplication() {
     Vector x = createVectorOfSize(dim);
     SparseMatrix2D const & m = readMatrix();
 
@@ -330,7 +423,7 @@ ParallelLinAlgOperationsTest::TestNonChunkedParallelMatrixVectorMultiplication()
 }
 
 void
-ParallelLinAlgOperationsTest::TestChunkedParallelMatrixVectorMultiplication() {
+ParallelLinAlgOperationsTest::testChunkedParallelMatrixVectorMultiplication() {
     Vector x = createVectorOfSize(dim);
     SparseMatrix2D const & m = readMatrix();
 
@@ -355,7 +448,7 @@ ParallelLinAlgOperationsTest::TestChunkedParallelMatrixVectorMultiplication() {
 }
 
 void
-ParallelLinAlgOperationsTest::TestNonChunkedParallelDotProduct() {
+ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
     IMatrix2D::size_type dim = 999130;
     Vector v1 = createVectorOfSize(dim);
     Vector v2 = createVectorOfSize(dim);
@@ -377,7 +470,7 @@ ParallelLinAlgOperationsTest::TestNonChunkedParallelDotProduct() {
 }
 
 void
-ParallelLinAlgOperationsTest::TestChunkedParallelDotProduct() {
+ParallelLinAlgOperationsTest::testChunkedParallelDotProduct() {
     IMatrix2D::size_type dim = 9199130;
     Vector v1 = createVectorOfSize(dim);
     Vector v2 = createVectorOfSize(dim);
@@ -399,7 +492,7 @@ ParallelLinAlgOperationsTest::TestChunkedParallelDotProduct() {
 }
 
 void
-ParallelLinAlgOperationsTest::TestNonChunkedParallelMatrixProduct() {
+ParallelLinAlgOperationsTest::testNonChunkedParallelMatrixProduct() {
     MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
     stencil <<
          2, -1,  9,  2,  1,
@@ -435,10 +528,12 @@ ParallelLinAlgOperationsTest::TestNonChunkedParallelMatrixProduct() {
     result2 = parallel_result * v;
 
     CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+    if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+        __debugbreak();
 }
 
 void
-ParallelLinAlgOperationsTest::TestChunkedParallelMatrixProduct() {
+ParallelLinAlgOperationsTest::testChunkedParallelMatrixProduct() {
     MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
     stencil <<
          2, -1,  9,  2,  1,
