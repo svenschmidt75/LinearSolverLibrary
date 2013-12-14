@@ -620,6 +620,8 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
          7, -1,  3, -7, -8,
          3,  5, -8, -9, -3,
          0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     Vector v{m.cols()};
