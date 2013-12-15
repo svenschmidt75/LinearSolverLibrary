@@ -158,7 +158,26 @@ namespace internal {
                 /* Return
                  * result(row, column) = lhs(row, i) * rhs(i, column)
                  */
-                return LinAlg_NS::helper::getMatrixMatrixMulElement<SparseMatrix2D, MATRIX_EXPR>(lhs, rhs, row, column);
+                return LinAlg_NS::helper::getMatrixMatrixMulElement(lhs, rhs, row, column);
+            }
+        };
+
+    };
+
+    template<typename T1, typename T2>
+    struct matrix_mul_traits<MatrixMatrixMul<T1, T2>> {
+        using size_type = IMatrix2D::size_type;
+
+        template<typename MATRIX_EXPR>
+        struct apply {
+            /* Use tag dispatching to select the matrix multiplication
+             * for dense matrices.
+             */
+            static double op(MatrixMatrixMul<T1, T2> const & lhs, MATRIX_EXPR const & rhs, size_type row, size_type column) {
+                /* Return
+                 * result(row, column) = lhs(row, i) * rhs(i, column)
+                 */
+                return LinAlg_NS::helper::getMatrixMatrixMulElement(lhs, rhs, row, column);
             }
         };
 

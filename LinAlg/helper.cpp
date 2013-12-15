@@ -2,15 +2,6 @@
 
 #include "helper.h"
 #include "Vector.h"
-#include "Matrix2D.h"
-#include "SparseMatrix2D.h"
-#include "MatrixIterators.h"
-#include "ConstColumnRowIterator.h"
-#include "ConstRowColumnIterator.h"
-#include "ConstRowIterator.h"
-#include "ConstColumnIterator.h"
-
-#include "common/reporting.h"
 
 
 namespace LinAlg_NS {
@@ -95,35 +86,8 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     return tmp;
 }
 
-template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
-double
-helper::getMatrixMatrixMulElement(MATRIX_EXPR_1 const & lhs, MATRIX_EXPR_2 const & rhs, size_type row, size_type column) {
-    common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrix_matrix_mul: Matrices incompatible");
-
-    auto value = 0.0;
-    ConstRowColumnIterator<MATRIX_EXPR_1> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
-    ConstColumnRowIterator<MATRIX_EXPR_2> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
-    ConstColumnIterator<MATRIX_EXPR_1> columnIterator = *columnRowIterator;
-    ConstRowIterator<MATRIX_EXPR_2> rowIterator = *rowColumnIterator;
-
-    // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
-    while (columnIterator && columnIterator.column() < lhs.cols()) {
-        while (rowIterator && rowIterator.row() < columnIterator.column()) {
-            ++rowIterator;
-        }
-        if (!rowIterator)
-            break;
-        if (rowIterator.row() == columnIterator.column())
-            value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
-        ++columnIterator;
-    }
-
-    return value;
-}
-
 // create explicit template instantiations
 template LINALG_DECL_SYMBOLS double helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);
 template LINALG_DECL_SYMBOLS double helper::get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);
-template LINALG_DECL_SYMBOLS double helper::getMatrixMatrixMulElement(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs, size_type row, size_type column);
 
 } // namespace LinAlg_NS

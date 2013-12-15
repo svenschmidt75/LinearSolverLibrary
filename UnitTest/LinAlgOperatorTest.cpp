@@ -635,7 +635,7 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
 
     // compute (m * m * m) * v
     SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
-//    m2 = m * m * m;
+//    m2 = m * (m * m);
     
     //    m2.print();
     Vector result2;

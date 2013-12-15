@@ -100,7 +100,7 @@ namespace LinAlg_NS {
     static typename std::enable_if<
       entity_traits<NATRIX_EXPR_1>::is_matrix_expression == true &&
       entity_traits<NATRIX_EXPR_2>::is_matrix_expression == true,
-      typename MatrixMatrixMul<NATRIX_EXPR_1, NATRIX_EXPR_1>
+      typename MatrixMatrixMul<NATRIX_EXPR_1, NATRIX_EXPR_2>
     >::type
     operator*(NATRIX_EXPR_1 const & lhs, NATRIX_EXPR_2 const & rhs) {
         return MatrixMatrixMul<NATRIX_EXPR_1, NATRIX_EXPR_2>(lhs, rhs);

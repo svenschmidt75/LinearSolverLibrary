@@ -15,7 +15,8 @@ ConstRowColumnIterator<SparseMatrix2D>::ConstRowColumnIterator(SparseMatrix2D co
 
 ConstRowColumnIterator<SparseMatrix2D>::ConstRowColumnIterator(SparseMatrix2D const & m, size_type row)
     :
-    m_(m), row_(row) {}
+    m_(m),
+    row_(row) {}
 
 ConstRowColumnIterator<SparseMatrix2D> &
 ConstRowColumnIterator<SparseMatrix2D>::operator=(ConstRowColumnIterator const & in) {
