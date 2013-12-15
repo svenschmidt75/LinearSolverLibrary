@@ -37,8 +37,8 @@ namespace internal {
     template<typename MATRIX_EXPR, typename VECTOR_EXPR>
     class MatrixVectorExpr;
 
-    template<typename MATRIX_EXPR1, typename MATRIX_EXPR2>
-    class MatrixMatrixExpr;
+    template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
+    class MatrixMatrixMul;
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -92,8 +92,8 @@ namespace internal {
         enum { is_matrix_expression = true };
     };
 
-    template<typename MATRIX_EXPR1, typename MATRIX_EXPR2>
-    struct entity_traits<MatrixMatrixExpr<MATRIX_EXPR1, MATRIX_EXPR2>> {
+    template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
+    struct entity_traits<MatrixMatrixMul<MATRIX_EXPR_1, MATRIX_EXPR_2>> {
         enum { is_vector_expression = false };
         enum { is_matrix_expression = true };
     };
@@ -134,17 +134,36 @@ namespace internal {
             }
         };
 
-        template<typename MATRIX_EXPR>
-        struct matrix_mul_apply {
-            static double op(SparseMatrix2D const & lhs, MATRIX_EXPR const & rhs, IMatrix2D::size_type row, IMatrix2D::size_type col) {
-                return LinAlg_NS::helper::sparse_matrix_product_with(lhs, rhs, row, col);
-            }
-        };
-
         static double get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col) {
             return LinAlg_NS::helper::get_value(m, row, col);
         }
     };
+
+    
+    //////////////////////////////////////////////////////////////////////////////
+
+    template<typename T>
+    struct matrix_mul_traits {};
+
+    template<>
+    struct matrix_mul_traits<SparseMatrix2D> {
+        using size_type = IMatrix2D::size_type;
+
+        template<typename MATRIX_EXPR>
+        struct apply {
+            /* Use tag dispatching to select the matrix multiplication
+             * for dense matrices.
+             */
+            static double op(SparseMatrix2D const & lhs, MATRIX_EXPR const & rhs, size_type row, size_type column) {
+                /* Return
+                 * result(row, column) = lhs(row, i) * rhs(i, column)
+                 */
+                return LinAlg_NS::helper::getMatrixMatrixMulElement<SparseMatrix2D, MATRIX_EXPR>(lhs, rhs, row, column);
+            }
+        };
+
+    };
+
 
 } // namespace internal
 

@@ -4,9 +4,6 @@
 #include "Vector.h"
 #include "common/reporting.h"
 
-#include <iostream>
-#include <iomanip>
-
 
 /* The following specializations are needed for serializing
  * in the xml file format. Not sure why...
@@ -154,21 +151,18 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
     if (finalized_) {
         // Number of non-zero columns for this row
         size_type ncol = nelements_[row + 1] - nelements_[row];
-
-        // row has zero elements
-        if (!ncol)
-            return 0.0;
-
+        if (!ncol) return 0.0;
         double value = 0.0;
         size_type offset = nelements_[row];
 
         // check all columns for elements in row 'row'
-        for (size_type col = 0; col < ncol; ++col) {
-            if (columns_[offset + col] < column)
+        for (size_type icol = 0; icol < ncol; ++icol) {
+            size_type col = columns_[offset + icol];
+            if (col < column)
                 continue;
-            if (columns_[offset + col] > column)
+            if (col > column)
                 break;
-            value = elements_[offset + col];
+            value = elements_[offset + icol];
             break;
         }
         return value;
@@ -180,6 +174,7 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
+    // Note: This method is NOT thread save!
 #if defined(DEBUG)
     common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
     common_NS::reporting::checkUppderBound(row, rows() - 1);

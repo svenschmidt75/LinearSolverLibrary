@@ -581,7 +581,7 @@ LinAlgOperatorTest::test3by3MatrixTimes3by3MatrixEqualsIdentity() {
     b.finalize();
  //   b.print();
 
-    SparseMatrix2D const c{ helper::matrixMul(a, b) };
+    SparseMatrix2D const c{helper::matrixMul(a, b)};
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of rows mismatch", 3ull, c.rows());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", 3ull, c.cols());
 
@@ -635,7 +635,9 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
 
     // compute (m * m * m) * v
     SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
-//    m2.print();
+//    m2 = m * m * m;
+    
+    //    m2.print();
     Vector result2;
     result2 = m2 * v;
     

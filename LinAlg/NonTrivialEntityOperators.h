@@ -12,6 +12,7 @@
 #endif
 
 #include "internal/MatrixVectorExpr.h"
+#include "internal/MatrixMatrixMul.h"
 #include "internal/ScalarMatrixExpr.h"
 #include "internal/VectorBinaryExpr.h"
 #include "internal/ScalarVectorExpr.h"
@@ -89,6 +90,20 @@ namespace LinAlg_NS {
     >::type
     operator*(MATRIX_EXPR const & lhs, VECTOR_EXPR const & rhs) {
         return MatrixVectorExpr<MATRIX_EXPR, VECTOR_EXPR>(lhs, rhs);
+    }
+
+    /* We use SFINAE here to only make this method visible to the compiler for
+     * matrix-like types. Otherwise, whenever the compiler sees a + b, it causes
+     * a compiler error.
+     */
+    template<typename NATRIX_EXPR_1, typename NATRIX_EXPR_2>
+    static typename std::enable_if<
+      entity_traits<NATRIX_EXPR_1>::is_matrix_expression == true &&
+      entity_traits<NATRIX_EXPR_2>::is_matrix_expression == true,
+      typename MatrixMatrixMul<NATRIX_EXPR_1, NATRIX_EXPR_1>
+    >::type
+    operator*(NATRIX_EXPR_1 const & lhs, NATRIX_EXPR_2 const & rhs) {
+        return MatrixMatrixMul<NATRIX_EXPR_1, NATRIX_EXPR_2>(lhs, rhs);
     }
 
 } // namespace LinAlg_NS

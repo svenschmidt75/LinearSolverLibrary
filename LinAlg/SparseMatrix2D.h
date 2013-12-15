@@ -92,8 +92,24 @@ namespace LinAlg_NS {
         SparseMatrix2D & operator=(SparseMatrix2D const & in);
 
         // enable move semantics
-        SparseMatrix2D(SparseMatrix2D && in);
         SparseMatrix2D & operator=(SparseMatrix2D && in);
+
+        SparseMatrix2D(SparseMatrix2D && in);
+
+        template<typename MATRIX_EXPR, typename = typename std::enable_if<internal::entity_traits<MATRIX_EXPR>::is_matrix_expression == true>::type>
+        SparseMatrix2D(MATRIX_EXPR && in) {
+            static_assert(typename internal::entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "in is not a matrix-like type");
+            nrows_ = in.rows();
+            ncols_ = in.cols();
+            for (size_type row = 0; row < nrows_; ++row) {
+                for (size_type column = 0; column < ncols_; ++column) {
+                    double value = in(row, column);
+                    if (value)
+                        (*this)(row, column) = value;
+                }
+            }
+            finalize();
+        }
 
         // FROM IMatrix2D
         size_type rows() const;

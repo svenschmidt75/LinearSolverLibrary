@@ -98,8 +98,8 @@ namespace {
         concurrency::combinable<double> part_sums([]{
             return 0;
         });
-        concurrency::parallel_for(size_type{0}, v1.size(), [&part_sums, &v1, &v2](size_type index) {
-            double tmp = v1(index) * v2(index);
+        concurrency::parallel_for(size_type{0}, v1.size(), [&part_sums, &v1, &v2](size_type row_index) {
+            double tmp = v1(row_index) * v2(row_index);
             part_sums.local() += tmp;
         });
         result = part_sums.combine(std::plus<double>());
@@ -147,9 +147,9 @@ namespace {
         IMatrix2D::size_type chunk_size = x.size() / numberOfProcessors;
         auto size = getAdjustedSize(x.size(), numberOfProcessors);
         concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &x, &result, numberOfProcessors](size_type row) {
-            size_type start_index, end_size;
-            std::tie(start_index, end_size) = getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
-            for (size_type i = start_index; i < end_size; ++i) {
+            size_type start_row, end_size;
+            std::tie(start_row, end_size) = getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
+            for (size_type i = start_row; i < end_size; ++i) {
                 double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, i);
                 result(i) = result_row;
             }
@@ -168,10 +168,10 @@ namespace {
         IMatrix2D::size_type chunk_size = v1.size() / numberOfProcessors;
         auto size = getAdjustedSize(v1.size(), numberOfProcessors);
         concurrency::parallel_for(size_type{0}, size, chunk_size, [&part_sums, &v1, &v2, numberOfProcessors](size_type index) {
-            size_type start_index, end_size;
-            std::tie(start_index, end_size) = getChunkStartEndIndex(v1.size(), size_type{numberOfProcessors}, index);
+            size_type start_row, end_size;
+            std::tie(start_row, end_size) = getChunkStartEndIndex(v1.size(), size_type{numberOfProcessors}, index);
             double part_result = 0;
-            for (size_type i = start_index; i < end_size; ++i) {
+            for (size_type i = start_row; i < end_size; ++i) {
                 double tmp = v1(i) * v2(i);
                 part_result += tmp;
             }

@@ -249,6 +249,7 @@
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\entity_traits.h" />
+    <ClInclude Include="internal\MatrixMatrixMul.h" />
     <ClInclude Include="internal\primitiveOperators.h" />
     <ClInclude Include="internal\ScalarExpression.h" />
     <ClInclude Include="internal\ScalarMatrixExpr.h" />
