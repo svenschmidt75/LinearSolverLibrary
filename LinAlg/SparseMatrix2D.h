@@ -16,6 +16,7 @@
 #include "DeclSpec.h"
 
 #include "IMatrix2D.h"
+//#include "internal/entity_traits.h"
 
 #include <boost/cstdint.hpp>
 

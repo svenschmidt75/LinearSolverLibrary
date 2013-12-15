@@ -9,10 +9,11 @@ using namespace LinAlg_NS;
 
 ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, size_type column)
     :
-    m_(m),
-    column_(column),
-    row_(0) {
+    m_{m},
+    column_{column},
+    row_{0} {
 
+    common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
     jumpToFirstElement();
 }
@@ -63,19 +64,27 @@ ConstRowIterator<SparseMatrix2D>::row() const {
 ConstRowIterator<SparseMatrix2D>::iter &
 ConstRowIterator<SparseMatrix2D>::operator++() {
     // pre-increment
+//#ifdef DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+//#endif
     jumpToNextElement();
+//#ifdef DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows());
+//#endif
     return *this;
 }
 
 ConstRowIterator<SparseMatrix2D>::iter
 ConstRowIterator<SparseMatrix2D>::operator++(int) {
     // post-increment
+//#ifdef DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+//#endif
     auto tmp = *this;
     jumpToNextElement();
+//#ifdef DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows());
+//#endif
     return tmp;
 }
 
