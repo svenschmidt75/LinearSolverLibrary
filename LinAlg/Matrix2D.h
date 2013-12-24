@@ -54,17 +54,16 @@ namespace LinAlg_NS {
         }
 
         // FROM IMatrix2D
-        size_type rows() const;
-        size_type cols() const;
-        double    operator()(size_type row, size_type col) const;
-        double&   operator()(size_type row, size_type col);
+        size_type rows() const override;
+        size_type cols() const override;
+        double    operator()(size_type row, size_type col) const override;
+        double &  operator()(size_type row, size_type col) override;
+        void      print() const override;
 
         // Local Methods
 
         // solve A x = b
         void            solve(Vector const & b, Vector & x) const;
-
-        void            print() const;
 
         // Static Methods
         static Matrix2D identity(size_type n);

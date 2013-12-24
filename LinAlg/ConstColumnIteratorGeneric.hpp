@@ -43,7 +43,8 @@ namespace LinAlg_NS {
         }
 
         bool isValid() const {
-            return column_ < numberOfNonZeroMatrixElements();
+            common_NS::reporting::checkUppderBound(column_, m_.cols());
+            return column_ < m_.cols();
         }
 
         size_type numberOfNonZeroMatrixElements() const {

@@ -113,15 +113,15 @@ namespace LinAlg_NS {
         }
 
         // FROM IMatrix2D
-        size_type rows() const;
-        size_type cols() const;
-        double    operator()(size_type row, size_type column) const;
-        double &  operator()(size_type row, size_type column);
+        size_type rows() const override;
+        size_type cols() const override;
+        double    operator()(size_type row, size_type column) const override;
+        double &  operator()(size_type row, size_type column) override;
+        void      print() const override;
 
         // Local methods
         void solve(Vector const & b, Vector & x) const;
         void finalize() const;
-        void print() const;
 
     private:
         typedef std::map<size_type, double> Col_t;
