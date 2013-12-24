@@ -103,7 +103,11 @@ namespace LinAlg_NS {
 
         void jumpToNextElement() const {
             ++row_;
-            jumpToFirstElement();
+            for (; row_ < m_.rows(); ++row_) {
+                // find the 1st non-zero element in column 'column_'
+                if (m_(row_, column_))
+                    break;
+            }
         }
 
     private:

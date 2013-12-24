@@ -27,13 +27,21 @@ class SparseMatrixRowIteratorTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn);
     CPPUNIT_TEST(GenericColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn);
     CPPUNIT_TEST(RowIteratorInitializesToFirstElement);
+    CPPUNIT_TEST(GenericRowIteratorInitializesToFirstElement);
     CPPUNIT_TEST(RowIteratorDereferenceReturnsCorrectMatrixElements);
+    CPPUNIT_TEST(GenericRowIteratorDereferenceReturnsCorrectMatrixElements);
     CPPUNIT_TEST(RowIteratorPreIncrementReturnsNextMatrixElements);
+    CPPUNIT_TEST(GenericRowIteratorPreIncrementReturnsNextMatrixElements);
     CPPUNIT_TEST(RowIteratorPostIncrementReturnsNextMatrixElements);
+    CPPUNIT_TEST(GenericRowIteratorPostIncrementReturnsNextMatrixElements);
     CPPUNIT_TEST(RowIteratorCannotAdvancePastLastMatrixElement);
+    CPPUNIT_TEST(GenericRowIteratorCannotAdvancePastLastMatrixElement);
     CPPUNIT_TEST(RowIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull);
+    CPPUNIT_TEST(GenericRowIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull);
     CPPUNIT_TEST(IterateThroughAllElements);
+    CPPUNIT_TEST(GenericIterateThroughAllElements);
     CPPUNIT_TEST(TestRowIteratorForMatrixWithOneElement);
+    CPPUNIT_TEST(GenericTestRowIteratorForMatrixWithOneElement);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -56,11 +64,19 @@ protected:
     void ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn();
     void GenericColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn();
     void RowIteratorInitializesToFirstElement();
+    void GenericRowIteratorInitializesToFirstElement();
     void RowIteratorDereferenceReturnsCorrectMatrixElements();
+    void GenericRowIteratorDereferenceReturnsCorrectMatrixElements();
     void RowIteratorPreIncrementReturnsNextMatrixElements();
+    void GenericRowIteratorPreIncrementReturnsNextMatrixElements();
     void RowIteratorPostIncrementReturnsNextMatrixElements();
+    void GenericRowIteratorPostIncrementReturnsNextMatrixElements();
     void RowIteratorCannotAdvancePastLastMatrixElement();
+    void GenericRowIteratorCannotAdvancePastLastMatrixElement();
     void RowIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull();
+    void GenericRowIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull();
     void IterateThroughAllElements();
+    void GenericIterateThroughAllElements();
     void TestRowIteratorForMatrixWithOneElement();
+    void GenericTestRowIteratorForMatrixWithOneElement();
 };
