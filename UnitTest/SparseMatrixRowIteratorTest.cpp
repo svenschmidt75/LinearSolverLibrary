@@ -6,6 +6,8 @@
 #include "LinAlg/ConstColumnRowIterator.h"
 #include "LinAlg/ConstRowIterator.h"
 #include "LinAlg/MatrixIterators.h"
+#include "LinAlg/EntityOperators.h"
+#include "LinAlg/ConstColumnRowIteratorGeneric.hpp"
 
 
 using namespace LinAlg_NS;
@@ -42,7 +44,15 @@ void
 SparseMatrixRowIteratorTest::ColumnIteratorSizeEqualsNumberOfColumns() {
     auto matrix = CreateSparseMatrix();
     ConstColumnRowIterator<SparseMatrix2D> it = MatrixIterators::getConstColumnRowIterator(matrix);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of rows mismatch", matrix.cols(), it.maxColumns());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", matrix.cols(), it.maxColumns());
+}
+
+void
+SparseMatrixRowIteratorTest::GenericColumnIteratorSizeEqualsNumberOfColumns() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", matrix2.cols(), it.maxColumns());
 }
 
 void
@@ -53,6 +63,19 @@ SparseMatrixRowIteratorTest::ColumnIteratorReturnsCorrectColumn() {
 
     it = MatrixIterators::getConstColumnRowIterator(matrix, 2);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Current column mismatch", 2ull, it.column());
+}
+
+void
+SparseMatrixRowIteratorTest::GenericColumnIteratorReturnsCorrectColumn() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    auto expected = 0ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Current column mismatch", expected, it.column());
+
+    it = MatrixIterators::getConstColumnRowIterator(matrix2, 2);
+    expected = 2ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Current column mismatch", expected, it.column());
 }
 
 void

@@ -13,7 +13,7 @@
 #include "DeclSpec.h"
 
 #include "SparseMatrix2D.h"
-#include "ConstColumnRowIteratorBase.h"
+#include "ConstColumnRowIteratorForwardDecl.h"
 #include "ConstRowIteratorForwardDecl.h"
 
 
@@ -43,12 +43,8 @@ namespace LinAlg_NS {
 
         ConstColumnRowIterator & operator=(ConstColumnRowIterator const & in) {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
-            column_ = in.column_;
+            column_                       = in.column_;
             return *this;
-        }
-
-        explicit operator bool() const {
-            return isValid();
         }
 
         bool isValid() const {

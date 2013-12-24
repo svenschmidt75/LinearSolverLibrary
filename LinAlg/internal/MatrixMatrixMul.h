@@ -38,7 +38,11 @@ namespace LinAlg_NS {
                 op1_(in.op1_),
                 op2_(in.op2_) {}
 
-            MatrixMatrixMul & operator=(MatrixMatrixMul const &) = delete;
+            MatrixMatrixMul & operator=(MatrixMatrixMul const & in) {
+                const_cast<MATRIX_EXPR_1 &>(op1_) = in.op1_;
+                const_cast<MATRIX_EXPR_2 &>(op2_) = in.op2_;
+                return *this;
+            }
 
             size_type rows() const {
                 return op1_.rows();
