@@ -238,8 +238,10 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstColumnIteratorGeneric.hpp" />
     <ClInclude Include="ConstColumnRowIterator.h" />
     <ClInclude Include="ConstColumnRowIteratorBase.h" />
+    <ClInclude Include="ConstColumnRowIteratorGeneric.hpp" />
     <ClInclude Include="ConstRowColumnIterator.h" />
     <ClInclude Include="ConstRowColumnIteratorBase.h" />
     <ClInclude Include="ConstRowIterator.h" />

@@ -144,5 +144,11 @@
     <ClInclude Include="ConstRowIteratorForwardDecl.h">
       <Filter>MatrixIterators</Filter>
     </ClInclude>
+    <ClInclude Include="ConstColumnIteratorGeneric.hpp">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnRowIteratorGeneric.hpp">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
