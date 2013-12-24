@@ -243,9 +243,9 @@
     <ClInclude Include="ConstRowColumnIterator.h" />
     <ClInclude Include="ConstRowColumnIteratorBase.h" />
     <ClInclude Include="ConstRowIterator.h" />
-    <ClInclude Include="ConstRowIteratorBase.h" />
+    <ClInclude Include="ConstRowIteratorForwardDecl.h" />
     <ClInclude Include="ConstColumnIterator.h" />
-    <ClInclude Include="ConstColumnIteratorBase.h" />
+    <ClInclude Include="ConstColumnIteratorForwardDecl.h" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\entity_traits.h" />

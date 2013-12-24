@@ -10,7 +10,7 @@
 #include "DeclSpec.h"
 
 #include "SparseMatrix2D.h"
-#include "ConstColumnIteratorBase.h"
+#include "ConstColumnIteratorForwardDecl.h"
 
 
 namespace LinAlg_NS {

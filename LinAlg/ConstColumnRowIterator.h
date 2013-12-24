@@ -14,7 +14,7 @@
 
 #include "SparseMatrix2D.h"
 #include "ConstColumnRowIteratorBase.h"
-#include "ConstRowIteratorBase.h"
+#include "ConstRowIteratorForwardDecl.h"
 
 
 namespace LinAlg_NS {

@@ -102,13 +102,7 @@
     <ClInclude Include="ConstColumnIterator.h">
       <Filter>MatrixIterators</Filter>
     </ClInclude>
-    <ClInclude Include="ConstColumnIteratorBase.h">
-      <Filter>MatrixIterators</Filter>
-    </ClInclude>
     <ClInclude Include="ConstRowIterator.h">
-      <Filter>MatrixIterators</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstRowIteratorBase.h">
       <Filter>MatrixIterators</Filter>
     </ClInclude>
     <ClInclude Include="MatrixStencil.hpp" />
@@ -143,6 +137,12 @@
     </ClInclude>
     <ClInclude Include="internal\MatrixMatrixMul.h">
       <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstColumnIteratorForwardDecl.h">
+      <Filter>MatrixIterators</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstRowIteratorForwardDecl.h">
+      <Filter>MatrixIterators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
