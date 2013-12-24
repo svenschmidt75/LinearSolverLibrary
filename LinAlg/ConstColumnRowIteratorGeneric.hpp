@@ -47,6 +47,10 @@ namespace LinAlg_NS {
             return *this;
         }
 
+        explicit operator bool() const {
+            return isValid();
+        }
+
         bool isValid() const {
             return column_ < maxColumns();
         }

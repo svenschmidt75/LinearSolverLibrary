@@ -8,6 +8,7 @@
 #include "LinAlg/MatrixIterators.h"
 #include "LinAlg/EntityOperators.h"
 #include "LinAlg/ConstColumnRowIteratorGeneric.hpp"
+#include "LinAlg/ConstRowIteratorGeneric.hpp"
 
 
 using namespace LinAlg_NS;
@@ -86,18 +87,53 @@ SparseMatrixRowIteratorTest::ColumnIteratorPreIncrementReturnsNextColumnIterator
 }
 
 void
+SparseMatrixRowIteratorTest::GenericColumnIteratorPreIncrementReturnsNextColumnIterator() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    auto expected = 1ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", expected, (++it).column());
+}
+
+void
 SparseMatrixRowIteratorTest::ColumnIteratorPostIncrementReturnsNextColumnIterator() {
     auto matrix = CreateSparseMatrix();
     ConstColumnRowIterator<SparseMatrix2D> it = MatrixIterators::getConstColumnRowIterator(matrix);
     auto next_it = it++;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Row mismatch", 0ull, next_it.column());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Row mismatch", 1ull, it.column());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 0ull, next_it.column());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", 1ull, it.column());
+}
+
+void
+SparseMatrixRowIteratorTest::GenericColumnIteratorPostIncrementReturnsNextColumnIterator() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    auto next_it = it++;
+    auto expected = 0ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", expected, next_it.column());
+    expected = 1ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Column mismatch", expected, it.column());
 }
 
 void
 SparseMatrixRowIteratorTest::ColumnIteratorCannotAdvancePastLastColumn() {
     auto matrix = CreateSparseMatrix();
     ConstColumnRowIterator<SparseMatrix2D> it = MatrixIterators::getConstColumnRowIterator(matrix);
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", bool(it) == true);
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", it.isValid());
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", it.isValid());
+    it++;
+    CPPUNIT_ASSERT_MESSAGE("Column iterator should be invalid", !it.isValid());
+}
+
+void
+SparseMatrixRowIteratorTest::GenericColumnIteratorCannotAdvancePastLastColumn() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
     CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", bool(it) == true);
     it++;
     CPPUNIT_ASSERT_MESSAGE("Column iterator should be valid", it.isValid());
@@ -115,6 +151,14 @@ SparseMatrixRowIteratorTest::ColumnIteratorDereferenceReturnsRowIterator() {
 }
 
 void
+SparseMatrixRowIteratorTest::GenericColumnIteratorDereferenceReturnsRowIterator() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    auto rowit = *it;
+}
+
+void
 SparseMatrixRowIteratorTest::ColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn() {
     auto matrix = CreateSparseMatrix();
     ConstColumnRowIterator<SparseMatrix2D> it = MatrixIterators::getConstColumnRowIterator(matrix);
@@ -123,6 +167,31 @@ SparseMatrixRowIteratorTest::ColumnIteratorReturnsNumberOfNonZeroMatrixElementsI
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 1ull, it.numberOfNonZeroMatrixElements());
     it++;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
+}
+
+void
+SparseMatrixRowIteratorTest::GenericColumnIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentColumn() {
+    auto matrix = CreateSparseMatrix();
+    auto matrix2 = matrix * matrix;
+    /* Matrix
+     *    1  0  3
+     *    0  0  6
+     *    7  1  0
+     *    times itself yields
+     *    22  3  3
+     *    42  6  0
+     *     7  0  27
+     */
+    SparseMatrix2D tmp = matrix * matrix;
+    auto it = MatrixIterators::getConstColumnRowIterator(matrix2);
+    auto expected = 3ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", expected, it.numberOfNonZeroMatrixElements());
+    it++;
+    expected = 2ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", expected, it.numberOfNonZeroMatrixElements());
+    it++;
+    expected = 2ull;
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", expected, it.numberOfNonZeroMatrixElements());
 }
 
 void
