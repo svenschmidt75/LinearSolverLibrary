@@ -240,14 +240,16 @@
   <ItemGroup>
     <ClInclude Include="ConstColumnIteratorGeneric.hpp" />
     <ClInclude Include="ConstColumnRowIterator.h" />
-    <ClInclude Include="ConstColumnRowIteratorBase.h" />
+    <ClInclude Include="ConstColumnRowIteratorForwardDecl.h" />
     <ClInclude Include="ConstColumnRowIteratorGeneric.hpp" />
     <ClInclude Include="ConstRowColumnIterator.h" />
-    <ClInclude Include="ConstRowColumnIteratorBase.h" />
+    <ClInclude Include="ConstRowColumnIteratorForwardDecl.h" />
+    <ClInclude Include="ConstRowColumnIteratorGeneric.hpp" />
     <ClInclude Include="ConstRowIterator.h" />
     <ClInclude Include="ConstRowIteratorForwardDecl.h" />
     <ClInclude Include="ConstColumnIterator.h" />
     <ClInclude Include="ConstColumnIteratorForwardDecl.h" />
+    <ClInclude Include="ConstRowIteratorGeneric.hpp" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\entity_traits.h" />

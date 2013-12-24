@@ -1,9 +1,9 @@
 /*
-* Name  : ConstColumnRowIteratorBase
+* Name  : ConstRowColumnIteratorForwardDecl
 * Path  :
 * Use   : forward declaration
 * Author: Sven Schmidt
-* Date  : 11/29/2013
+* Date  : 09/28/2013
 */
 #pragma once
 
@@ -11,8 +11,8 @@
 namespace LinAlg_NS {
 
 
-    template<typename T>
-    class ConstColumnRowIterator;
+template<typename T>
+class ConstRowColumnIterator;
 
 
 } // namespace LinAlg_NS

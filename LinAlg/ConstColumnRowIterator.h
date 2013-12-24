@@ -13,7 +13,7 @@
 #include "DeclSpec.h"
 
 #include "SparseMatrix2D.h"
-#include "ConstColumnRowIteratorBase.h"
+#include "ConstColumnRowIteratorForwardDecl.h"
 #include "ConstRowIteratorForwardDecl.h"
 
 
