@@ -670,7 +670,7 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixIsSymmetric() {
          0,  0, -1,  0,  0;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(155 * 155);
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     // in order to modify the matrix to make it asymmetric, we have to create a new one
     SparseMatrix2D m_asymmetric{m.rows(), m.cols()};
@@ -710,7 +710,7 @@ ParallelLinAlgOperationsTest::testChunkedMatrixIsSymmetric() {
         0, 0, -1, 0, 0;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(155 * 155);
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     // in order to modify the matrix to make it asymmetric, we have to create a new one
     SparseMatrix2D m_asymmetric{ m.rows(), m.cols() };
