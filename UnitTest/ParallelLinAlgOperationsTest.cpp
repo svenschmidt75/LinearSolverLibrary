@@ -5,6 +5,7 @@
 #include "LinAlg/EntityOperators.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
+#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
 #include "LinAlg/MatrixIterators.h"
 #include "LinAlg/ConstColumnRowIterator.h"
 #include "LinAlg/ConstRowColumnIterator.h"
@@ -553,14 +554,14 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixProduct() {
         HighResTimer t;
         serial_result = helper::matrixMul(m, m);
     }
-    //    serial_result.print();
+//    serial_result.print();
 
     SparseMatrix2D parallel_result;
     {
         HighResTimer t;
         parallel_result = chunkedParallelMatrixMatrixMultiplication(m, m);
     }
-    //    parallel_result.print();
+//    parallel_result.print();
 
     Vector result1;
     result1 = serial_result * v;
@@ -568,7 +569,75 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixProduct() {
     Vector result2;
     result2 = parallel_result * v;
 
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
     CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
-    if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
-        __debugbreak();
+}
+
+namespace {
+
+    bool
+    matrixIsSymmetricParallelNonChunked(SparseMatrix2D const & m) {
+        if (m.rows() != m.cols())
+            return false;
+        static double const tol = 1E-10;
+        using size_type = IMatrix2D::size_type;
+        bool is_symmetric = true;
+        concurrency::cancellation_token_source cancellation_token;
+        concurrency::run_with_cancellation_token([&m, &cancellation_token, &is_symmetric]() {
+            concurrency::parallel_for(size_type{0}, m.rows() - 1, [&m, &cancellation_token, &is_symmetric](size_type row) {
+                for (size_type col{row + 1}; col < m.cols(); ++col) {
+                    double a_ij = m(row, col);
+                    double a_ji = m(col, row);
+                    double delta = std::fabs(a_ij - a_ji);
+                    if (delta > tol) {
+                        is_symmetric = false;
+                        cancellation_token.cancel();
+                    }
+                }
+            });
+        }, cancellation_token.get_token());
+        return is_symmetric;
+    }
+
+}
+
+void
+ParallelLinAlgOperationsTest::testNonChunkedMatrixIsSymmetric() {
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+    stencil <<
+         0,  0, -1,  0,  0,
+         0,  0, -1,  0,  0,
+        -1, -1, 20, -1, -1,
+         0,  0, -1,  0,  0,
+         0,  0, -1,  0,  0;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(155 * 155);
+
+    // in order to modify the matrix to make it asymmetric, we have to create a new one
+    SparseMatrix2D m_asymmetric{m.rows(), m.cols()};
+    for (SparseMatrix2D::size_type row = 0; row < m.rows(); ++row) {
+        for (SparseMatrix2D::size_type column = 0; column < m.cols(); ++column) {
+            double value = m(row, column);
+            if (value)
+                m_asymmetric(row, column) = value;
+        }
+    }
+    m_asymmetric(m.rows() - 1, m.cols() - 2) = 0.1;
+    m_asymmetric.finalize();
+//    m_asymmetric.print();
+
+    bool serial_result;
+    {
+        HighResTimer t;
+        serial_result = helper::isSymmetric(m_asymmetric);
+    }
+
+    bool parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = matrixIsSymmetricParallelNonChunked(m_asymmetric);
+    }
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
 }

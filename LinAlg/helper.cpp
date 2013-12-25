@@ -38,9 +38,46 @@ helper::get_value(MATRIX_EXPR const & m, IMatrix2D::size_type row, IMatrix2D::si
 
 bool
 helper::isSymmetric(SparseMatrix2D const & m) {
+    if (m.rows() != m.cols())
+        return false;
+    /* Access pattern of algorithm:
+     * 
+     *       |             ...
+     *       | m(i,0) ... m(i,i) m{i,i+1} ... m(i,cols)|
+     *       |             ...
+     *       | ...        m(j,k)    ...
+     *       | ...        m(j+1,k)  ...
+     *       | ...         ...      ...
+     *       | ...        m(rows,k) ...
+     * 
+     * For each row i, all elements a(i,k) with k = i + 1 ... cols
+     * (i.e. to the right of the diagonal element m(i,i)) are compared
+     * to the elements in column i, a(k,i).
+     * Thus, the access pattern is like this:
+     * 
+     * 
+     * 
+     * 
+     * 
+     *              ith column
+     *                 \/
+     *      ith row: >  ************************
+     *                  * ...
+     *                  * ...
+     *                  * ...
+     *                  * ...
+     *                  * ...
+     *                  * ...
+     *                  * ...
+     */
+    using size_type = IMatrix2D::size_type;
     static double const tol = 1E-10;
-    for (IMatrix2D::size_type row = 1; row < m.cols(); ++row) {
-        for (IMatrix2D::size_type col = 0; col < row; ++col) {
+
+    // m.rows() + 1, because the last for the last row, there is
+    // only the diagonal element a(m.rows() - 1, m.rows() - 1),
+    // so nothink to check.
+    for (size_type row{0}; row < m.rows() - 1; ++row) {
+        for (size_type col{row + 1}; col < m.cols(); ++col) {
             double a_ij = m(row, col);
             double a_ji = m(col, row);
             double delta = std::fabs(a_ij - a_ji);

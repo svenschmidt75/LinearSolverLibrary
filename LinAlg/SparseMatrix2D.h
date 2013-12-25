@@ -124,8 +124,8 @@ namespace LinAlg_NS {
         void finalize() const;
 
     private:
-        typedef std::map<size_type, double> Col_t;
-        typedef std::map<size_type, Col_t> Row_t;
+        using Col_t = std::map<size_type, double>;
+        using Row_t = std::map<size_type, Col_t>;
 
     private:
         // to provide exception-safe copy-assignment

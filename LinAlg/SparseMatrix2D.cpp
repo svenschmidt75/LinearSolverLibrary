@@ -249,6 +249,9 @@ SparseMatrix2D::finalize() const {
 
     // Matrix has been finalized
     finalized_ = true;
+
+    // release old data
+    data_.clear();
 }
 
 void
