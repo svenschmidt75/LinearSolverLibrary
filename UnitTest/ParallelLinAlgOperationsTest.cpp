@@ -599,6 +599,37 @@ namespace {
         }, cancellation_token.get_token());
         return is_symmetric;
     }
+    
+    bool
+    matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
+        if (m.rows() != m.cols())
+            return false;
+        static double const tol = 1E-10;
+        using size_type = IMatrix2D::size_type;
+        bool is_symmetric = true;
+        concurrency::cancellation_token_source cancellation_token;
+        size_type numberOfProcessors = std::thread::hardware_concurrency();
+        size_type chunk_size = m.rows() / numberOfProcessors;
+        auto size = getAdjustedSize(m.rows(), numberOfProcessors);
+        concurrency::run_with_cancellation_token([&m, &cancellation_token, &is_symmetric, size, chunk_size, numberOfProcessors]() {
+            concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &cancellation_token, &is_symmetric, numberOfProcessors](size_type index) {
+                size_type start_row, end_size;
+                std::tie(start_row, end_size) = getChunkStartEndIndex(m.rows(), size_type{ numberOfProcessors }, index);
+                for (size_type row{start_row}; row < end_size; ++row) {
+                    for (size_type col{row + 1}; col < m.cols(); ++col) {
+                        double a_ij = m(row, col);
+                        double a_ji = m(col, row);
+                        double delta = std::fabs(a_ij - a_ji);
+                        if (delta > tol) {
+                            is_symmetric = false;
+                            cancellation_token.cancel();
+                        }
+                    }
+                }
+            });
+        }, cancellation_token.get_token());
+        return is_symmetric;
+    }
 
 }
 
@@ -613,7 +644,7 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixIsSymmetric() {
          0,  0, -1,  0,  0;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(155 * 155);
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     // in order to modify the matrix to make it asymmetric, we have to create a new one
     SparseMatrix2D m_asymmetric{m.rows(), m.cols()};
@@ -638,6 +669,12 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixIsSymmetric() {
     {
         HighResTimer t;
         parallel_result = matrixIsSymmetricParallelNonChunked(m_asymmetric);
+    }
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
+
+    {
+        HighResTimer t;
+        parallel_result = matrixIsSymmetricParallelChunked(m_asymmetric);
     }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
 }
