@@ -144,7 +144,7 @@ SparseMatrix2D::cols() const {
 
 double
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) const {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
 #endif
@@ -175,7 +175,7 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
     // Note: This method is NOT thread save!
-#if defined(DEBUG)
+#ifdef _DEBUG
     common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
@@ -187,7 +187,7 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 void
 SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     /* compute A x = b */
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkConditional(finalized_, "SparseMatrix2D::solve(): Matrix not yet finalized");
     common_NS::reporting::checkConditional(b.size() == ncols_ && b.size() == x.size());
 #endif

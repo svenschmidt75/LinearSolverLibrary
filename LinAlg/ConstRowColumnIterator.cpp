@@ -16,7 +16,12 @@ ConstRowColumnIterator<SparseMatrix2D>::ConstRowColumnIterator(SparseMatrix2D co
 ConstRowColumnIterator<SparseMatrix2D>::ConstRowColumnIterator(SparseMatrix2D const & m, size_type row)
     :
     m_(m),
-    row_(row) {}
+    row_(row) {
+
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
+}
 
 ConstRowColumnIterator<SparseMatrix2D> &
 ConstRowColumnIterator<SparseMatrix2D>::operator=(ConstRowColumnIterator const & in) {
@@ -31,7 +36,6 @@ ConstRowColumnIterator<SparseMatrix2D>::operator bool() const {
 
 bool 
 ConstRowColumnIterator<SparseMatrix2D>::isValid() const {
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
     return row_ < maxRows();
 }
 
@@ -52,12 +56,18 @@ ConstRowColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
 
 ConstRowColumnIterator<SparseMatrix2D> &
 ConstRowColumnIterator<SparseMatrix2D>::operator++() {
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
     row_++;
     return *this;
 }
 
 ConstRowColumnIterator<SparseMatrix2D>
 ConstRowColumnIterator<SparseMatrix2D>::operator++(int) {
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
     iter tmp(*this);
     row_++;
     return tmp;
@@ -65,6 +75,9 @@ ConstRowColumnIterator<SparseMatrix2D>::operator++(int) {
 
 ConstColumnIterator<SparseMatrix2D>
 ConstRowColumnIterator<SparseMatrix2D>::operator*() const {
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
     return ConstColumnIterator<SparseMatrix2D>(m_, row_);
 }
 

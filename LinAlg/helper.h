@@ -18,6 +18,8 @@
 #include "ConstRowColumnIterator.h"
 #include "ConstRowIterator.h"
 #include "ConstColumnIterator.h"
+#include "ConstRowIteratorGeneric.hpp"
+#include "ConstColumnRowIteratorGeneric.hpp"
 
 #include "common/reporting.h"
 
@@ -53,7 +55,7 @@ namespace LinAlg_NS {
             /* Multiply one row of the sparse matrix with
              * the vector.
              */
-#ifdef DEBUG
+#ifdef _DEBUG
             common_NS::reporting::checkConditional(m.cols() == v.size(), "MatrixVectorExpr: Matrix and vector incompatible");
 #endif
             // Number of non-zero columns for this row
@@ -77,7 +79,7 @@ namespace LinAlg_NS {
             /* Multiply one row of the sparse matrix with
              * the vector.
              */
-#ifdef DEBUG
+#ifdef _DEBUG
             common_NS::reporting::checkConditional(m.cols() == v.size(), "MatrixVectorExpr: Matrix and vector incompatible");
 #endif
             double value = 0;
@@ -94,8 +96,9 @@ namespace LinAlg_NS {
 
         template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
         static double getMatrixMatrixMulElement(MATRIX_EXPR_1 const & lhs, MATRIX_EXPR_2 const & rhs, size_type row, size_type column) {
+#ifdef _DEBUG
             common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrix_matrix_mul: Matrices incompatible");
-
+#endif
             auto value = 0.0;
             ConstRowColumnIterator<MATRIX_EXPR_1> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
             ConstColumnRowIterator<MATRIX_EXPR_2> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);

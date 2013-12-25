@@ -143,7 +143,7 @@ namespace LinAlg_NS {
 
         // Check whether the matrix has already been converted to the
         // compresses row storage format
-        mutable bool  finalized_;
+        mutable bool  finalized_ = false;
 
         /* Compressed row storage format
          * 

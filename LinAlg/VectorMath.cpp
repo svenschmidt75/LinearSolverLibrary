@@ -9,7 +9,7 @@ namespace LinAlg_NS {
 
 double
 VectorMath::dotProduct(Vector const & lhs, Vector const & rhs) {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkConditional(lhs.size() == rhs.size(), "VectorMath::dotProduct: Size mismatch");
 #endif
     double tmp = 0.0;

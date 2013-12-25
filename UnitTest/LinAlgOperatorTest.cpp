@@ -623,6 +623,7 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
 
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+ //   m.print();
 
     Vector v{m.cols()};
     std::iota(std::begin(v), std::end(v), 1);
@@ -634,10 +635,9 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
     result1 = m * result1;
 
     // compute (m * m * m) * v
-    SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
-//    m2 = m * (m * m);
-    
-    //    m2.print();
+//    SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
+    SparseMatrix2D m2 = m * (m * m);
+//    m2.print();
     Vector result2;
     result2 = m2 * v;
     

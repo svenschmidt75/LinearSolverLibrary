@@ -28,13 +28,16 @@ namespace LinAlg_NS {
             :
             m_(m), row_(row) {
 
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             jumpToFirstElement();
         }
 
         ConstColumnIterator & operator=(ConstColumnIterator const & in) {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
-            column_ = in.column_;
-            row_ = in.row_;
+            column_                       = in.column_;
+            row_                          = in.row_;
             return *this;
         }
 
@@ -43,13 +46,11 @@ namespace LinAlg_NS {
         }
 
         bool isValid() const {
-            common_NS::reporting::checkUppderBound(column_, m_.cols());
             return column_ < m_.cols();
         }
 
         size_type numberOfNonZeroMatrixElements() const {
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
-            size_type ncol{ 0 };
+            size_type ncol{0};
             for (size_type column = 0; column < m_.cols(); ++column)
             {
                 if (m_(row_, column))
@@ -59,30 +60,32 @@ namespace LinAlg_NS {
         }
 
         size_type column() const {
-            common_NS::reporting::checkUppderBound(column_, m_.cols());
             return column_;
         }
 
         iter & operator++() {
             // pre-increment
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             jumpToNextElement();
-            common_NS::reporting::checkUppderBound(column_, m_.cols());
             return *this;
         }
 
         iter operator++(int) {
             // post-increment
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             auto tmp = *this;
             jumpToNextElement();
-            common_NS::reporting::checkUppderBound(column_, m_.cols());
             return tmp;
         }
 
         double operator*() const {
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
-            common_NS::reporting::checkUppderBound(column_, m_.cols());
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             return m_(row_, column_);
         }
 

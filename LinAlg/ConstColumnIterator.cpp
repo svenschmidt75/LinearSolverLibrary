@@ -11,6 +11,9 @@ ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & 
     :
     m_(m), row_(row) {
 
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
     jumpToFirstElement();
 }
 
@@ -34,40 +37,41 @@ ConstColumnIterator<SparseMatrix2D>::isValid() const {
 
 ConstColumnIterator<SparseMatrix2D>::size_type
 ConstColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
     size_type ncol = m_.nelements_[row_ + 1] - m_.nelements_[row_];
     return ncol;
 }
 
 ConstColumnIterator<SparseMatrix2D>::size_type
 ConstColumnIterator<SparseMatrix2D>::column() const {
-    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
     return column_mapped_;
 }
 
 ConstColumnIterator<SparseMatrix2D> &
 ConstColumnIterator<SparseMatrix2D>::operator++() {
     // pre-increment
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols() - 1);
+#endif
     jumpToNextElement();
-    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
     return *this;
 }
 
 ConstColumnIterator<SparseMatrix2D>
 ConstColumnIterator<SparseMatrix2D>::operator++(int) {
     // post-increment
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols() - 1);
+#endif
     auto tmp = *this;
     jumpToNextElement();
-    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
     return tmp;
 }
 
 double
 ConstColumnIterator<SparseMatrix2D>::operator*() const {
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
-    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols());
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(column_mapped_, m_.cols() - 1);
+#endif
     return m_(row_, column_mapped_);
 }
 
@@ -80,13 +84,14 @@ ConstColumnIterator<SparseMatrix2D>::jumpToFirstElement() const {
 
 void
 ConstColumnIterator<SparseMatrix2D>::jumpToNextElement() const {
-    common_NS::reporting::checkUppderBound(row_, m_.rows());
     size_type offset = m_.nelements_[row_];
-    size_type ncol = numberOfNonZeroMatrixElements();
     column_++;
     if (!isValid())
         return;
+#ifdef _DEBUG
+    size_type ncol = numberOfNonZeroMatrixElements();
     common_NS::reporting::checkUppderBound(column_, ncol - 1);
+#endif
     column_mapped_ = m_.columns_[offset + column_];
 }
 

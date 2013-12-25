@@ -62,7 +62,7 @@ Vector::swap(Vector const & in) {
 
 double &
 Vector::operator()(size_type index) {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkUppderBound(index, data_.size() - 1);
 #endif
     return data_[index];
@@ -70,7 +70,7 @@ Vector::operator()(size_type index) {
 
 double
 Vector::operator()(size_type index) const {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkUppderBound(index, data_.size() - 1);
 #endif
     return data_[index];

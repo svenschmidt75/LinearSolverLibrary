@@ -38,7 +38,9 @@ namespace LinAlg_NS {
             m_(m),
             column_(column) {
 
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
         }
 
         ConstColumnRowIterator & operator=(ConstColumnRowIterator const & in) {
@@ -68,20 +70,26 @@ namespace LinAlg_NS {
         }
 
         iter & operator++() {
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             column_++;
             return *this;
         }
 
         iter operator++(int) {
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             iter tmp(*this);
             column_++;
             return tmp;
         }
 
         ConstRowIterator<MATRIX_EXPR> operator*() const {
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             return ConstRowIterator<MATRIX_EXPR>(m_, column_);
         }
 

@@ -36,7 +36,12 @@ namespace LinAlg_NS {
         explicit ConstRowColumnIterator(MATRIX_EXPR const & m, size_type row)
             :
             m_(m),
-            row_(row) {}
+            row_(row) {
+
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
+        }
 
         ConstRowColumnIterator & operator=(ConstRowColumnIterator const & in) {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
@@ -49,7 +54,6 @@ namespace LinAlg_NS {
         }
 
         bool isValid() const {
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
             return row_ < maxRows();
         }
 
@@ -66,17 +70,26 @@ namespace LinAlg_NS {
         }
 
         iter & operator++() {
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             row_++;
             return *this;
         }
 
         iter operator++(int) {
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             iter tmp(*this);
             row_++;
             return tmp;
         }
 
         ConstColumnIterator<MATRIX_EXPR> operator*() const {
+#ifdef _DEBUG
+            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             return ConstColumnIterator<MATRIX_EXPR>(m_, row_);
         }
 

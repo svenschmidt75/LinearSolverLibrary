@@ -28,7 +28,7 @@ operator*=(Vector & lhs, double scalar) {
 template<typename VECTOR_EXPR>
 Vector &
 operator+=(Vector & lhs, VECTOR_EXPR const & rhs) {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkConditional(lhs.size() == rhs.size());
 #endif
     for (Vector::size_type i = 0; i < lhs.size(); ++i) {
@@ -40,7 +40,7 @@ operator+=(Vector & lhs, VECTOR_EXPR const & rhs) {
 template<typename VECTOR_EXPR>
 Vector &
 operator-=(Vector & lhs, VECTOR_EXPR const & rhs) {
-#ifdef DEBUG
+#ifdef _DEBUG
     common_NS::reporting::checkConditional(lhs.size() == rhs.size());
 #endif
     for (Vector::size_type i = 0; i < lhs.size(); ++i) {

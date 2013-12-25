@@ -30,19 +30,20 @@ namespace LinAlg_NS {
     public:
         ConstRowIterator(MATRIX_EXPR const & m, size_type column)
             :
-            m_{ m },
-            column_{ column },
-            row_{ 0 } {
+            m_{m},
+            column_{column},
+            row_{0} {
 
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
-            common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             jumpToFirstElement();
         }
 
         ConstRowIterator & operator=(ConstRowIterator const & in) {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
-            column_ = in.column_;
-            row_ = in.row_;
+            column_                       = in.column_;
+            row_                          = in.row_;
             return *this;
         }
 
@@ -65,30 +66,32 @@ namespace LinAlg_NS {
         }
 
         size_type row() const {
-            common_NS::reporting::checkConditional(isValid(), "Iterator is in an invalid state");
             return row_;
         }
 
         iter & operator++() {
             // pre-increment
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             jumpToNextElement();
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
             return *this;
         }
 
         iter operator++(int) {
             // post-increment
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
+#endif
             auto tmp = *this;
             jumpToNextElement();
-            common_NS::reporting::checkUppderBound(row_, m_.rows());
             return tmp;
         }
 
         double operator*() const {
+#ifdef _DEBUG
             common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
-            common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
+#endif
             return m_(row_, column_);
         }
 

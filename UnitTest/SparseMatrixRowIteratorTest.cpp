@@ -640,7 +640,9 @@ SparseMatrixRowIteratorTest::TestRowIteratorForMatrixWithOneElement() {
     ConstColumnRowIterator<SparseMatrix2D> it = MatrixIterators::getConstColumnRowIterator(m);
     ConstRowIterator<SparseMatrix2D> rowit = *it;
     CPPUNIT_ASSERT_MESSAGE("Row iterator should be invalid", !rowit.isValid());
+#ifdef _DEBUG
     CPPUNIT_ASSERT_THROW_MESSAGE("Row iterator pre-increment operator should have thrown", ++rowit, std::runtime_error);
+#endif
 
     rowit = *++it;
     CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", bool(rowit));
@@ -687,7 +689,9 @@ SparseMatrixRowIteratorTest::GenericTestRowIteratorForMatrixWithOneElement() {
     CPPUNIT_ASSERT_MESSAGE("Element mismatch", almostEqual(9.86, *rowit));
     rowit++;
     CPPUNIT_ASSERT_MESSAGE("Row iterator should be invalid", !rowit.isValid());
+#ifdef _DEBUG
     CPPUNIT_ASSERT_THROW_MESSAGE("Row iterator pre-increment operator should have thrown", ++rowit, std::runtime_error);
+#endif
 
     rowit = *++it;
     CPPUNIT_ASSERT_MESSAGE("Row iterator should be valid", bool(rowit));
