@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Vector.h"
-#include "common/reporting.h"
 
 
 namespace LinAlg_NS {

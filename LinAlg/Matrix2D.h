@@ -11,11 +11,7 @@
 
 #include "IMatrix2D.h"
 
-#include "common/reporting.h"
-
 #include <vector>
-
-#include <boost/cstdint.hpp>
 
 
 #pragma warning(disable:4251)

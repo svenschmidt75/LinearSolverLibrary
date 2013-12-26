@@ -2,6 +2,7 @@
 
 #include "SparseMatrix2D.h"
 #include "Vector.h"
+
 #include "common/reporting.h"
 
 

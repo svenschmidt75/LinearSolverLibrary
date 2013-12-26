@@ -16,9 +16,6 @@
 #include "DeclSpec.h"
 
 #include "IMatrix2D.h"
-//#include "internal/entity_traits.h"
-
-#include <boost/cstdint.hpp>
 
 #include <map>
 #include <vector>
@@ -102,6 +99,8 @@ namespace LinAlg_NS {
             static_assert(typename internal::entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "in is not a matrix-like type");
             nrows_ = in.rows();
             ncols_ = in.cols();
+
+            // parallelize this outer for loop (using chunking)
             for (size_type row = 0; row < nrows_; ++row) {
                 for (size_type column = 0; column < ncols_; ++column) {
                     double value = in(row, column);

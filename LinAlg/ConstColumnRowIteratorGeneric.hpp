@@ -12,10 +12,6 @@
 
 #include "DeclSpec.h"
 
-#include "SparseMatrix2D.h"
-#include "ConstColumnRowIteratorForwardDecl.h"
-#include "ConstRowIteratorForwardDecl.h"
-
 
 namespace LinAlg_NS {
 

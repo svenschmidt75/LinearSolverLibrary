@@ -24,10 +24,12 @@
 
 #include "DeclSpec.h"
 
-#include "Vector.h"
-
 
 namespace LinAlg_NS {
+
+    // forward declarations
+    class Vector;
+
 
     LINALG_DECL_SYMBOLS Vector & operator*=(Vector & lhs, double scalar);
     

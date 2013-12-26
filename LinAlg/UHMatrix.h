@@ -26,8 +26,6 @@
 
 #include "IMatrix2D.h"
 
-#include <boost/cstdint.hpp>
-
 #include <vector>
 
 

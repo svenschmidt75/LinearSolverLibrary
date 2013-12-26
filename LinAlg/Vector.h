@@ -13,14 +13,6 @@
 #pragma once
 
 #include "DeclSpec.h"
-#include "internal/entity_traits.h"
-#include "common/reporting.h"
-
-#include <boost/cstdint.hpp>
-#include <boost/assert.hpp>
-
-#include <vector>
-#include <stdexcept>
 
 
 namespace boost {
@@ -67,7 +59,7 @@ namespace LinAlg_NS {
         friend class helper;
 
     public:
-        typedef boost::uint64_t                     size_type;
+        typedef std::uint64_t                       size_type;
         typedef std::vector<double>::const_iterator const_iterator;
         typedef std::vector<double>::iterator       iterator;
 

@@ -6,6 +6,7 @@
 #include "LinearSolverLibrary/VariableCardinalityPolicy.h"
 #include "LinearSolverLibrary/VariableInfluenceAccessor.h"
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
+#include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"

@@ -12,8 +12,6 @@
 
 #include "DeclSpec.h"
 
-#include "SparseMatrix2D.h"
-#include "ConstRowColumnIteratorForwardDecl.h"
 #include "ConstColumnIteratorForwardDecl.h"
 
 

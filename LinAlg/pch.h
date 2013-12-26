@@ -21,3 +21,8 @@
 #include <utility>
 #include <cmath>
 #include <algorithm>
+#include <map>
+#include <vector>
+#include <cstdint>
+
+#include "common/reporting.h"

@@ -7,6 +7,7 @@
 #include "LinearSolverLibrary/VariableInfluenceAccessor.h"
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 #include "LinearSolverLibrary/AMGStandardSplitting.h"
+#include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
 #include "LinAlg/DirichletBoundaryConditionPolicy.hpp"

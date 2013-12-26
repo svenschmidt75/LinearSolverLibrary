@@ -13,17 +13,12 @@
 
 #include "Vector.h"
 
-#include <boost/cstdint.hpp>
-
-
 namespace LinAlg_NS {
 
     class TransposeVector {
 
-        friend class helper;
-
     public:
-        typedef boost::uint64_t size_type;
+        typedef std::uint64_t size_type;
 
     public:
         TransposeVector(size_type dim);

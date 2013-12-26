@@ -2,6 +2,7 @@
 
 #include "LinAlgTest.h"
 
+#include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 
 
