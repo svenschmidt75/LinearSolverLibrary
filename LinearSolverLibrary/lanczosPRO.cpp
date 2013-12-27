@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "lanczosPRO.h"
-#include "LinAlg/EntityOperators.h"
-#include "LinAlg/VectorMath.h"
 
 
 using namespace LinAlg_NS;

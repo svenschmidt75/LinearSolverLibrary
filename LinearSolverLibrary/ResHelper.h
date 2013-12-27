@@ -7,9 +7,6 @@
  */
 #pragma once
 
-#include "LinAlg/Vector.h"
-#include "LinAlg/SparseMatrix2D.h"
-
 
 namespace LinearSolverLibrary_NS {
 

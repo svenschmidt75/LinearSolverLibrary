@@ -11,11 +11,6 @@
 #include "DeclSpec.h"
 
 #include "IVariableSet.h"
-#include "common/IInputIteratorLogic.h"
-#include "common/InputIterator.hpp"
-
-#include <set>
-#include <functional>
 
 
 #pragma warning(disable:4275)

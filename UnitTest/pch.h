@@ -10,6 +10,7 @@
 #include <forward_list>
 #include <cstdint>
 #include <map>
+#include <queue>
 
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
@@ -27,12 +28,17 @@
 #include <ppl.h>
 
 /* stable headers in other projects */
+
+#include "common/reporting.h"
+#include "common/InputIterator.hpp"
+
+#include "LinAlg/EntityOperators.h"
+#include "LinAlg/Matrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/VectorMath.h"
+
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 #include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"
 
 #include "LinearSolverLibrary/SparseLinearSolverLibrary.h"
 #include "LinearSolverLibrary/SparseLinearSolverUtil.h"
-
-#include "LinAlg/EntityOperators.h"
-#include "LinAlg/Matrix2D.h"
-#include "LinAlg/SparseMatrix2D.h"

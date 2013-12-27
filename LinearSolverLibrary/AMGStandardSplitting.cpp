@@ -5,7 +5,6 @@
 #include "LinearSolverLibrary/VariableCategorizer.h"
 #include "LinearSolverLibrary/VariableInfluenceAccessor.h"
 
-#include <boost/assert.hpp>
 
 using namespace LinearSolverLibrary_NS;
 using namespace LinAlg_NS;

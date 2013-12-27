@@ -9,12 +9,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
-#include <cstdint>
-#include <map>
-#include <set>
-
 
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)

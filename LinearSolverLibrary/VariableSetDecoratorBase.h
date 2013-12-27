@@ -10,12 +10,6 @@
 #include "DeclSpec.h"
 
 #include "IVariableSet.h"
-#include "common/InputIterator.hpp"
-
-#include <functional>
-#include <memory>
-
-#include <boost/noncopyable.hpp>
 
 
 #pragma warning(disable:4275)

@@ -11,11 +11,6 @@
 
 #include "VariableSetDecoratorBase.h"
 
-#include <functional>
-#include <memory>
-
-#include <boost/noncopyable.hpp>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

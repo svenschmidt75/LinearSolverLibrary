@@ -12,12 +12,7 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/SparseMatrix2D.h"
 #include "IVariableSet.h"
-
-#include <boost/noncopyable.hpp>
-
-#include <memory>
 
 
 #pragma warning(disable:4275)

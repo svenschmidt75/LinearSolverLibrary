@@ -23,8 +23,6 @@
 
 #include "LinAlg/internal/ScalarVectorBinaryExpr.h"
 
-#include <functional>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

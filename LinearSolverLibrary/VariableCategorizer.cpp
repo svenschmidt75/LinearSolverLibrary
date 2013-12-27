@@ -2,7 +2,6 @@
 
 #include "VariableCategorizer.h"
 
-#include "common/reporting.h"
 
 using namespace LinearSolverLibrary_NS;
 

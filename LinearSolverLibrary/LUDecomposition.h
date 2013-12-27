@@ -13,9 +13,6 @@
 
 #include "DeclSpec.h"
 
-#include <vector>
-#include <memory>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

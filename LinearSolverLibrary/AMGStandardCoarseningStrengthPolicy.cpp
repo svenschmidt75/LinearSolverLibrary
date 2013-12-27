@@ -3,12 +3,6 @@
 #include "AMGStandardCoarseningStrengthPolicy.h"
 #include "VariableSet.h"
 
-#include "LinAlg/MatrixIterators.h"
-#include "LinAlg/ConstRowColumnIterator.h"
-#include "LinAlg/ConstColumnIterator.h"
-
-#include "common/reporting.h"
-
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;

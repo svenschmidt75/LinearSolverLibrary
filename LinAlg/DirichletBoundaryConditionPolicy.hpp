@@ -9,13 +9,6 @@
 #pragma once
 
 
-#include "LinAlg/IMatrix2D.h"
-
-#include "common/reporting.h"
-
-#include <tuple>
-
-
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)
 

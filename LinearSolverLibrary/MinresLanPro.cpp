@@ -1,9 +1,7 @@
-#include <pch.h>
+#include "pch.h"
 
 #include "MinresLanPro.h"
 #include "ResHelper.h"
-#include "LinAlg/VectorMath.h"
-#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;

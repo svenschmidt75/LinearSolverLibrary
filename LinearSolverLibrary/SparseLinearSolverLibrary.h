@@ -9,11 +9,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/Vector.h"
-#include "LinAlg/SparseMatrix2D.h"
-
-#include <tuple>
-
 
 namespace LinearSolverLibrary_NS {
 

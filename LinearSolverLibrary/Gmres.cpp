@@ -2,9 +2,6 @@
 
 #include "Gmres.h"
 #include "ResHelper.h"
-#include "LinAlg/VectorMath.h"
-#include "LinAlg/EntityOperators.h"
-#include "LinAlg/UHMatrix.h"
 
 
 using namespace LinAlg_NS;

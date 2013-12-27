@@ -2,8 +2,6 @@
 
 #include "VariableSet.h"
 #include "VariableSetIteratorLogic.h"
-#include "common/InputIterator.hpp"
-#include "common/IInputIteratorLogic.h"
 
 
 using namespace LinAlg_NS;

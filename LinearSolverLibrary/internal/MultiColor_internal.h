@@ -11,11 +11,6 @@
 
 #include "..\DeclSpec.h"
 
-#include <vector>
-#include <cstdint>
-#include <map>
-#include <set>
-
 
 namespace LinAlg_NS {
     class SparseMatrix2D;

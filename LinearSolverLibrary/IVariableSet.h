@@ -9,9 +9,6 @@
 
 #include "DeclSpec.h"
 
-#include "common/InputIterator.hpp"
-#include "LinAlg/IMatrix2D.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

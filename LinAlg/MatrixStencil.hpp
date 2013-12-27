@@ -18,13 +18,6 @@
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/DeclSpec.h"
 
-#include "common/reporting.h"
-
-#include <vector>
-#include <tuple>
-
-#include <boost/optional.hpp>
-
 
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)

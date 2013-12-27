@@ -9,10 +9,6 @@
 
 #include "entity_traits.h"
 #include "Vector.h"
-#include "common/reporting.h"
-
-#include <boost/assert.hpp>
-#include <boost/noncopyable.hpp>
 
 
 namespace LinAlg_NS {

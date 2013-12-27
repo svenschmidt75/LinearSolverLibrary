@@ -10,10 +10,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/IMatrix2D.h"
-
-#include <boost/noncopyable.hpp>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

@@ -11,13 +11,6 @@
 #include "Minres.h"
 #include "MinresLanPro.h"
 #include "Gmres.h"
-#include "LinAlg/EntityOperators.h"
-#include "LinAlg/VectorMath.h"
-#include "LinAlg/UHMatrix.h"
-
-#include <tuple>
-
-#include <boost/scope_exit.hpp>
 
 
 using namespace LinAlg_NS;

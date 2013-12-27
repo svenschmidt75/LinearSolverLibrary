@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "GCR.h"
-#include "LinAlg/VectorMath.h"
-#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;

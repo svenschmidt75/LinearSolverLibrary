@@ -2,8 +2,6 @@
 
 #include "VariableSetDecoratorBase.h"
 #include "VariableSetDecoratorIteratorLogic.h"
-#include "common/InputIterator.hpp"
-#include "common/IInputIteratorLogic.h"
 
 
 using namespace LinearSolverLibrary_NS;

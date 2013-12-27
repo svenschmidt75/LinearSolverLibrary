@@ -21,12 +21,6 @@
 #include "ConstRowIteratorGeneric.hpp"
 #include "ConstColumnRowIteratorGeneric.hpp"
 
-#include "common/reporting.h"
-
-#include <stdexcept>
-
-#include <boost/assert.hpp>
-
 
 namespace LinAlg_NS {
 

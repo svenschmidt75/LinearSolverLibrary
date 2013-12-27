@@ -11,8 +11,6 @@
 
 #include "VariableCategorizer.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

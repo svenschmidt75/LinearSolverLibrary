@@ -9,14 +9,6 @@
 
 #include "DeclSpec.h"
 
-#include "LinAlg/IMatrix2D.h"
-#include "LinAlg/SparseMatrix2D.h"
-
-#include <queue>
-#include <set>
-
-#include <boost/noncopyable.hpp>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

@@ -9,9 +9,6 @@
 
 #include "..\DeclSpec.h"
 
-#include <cstdint>
-#include <memory>
-
 
 #pragma warning(disable:4251)
 

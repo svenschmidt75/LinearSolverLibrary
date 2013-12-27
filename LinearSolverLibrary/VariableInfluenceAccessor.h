@@ -13,8 +13,6 @@
 #include "IVariableInfluenceAccessor.h"
 #include "IVariableSet.h"
 
-#include <boost/noncopyable.hpp>
-
 
 namespace LinearSolverLibrary_NS {
 

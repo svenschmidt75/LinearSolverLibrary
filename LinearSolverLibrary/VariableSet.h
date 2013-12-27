@@ -10,9 +10,6 @@
 #include "DeclSpec.h"
 
 #include "IVariableSet.h"
-#include "LinAlg/IMatrix2D.h"
-
-#include <set>
 
 
 #pragma warning(disable:4275)
