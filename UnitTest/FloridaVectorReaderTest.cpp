@@ -2,8 +2,6 @@
 
 #include "FloridaVectorReaderTest.h"
 
-#include "LinAlg/Vector.h"
-
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;

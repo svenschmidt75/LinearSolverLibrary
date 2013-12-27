@@ -2,12 +2,7 @@
 
 #include "AMGStandardCoarseningTest.h"
 
-#include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
-#include "LinAlg/helper.h"
-#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
-
-#include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 
 
 using namespace LinAlg_NS;

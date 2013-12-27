@@ -2,11 +2,6 @@
 
 #include "SparseMatrixTest.h"
 
-#include "LinAlg/Vector.h"
-#include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/Matrix2D.h"
-#include "LinAlg/EntityOperators.h"
-
 
 using namespace LinAlg_NS;
 

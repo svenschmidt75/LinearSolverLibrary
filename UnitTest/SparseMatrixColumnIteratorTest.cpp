@@ -2,14 +2,6 @@
 
 #include "SparseMatrixColumnIteratorTest.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/MatrixIterators.h"
-#include "LinAlg/ConstRowColumnIterator.h"
-#include "LinAlg/ConstColumnIterator.h"
-#include "LinAlg/EntityOperators.h"
-#include "LinAlg/ConstRowColumnIteratorGeneric.hpp"
-#include "LinAlg/ConstColumnIteratorGeneric.hpp"
-
 
 using namespace LinAlg_NS;
 

@@ -26,8 +26,8 @@
 namespace LinAlg_NS {
 
 template<typename BOUNDARY_CONDITION_POLICY>
-class MatrixStencil
-{
+class MatrixStencil {
+
     friend class MatrixStencilTest;
 
 

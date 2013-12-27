@@ -2,8 +2,6 @@
 
 #include "UTMatrixTest.h"
 
-#include "LinAlg/UTMatrix.h"
-
 
 using namespace LinAlg_NS;
 using namespace EntityReader_NS;

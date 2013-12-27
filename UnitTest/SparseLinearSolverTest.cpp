@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "SparseLinearSolverTest.h"
-#include "LinAlg/EntityOperators.h"
-#include "LinearSolverLibrary/ConjugateGradientMethods.hpp"
 
 
 using namespace EntityReader_NS;

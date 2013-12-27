@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "InputIteratorTest.h"
-#include "LinearSolverLibrary/VariableSet.h"
 
 
 using namespace LinearSolverLibrary_NS;

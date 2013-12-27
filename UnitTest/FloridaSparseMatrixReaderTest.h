@@ -9,8 +9,6 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <stdexcept>
-
 
 class FloridaSparseMatrixReaderTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(FloridaSparseMatrixReaderTest);

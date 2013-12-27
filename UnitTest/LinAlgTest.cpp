@@ -2,9 +2,6 @@
 
 #include "LinAlgTest.h"
 
-#include "LinAlg/Matrix2D.h"
-#include "LinAlg/SparseMatrix2D.h"
-
 
 using namespace LinAlg_NS;
 using namespace EntityReader_NS;

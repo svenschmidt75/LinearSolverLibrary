@@ -2,15 +2,7 @@
 
 #include "LinAlgOperatorTest.h"
 
-#include "LinAlg/Vector.h"
-#include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/Matrix2D.h"
-#include "LinAlg/EntityOperators.h"
 #include "LinAlg/MatrixStencil.hpp"
-#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
-#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
-
-#include <numeric>
 
 
 using namespace LinAlg_NS;

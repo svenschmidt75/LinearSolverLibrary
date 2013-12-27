@@ -57,5 +57,5 @@ int main(int /*argc*/, char* /*argv[]*/)
     // needs 17687 iterations
     std::cout << "Iterations: " << iterations << std::endl;
 
-	return 0;
+    return 0;
 }

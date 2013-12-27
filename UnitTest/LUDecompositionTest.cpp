@@ -3,9 +3,6 @@
 #include "LUDecompositionTest.h"
 
 #include "LinearSolverLibrary/LUDecomposition.h"
-#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
-
-#include "LinAlg/EntityOperators.h"
 
 
 using namespace LinAlg_NS;

@@ -2,17 +2,12 @@
 
 #include "FIDAP_EX5_Test.h"
 
-#include "LinAlg/EntityOperators.h"
-
-#include "LinearSolverLibrary/ConjugateGradientMethods.hpp"
-
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 namespace FS = boost::filesystem;
-
 
 
 namespace {

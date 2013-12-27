@@ -2,12 +2,6 @@
 
 #include "FloridaSparseMatrixReaderTest.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
-#include "FloridaSparseMatrixReaderLib/internal/ISymmetryStrategy.h"
-#include "FloridaSparseMatrixReaderLib/internal/SymmetryStrategyFactory.h"
-
-
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;

@@ -2,8 +2,6 @@
 
 #include "UHMatrixTest.h"
 
-#include "LinAlg/UHMatrix.h"
-
 
 using namespace LinAlg_NS;
 using namespace EntityReader_NS;

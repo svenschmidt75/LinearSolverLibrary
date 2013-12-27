@@ -2,11 +2,6 @@
 
 #include "GaussJordanTest.h"
 
-#include "LinearSolverLibrary/GaussJordan.h"
-#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
-
-#include "LinAlg/EntityOperators.h"
-
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;

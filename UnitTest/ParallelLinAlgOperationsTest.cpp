@@ -2,16 +2,7 @@
 
 #include "ParallelLinAlgOperationsTest.h"
 
-#include "LinAlg/EntityOperators.h"
 #include "LinAlg/MatrixStencil.hpp"
-#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
-#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
-#include "LinAlg/MatrixIterators.h"
-#include "LinAlg/ConstColumnRowIterator.h"
-#include "LinAlg/ConstRowColumnIterator.h"
-#include "LinAlg/ConstRowIterator.h"
-#include "LinAlg/ConstColumnIterator.h"
-#include "LinearSolverLibrary/SparseLinearSolverUtil.h"
 
 
 using namespace EntityReader_NS;

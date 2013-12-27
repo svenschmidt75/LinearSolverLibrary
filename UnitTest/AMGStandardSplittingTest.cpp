@@ -2,16 +2,7 @@
 
 #include "AMGStandardSplittingTest.h"
 
-#include "LinearSolverLibrary/VariableCategorizer.h"
-#include "LinearSolverLibrary/VariableCardinalityPolicy.h"
-#include "LinearSolverLibrary/VariableInfluenceAccessor.h"
-#include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
-#include "LinearSolverLibrary/AMGStandardSplitting.h"
-#include "LinAlg/Matrix2D.h"
-#include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/MatrixStencil.hpp"
-#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
-#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
 
 
 using namespace LinAlg_NS;

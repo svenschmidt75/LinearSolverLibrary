@@ -3,9 +3,6 @@
 #include "MatrixStencilTest.h"
 
 #include "LinAlg/MatrixStencil.hpp"
-#include "LinAlg/DirichletBoundaryConditionPolicy.hpp"
-#include "LinAlg/PeriodicBoundaryConditionPolicy.hpp"
-#include "LinAlg/MatrixIterators.h"
 
 
 using namespace LinAlg_NS;
