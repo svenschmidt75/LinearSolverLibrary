@@ -12,8 +12,6 @@
 
 #include "ISparseMatrixReader.h"
 
-#include <string>
-
 
 namespace EntityReader_NS {
 

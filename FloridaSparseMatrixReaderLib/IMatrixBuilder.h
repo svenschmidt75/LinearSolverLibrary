@@ -7,11 +7,6 @@
  */
 #pragma once
 
-#include "LinAlg/IMatrix2D.h"
-
-#include <memory>
-#include <string>
-
 
 namespace EntityReader_NS {
 

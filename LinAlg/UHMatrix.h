@@ -26,8 +26,6 @@
 
 #include "IMatrix2D.h"
 
-#include <vector>
-
 
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)

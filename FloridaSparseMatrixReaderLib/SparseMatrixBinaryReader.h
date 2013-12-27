@@ -11,10 +11,6 @@
 
 #include "ISparseMatrixReader.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
-#include <string>
-
 
 namespace EntityReader_NS {
 

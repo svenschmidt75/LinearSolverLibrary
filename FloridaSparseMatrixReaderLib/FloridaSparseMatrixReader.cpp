@@ -1,13 +1,7 @@
 #include "pch.h"
 
 #include "FloridaSparseMatrixReader.h"
-
 #include "IMatrixBuilder.h"
-
-#include "LinAlg/IMatrix2D.h"
-#include "LinAlg/SparseMatrix2D.h"
-
-#include "common/reporting.h"
 
 
 using namespace EntityReader_NS;

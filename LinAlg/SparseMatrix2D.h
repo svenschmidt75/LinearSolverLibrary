@@ -17,9 +17,6 @@
 
 #include "IMatrix2D.h"
 
-#include <map>
-#include <vector>
-
 
 namespace boost {
     namespace serialization {

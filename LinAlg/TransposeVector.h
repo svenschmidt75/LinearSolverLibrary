@@ -13,6 +13,7 @@
 
 #include "Vector.h"
 
+
 namespace LinAlg_NS {
 
     class TransposeVector {

@@ -9,13 +9,6 @@
 
 #include "DeclSpec.h"
 
-#include <string>
-#include <functional>
-#include <stdexcept>
-
-#include <boost/assert.hpp>
-#include <boost/format.hpp>
-
 
 namespace common_NS {
 

@@ -9,6 +9,7 @@
 #include <random>
 #include <forward_list>
 #include <cstdint>
+#include <map>
 
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
@@ -21,6 +22,7 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/chrono.hpp>
+#include <boost/format.hpp>
 
 #include <ppl.h>
 

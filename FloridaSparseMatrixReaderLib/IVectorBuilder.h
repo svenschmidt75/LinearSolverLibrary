@@ -7,10 +7,6 @@
  */
 #pragma once
 
-#include "LinAlg/Vector.h"
-
-#include <memory>
-
 
 namespace EntityReader_NS {
 

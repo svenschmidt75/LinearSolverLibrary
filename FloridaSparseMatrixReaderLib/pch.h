@@ -6,6 +6,8 @@
 #include <istream>
 #include <map>
 #include <vector>
+#include <memory>
+#include <cstdint>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/progress.hpp>
@@ -26,3 +28,11 @@
 #include <boost/iostreams/stream.hpp>
 
 #pragma warning( pop ) 
+
+
+#include "LinAlg/IMatrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/Vector.h"
+#include "LinAlg/helper.h"
+
+#include "common/reporting.h"

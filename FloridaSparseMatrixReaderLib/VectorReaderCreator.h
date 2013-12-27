@@ -12,8 +12,6 @@
 
 #include "IVectorReader.h"
 
-#include <string>
-
 
 namespace EntityReader_NS {
 

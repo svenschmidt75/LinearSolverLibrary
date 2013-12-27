@@ -13,8 +13,6 @@
 
 #include "ISymmetryStrategy.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
 
 namespace EntityReader_NS {
 

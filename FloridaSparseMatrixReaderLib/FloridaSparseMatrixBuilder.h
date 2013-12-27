@@ -12,10 +12,6 @@
 #include "IMatrixBuilder.h"
 #include "internal/ISymmetryStrategy.h"
 
-#include "LinAlg/IMatrix2D.h"
-
-#include <string>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

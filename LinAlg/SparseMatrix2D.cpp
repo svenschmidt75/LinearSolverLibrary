@@ -3,8 +3,6 @@
 #include "SparseMatrix2D.h"
 #include "Vector.h"
 
-#include "common/reporting.h"
-
 
 /* The following specializations are needed for serializing
  * in the xml file format. Not sure why...

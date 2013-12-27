@@ -5,8 +5,6 @@
 #include "SymmetricStrategy.h"
 #include "UnsymmetricStrategy.h"
 
-#include <stdexcept>
-
 
 namespace EntityReader_NS {
 

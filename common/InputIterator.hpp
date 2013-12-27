@@ -10,9 +10,6 @@
 
 #include "IInputIteratorLogic.h"
 
-#include <iterator>
-#include <memory>
-
 namespace common_NS {
 
     template<typename T>

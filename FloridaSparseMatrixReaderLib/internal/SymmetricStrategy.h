@@ -10,10 +10,6 @@
 
 #include "ISymmetryStrategy.h"
 
-#include "LinAlg/IMatrix2D.h"
-
-#include <boost/noncopyable.hpp>
-
 
 namespace LinAlg_NS {
     class SparseMatrix2D;
@@ -23,9 +19,11 @@ namespace LinAlg_NS {
 namespace EntityReader_NS {
 
 
-    class SymmetricStrategy : public ISymmetryStrategy, boost::noncopyable {
+    class SymmetricStrategy : public ISymmetryStrategy {
     public:
         SymmetricStrategy(LinAlg_NS::SparseMatrix2D & m);
+        SymmetricStrategy(SymmetricStrategy const &) = delete;
+        SymmetricStrategy & operator=(SymmetricStrategy const &) = delete;
 
         // FROM ISymmetryStrategy
         void insert(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) final;

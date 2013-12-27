@@ -16,3 +16,12 @@
 #include <vector>
 #include <map>
 #include <tuple>
+#include <cstdint>
+
+
+#include "LinAlg/IMatrix2D.h"
+#include "LinAlg/SparseMatrix2D.h"
+#include "LinAlg/Vector.h"
+
+#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixReader.h"
+#include "FloridaSparseMatrixReaderLib/FloridaSparseMatrixBuilder.h"

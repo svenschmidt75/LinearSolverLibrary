@@ -7,8 +7,6 @@
  */
 #pragma once
 
-#include <cstdint>
-
 
 namespace LinAlg_NS {
 

@@ -3,10 +3,6 @@
 #include "FloridaSparseMatrixBuilder.h"
 #include "internal/SymmetryStrategyFactory.h"
 
-#include "LinAlg/SparseMatrix2D.h"
-
-#include "common/reporting.h"
-
 
 using namespace LinAlg_NS;
 using namespace EntityReader_NS;

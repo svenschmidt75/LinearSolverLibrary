@@ -5,8 +5,6 @@
 #include "ISparseMatrixReader.h"
 #include "SparseMatrixBinaryReader.h"
 
-#include "common/reporting.h"
-
 
 using namespace EntityReader_NS;
 

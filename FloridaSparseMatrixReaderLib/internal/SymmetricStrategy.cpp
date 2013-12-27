@@ -1,10 +1,6 @@
 #include "pch.h"
 
-
 #include "SymmetricStrategy.h"
-
-#include "LinAlg/SparseMatrix2D.h"
-#include "LinAlg/helper.h"
 
 
 namespace EntityReader_NS {

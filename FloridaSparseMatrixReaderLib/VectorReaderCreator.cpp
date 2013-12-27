@@ -1,11 +1,8 @@
 #include "pch.h"
 
 #include "VectorReaderCreator.h"
-
 #include "IVectorReader.h"
 #include "VectorBinaryReader.h"
-
-#include "common/reporting.h"
 
 
 using namespace EntityReader_NS;

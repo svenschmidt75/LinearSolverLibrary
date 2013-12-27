@@ -8,9 +8,11 @@
 #include <numeric>
 #include <vector>
 #include <cstdint>
+#include <map>
 
 #include <boost/filesystem.hpp>
 #include <boost/assert.hpp>
+#include <boost/format.hpp>
 
 /* stable headers in other projects */
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"

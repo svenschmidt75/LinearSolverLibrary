@@ -11,8 +11,6 @@
 
 #include "IVectorBuilder.h"
 
-#include "LinAlg/Vector.h"
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)

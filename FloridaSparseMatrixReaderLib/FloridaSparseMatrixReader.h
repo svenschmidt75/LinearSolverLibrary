@@ -10,12 +10,6 @@
 
 #include "DeclSpec.h"
 
-#include <boost/noncopyable.hpp>
-
-#include <string>
-#include <vector>
-#include <cstdint>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -31,9 +25,11 @@ namespace EntityReader_NS {
     template<typename T>
     class IMatrixBuilder;
 
-    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixReader : public boost::noncopyable {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaSparseMatrixReader {
     public:
         FloridaSparseMatrixReader(std::string const & filename, IMatrixBuilder<LinAlg_NS::SparseMatrix2D> & builder);
+        FloridaSparseMatrixReader(FloridaSparseMatrixReader const &) = delete;
+        FloridaSparseMatrixReader & operator=(FloridaSparseMatrixReader const &) = delete;
 
         bool read() const;
 

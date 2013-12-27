@@ -1,11 +1,7 @@
 #include "pch.h"
 
-#include "common/reporting.h"
 #include "Matrix2D.h"
 #include "Vector.h"
-
-#include <iomanip>
-
 
 namespace LinAlg_NS {
 

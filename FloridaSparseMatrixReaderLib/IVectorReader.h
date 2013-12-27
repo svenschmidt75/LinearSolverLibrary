@@ -9,8 +9,6 @@
  */
 #pragma once
 
-#include <memory>
-
 
 namespace LinAlg_NS {
     class Vector;

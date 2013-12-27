@@ -5,8 +5,6 @@
 #include "NonTrivialEntityOperators.h"
 #undef ENTITY_OPERATORS
 
-#include "common/reporting.h"
-
 
 using namespace LinAlg_NS;
 

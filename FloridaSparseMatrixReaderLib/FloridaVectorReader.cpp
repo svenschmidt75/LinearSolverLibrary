@@ -1,13 +1,7 @@
 #include "pch.h"
 
 #include "FloridaVectorReader.h"
-
 #include "IVectorBuilder.h"
-
-#include "LinAlg/IMatrix2D.h"
-#include "LinAlg/Vector.h"
-
-#include "common/reporting.h"
 
 
 using namespace EntityReader_NS;

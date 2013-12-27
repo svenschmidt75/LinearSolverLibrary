@@ -10,10 +10,6 @@
 
 #include "DeclSpec.h"
 
-#include <boost/noncopyable.hpp>
-
-#include <string>
-
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -29,9 +25,11 @@ namespace EntityReader_NS {
     template<typename T>
     class IVectorBuilder;
 
-    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaVectorReader : public boost::noncopyable {
+    class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaVectorReader {
     public:
         FloridaVectorReader(std::string const & filename, IVectorBuilder<LinAlg_NS::Vector> & builder);
+        FloridaVectorReader(FloridaVectorReader const &) = delete;
+        FloridaVectorReader & operator=(FloridaVectorReader const &) = delete;
 
         bool read() const;
 

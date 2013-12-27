@@ -11,10 +11,6 @@
 
 #include "IVectorReader.h"
 
-#include "LinAlg/Vector.h"
-
-#include <string>
-
 
 namespace EntityReader_NS {
 

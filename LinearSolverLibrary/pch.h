@@ -8,9 +8,12 @@
 #include <forward_list>
 #include <set>
 #include <numeric>
+#include <cstdint>
+#include <map>
 
 #include <boost/math/special_functions/round.hpp>
 #include <boost/assert.hpp>
+
 
 #include "LinAlg/EntityOperators.h"
 #include "LinAlg/Matrix2D.h"
