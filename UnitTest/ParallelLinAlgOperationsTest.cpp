@@ -73,31 +73,6 @@ namespace {
         return result;
     }
 
-    double
-    serialDotProduct(Vector const & v1, Vector const & v2) {
-        double result = 0;
-        for (IMatrix2D::size_type i = 0; i < v1.size(); ++i) {
-            double tmp = v1(i) * v2(i);
-            result += tmp;
-        }
-        return result;
-    }
-
-    double
-    nonChunkedParallelDotProduct(Vector const & v1, Vector const & v2) {
-        using size_type = IMatrix2D::size_type;
-        double result = 0;
-        concurrency::combinable<double> part_sums([]{
-            return 0;
-        });
-        concurrency::parallel_for(size_type{0}, v1.size(), [&part_sums, &v1, &v2](size_type row_index) {
-            double tmp = v1(row_index) * v2(row_index);
-            part_sums.local() += tmp;
-        });
-        result = part_sums.combine(std::plus<double>());
-        return result;
-    }
-
     template<typename T>
     std::tuple<T, T>
     getChunkStartEndIndex(T total_size, T nchunks, T current_start_index) {
@@ -148,31 +123,7 @@ namespace {
         }, concurrency::static_partitioner());
         return result;
     }
-
-    double
-    chunkedParallelDotProduct(Vector const & v1, Vector const & v2) {
-        using size_type = IMatrix2D::size_type;
-        double result = 0;
-        concurrency::combinable<double> part_sums([]{
-            return 0;
-        });
-        size_type numberOfProcessors = std::thread::hardware_concurrency();
-        IMatrix2D::size_type chunk_size = v1.size() / numberOfProcessors;
-        auto size = getAdjustedSize(v1.size(), numberOfProcessors);
-        concurrency::parallel_for(size_type{0}, size, chunk_size, [&part_sums, &v1, &v2, numberOfProcessors](size_type index) {
-            size_type start_row, end_size;
-            std::tie(start_row, end_size) = getChunkStartEndIndex(v1.size(), size_type{numberOfProcessors}, index);
-            double part_result = 0;
-            for (size_type i = start_row; i < end_size; ++i) {
-                double tmp = v1(i) * v2(i);
-                part_result += tmp;
-            }
-            part_sums.local() += part_result;
-        }, concurrency::static_partitioner());
-        result = part_sums.combine(std::plus<double>());
-        return result;
-    }
-
+    
     SparseMatrix2D
     nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
         common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMul: Matrices incompatible");
@@ -449,13 +400,13 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
     double serial_result;
     {
         HighResTimer t;
-        serial_result = serialDotProduct(v1, v2);
+        serial_result = LinAlg_NS::VectorMath::dotProductSerial(v1, v2);
     }
 
     double parallel_result;
     {
         HighResTimer t;
-        parallel_result = nonChunkedParallelDotProduct(v1, v2);
+        parallel_result = LinAlg_NS::VectorMath::nonChunkedParallelDotProduct(v1, v2);
     }
     // The large tolerance is due to the fact that associativity does not
     // hold when evaluated in parallel.
@@ -471,13 +422,13 @@ ParallelLinAlgOperationsTest::testChunkedParallelDotProduct() {
     double serial_result;
     {
         HighResTimer t;
-        serial_result = serialDotProduct(v1, v2);
+        serial_result = LinAlg_NS::VectorMath::dotProductSerial(v1, v2);
     }
 
     double parallel_result;
     {
         HighResTimer t;
-        parallel_result = chunkedParallelDotProduct(v1, v2);
+        parallel_result = LinAlg_NS::VectorMath::chunkedParallelDotProduct(v1, v2);
     }
     // The large tolerance is due to the fact that associativity does not
     // hold when evaluated in parallel.
