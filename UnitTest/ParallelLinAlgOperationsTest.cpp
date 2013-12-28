@@ -65,7 +65,7 @@ namespace {
 
     Vector
     nonChunkedParallelMatrixVectorMultiplication(SparseMatrix2D const & m, Vector const & x) {
-        Vector result{ x.size() };
+        Vector result{x.size()};
         concurrency::parallel_for(IMatrix2D::size_type{ 0 }, x.size(), [&m, &x, &result](IMatrix2D::size_type row) {
             double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, row);
             result(row) = result_row;
@@ -342,6 +342,7 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixVectorMultiplication() {
     {
         HighResTimer t;
         serial_result = serialMatrixVectorMultiplication(m, x);
+        serial_result = m * x;
     }
 
     Vector parallel_result;
