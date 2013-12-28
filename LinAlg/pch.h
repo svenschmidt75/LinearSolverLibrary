@@ -24,5 +24,11 @@
 #include <map>
 #include <vector>
 #include <cstdint>
+#include <thread>
+
+#include <ppl.h>
+
+/* stable headers in other projects */
 
 #include "common/reporting.h"
+#include "common/parallel.hpp"

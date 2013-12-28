@@ -44,6 +44,24 @@ FloridaSparseMatrixReaderTest::unknownSymmetryStrategyTest() {
     ISymmetryStrategy::UniquePtr symmetry_strategy = SymmetryStrategyFactory::create("garbage", m);
 }
 
+namespace {
+
+    class HighResTimer {
+    public:
+        HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
+        ~HighResTimer() {
+            auto end = boost::chrono::high_resolution_clock::now();
+            auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
+            auto d = (end - start_).count() * frac;
+            std::cout << std::endl << "Duration: " << d << std::endl;
+        }
+
+    private:
+        boost::chrono::steady_clock::time_point start_;
+    };
+
+}
+
 void
 FloridaSparseMatrixReaderTest::readSTS4098Test() {
     /* We do not directly test the reading of the mtx files as
@@ -59,7 +77,10 @@ FloridaSparseMatrixReaderTest::readSTS4098Test() {
 
     SparseMatrix2D const m = sm_reader->get();
 
-    CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
+    {
+        HighResTimer t;
+        CPPUNIT_ASSERT_MESSAGE("Matrix not symmetric", LinAlg_NS::helper::isSymmetric(m));
+    }
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);

@@ -10,5 +10,6 @@
     <ClInclude Include="reporting.h" />
     <ClInclude Include="InputIterator.hpp" />
     <ClInclude Include="IInputIteratorLogic.h" />
+    <ClInclude Include="parallel.hpp" />
   </ItemGroup>
 </Project>

@@ -22,6 +22,10 @@ namespace LinAlg_NS {
     class LINALG_DECL_SYMBOLS VectorMath {
     public:
         static double dotProduct(Vector const & lhs, Vector const & rhs);
+        static double dotProductSerial(Vector const & lhs, Vector const & rhs);
+        static double chunkedParallelDotProduct(Vector const & v1, Vector const & v2);
+        static double nonChunkedParallelDotProduct(Vector const & v1, Vector const & v2);
+
         static double norm(Vector const & v);
     };
 

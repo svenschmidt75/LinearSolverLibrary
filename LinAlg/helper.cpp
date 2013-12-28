@@ -36,8 +36,21 @@ helper::get_value(MATRIX_EXPR const & m, IMatrix2D::size_type row, IMatrix2D::si
     return value;
 }
 
+
 bool
 helper::isSymmetric(SparseMatrix2D const & m) {
+    if (m.rows() != m.cols())
+        return false;
+#ifdef PARALLEL
+//    return matrixIsSymmetricParallelNonChunked(m);
+    return matrixIsSymmetricParallelChunked(m);
+#else
+    return isSymmetricSerial(m);
+#endif
+}
+
+bool
+helper::isSymmetricSerial(SparseMatrix2D const & m) {
     if (m.rows() != m.cols())
         return false;
     /* Access pattern of algorithm:
@@ -86,6 +99,87 @@ helper::isSymmetric(SparseMatrix2D const & m) {
         }
     }
     return true;
+}
+
+bool
+helper::matrixIsSymmetricParallelNonChunked(SparseMatrix2D const & m) {
+    if (m.rows() != m.cols())
+        return false;
+    static double const tol = 1E-10;
+    using size_type = IMatrix2D::size_type;
+    bool is_symmetric = true;
+    concurrency::cancellation_token_source cancellation_token;
+    concurrency::run_with_cancellation_token([&m, &cancellation_token, &is_symmetric]() {
+        concurrency::parallel_for(size_type{0}, m.rows() - 1, [&m, &cancellation_token, &is_symmetric](size_type row) {
+            for (size_type col{row + 1}; col < m.cols(); ++col) {
+                double a_ij = m(row, col);
+                double a_ji = m(col, row);
+                double delta = std::fabs(a_ij - a_ji);
+                if (delta > tol) {
+                    is_symmetric = false;
+                    cancellation_token.cancel();
+                }
+            }
+        });
+    }, cancellation_token.get_token());
+    return is_symmetric;
+}
+    
+bool
+helper::matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
+    /* The performance here sucks compared to 'matrixIsSymmetricParallelNonChunked' above.
+        * Not sure why, but threads with low row index work harder than those with
+        * high row number due to the access pattern. For an explanation of the access
+        * patterns, see helper::isSymmetric.
+        * 
+        * According to the concurrency visualizer, the slowdown is due to A LOT of
+        * synchcronization, effectively killing concurrency. The reason is that I
+        * only use 8 chunks (numberOfProcessors = std::thread::hardware_concurrency() = 8).
+        * If I multiply this by a larger number, we get close to the performance of
+        * 'matrixIsSymmetricParallelNonChunked'. Interesting...
+        * 
+        * Comparison:
+        * 
+        *  numberOfProcessors |  serial  | non chunked parallel | chunked parallel |
+        *  -------------------------------------------------------------------------
+        *         8           |  4.05258 | 0.0573509            | 1.24664          |
+        *         8 * 2       |          | 0.146136             | 0.851729         |
+        *         8 * 8       |          | 0.0980501            | 0.23172          |
+        *         8 * 1024    |          | 0.040534             | 0.087157         |
+        *         8 * 2048    |          | 0.09845              | 0.0565017        |
+        * 
+        * It follows that even chunking only makes sense when all chunks have an even
+        * load. Otherwise, scheduling based on load by the CRT is much more beneficial.
+        */
+    if (m.rows() != m.cols())
+        return false;
+    static double const tol = 1E-10;
+    using size_type = IMatrix2D::size_type;
+    bool is_symmetric = true;
+    size_type ncols = m.cols();
+    size_type nrows = m.rows();
+    concurrency::cancellation_token_source cancellation_token;
+    size_type numberOfProcessors = std::thread::hardware_concurrency();
+    size_type chunk_size = nrows / numberOfProcessors;
+    auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
+    concurrency::run_with_cancellation_token([&m, &cancellation_token, &is_symmetric, ncols, nrows, size, chunk_size, numberOfProcessors]() {
+        concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &cancellation_token, &is_symmetric, ncols, nrows, numberOfProcessors](size_type index) {
+            size_type start_row, end_size;
+            std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, index);
+            for (size_type row{start_row}; row < end_size; ++row) {
+                for (size_type col{row + 1}; col < ncols; ++col) {
+                    double a_ij = m(row, col);
+                    double a_ji = m(col, row);
+                    double delta = std::fabs(a_ij - a_ji);
+                    if (delta > tol) {
+                        is_symmetric = false;
+                        cancellation_token.cancel();
+                    }
+                }
+            }
+        });//, concurrency::static_partitioner());
+    }, cancellation_token.get_token());
+    return is_symmetric;
 }
 
 SparseMatrix2D

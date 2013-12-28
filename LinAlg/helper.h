@@ -85,6 +85,9 @@ namespace LinAlg_NS {
         }
 
         static bool isSymmetric(SparseMatrix2D const & m);
+        static bool isSymmetricSerial(SparseMatrix2D const & m);
+        static bool matrixIsSymmetricParallelNonChunked(SparseMatrix2D const & m);
+        static bool matrixIsSymmetricParallelChunked(SparseMatrix2D const & m);
 
         static SparseMatrix2D matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
 
