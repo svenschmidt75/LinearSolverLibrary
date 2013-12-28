@@ -20,9 +20,9 @@ public:
     void tearDown();
 
 protected:
-//     void offshoreMINRESTest();
-//     void offshoreMINRESLanProTest();
-//     void offshoreGMRESTest();
+    void offshoreMINRESTest();
+    void offshoreMINRESLanProTest();
+    void offshoreGMRESTest();
     void offshoreGCTest();
 
 private:

@@ -97,12 +97,24 @@ namespace LinAlg_NS {
             nrows_ = in.rows();
             ncols_ = in.cols();
 
+//             size_type max_index{nrows_ * ncols_};
+//             size_type index{ 0 };
+//             size_type ten_index{1};
+
             // parallelize this outer for loop (using chunking)
             for (size_type row = 0; row < nrows_; ++row) {
                 for (size_type column = 0; column < ncols_; ++column) {
                     double value = in(row, column);
                     if (value)
                         (*this)(row, column) = value;
+
+//                     index++;
+//                     auto percent_done = index / double(max_index) * 100.0;
+// //                    if (percent_done - ten_index * 10.0 > 0) {
+//                     if (percent_done - ten_index > 0) {
+//                         std::cout << percent_done << std::endl;
+//                         ten_index++;
+//                     }
                 }
             }
             finalize();

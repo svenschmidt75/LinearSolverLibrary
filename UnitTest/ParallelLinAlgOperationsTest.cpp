@@ -359,6 +359,118 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixVectorMultiplication() {
 }
 
 void
+ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
+    std::string filename = R"(\Develop\SparseMatrixData\sts4098\sts4098.ar)";
+    IMatrix2D::size_type const dim = 4098;
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename);
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+    SparseMatrix2D const m = sm_reader->get();
+
+    filename = R"(\Develop\SparseMatrixData\sts4098\sts4098_b.ar)";
+    IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename);
+    CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
+    Vector const b = b_reader->get();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", dim, b.size());
+
+    // matrix-vector multiplication
+    {
+        Vector serial_result;
+        {
+            HighResTimer t;
+            serial_result = serialMatrixVectorMultiplication(m, b);
+        }
+
+        Vector parallel_result;
+        {
+            HighResTimer t;
+            parallel_result = nonChunkedParallelMatrixVectorMultiplication(m, b);
+        }
+        CPPUNIT_ASSERT_MESSAGE("serial & parallel matrix-vector multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(serial_result, parallel_result, 1E-15));
+
+        {
+            HighResTimer t;
+            parallel_result = chunkedParallelMatrixVectorMultiplication(m, b);
+        }
+        CPPUNIT_ASSERT_MESSAGE("serial & parallel matrix-vector multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(serial_result, parallel_result, 1E-15));
+    }
+
+    // dot product
+    {
+
+        double serial_result;
+        {
+            HighResTimer t;
+            serial_result = LinAlg_NS::VectorMath::dotProductSerial(b, b);
+        }
+
+        double parallel_result;
+        {
+            HighResTimer t;
+            parallel_result = LinAlg_NS::VectorMath::nonChunkedParallelDotProduct(b, b);
+        }
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("serial & parallel dot product mismatch", serial_result, parallel_result, 1E-7);
+
+        {
+            HighResTimer t;
+            parallel_result = LinAlg_NS::VectorMath::chunkedParallelDotProduct(b, b);
+        }
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("serial & parallel dot product mismatch", serial_result, parallel_result, 1E-7);
+    }
+
+    // matrix isSymmetric
+    {
+
+        bool serial_result;
+        {
+            HighResTimer t;
+            serial_result = helper::isSymmetric(m);
+        }
+
+        bool parallel_result;
+        {
+            HighResTimer t;
+            parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelChunked(m);
+        }
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
+    }
+
+    // matrix-matrix multiplication
+    {
+        SparseMatrix2D serial_result;
+        {
+            HighResTimer t;
+//            serial_result = m * m;
+        }
+//    serial_result.print();
+
+        SparseMatrix2D parallel_result;
+        {
+            HighResTimer t;
+            parallel_result = nonChunkedParallelMatrixMatrixMultiplication(m, m);
+        }
+//    parallel_result.print();
+
+        Vector result1;
+        result1 = serial_result * b;
+
+        Vector result2;
+        result2 = parallel_result * b;
+
+        CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+
+        {
+            HighResTimer t;
+            parallel_result = chunkedParallelMatrixMatrixMultiplication(m, m);
+        }
+//    parallel_result.print();
+
+        result2 = parallel_result * b;
+        CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+    }
+}
+
+void
 ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
     IMatrix2D::size_type dim = 999130;
     Vector v1 = createVectorOfSize(dim);
@@ -654,11 +766,11 @@ void
 ParallelLinAlgOperationsTest::testChunkedMatrixIsSymmetric() {
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil <<
-        0, 0, -1, 0, 0,
-        0, 0, -1, 0, 0,
+         0,  0, -1,  0,  0,
+         0,  0, -1,  0,  0,
         -1, -1, 20, -1, -1,
-        0, 0, -1, 0, 0,
-        0, 0, -1, 0, 0;
+         0,  0, -1,  0,  0,
+         0,  0, -1,  0,  0;
 
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);

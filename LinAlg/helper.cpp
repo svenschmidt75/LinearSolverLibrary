@@ -42,8 +42,8 @@ helper::isSymmetric(SparseMatrix2D const & m) {
     if (m.rows() != m.cols())
         return false;
 #ifdef PARALLEL
-//    return matrixIsSymmetricParallelNonChunked(m);
-    return matrixIsSymmetricParallelChunked(m);
+    return matrixIsSymmetricParallelNonChunked(m);
+//    return matrixIsSymmetricParallelChunked(m);
 #else
     return isSymmetricSerial(m);
 #endif

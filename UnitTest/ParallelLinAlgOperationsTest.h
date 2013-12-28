@@ -16,6 +16,7 @@ class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testChunkGenerationAlgorithmEven);
     CPPUNIT_TEST(testNonChunkedParallelMatrixVectorMultiplication);
     CPPUNIT_TEST(testChunkedParallelMatrixVectorMultiplication);
+//     CPPUNIT_TEST(testParallelLargeMatrixVectorMultiplication); // Matrix multiplication takes way too long
     CPPUNIT_TEST(testNonChunkedParallelDotProduct);
     CPPUNIT_TEST(testChunkedParallelDotProduct);
     CPPUNIT_TEST(testNonChunkedParallelMatrixProduct);
@@ -35,6 +36,7 @@ protected:
     void testChunkGenerationAlgorithmEven();
     void testNonChunkedParallelMatrixVectorMultiplication();
     void testChunkedParallelMatrixVectorMultiplication();
+    void testParallelLargeMatrixVectorMultiplication();
     void testNonChunkedParallelDotProduct();
     void testChunkedParallelDotProduct();
     void testNonChunkedParallelMatrixProduct();

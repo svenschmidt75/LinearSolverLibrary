@@ -20,8 +20,8 @@ namespace {
         CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
         CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
         SparseMatrix2D const m = sm_reader->get();
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 259789ull, in.rows());
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 259789ull, in.cols());
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of rows", 259789ull, m.rows());
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 259789ull, m.cols());
         return m;
     }
 
@@ -80,7 +80,8 @@ namespace {
         HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
         ~HighResTimer() {
             auto end = boost::chrono::high_resolution_clock::now();
-            auto d = boost::chrono::duration_cast<boost::chrono::milliseconds>(end - start_);
+            auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
+            auto d = (end - start_).count() * frac;
             std::cout << std::endl << "Duration: " << d << std::endl;
         }
 
