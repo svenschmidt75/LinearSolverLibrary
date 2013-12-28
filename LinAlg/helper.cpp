@@ -160,7 +160,12 @@ helper::matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
     size_type nrows = m.rows();
     concurrency::cancellation_token_source cancellation_token;
     size_type numberOfProcessors = std::thread::hardware_concurrency();
+    if (nrows < numberOfProcessors)
+        numberOfProcessors = nrows;
     size_type chunk_size = nrows / numberOfProcessors;
+#if _DEBUG
+    common_NS::reporting::checkConditional(chunk_size, "chunk_size cannot be null");
+#endif
     auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
     concurrency::run_with_cancellation_token([&m, &cancellation_token, &is_symmetric, ncols, nrows, size, chunk_size, numberOfProcessors]() {
         concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &cancellation_token, &is_symmetric, ncols, nrows, numberOfProcessors](size_type index) {

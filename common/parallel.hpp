@@ -8,7 +8,7 @@
 #pragma once
 
 #define PARALLEL
-//#undef PARALLEL
+#undef PARALLEL
 
 
 namespace common_NS {

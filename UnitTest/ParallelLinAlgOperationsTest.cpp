@@ -342,7 +342,6 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixVectorMultiplication() {
     {
         HighResTimer t;
         serial_result = serialMatrixVectorMultiplication(m, x);
-        serial_result = m * x;
     }
 
     Vector parallel_result;
@@ -543,8 +542,8 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelNonSquareMatrixProduct() {
     Vector result2;
     result2 = parallel_result * v;
 
-    if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
-        __debugbreak();
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
     CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
 }
 

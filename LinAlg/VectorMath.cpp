@@ -37,12 +37,18 @@ VectorMath::chunkedParallelDotProduct(Vector const & v1, Vector const & v2) {
     concurrency::combinable<double> part_sums([]{
         return 0;
     });
+    auto vector_size = v1.size();
     size_type numberOfProcessors = std::thread::hardware_concurrency();
-    IMatrix2D::size_type chunk_size = v1.size() / numberOfProcessors;
-    auto size = common_NS::getAdjustedSize(v1.size(), numberOfProcessors);
-    concurrency::parallel_for(size_type{0}, size, chunk_size, [&part_sums, &v1, &v2, numberOfProcessors](size_type index) {
+    if (vector_size < numberOfProcessors)
+        numberOfProcessors = vector_size;
+    size_type chunk_size = vector_size / numberOfProcessors;
+#if _DEBUG
+    common_NS::reporting::checkConditional(chunk_size, "chunk_size cannot be null");
+#endif
+    auto size = common_NS::getAdjustedSize(vector_size, numberOfProcessors);
+    concurrency::parallel_for(size_type{0}, size, chunk_size, [&part_sums, &v1, &v2, vector_size, numberOfProcessors](size_type index) {
         size_type start_row, end_size;
-        std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(v1.size(), size_type{ numberOfProcessors }, index);
+        std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(vector_size, size_type{ numberOfProcessors }, index);
         double part_result = 0;
         for (size_type i = start_row; i < end_size; ++i) {
             double tmp = v1(i) * v2(i);
