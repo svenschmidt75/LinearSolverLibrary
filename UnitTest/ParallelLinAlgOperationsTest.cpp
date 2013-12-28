@@ -73,49 +73,16 @@ namespace {
         return result;
     }
 
-    template<typename T>
-    std::tuple<T, T>
-    getChunkStartEndIndex(T total_size, T nchunks, T current_start_index) {
-        // Note: current_start_index MUST be a multiple of chunk_size.
-        // This method returns nonsense otherwise!!!
-        auto chunk_size = total_size / nchunks;
-        auto diff = total_size % nchunks;
-
-        auto chunk_index = current_start_index / chunk_size;
-        auto start_index = current_start_index;
-        auto end_size = current_start_index + chunk_size;
-
-        if (diff) {
-            if (chunk_index < diff) {
-                start_index += chunk_index;
-                end_size = start_index + chunk_size + 1;
-            }
-            else {
-                start_index += diff;
-                end_size = start_index + chunk_size;
-            }
-        }
-        return std::make_tuple(start_index, end_size);
-    }
-
-    template<typename T1, typename T2>
-    auto
-    getAdjustedSize(T1 total_size, T2 nchunks) -> decltype(T1() - T2()) {
-        auto chunk_size = total_size / nchunks;
-        auto diff = total_size % nchunks;
-        return total_size - diff;
-    }
-
     Vector
     chunkedParallelMatrixVectorMultiplication(SparseMatrix2D const & m, Vector const & x) {
         using size_type = IMatrix2D::size_type;
         Vector result{x.size()};
         size_type numberOfProcessors = std::thread::hardware_concurrency();
         IMatrix2D::size_type chunk_size = x.size() / numberOfProcessors;
-        auto size = getAdjustedSize(x.size(), numberOfProcessors);
+        auto size = common_NS::getAdjustedSize(x.size(), numberOfProcessors);
         concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &x, &result, numberOfProcessors](size_type row) {
             size_type start_row, end_size;
-            std::tie(start_row, end_size) = getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
+            std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
             for (size_type i = start_row; i < end_size; ++i) {
                 double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, i);
                 result(i) = result_row;
@@ -189,7 +156,7 @@ namespace {
         if (nrows < numberOfProcessors)
             numberOfProcessors = nrows;
         IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
-        auto size = getAdjustedSize(nrows, numberOfProcessors);
+        auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
 
         // each chunk must only access its own private memory as
         // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
@@ -199,7 +166,7 @@ namespace {
 
         concurrency::parallel_for(size_type{0}, size, chunk_size, [&lhs, &rhs, &chunkPrivateMemory, nrows, ncols, numberOfProcessors, chunk_size](size_type row_index) {
             size_type start_index, end_size;
-            std::tie(start_index, end_size) = getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
+            std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
             for (size_type row = start_index; row < end_size; ++row) {
                 auto value = 0.0;
                 ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
@@ -262,7 +229,7 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmUneven() {
     size_type numberOfProcessors = std::thread::hardware_concurrency();
     size_type total_size = 19;
     IMatrix2D::size_type chunk_size = total_size / numberOfProcessors;
-    auto adjusted_size = getAdjustedSize(total_size, numberOfProcessors);
+    auto adjusted_size = common_NS::getAdjustedSize(total_size, numberOfProcessors);
     
     size_type expected = 19 / numberOfProcessors * numberOfProcessors;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk adjusted size mismatch", expected, adjusted_size);
@@ -281,21 +248,21 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmUneven() {
 
     // chunk 2
     size_type start_index, end_size;
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
     expected = 3;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 6;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 4
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
     expected = 9;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 11;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 8
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 7 * chunk_size });
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 7 * chunk_size });
     expected = 17;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 19;
@@ -308,7 +275,7 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmEven() {
     size_type numberOfProcessors = 7;
     size_type total_size = 21;
     IMatrix2D::size_type chunk_size = total_size / numberOfProcessors;
-    auto adjusted_size = getAdjustedSize(total_size, numberOfProcessors);
+    auto adjusted_size = common_NS::getAdjustedSize(total_size, numberOfProcessors);
     
     size_type expected = 21 / numberOfProcessors * numberOfProcessors;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk adjusted size mismatch", expected, adjusted_size);
@@ -326,21 +293,21 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmEven() {
 
     // chunk 2
     size_type start_index, end_size;
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{chunk_size});
     expected = 3;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 6;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 4
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{3 * chunk_size});
     expected = 9;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 12;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 7
-    std::tie(start_index, end_size) = getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 6 * chunk_size });
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 6 * chunk_size });
     expected = 18;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 21;

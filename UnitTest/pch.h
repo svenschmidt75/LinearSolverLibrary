@@ -31,6 +31,7 @@
 
 #include "common/reporting.h"
 #include "common/InputIterator.hpp"
+#include "common/parallel.hpp"
 
 #include "LinAlg/EntityOperators.h"
 #include "LinAlg/entity_operation_traits.hpp"
