@@ -33,6 +33,7 @@
 #include "common/InputIterator.hpp"
 
 #include "LinAlg/EntityOperators.h"
+#include "LinAlg/entity_operation_traits.hpp"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/VectorMath.h"

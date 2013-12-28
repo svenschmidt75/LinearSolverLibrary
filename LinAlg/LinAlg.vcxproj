@@ -251,6 +251,7 @@
     <ClInclude Include="ConstColumnIteratorForwardDecl.h" />
     <ClInclude Include="ConstRowIteratorGeneric.hpp" />
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
+    <ClInclude Include="entity_operation_traits.hpp" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="internal\entity_traits.h" />
     <ClInclude Include="internal\MatrixMatrixMul.h" />

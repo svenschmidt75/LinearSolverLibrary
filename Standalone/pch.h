@@ -22,6 +22,7 @@
 #include "LinAlg/Vector.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/EntityOperators.h"
+#include "LinAlg/entity_operation_traits.hpp"
 #include "LinAlg/VectorMath.h"
 
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"

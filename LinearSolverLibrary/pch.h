@@ -30,3 +30,4 @@
 #include "LinAlg/ConstRowColumnIterator.h"
 #include "LinAlg/ConstColumnIterator.h"
 #include "LinAlg/VectorMath.h"
+#include "LinAlg/entity_operation_traits.hpp"

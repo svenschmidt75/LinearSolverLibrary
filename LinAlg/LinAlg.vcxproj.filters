@@ -156,5 +156,8 @@
     <ClInclude Include="ConstRowColumnIteratorGeneric.hpp">
       <Filter>MatrixIterators</Filter>
     </ClInclude>
+    <ClInclude Include="entity_operation_traits.hpp">
+      <Filter>entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,8 @@
 #pragma once
 
 #include "entity_traits.h"
-#include "Vector.h"
+
+#include "IMatrix2D.h"
 
 
 namespace LinAlg_NS {
