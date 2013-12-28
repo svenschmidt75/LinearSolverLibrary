@@ -520,7 +520,7 @@ LinAlgOperatorTest::sparseSquareMatrixMulSparseNonSquareMatrixTest() {
     b.finalize();
 //    b.print();
 
-    SparseMatrix2D const c{ helper::matrixMul(a, b) };
+    SparseMatrix2D const c{helper::matrixMul(a, b)};
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of rows mismatch", 3ull, c.rows());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", 2ull, c.cols());
 

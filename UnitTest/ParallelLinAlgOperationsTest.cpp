@@ -185,9 +185,9 @@ namespace {
         // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
         // is not thread safe!
         using TupleType_t = std::tuple<size_type, size_type, double>;
-        std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{ncols};
+        std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{nrows};
 
-        concurrency::parallel_for(size_type{0}, ncols, [&lhs, &rhs, &chunkPrivateMemory, ncols](size_type row) {
+        concurrency::parallel_for(size_type{0}, nrows, [&lhs, &rhs, &chunkPrivateMemory, ncols](size_type row) {
             auto value = 0.0;
             ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
             for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
@@ -235,6 +235,8 @@ namespace {
 
         using size_type = IMatrix2D::size_type;
         size_type numberOfProcessors = std::thread::hardware_concurrency();
+        if (nrows < numberOfProcessors)
+            numberOfProcessors = nrows;
         IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
         auto size = getAdjustedSize(nrows, numberOfProcessors);
 
@@ -244,9 +246,9 @@ namespace {
         using TupleType_t = std::tuple<size_type, size_type, double>;
         std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{numberOfProcessors};
 
-        concurrency::parallel_for(size_type{0}, size, chunk_size, [&lhs, &rhs, &chunkPrivateMemory, ncols, numberOfProcessors, chunk_size](size_type row_index) {
+        concurrency::parallel_for(size_type{0}, size, chunk_size, [&lhs, &rhs, &chunkPrivateMemory, nrows, ncols, numberOfProcessors, chunk_size](size_type row_index) {
             size_type start_index, end_size;
-            std::tie(start_index, end_size) = getChunkStartEndIndex(ncols, size_type{numberOfProcessors}, row_index);
+            std::tie(start_index, end_size) = getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
             for (size_type row = start_index; row < end_size; ++row) {
                 auto value = 0.0;
                 ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
@@ -282,7 +284,6 @@ namespace {
                 auto value = std::get<2>(item);
                 result(row, column) = value;
             });
-
         });
         result.finalize();
         return result;
@@ -562,6 +563,132 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixProduct() {
 
 //     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
 //         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testNonChunkedParallelNonSquareMatrixProduct() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+
+
+    // generate a non-square 7x3 matrix form m
+    SparseMatrix2D m1{ 7, 3 };
+    for (auto row = 7; row < 7 + 7; ++row) {
+        for (auto column = 7; column < 7 + 3; ++column) {
+            m1(row - 7, column - 7) = m(row, column);
+        }
+    }
+    m1.finalize();
+//    m1.print();
+
+    // generate a non-square 3x2 matrix form m
+    SparseMatrix2D m2{ 3, 2 };
+    for (auto row = 10; row < 10 + 3; ++row) {
+        for (auto column = 12; column < 12 + 2; ++column) {
+            m2(row - 10, column - 12) = m(row, column);
+        }
+    }
+    m2.finalize();
+//    m2.print();
+
+
+    Vector v{ m2.cols() };
+    std::iota(std::begin(v), std::end(v), 1);
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = helper::matrixMul(m1, m2);
+    }
+//    serial_result.print();
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+       parallel_result = nonChunkedParallelMatrixMatrixMultiplication(m1, m2);
+    }
+//    parallel_result.print();
+
+    Vector result1;
+    result1 = serial_result * v;
+
+    Vector result2;
+    result2 = parallel_result * v;
+
+    if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+        __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testChunkedParallelNonSquareMatrixProduct() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+
+
+    // generate a non-square 7x3 matrix form m
+    SparseMatrix2D m1{7, 3};
+    for (auto row = 7; row < 7 + 7; ++row) {
+        for (auto column = 7; column < 7 + 3; ++column) {
+            m1(row - 7, column - 7) = m(row, column);
+        }
+    }
+    m1.finalize();
+//    m1.print();
+
+    // generate a non-square 3x2 matrix form m
+    SparseMatrix2D m2{3, 2};
+    for (auto row = 10; row < 10 + 3; ++row) {
+        for (auto column = 12; column < 12 + 2; ++column) {
+            m2(row - 10, column - 12) = m(row, column);
+        }
+    }
+    m2.finalize();
+//    m2.print();
+
+
+    Vector v{m2.cols()};
+    std::iota(std::begin(v), std::end(v), 1);
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = helper::matrixMul(m1, m2);
+    }
+//    serial_result.print();
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = chunkedParallelMatrixMatrixMultiplication(m1, m2);
+    }
+//    parallel_result.print();
+
+    Vector result1;
+    result1 = serial_result * v;
+
+    Vector result2;
+    result2 = parallel_result * v;
+
+    if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+        __debugbreak();
     CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
 }
 

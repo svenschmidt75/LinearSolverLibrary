@@ -20,6 +20,8 @@ class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testChunkedParallelDotProduct);
     CPPUNIT_TEST(testNonChunkedParallelMatrixProduct);
     CPPUNIT_TEST(testChunkedParallelMatrixProduct);
+    CPPUNIT_TEST(testNonChunkedParallelNonSquareMatrixProduct);
+    CPPUNIT_TEST(testChunkedParallelNonSquareMatrixProduct);
     CPPUNIT_TEST(testNonChunkedMatrixIsSymmetric);
     CPPUNIT_TEST(testChunkedMatrixIsSymmetric);
     CPPUNIT_TEST_SUITE_END();
@@ -37,6 +39,8 @@ protected:
     void testChunkedParallelDotProduct();
     void testNonChunkedParallelMatrixProduct();
     void testChunkedParallelMatrixProduct();
+    void testNonChunkedParallelNonSquareMatrixProduct();
+    void testChunkedParallelNonSquareMatrixProduct();
     void testNonChunkedMatrixIsSymmetric();
     void testChunkedMatrixIsSymmetric();
 };
