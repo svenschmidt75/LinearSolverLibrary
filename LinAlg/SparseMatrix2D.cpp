@@ -216,21 +216,13 @@ SparseMatrix2D::finalize() const {
     size_type nelements = 0;
     size_type nelements_total = 0;
 
-    Row_t::const_iterator row_it(std::cbegin(data_));
-    Row_t::const_iterator row_it_end(std::cend(data_));
-
-    // all rows
-    for (; row_it != row_it_end; ++row_it) {
+    for (auto const & row_item : data_) {
 //        int row = (*row_it).first;
-        Col_t const & col = (*row_it).second;
+        Col_t const & col = row_item.second;
 
-        // all columns
-        Col_t::const_iterator col_it(std::cbegin(col));
-        Col_t::const_iterator col_it_end(std::cend(col));
-
-        for (; col_it != col_it_end; ++col_it) {
-            size_type col = (*col_it).first;
-            double value = (*col_it).second;
+        for (auto const & col_item : col) {
+            size_type col{col_item.first};
+            double value{col_item.second};
             if (!value)
                 continue;
 
