@@ -235,7 +235,7 @@
     </ClCompile>
     <ClCompile Include="SparseMatrix2D.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
-      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessKeepComments>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
     </ClCompile>
     <ClCompile Include="TransposeVector.cpp" />
     <ClCompile Include="Vector.cpp" />

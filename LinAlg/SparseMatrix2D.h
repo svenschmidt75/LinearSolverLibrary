@@ -101,6 +101,36 @@ namespace LinAlg_NS {
             static_assert(typename internal::entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "in is not a matrix-like type");
             nrows_ = in.rows();
             ncols_ = in.cols();
+#ifndef PARALLEL
+            sparseMatrix_serial(std::forward<MATRIX_EXPR>(in));
+#else
+//            sparseMatrix_parallelNonChunked(std::forward<MATRIX_EXPR>(in));
+            sparseMatrix_parallelChunked(std::forward<MATRIX_EXPR>(in));
+#endif
+            finalize();
+        }
+
+        // FROM IMatrix2D
+        size_type rows() const override;
+        size_type cols() const override;
+        double    operator()(size_type row, size_type column) const override;
+        double &  operator()(size_type row, size_type column) override;
+        void      print() const override;
+
+        // Local methods
+        void solve(Vector const & b, Vector & x) const;
+        void finalize() const;
+
+    private:
+        using Col_t = std::map<size_type, double>;
+        using Row_t = std::map<size_type, Col_t>;
+
+    private:
+        // to provide exception-safe copy-assignment
+        void swap(SparseMatrix2D const & in);
+
+        template<typename MATRIX_EXPR>
+        void sparseMatrix_serial(MATRIX_EXPR && in) {
 #ifdef PRINT_PROGRESS_IN_PERCENT
             size_type max_index{nrows_ * ncols_};
             size_type index{0};
@@ -132,27 +162,78 @@ namespace LinAlg_NS {
 #endif
                 }
             }
-            finalize();
         }
 
-        // FROM IMatrix2D
-        size_type rows() const override;
-        size_type cols() const override;
-        double    operator()(size_type row, size_type column) const override;
-        double &  operator()(size_type row, size_type column) override;
-        void      print() const override;
+        template<typename MATRIX_EXPR>
+        void sparseMatrix_parallelNonChunked(MATRIX_EXPR && in) {
+            auto nrows = nrows_;
+            auto ncols = ncols_;
 
-        // Local methods
-        void solve(Vector const & b, Vector & x) const;
-        void finalize() const;
+            // each chunk must only access its own private memory as
+            // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+            // is not thread safe!
+            using TupleType_t = std::tuple<size_type, size_type, double>;
+            std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{nrows};
 
-    private:
-        using Col_t = std::map<size_type, double>;
-        using Row_t = std::map<size_type, Col_t>;
+            concurrency::parallel_for(size_type{0}, nrows, [&in, ncols, &chunkPrivateMemory](size_type row) {
+                auto value = 0.0;
+                for (size_type column = 0; column < ncols; ++column) {
+                    double value = in(row, column);
+                    if (value)
+                        chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
+                }
+            });
+            std::for_each(std::cbegin(chunkPrivateMemory), std::cend(chunkPrivateMemory), [this](std::forward_list<TupleType_t> const & chunkItem) {
+                std::for_each(std::cbegin(chunkItem), std::cend(chunkItem), [this](std::tuple<size_type, size_type, double> const & item) {
+                    auto row = std::get<0>(item);
+                    auto column = std::get<1>(item);
+                    auto value = std::get<2>(item);
+                    (*this)(row, column) = value;
+                });
+            });
+        }
 
-    private:
-        // to provide exception-safe copy-assignment
-        void swap(SparseMatrix2D const & in);
+        template<typename MATRIX_EXPR>
+        void sparseMatrix_parallelChunked(MATRIX_EXPR && in) {
+            auto nrows = nrows_;
+            auto ncols = ncols_;
+
+            size_type numberOfProcessors = std::thread::hardware_concurrency();
+            if (nrows < numberOfProcessors)
+                numberOfProcessors = nrows;
+            IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
+#if _DEBUG
+            common_NS::reporting::checkConditional(chunk_size, "chunk_size cannot be null");
+#endif
+            auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
+
+            // each chunk must only access its own private memory as
+            // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+            // is not thread safe!
+            using TupleType_t = std::tuple<size_type, size_type, double>;
+            std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{numberOfProcessors};
+
+            concurrency::parallel_for(size_type{0}, size, chunk_size, [&in, nrows, ncols, &chunkPrivateMemory, numberOfProcessors, chunk_size](size_type row_index) {
+                size_type start_index, end_size;
+                std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
+                for (size_type row = start_index; row < end_size; ++row) {
+                    auto value = 0.0;
+                    for (size_type column = 0; column < ncols; ++column) {
+                        double value = in(row, column);
+                        if (value)
+                            chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
+                    }
+                }
+            });//, concurrency::static_partitioner);
+            std::for_each(std::cbegin(chunkPrivateMemory), std::cend(chunkPrivateMemory), [this](std::forward_list<TupleType_t> const & chunkItem) {
+                std::for_each(std::cbegin(chunkItem), std::cend(chunkItem), [this](std::tuple<size_type, size_type, double> const & item) {
+                    auto row = std::get<0>(item);
+                    auto column = std::get<1>(item);
+                    auto value = std::get<2>(item);
+                    (*this)(row, column) = value;
+                });
+            });
+        }
 
     private:
         // Number of rows

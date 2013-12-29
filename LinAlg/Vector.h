@@ -69,15 +69,6 @@ namespace LinAlg_NS {
         Vector(Vector const & in);
         Vector(Vector && in);
 
-//         template<typename VECTOR_EXPR, typename = typename std::enable_if<internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true>::type>
-//         Vector(VECTOR_EXPR && in) {
-//             static_assert(typename internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true, "in is not a vector-like type");
-//             dim_ = in.size();
-//             data_.resize(dim_);
-//             for (size_type i = 0; i < in.size(); ++i)
-//                 (*this)(i) = in(i);
-//         }
-
         template<typename VECTOR_EXPR, typename = typename std::enable_if<internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true>::type>
         Vector(VECTOR_EXPR && in) {
             static_assert(typename internal::entity_traits<VECTOR_EXPR>::is_vector_expression == true, "in is not a vector-like type");
