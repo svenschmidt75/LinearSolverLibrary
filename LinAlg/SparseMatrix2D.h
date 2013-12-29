@@ -18,6 +18,11 @@
 #include "IMatrix2D.h"
 
 
+#define PRINT_PROGRESS_IN_PERCENT
+#define PROGRESS_IN_PERCENT
+//#define PROGRESS_IN_TEN_PERCENT
+
+
 namespace boost {
     namespace serialization {
         class access;
@@ -96,25 +101,35 @@ namespace LinAlg_NS {
             static_assert(typename internal::entity_traits<MATRIX_EXPR>::is_matrix_expression == true, "in is not a matrix-like type");
             nrows_ = in.rows();
             ncols_ = in.cols();
-
-//             size_type max_index{nrows_ * ncols_};
-//             size_type index{ 0 };
-//             size_type ten_index{1};
-
+#ifdef PRINT_PROGRESS_IN_PERCENT
+            size_type max_index{nrows_ * ncols_};
+            size_type index{0};
+            size_type ten_index{1};
+            auto start_time = boost::chrono::high_resolution_clock::now();
+            std::cout << std::endl;
+#endif
             // parallelize this outer for loop (using chunking)
             for (size_type row = 0; row < nrows_; ++row) {
                 for (size_type column = 0; column < ncols_; ++column) {
                     double value = in(row, column);
                     if (value)
                         (*this)(row, column) = value;
-
-//                     index++;
-//                     auto percent_done = index / double(max_index) * 100.0;
-// //                    if (percent_done - ten_index * 10.0 > 0) {
-//                     if (percent_done - ten_index > 0) {
-//                         std::cout << percent_done << std::endl;
-//                         ten_index++;
-//                     }
+#if defined(PRINT_PROGRESS_IN_PERCENT)
+                    index++;
+                    auto percent_done = index / double(max_index) * 100.0;
+#if defined(PROGRESS_IN_PERCENT)
+                    if (percent_done - ten_index > 0) {
+#elif defined(PROGRESS_IN_TEN_PERCENT)
+                    if (percent_done - ten_index * 10.0 > 0) {
+#endif
+                        auto end_time = boost::chrono::high_resolution_clock::now();
+                        auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
+                        auto d = (end_time - start_time).count() * frac;
+                        std::cout << percent_done << ": " << d << "s" << std::endl;
+                        ten_index++;
+                        start_time = boost::chrono::high_resolution_clock::now();
+                    }
+#endif
                 }
             }
             finalize();

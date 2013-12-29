@@ -19,10 +19,10 @@ namespace LinAlg_NS {
     template<>
     class LINALG_DECL_SYMBOLS ConstColumnIterator<SparseMatrix2D> {
     public:
-        typedef SparseMatrix2D::size_type size_type;
+        using size_type = SparseMatrix2D::size_type;
 
     private:
-        typedef ConstColumnIterator<SparseMatrix2D> iter;
+        using iter = ConstColumnIterator<SparseMatrix2D>;
 
     public:
         ConstColumnIterator(SparseMatrix2D const & m, size_type row);

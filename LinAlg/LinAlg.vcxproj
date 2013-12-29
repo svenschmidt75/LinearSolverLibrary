@@ -233,7 +233,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Integration Test Release With Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SparseMatrix2D.cpp" />
+    <ClCompile Include="SparseMatrix2D.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="TransposeVector.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>

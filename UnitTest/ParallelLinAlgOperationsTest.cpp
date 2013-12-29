@@ -440,7 +440,7 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
         SparseMatrix2D serial_result;
         {
             HighResTimer t;
-//            serial_result = m * m;
+            serial_result = m * m;
         }
 //    serial_result.print();
 
