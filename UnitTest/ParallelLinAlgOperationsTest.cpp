@@ -424,13 +424,13 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
         bool serial_result;
         {
             HighResTimer t;
-//            serial_result = helper::isSymmetric(m);
+            serial_result = helper::isSymmetric(m);
         }
 
         bool parallel_result;
         {
             HighResTimer t;
- //           parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelChunked(m);
+            parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelChunked(m);
         }
         CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
     }
@@ -467,28 +467,6 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
 
         result2 = parallel_result * b;
         CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
-    }
-}
-
-void
-ParallelLinAlgOperationsTest::testMatrixMatrixMultiplication() {
-    std::string filename = R"(\Develop\SparseMatrixData\sts4098\sts4098.ar)";
-    IMatrix2D::size_type const dim = 4098;
-    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename);
-    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
-    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
-    SparseMatrix2D const m = sm_reader->get();
-
-    SparseMatrix2D serial_result;
-    {
-        HighResTimer t;
-        serial_result = m * m;
-    }
-
-    Vector parallel_result;
-    {
-        HighResTimer t;
-//        parallel_result = nonChunkedParallelMatrixVectorMultiplication(m, x);
     }
 }
 

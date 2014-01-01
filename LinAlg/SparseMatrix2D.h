@@ -164,7 +164,7 @@ namespace LinAlg_NS {
                         auto end_time = boost::chrono::high_resolution_clock::now();
                         auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
                         auto d = (end_time - start_time).count() * frac;
-                        std::cout << percent_done << ": " << d << "s" << std::endl;
+                        std::cout << percent_done << "%: " << d << "s" << std::endl;
                         ten_index++;
                         start_time = boost::chrono::high_resolution_clock::now();
                     }

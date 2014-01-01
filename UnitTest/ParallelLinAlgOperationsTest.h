@@ -12,22 +12,21 @@
 
 class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ParallelLinAlgOperationsTest);
-//     CPPUNIT_TEST(testChunkGenerationAlgorithmUneven);
-//     CPPUNIT_TEST(testChunkGenerationAlgorithmEven);
-//     CPPUNIT_TEST(testNonChunkedParallelMatrixVectorMultiplication);
-//     CPPUNIT_TEST(testChunkedParallelMatrixVectorMultiplication);
-// //    CPPUNIT_TEST(testParallelLargeMatrixVectorMultiplication); // Matrix multiplication takes way too long
-
-    CPPUNIT_TEST(testMatrixMatrixMultiplication);
-
-    //     CPPUNIT_TEST(testNonChunkedParallelDotProduct);
-//     CPPUNIT_TEST(testChunkedParallelDotProduct);
-     CPPUNIT_TEST(testNonChunkedParallelMatrixProduct);
-//     CPPUNIT_TEST(testChunkedParallelMatrixProduct);
-//     CPPUNIT_TEST(testNonChunkedParallelNonSquareMatrixProduct);
-//     CPPUNIT_TEST(testChunkedParallelNonSquareMatrixProduct);
-//     CPPUNIT_TEST(testNonChunkedMatrixIsSymmetric);
-//     CPPUNIT_TEST(testChunkedMatrixIsSymmetric);
+    CPPUNIT_TEST(testChunkGenerationAlgorithmUneven);
+    CPPUNIT_TEST(testChunkGenerationAlgorithmEven);
+    CPPUNIT_TEST(testNonChunkedParallelMatrixVectorMultiplication);
+    CPPUNIT_TEST(testChunkedParallelMatrixVectorMultiplication);
+#ifdef INTEGRATION_TEST
+    CPPUNIT_TEST(testParallelLargeMatrixVectorMultiplication); // Matrix multiplication takes way too long
+#endif
+    CPPUNIT_TEST(testNonChunkedParallelDotProduct);
+    CPPUNIT_TEST(testChunkedParallelDotProduct);
+    CPPUNIT_TEST(testNonChunkedParallelMatrixProduct);
+    CPPUNIT_TEST(testChunkedParallelMatrixProduct);
+    CPPUNIT_TEST(testNonChunkedParallelNonSquareMatrixProduct);
+    CPPUNIT_TEST(testChunkedParallelNonSquareMatrixProduct);
+    CPPUNIT_TEST(testNonChunkedMatrixIsSymmetric);
+    CPPUNIT_TEST(testChunkedMatrixIsSymmetric);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -40,9 +39,6 @@ protected:
     void testNonChunkedParallelMatrixVectorMultiplication();
     void testChunkedParallelMatrixVectorMultiplication();
     void testParallelLargeMatrixVectorMultiplication();
-
-    void testMatrixMatrixMultiplication();
-
     void testNonChunkedParallelDotProduct();
     void testChunkedParallelDotProduct();
     void testNonChunkedParallelMatrixProduct();
