@@ -51,8 +51,40 @@ namespace LinAlg_NS {
             }
 
             double operator()(size_type row, size_type column) const {
+                auto const & column_indices = op1_.getNonZeroColumnIndicesForRow(row);
+                auto const & row_indices = op2_.getNonZeroRowIndicesForColumn(column);
+                std::vector<IMatrix2D::size_type> non_zero_indices(op1_.cols());
+                auto end_it = std::set_intersection(std::cbegin(column_indices), std::cend(column_indices), std::cbegin(row_indices), std::cend(row_indices), std::begin(non_zero_indices));
+                if (non_zero_indices.empty())
+                    return 0.0;
                 double value = matrix_mul_traits<MATRIX_EXPR_1>::apply<MATRIX_EXPR_2>::op(op1_, op2_, row, column);
                 return value;
+            }
+
+            std::vector<size_type> getNonZeroColumnIndicesForRow(size_type row) const {
+                auto const & op1_column_indices = op1_.getNonZeroColumnIndicesForRow(row);
+                std::vector<IMatrix2D::size_type> non_zero_indices;
+                for (size_type column = 0; column < cols(); ++column) {
+                    auto const & op2_row_indices = op2_.getNonZeroRowIndicesForColumn(column);
+                    std::vector<IMatrix2D::size_type> tmp;
+                    std::set_intersection(std::cbegin(op1_column_indices), std::cend(op1_column_indices), std::cbegin(op2_row_indices), std::cend(op2_row_indices), std::back_insert_iterator<std::vector<IMatrix2D::size_type>>{tmp});
+                    if (tmp.empty() == false)
+                        non_zero_indices.push_back(column);
+                }
+                return non_zero_indices;
+            }
+
+            std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const {
+                auto const & op2_row_indices = op2_.getNonZeroRowIndicesForColumn(column);
+                std::vector<IMatrix2D::size_type> non_zero_indices;
+                for (size_type row = 0; row < rows(); ++row) {
+                    auto const & op1_column_indices = op1_.getNonZeroColumnIndicesForRow(row);
+                    std::vector<IMatrix2D::size_type> tmp;
+                    std::set_intersection(std::cbegin(op1_column_indices), std::cend(op1_column_indices), std::cbegin(op2_row_indices), std::cend(op2_row_indices), std::back_insert_iterator<std::vector<IMatrix2D::size_type>>{tmp});
+                    if (tmp.empty() == false)
+                        non_zero_indices.push_back(row);
+                }
+                return non_zero_indices;
             }
 
         private:

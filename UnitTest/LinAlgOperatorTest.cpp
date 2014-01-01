@@ -35,6 +35,11 @@ namespace {
 
     SparseMatrix2D createSparseMatrix2D() {
         SparseMatrix2D m(3);
+
+        // 1 0 0
+        // 0 3 2
+        // 0 0 6
+ 
         m(0, 0) = 1;
         m(1, 1) = 3;
         m(1, 2) = 2;
