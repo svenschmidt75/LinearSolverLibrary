@@ -29,6 +29,8 @@
 #include "ParallelLinAlgOperationsTest.h"
 
 
+// CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixColumnIteratorTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixRowIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
 
