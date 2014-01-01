@@ -183,25 +183,25 @@ SparseMatrixTest::testColumnIndicesFor5by5SparseMatrix() {
     // row 0
     auto column_indices = m.getNonZeroColumnIndicesForRow(0);
     size_type expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 3;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 2ull, column_indices.size());
 
     // row 1
     column_indices = m.getNonZeroColumnIndicesForRow(1);
     expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 1", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 1", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 3;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 3ull, column_indices.size());
 
     // row 4
     column_indices = m.getNonZeroColumnIndicesForRow(4);
     expected = 4;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 4", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 4", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 1ull, column_indices.size());
 }
 
@@ -214,25 +214,25 @@ SparseMatrixTest::testRowIndicesFor5by5SparseMatrix() {
     // column 0
     auto row_indices = m.getNonZeroRowIndicesForColumn(0);
     size_type expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 0", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 0", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     expected = 2;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 3ull, row_indices.size());
 
     // column 1
     row_indices = m.getNonZeroRowIndicesForColumn(1);
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 1ull, row_indices.size());
 
     // column 4
     row_indices = m.getNonZeroRowIndicesForColumn(4);
     expected = 2;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     expected = 4;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 4", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 4", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 2ull, row_indices.size());
 }
 
@@ -245,31 +245,31 @@ SparseMatrixTest::testColumnIndicesFor3by5SparseMatrix() {
     // row 0
     auto column_indices = m.getNonZeroColumnIndicesForRow(0);
     size_type expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 3;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 2ull, column_indices.size());
 
     // row 1
     column_indices = m.getNonZeroColumnIndicesForRow(1);
     expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 1", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 1", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 3;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 3ull, column_indices.size());
 
     // row 2
     column_indices = m.getNonZeroColumnIndicesForRow(2);
     expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 0", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 2;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 2", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 2", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 3;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 3", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     expected = 4;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 4", column_indices.find(expected) != std::cend(column_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find column 4", std::find(std::cbegin(column_indices), std::cend(column_indices), expected) != std::cend(column_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of column indices mismatch", 4ull, column_indices.size());
 }
 
@@ -282,22 +282,22 @@ SparseMatrixTest::testRowIndicesFor3by5SparseMatrix() {
     // column 0
     auto row_indices = m.getNonZeroRowIndicesForColumn(0);
     size_type expected = 0;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 0", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 0", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     expected = 2;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 3ull, row_indices.size());
 
     // column 1
     row_indices = m.getNonZeroRowIndicesForColumn(1);
     expected = 1;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 1", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 1ull, row_indices.size());
 
     // column 4
     row_indices = m.getNonZeroRowIndicesForColumn(4);
     expected = 2;
-    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", row_indices.find(expected) != std::cend(row_indices));
+    CPPUNIT_ASSERT_MESSAGE("Couldn't find row 2", std::find(std::cbegin(row_indices), std::cend(row_indices), expected) != std::cend(row_indices));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of row indices mismatch", 1ull, row_indices.size());
 }

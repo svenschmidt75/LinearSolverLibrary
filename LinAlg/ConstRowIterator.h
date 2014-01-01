@@ -53,7 +53,8 @@ namespace LinAlg_NS {
         SparseMatrix2D const & m_;
         size_type              column_;
         mutable size_type      row_;
-        std::set<size_type>    row_indices_;
+        mutable size_type      index_;
+        std::vector<size_type> row_indices_;
     };
 
 } // namespace LinAlg_NS

@@ -9,10 +9,11 @@ namespace LinAlg_NS {
 
 ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & m, size_type row)
     :
-    m_(m),
-    row_(row),
-    column_(0),
-    column_indices_(m.getNonZeroColumnIndicesForRow(row)) {
+    m_{m},
+    row_{row},
+    column_{0},
+    index_{0},
+    column_indices_{m.getNonZeroColumnIndicesForRow(row)} {
 
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
@@ -25,6 +26,7 @@ ConstColumnIterator<SparseMatrix2D>::operator=(ConstColumnIterator const & in) {
     const_cast<SparseMatrix2D &>(m_) = in.m_;
     column_                          = in.column_;
     row_                             = in.row_;
+    index_                           = in.index_;
     column_indices_                  = in.column_indices_;
     return *this;
 }
@@ -82,17 +84,12 @@ ConstColumnIterator<SparseMatrix2D>::operator*() const {
 
 void
 ConstColumnIterator<SparseMatrix2D>::jumpToFirstElement() const {
-    column_ = *std::cbegin(column_indices_);
+    column_ = column_indices_.empty() ? m_.cols() : column_indices_[index_];
 }
 
 void
 ConstColumnIterator<SparseMatrix2D>::jumpToNextElement() const {
-    auto it = column_indices_.find(column_);
-#ifdef _DEBUG
-    common_NS::reporting::checkConditional(it != std::cend(column_indices_));
-#endif
-    ++it;
-    column_ = it == std::cend(column_indices_) ? m_.cols() : *it;
+    column_ = index_ == column_indices_.size() - 1 ? m_.cols() : column_indices_[++index_];
 }
 
 } // namespace LinAlg_NS

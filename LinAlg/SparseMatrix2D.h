@@ -118,10 +118,10 @@ namespace LinAlg_NS {
         void      print() const override;
 
         // Local methods
-        void                solve(Vector const & b, Vector & x) const;
-        void                finalize() const;
-        std::set<size_type> getNonZeroColumnIndicesForRow(size_type row) const;
-        std::set<size_type> getNonZeroRowIndicesForColumn(size_type column) const;
+        void                   solve(Vector const & b, Vector & x) const;
+        void                   finalize() const;
+        std::vector<size_type> getNonZeroColumnIndicesForRow(size_type row) const;
+        std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const;
 
     private:
         using Col_t = std::map<size_type, double>;

@@ -12,7 +12,8 @@ ConstRowIterator<SparseMatrix2D>::ConstRowIterator(SparseMatrix2D const & m, siz
     m_{m},
     column_{column},
     row_{0},
-    row_indices_(m.getNonZeroRowIndicesForColumn(column)) {
+    index_{0},
+    row_indices_{m.getNonZeroRowIndicesForColumn(column)} {
 
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
@@ -25,6 +26,7 @@ ConstRowIterator<SparseMatrix2D>::operator=(ConstRowIterator const & in) {
     const_cast<SparseMatrix2D &>(m_) = in.m_;
     column_                          = in.column_;
     row_                             = in.row_;
+    index_                           = in.index_;
     row_indices_                     = in.row_indices_;
     return *this;
 }
@@ -82,15 +84,10 @@ ConstRowIterator<SparseMatrix2D>::operator*() const {
 
 void
 ConstRowIterator<SparseMatrix2D>::jumpToFirstElement() const {
-    row_ = row_indices_.empty() ? m_.rows() : *std::cbegin(row_indices_);
+    row_ = row_indices_.empty() ? m_.rows() : row_indices_[index_];
 }
 
 void
 ConstRowIterator<SparseMatrix2D>::jumpToNextElement() const {
-    auto it = row_indices_.find(row_);
-#ifdef _DEBUG
-    common_NS::reporting::checkConditional(it != std::cend(row_indices_));
-#endif
-    ++it;
-    row_ = it == std::cend(row_indices_) ? m_.rows() : *it;
+    row_ = index_ == row_indices_.size() - 1 ? m_.rows() : row_indices_[++index_];
 }

@@ -312,32 +312,34 @@ SparseMatrix2D::finalize() const {
     data_.clear();
 }
 
-std::set<SparseMatrix2D::size_type>
+std::vector<SparseMatrix2D::size_type>
 SparseMatrix2D::getNonZeroColumnIndicesForRow(size_type row) const {
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1);
 #endif
-    std::set<size_type> column_indices;
     size_type column_offset = columns_offset_[row];
     size_type nelements = columns_offset_[row + 1] - column_offset;
+    std::vector<size_type> column_indices;
+    column_indices.reserve(nelements);
     for (auto i = 0; i < nelements; ++i) {
         auto column_index = columns_[column_offset + i];
-        column_indices.insert(column_index);
+        column_indices.push_back(column_index);
     }
     return column_indices;
 }
 
-std::set<SparseMatrix2D::size_type>
+std::vector<SparseMatrix2D::size_type>
 SparseMatrix2D::getNonZeroRowIndicesForColumn(size_type column) const {
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(column, cols() - 1);
 #endif
-    std::set<size_type> row_indices;
     size_type row_offset = rows_offset_[column];
     size_type nelements = rows_offset_[column + 1] - row_offset;
+    std::vector<size_type> row_indices;
+    row_indices.reserve(nelements);
     for (auto i = 0; i < nelements; ++i) {
         auto row_index = rows_[row_offset + i];
-        row_indices.insert(row_index);
+        row_indices.push_back(row_index);
     }
     return row_indices;
 }
