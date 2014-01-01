@@ -17,6 +17,8 @@ class SparseMatrixTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testAccessToNonExistingElementReturnsNull);
     CPPUNIT_TEST(sparseSquareMatrixTranspose);
     CPPUNIT_TEST(sparseNonSquareMatrixTranspose);
+    CPPUNIT_TEST(testColumnIndicesFor5by5SparseMatrix);
+    CPPUNIT_TEST(testRowIndicesFor5by5SparseMatrix);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -29,4 +31,6 @@ protected:
     void testAccessToNonExistingElementReturnsNull();
     void sparseSquareMatrixTranspose();
     void sparseNonSquareMatrixTranspose();
+    void testColumnIndicesFor5by5SparseMatrix();
+    void testRowIndicesFor5by5SparseMatrix();
 };

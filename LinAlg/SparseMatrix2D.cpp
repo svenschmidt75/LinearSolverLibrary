@@ -177,20 +177,6 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
     return col[column];
 }
 
-#if 0
-double &
-SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
-    // Note: This method is NOT thread save!
-#ifdef _DEBUG
-    common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
-    common_NS::reporting::checkUppderBound(row, rows() - 1);
-    common_NS::reporting::checkUppderBound(column, cols() - 1);
-#endif
-    Col_t & col = data_[row];
-    return col[column];
-}
-#endif
-
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
     // Note: This method is NOT thread save!
@@ -233,8 +219,7 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
 }
 
 void
-SparseMatrix2D::finalize() const {
-    // convert to compressed row storage format
+SparseMatrix2D::finalizeColumnIndices() const {
     size_type container_size = row_to_column_map_.size();
     columns_offset_.reserve(nrows_ + 1);
     columns_.reserve(container_size);
@@ -251,16 +236,20 @@ SparseMatrix2D::finalize() const {
         size_type size = 0;
         for (auto it2 = it.first; it2 != it.second; ++it2) {
             auto column_index = it2->second;
-            columns_.push_back(column_index);
-            size++;
+            if ((*this)(row_index, column_index)) {
+                columns_.push_back(column_index);
+                size++;
+            }
         }
         column_offset += size;
         columns_offset_.push_back(column_offset);
     }
-//    columns_offset_.push_back(0); // needed?
     row_to_column_map_.clear();
+}
 
-
+void
+SparseMatrix2D::finalizeRowIndices() const {
+    size_type container_size = row_to_column_map_.size();
     rows_offset_.reserve(ncols_ + 1);
     rows_.reserve(container_size);
     rows_offset_.push_back(0);
@@ -276,17 +265,24 @@ SparseMatrix2D::finalize() const {
         size_type size = 0;
         for (auto it2 = it.first; it2 != it.second; ++it2) {
             auto row_index = it2->second;
-            rows_.push_back(row_index);
-            size++;
+            if ((*this)(row_index, column_index)) {
+                rows_.push_back(row_index);
+                size++;
+            }
         }
         row_offset += size;
         rows_offset_.push_back(row_offset);
     }
-//    rows_offset_.push_back(0); // needed?
     column_to_row_map_.clear();
+}
 
-
-
+void
+SparseMatrix2D::finalize() const {
+    /* Convert to extended compressed sparse row storage format, eCSR.
+     * All explicit 0 are dropped.
+     */
+    finalizeColumnIndices(); 
+    finalizeRowIndices();
 
     for (auto const & row_item : data_) {
 //        int row = (*row_it).first;

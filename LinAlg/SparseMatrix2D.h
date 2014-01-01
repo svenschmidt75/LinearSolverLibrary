@@ -133,6 +133,9 @@ namespace LinAlg_NS {
         // to provide exception-safe copy-assignment
         void swap(SparseMatrix2D const & in);
 
+        void finalizeColumnIndices() const;
+        void finalizeRowIndices() const;
+
         template<typename MATRIX_EXPR>
         void sparseMatrix_serial(MATRIX_EXPR && in) {
 #ifdef PRINT_PROGRESS_IN_PERCENT
