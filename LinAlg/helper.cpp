@@ -187,8 +187,6 @@ helper::matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
     return is_symmetric;
 }
 
-#if 1
-
 SparseMatrix2D
 helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMul: Matrices incompatible");
@@ -223,79 +221,6 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     tmp.finalize();
     return tmp;
 }
-
-#else
-
-SparseMatrix2D
-helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
-    common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMul: Matrices incompatible");
-    auto nrows = lhs.rows();
-    auto ncols = rhs.cols();
-    SparseMatrix2D tmp{nrows, ncols};
-
-//     lhs.print();
-//     rhs.print();
-
-
-    for (IMatrix2D::size_type row = 0; row < nrows; ++row) {
-        auto value = 0.0;
-//        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
-
-
-        // get column indices for this row from iterator
-        auto const & column_indices = lhs.getNonZeroColumnIndicesForRow(row);
-        std::vector<IMatrix2D::size_type> non_zero_indices(lhs.cols());
-
-
-        for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
-//            ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
-
-//            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
-//            ConstRowIterator<SparseMatrix2D> rowIterator = *rowColumnIterator;
-
-
-            // get row indices for this column from iterator
-            auto const & row_indices = rhs.getNonZeroRowIndicesForColumn(column);
-
-            auto end_it = std::set_intersection(std::cbegin(column_indices), std::cend(column_indices), std::cbegin(row_indices), std::cend(row_indices), std::begin(non_zero_indices));
-
-
-            // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
-//             while (columnIterator && columnIterator.column() < lhs.cols()) {
-//                 while (rowIterator && rowIterator.row() < columnIterator.column()) {
-//                     ++rowIterator;
-//                 }
-//                 if (!rowIterator)
-//                     break;
-//                 if (rowIterator.row() == columnIterator.column())
-//                     value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
-//                 ++columnIterator;
-//             }
-
-            double tmp_val = 0.0;
-            auto it(std::cbegin(non_zero_indices));
-            while (it != end_it) {
-                size_type index = *it;
-                ++it;
-                tmp_val += lhs(row, index) * rhs(index, column);
-            }
-            value = tmp_val;
-
-//             if (std::fabs(tmp_val - value) > 1E-10) {
-//                 int a = 1;
-//                 a++;
-//             }
-
-            if (value) {
-                tmp(row, column) = value;
-                value = 0.0;
-            }
-        }
-    }
-    tmp.finalize();
-    return tmp;
-}
-#endif
 
 // create explicit template instantiations
 template LINALG_DECL_SYMBOLS double helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);

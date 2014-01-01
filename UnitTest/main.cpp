@@ -29,7 +29,9 @@
 #include "ParallelLinAlgOperationsTest.h"
 
 
-#if 1
+CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
+
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
