@@ -471,6 +471,28 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
 }
 
 void
+ParallelLinAlgOperationsTest::testMatrixMatrixMultiplication() {
+    std::string filename = R"(\Develop\SparseMatrixData\sts4098\sts4098.ar)";
+    IMatrix2D::size_type const dim = 4098;
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename);
+    CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
+    CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
+    SparseMatrix2D const m = sm_reader->get();
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = m * m;
+    }
+
+    Vector parallel_result;
+    {
+        HighResTimer t;
+//        parallel_result = nonChunkedParallelMatrixVectorMultiplication(m, x);
+    }
+}
+
+void
 ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
     IMatrix2D::size_type dim = 999130;
     Vector v1 = createVectorOfSize(dim);
