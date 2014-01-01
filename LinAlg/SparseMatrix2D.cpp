@@ -306,6 +306,9 @@ SparseMatrix2D::finalize() const {
 
 std::set<SparseMatrix2D::size_type>
 SparseMatrix2D::getNonZeroColumnIndicesForRow(size_type row) const {
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(row, rows() - 1);
+#endif
     std::set<size_type> column_indices;
     size_type column_offset = columns_offset_[row];
     size_type nelements = columns_offset_[row + 1] - column_offset;
@@ -318,6 +321,9 @@ SparseMatrix2D::getNonZeroColumnIndicesForRow(size_type row) const {
 
 std::set<SparseMatrix2D::size_type>
 SparseMatrix2D::getNonZeroRowIndicesForColumn(size_type column) const {
+#ifdef _DEBUG
+    common_NS::reporting::checkUppderBound(column, cols() - 1);
+#endif
     std::set<size_type> row_indices;
     size_type row_offset = rows_offset_[column];
     size_type nelements = rows_offset_[column + 1] - row_offset;

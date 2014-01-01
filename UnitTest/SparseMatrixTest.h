@@ -19,6 +19,8 @@ class SparseMatrixTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(sparseNonSquareMatrixTranspose);
     CPPUNIT_TEST(testColumnIndicesFor5by5SparseMatrix);
     CPPUNIT_TEST(testRowIndicesFor5by5SparseMatrix);
+    CPPUNIT_TEST(testColumnIndicesFor3by5SparseMatrix);
+    CPPUNIT_TEST(testRowIndicesFor3by5SparseMatrix);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -33,4 +35,6 @@ protected:
     void sparseNonSquareMatrixTranspose();
     void testColumnIndicesFor5by5SparseMatrix();
     void testRowIndicesFor5by5SparseMatrix();
+    void testColumnIndicesFor3by5SparseMatrix();
+    void testRowIndicesFor3by5SparseMatrix();
 };
