@@ -118,12 +118,16 @@ namespace LinAlg_NS {
         void      print() const override;
 
         // Local methods
-        void solve(Vector const & b, Vector & x) const;
-        void finalize() const;
+        void                solve(Vector const & b, Vector & x) const;
+        void                finalize() const;
+        std::set<size_type> getNonZeroColumnIndicesForRow(size_type row) const;
+        std::set<size_type> getNonZeroRowIndicesForColumn(size_type column) const;
 
     private:
         using Col_t = std::map<size_type, double>;
         using Row_t = std::map<size_type, Col_t>;
+
+        using IndexMapping_t = std::multimap<size_type, size_type>;
 
     private:
         // to provide exception-safe copy-assignment
@@ -236,6 +240,9 @@ namespace LinAlg_NS {
         }
 
     private:
+        mutable IndexMapping_t row_to_column_map_;
+        mutable IndexMapping_t column_to_row_map_;
+
         // Number of rows
         size_type     nrows_;
 
@@ -259,8 +266,10 @@ namespace LinAlg_NS {
          * nelements_.size() == #rows + 1
          */
         mutable std::vector<double>    elements_;
+        mutable std::vector<size_type> rows_;
         mutable std::vector<size_type> columns_;
-        mutable std::vector<size_type> nelements_;
+        mutable std::vector<size_type> columns_offset_;
+        mutable std::vector<size_type> rows_offset_;
     };
 
 } // namespace LinAlg_NS

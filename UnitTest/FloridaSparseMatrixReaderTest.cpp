@@ -85,7 +85,7 @@ FloridaSparseMatrixReaderTest::readSTS4098Test() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 4098ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 72356ull, m.elements_.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 4099ull, m.nelements_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 4099ull, m.columns_offset_.size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 72356ull, m.columns_.size());
 
     // check some values
@@ -121,7 +121,7 @@ FloridaSparseMatrixReaderTest::readFS6801Test() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("error in number of columns", 680ull, m.cols());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix not finalized after read", true, m.finalized_);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2184ull, m.elements_.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 681ull, m.nelements_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 681ull, m.columns_offset_.size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("sparse matrix internal data error", 2184ull, m.columns_.size());
 
     // check some values

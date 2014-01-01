@@ -79,7 +79,9 @@ SparseMatrix2D::SparseMatrix2D(SparseMatrix2D const & in)
     finalized_(in.finalized_),
     elements_(in.elements_),
     columns_(in.columns_),
-    nelements_(in.nelements_) {}
+    rows_(in.rows_),
+    columns_offset_(in.columns_offset_),
+    rows_offset_(in.rows_offset_) {}
 
 SparseMatrix2D &
 SparseMatrix2D::operator=(SparseMatrix2D const & in) {
@@ -103,7 +105,9 @@ SparseMatrix2D::SparseMatrix2D(SparseMatrix2D && in)
     finalized_(in.finalized_),
     elements_(std::move(in.elements_)),
     columns_(std::move(in.columns_)),
-    nelements_(std::move(in.nelements_)) {}
+    rows_(std::move(in.rows_)),
+    columns_offset_(std::move(in.columns_offset_)),
+    rows_offset_(std::move(in.rows_offset_)) {}
 
 SparseMatrix2D &
 SparseMatrix2D::operator=(SparseMatrix2D && in) {
@@ -122,13 +126,15 @@ SparseMatrix2D::operator=(SparseMatrix2D && in) {
 void
 SparseMatrix2D::swap(SparseMatrix2D const & in) {
     // to enable the safe exception guarantee
-    nrows_     = in.nrows_;
-    ncols_     = in.ncols_;
-    data_      = in.data_;
-    finalized_ = in.finalized_;
-    elements_  = in.elements_;
-    columns_   = in.columns_;
-    nelements_ = in.nelements_;
+    nrows_          = in.nrows_;
+    ncols_          = in.ncols_;
+    data_           = in.data_;
+    finalized_      = in.finalized_;
+    elements_       = in.elements_;
+    columns_        = in.columns_;
+    rows_           = in.rows_;
+    columns_offset_ = in.columns_offset_;
+    rows_offset_    = in.rows_offset_;
 }
 
 SparseMatrix2D::size_type
@@ -149,10 +155,10 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
 #endif
     if (finalized_) {
         // Number of non-zero columns for this row
-        size_type ncol = nelements_[row + 1] - nelements_[row];
+        size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
         if (!ncol) return 0.0;
         double value = 0.0;
-        size_type offset = nelements_[row];
+        size_type offset = columns_offset_[row];
 
         // check all columns for elements in row 'row'
         for (size_type icol = 0; icol < ncol; ++icol) {
@@ -171,6 +177,7 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
     return col[column];
 }
 
+#if 0
 double &
 SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
     // Note: This method is NOT thread save!
@@ -179,6 +186,21 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
 #endif
+    Col_t & col = data_[row];
+    return col[column];
+}
+#endif
+
+double &
+SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_type column) {
+    // Note: This method is NOT thread save!
+#ifdef _DEBUG
+    common_NS::reporting::checkConditional(finalized_ == false, "SparseMatrix2D::operator(): Matrix already finalized");
+    common_NS::reporting::checkUppderBound(row, rows() - 1);
+    common_NS::reporting::checkUppderBound(column, cols() - 1);
+#endif
+    row_to_column_map_.insert(IndexMapping_t::value_type(row, column));
+    column_to_row_map_.insert(IndexMapping_t::value_type(column, row));
     Col_t & col = data_[row];
     return col[column];
 }
@@ -191,12 +213,12 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     common_NS::reporting::checkConditional(b.size() == ncols_ && b.size() == x.size());
 #endif
 
-    size_type nrows = nelements_.size() - 1;
+    size_type nrows = columns_offset_.size() - 1;
 
     for (size_type row = 0; row < nrows; ++row) {
         // Number of non-zero columns for this row
-        size_type ncol = nelements_[row + 1] - nelements_[row];
-        size_type offset = nelements_[row];
+        size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
+        size_type offset = columns_offset_[row];
 
         double tmp = 0;
 
@@ -210,33 +232,74 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
     }
 }
 
-void 
+void
 SparseMatrix2D::finalize() const {
     // convert to compressed row storage format
-    size_type nelements = 0;
-    size_type nelements_total = 0;
+    size_type container_size = row_to_column_map_.size();
+    columns_offset_.reserve(nrows_ + 1);
+    columns_.reserve(container_size);
+    columns_offset_.push_back(0);
+    size_type column_offset = 0;
+    for (size_type row_index = 0; row_index < nrows_; ++row_index) {
+        auto it = row_to_column_map_.equal_range(row_index);
+        if (it.first == it.second) {
+            auto previous_offset = columns_offset_[columns_offset_.size() - 1];
+            columns_offset_.push_back(previous_offset);
+            continue;
+        }
+
+        size_type size = 0;
+        for (auto it2 = it.first; it2 != it.second; ++it2) {
+            auto column_index = it2->second;
+            columns_.push_back(column_index);
+            size++;
+        }
+        column_offset += size;
+        columns_offset_.push_back(column_offset);
+    }
+//    columns_offset_.push_back(0); // needed?
+    row_to_column_map_.clear();
+
+
+    rows_offset_.reserve(ncols_ + 1);
+    rows_.reserve(container_size);
+    rows_offset_.push_back(0);
+    size_type row_offset = 0;
+    for (size_type column_index = 0; column_index < ncols_; ++column_index) {
+        auto it = column_to_row_map_.equal_range(column_index);
+        if (it.first == it.second) {
+            auto previous_offset = rows_offset_[rows_offset_.size() - 1];
+            rows_offset_.push_back(previous_offset);
+            continue;
+        }
+
+        size_type size = 0;
+        for (auto it2 = it.first; it2 != it.second; ++it2) {
+            auto row_index = it2->second;
+            rows_.push_back(row_index);
+            size++;
+        }
+        row_offset += size;
+        rows_offset_.push_back(row_offset);
+    }
+//    rows_offset_.push_back(0); // needed?
+    column_to_row_map_.clear();
+
+
+
 
     for (auto const & row_item : data_) {
 //        int row = (*row_it).first;
         Col_t const & col = row_item.second;
 
         for (auto const & col_item : col) {
-            size_type col{col_item.first};
-            double value{col_item.second};
+//            size_type col(col_item.first);
+            double value(col_item.second);
             if (!value)
                 continue;
-
             elements_.push_back(value);
-            columns_.push_back(col);
-
-            // Number of non-zero elements
-            nelements++;
         }
-        nelements_.push_back(nelements_total);
-        nelements_total += nelements;
-        nelements = 0;
     }
-    nelements_.push_back(nelements_total);
 
     // Matrix has been finalized
     finalized_ = true;
@@ -245,14 +308,38 @@ SparseMatrix2D::finalize() const {
     data_.clear();
 }
 
+std::set<SparseMatrix2D::size_type>
+SparseMatrix2D::getNonZeroColumnIndicesForRow(size_type row) const {
+    std::set<size_type> column_indices;
+    size_type column_offset = columns_offset_[row];
+    size_type nelements = columns_offset_[row + 1] - column_offset;
+    for (auto i = 0; i < nelements; ++i) {
+        auto column_index = columns_[column_offset + i];
+        column_indices.insert(column_index);
+    }
+    return column_indices;
+}
+
+std::set<SparseMatrix2D::size_type>
+SparseMatrix2D::getNonZeroRowIndicesForColumn(size_type column) const {
+    std::set<size_type> row_indices;
+    size_type row_offset = rows_offset_[column];
+    size_type nelements = rows_offset_[column + 1] - row_offset;
+    for (auto i = 0; i < nelements; ++i) {
+        auto row_index = rows_[row_offset + i];
+        row_indices.insert(row_index);
+    }
+    return row_indices;
+}
+
 void
 SparseMatrix2D::print() const {
     std::cout << std::endl;
 
     for (size_type row = 0; row < nrows_; ++row) {
         // Number of non-zero columns for this row
-        size_type ncol = nelements_[row + 1] - nelements_[row];
-        size_type offset = nelements_[row];
+        size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
+        size_type offset = columns_offset_[row];
 
         size_type column = columns_[offset];
         size_type icol = 0;
@@ -295,8 +382,10 @@ serialize_helper(AR & ar, SparseMatrix2D & m, const unsigned int /*version*/) {
     ar & BOOST_SERIALIZATION_NVP(m.data_);
     ar & BOOST_SERIALIZATION_NVP(m.finalized_);
     ar & BOOST_SERIALIZATION_NVP(m.elements_);
+    ar & BOOST_SERIALIZATION_NVP(m.rows_);
     ar & BOOST_SERIALIZATION_NVP(m.columns_);
-    ar & BOOST_SERIALIZATION_NVP(m.nelements_);
+    ar & BOOST_SERIALIZATION_NVP(m.columns_offset_);
+    ar & BOOST_SERIALIZATION_NVP(m.rows_offset_);
 }
 
 void

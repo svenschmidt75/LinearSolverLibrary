@@ -53,8 +53,8 @@ namespace LinAlg_NS {
             common_NS::reporting::checkConditional(m.cols() == v.size(), "MatrixVectorExpr: Matrix and vector incompatible");
 #endif
             // Number of non-zero columns for this row
-            IMatrix2D::size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
-            IMatrix2D::size_type offset = m.nelements_[row];
+            IMatrix2D::size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
+            IMatrix2D::size_type offset = m.columns_offset_[row];
 
             double value = 0;
 

@@ -15,7 +15,12 @@ SparseMatrixTest::tearDown() {}
 namespace {
 
     SparseMatrix2D createSquareSparseMatrix() {
-        SparseMatrix2D matrix(3);
+        SparseMatrix2D matrix{3};
+
+        // 0 0 3
+        // 0 8 6
+        // 7 0 0
+
         matrix(0, 2) = 3;
         matrix(1, 0) = 0;
         matrix(1, 1) = 8;
@@ -29,6 +34,11 @@ namespace {
 
     SparseMatrix2D createNonSquareSparseMatrix() {
         SparseMatrix2D m(3, 2);
+
+        // 1 2
+        // 0 4
+        // 5 0
+
         m(0, 0) = 1;
         m(0, 1) = 2;
         m(1, 1) = 4;

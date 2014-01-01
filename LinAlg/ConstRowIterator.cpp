@@ -40,8 +40,8 @@ ConstRowIterator<SparseMatrix2D>::size_type
 ConstRowIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
     auto nelements = 0;
     for (auto row = 0; row < m_.rows(); ++row) {
-        size_type ncolumns = m_.nelements_[row + 1] - m_.nelements_[row];
-        size_type offset = m_.nelements_[row];
+        size_type ncolumns = m_.columns_offset_[row + 1] - m_.columns_offset_[row];
+        size_type offset = m_.columns_offset_[row];
         size_type column;
         for (auto ncol = 0; ncol < ncolumns; ++ncol) {
             column = m_.columns_[offset + ncol];
@@ -92,7 +92,7 @@ ConstRowIterator<SparseMatrix2D>::operator*() const {
 
 void
 ConstRowIterator<SparseMatrix2D>::jumpToFirstElement() const {
-    auto & elements = m_.nelements_;
+    auto & elements = m_.columns_offset_;
     auto rows = m_.rows();
     for (row_ = 0; row_ < rows; ++row_) {
         size_type ncolumns = elements[row_ + 1] - elements[row_];
@@ -113,7 +113,7 @@ ConstRowIterator<SparseMatrix2D>::jumpToFirstElement() const {
 
 void
 ConstRowIterator<SparseMatrix2D>::jumpToNextElement() const {
-    auto & elements = m_.nelements_;
+    auto & elements = m_.columns_offset_;
     auto rows = m_.rows();
     ++row_;
     for (; row_ < rows; ++row_) {

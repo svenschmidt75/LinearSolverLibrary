@@ -15,8 +15,8 @@ helper::transpose(SparseMatrix2D const & m) {
     SparseMatrix2D transposed(m.cols(), m.rows());
     for (SparseMatrix2D::size_type row = 0; row < m.rows(); ++row) {
         // Number of non-zero columns for this row
-        IMatrix2D::size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
-        IMatrix2D::size_type offset = m.nelements_[row];
+        IMatrix2D::size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
+        IMatrix2D::size_type offset = m.columns_offset_[row];
 
         // all non-zero columns
         for (int icol = 0; icol < ncol; ++icol) {

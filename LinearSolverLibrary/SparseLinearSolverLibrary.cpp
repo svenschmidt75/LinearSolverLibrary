@@ -26,8 +26,8 @@ SparseLinearSolverLibrary::sparseSOR(SparseMatrix2D const & m, Vector const & f,
      */
 
     // Number of rows
-    typedef decltype(m.nelements_.size()) size_type;
-    size_type nrows = m.nelements_.size() - 1;
+    typedef decltype(m.columns_offset_.size()) size_type;
+    size_type nrows = m.columns_offset_.size() - 1;
 
     // solution vector
     Vector x(f.size());
@@ -48,8 +48,8 @@ SparseLinearSolverLibrary::sparseSOR(SparseMatrix2D const & m, Vector const & f,
             double a_ii = 0;
 
             // number of non-zero columns for this row
-            size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
-            size_type offset = m.nelements_[row];
+            size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
+            size_type offset = m.columns_offset_[row];
 
             double sigma = 0;
 
@@ -116,7 +116,7 @@ SparseLinearSolverLibrary::sparseSORMultiColor(SparseMatrix2D const & m, Vector 
      */
 
     // Number of rows
-    typedef decltype(m.nelements_.size()) size_type;
+    typedef decltype(m.columns_offset_.size()) size_type;
 
     // solution vector
     Vector x(f.size());
@@ -148,8 +148,8 @@ SparseLinearSolverLibrary::sparseSORMultiColor(SparseMatrix2D const & m, Vector 
                 double a_ii = 0;
 
                 // number of non-zero columns for this row
-                size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
-                size_type offset = m.nelements_[row];
+                size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
+                size_type offset = m.columns_offset_[row];
 
                 double sigma = 0;
 

@@ -37,7 +37,7 @@ ConstColumnIterator<SparseMatrix2D>::isValid() const {
 
 ConstColumnIterator<SparseMatrix2D>::size_type
 ConstColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
-    size_type ncol = m_.nelements_[row_ + 1] - m_.nelements_[row_];
+    size_type ncol = m_.columns_offset_[row_ + 1] - m_.columns_offset_[row_];
     return ncol;
 }
 
@@ -77,14 +77,14 @@ ConstColumnIterator<SparseMatrix2D>::operator*() const {
 
 void
 ConstColumnIterator<SparseMatrix2D>::jumpToFirstElement() const {
-    size_type offset = m_.nelements_[row_];
+    size_type offset = m_.columns_offset_[row_];
     column_mapped_ = m_.columns_[offset];
     column_ = 0;
 }
 
 void
 ConstColumnIterator<SparseMatrix2D>::jumpToNextElement() const {
-    size_type offset = m_.nelements_[row_];
+    size_type offset = m_.columns_offset_[row_];
     column_++;
     if (!isValid())
         return;

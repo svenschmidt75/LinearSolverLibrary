@@ -21,16 +21,16 @@ SparseLinearSolverUtil::isStrictlyDiagonallyDominant(SparseMatrix2D const & m) {
      */
 
     // Number of rows
-    typedef decltype(m.nelements_.size()) size_type;
-    size_type nrows = m.nelements_.size() - 1;
+    typedef decltype(m.columns_offset_.size()) size_type;
+    size_type nrows = m.columns_offset_.size() - 1;
 
     for (size_type row = 0; row < nrows; ++row) {
         double a_ii = 0;
         bool has_diagonal_element = false;
 
         // Number of non-zero columns for this row
-        size_type ncol = m.nelements_[row + 1] - m.nelements_[row];
-        size_type offset = m.nelements_[row];
+        size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
+        size_type offset = m.columns_offset_[row];
 
         double sum = 0;
 
