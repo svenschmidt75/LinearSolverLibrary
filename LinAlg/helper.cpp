@@ -194,13 +194,13 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     auto ncols = rhs.cols();
     SparseMatrix2D tmp{nrows, ncols};
 
-    lhs.print();
-    rhs.print();
+//     lhs.print();
+//     rhs.print();
 
 
     for (IMatrix2D::size_type row = 0; row < nrows; ++row) {
         auto value = 0.0;
-        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
+//        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
 
 
         // get column indices for this row from iterator
@@ -209,10 +209,10 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
 
 
         for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
-            ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
+//            ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
 
-            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
-            ConstRowIterator<SparseMatrix2D> rowIterator = *rowColumnIterator;
+//            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+//            ConstRowIterator<SparseMatrix2D> rowIterator = *rowColumnIterator;
 
 
             // get row indices for this column from iterator
@@ -222,16 +222,16 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
 
 
             // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
-            while (columnIterator && columnIterator.column() < lhs.cols()) {
-                while (rowIterator && rowIterator.row() < columnIterator.column()) {
-                    ++rowIterator;
-                }
-                if (!rowIterator)
-                    break;
-                if (rowIterator.row() == columnIterator.column())
-                    value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
-                ++columnIterator;
-            }
+//             while (columnIterator && columnIterator.column() < lhs.cols()) {
+//                 while (rowIterator && rowIterator.row() < columnIterator.column()) {
+//                     ++rowIterator;
+//                 }
+//                 if (!rowIterator)
+//                     break;
+//                 if (rowIterator.row() == columnIterator.column())
+//                     value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
+//                 ++columnIterator;
+//             }
 
             double tmp_val = 0.0;
             auto it(std::cbegin(non_zero_indices));
@@ -240,17 +240,17 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
                 ++it;
                 tmp_val += lhs(row, index) * rhs(index, column);
             }
+            value = tmp_val;
 
-            if (std::fabs(tmp_val - value) > 1E-10) {
-                int a = 1;
-                a++;
-            }
+//             if (std::fabs(tmp_val - value) > 1E-10) {
+//                 int a = 1;
+//                 a++;
+//             }
 
             if (value) {
                 tmp(row, column) = value;
                 value = 0.0;
             }
-
         }
     }
     tmp.finalize();

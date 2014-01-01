@@ -525,7 +525,7 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelMatrixProduct() {
          0,  1, -2,  7,  2;
     
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+    SparseMatrix2D const & m = stencil.generateMatrix(35 * 35);
 
     Vector v{m.cols()};
     std::iota(std::begin(v), std::end(v), 1);
