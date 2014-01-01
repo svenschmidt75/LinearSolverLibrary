@@ -13,6 +13,9 @@
 #include "ConstColumnIteratorForwardDecl.h"
 
 
+#pragma warning(disable:4251)
+
+
 namespace LinAlg_NS {
 
 
@@ -46,8 +49,10 @@ namespace LinAlg_NS {
     private:
         SparseMatrix2D const & m_;
         mutable size_type      column_;
-        mutable size_type      column_mapped_;
         size_type              row_;
+        std::set<size_type>    column_indices_;
     };
 
 } // namespace LinAlg_NS
+
+#pragma warning(default:4251)
