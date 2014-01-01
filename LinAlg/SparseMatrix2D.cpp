@@ -185,8 +185,8 @@ SparseMatrix2D::operator()(SparseMatrix2D::size_type row, SparseMatrix2D::size_t
     common_NS::reporting::checkUppderBound(row, rows() - 1);
     common_NS::reporting::checkUppderBound(column, cols() - 1);
 #endif
-    row_to_column_map_.insert(IndexMapping_t::value_type(row, column));
-    column_to_row_map_.insert(IndexMapping_t::value_type(column, row));
+    row_to_column_map_[row].insert(column);
+    column_to_row_map_[column].insert(row);
     Col_t & col = data_[row];
     return col[column];
 }
@@ -220,22 +220,26 @@ SparseMatrix2D::solve(Vector const & b, Vector & x) const {
 
 void
 SparseMatrix2D::finalizeColumnIndices() const {
+    // Note: It is assumed that all the column indices
+    // in row_to_column_map_[row] are sorted!
     size_type container_size = row_to_column_map_.size();
     columns_offset_.reserve(nrows_ + 1);
     columns_.reserve(container_size);
     columns_offset_.push_back(0);
-    size_type column_offset = 0;
+    size_type column_offset{0};
     for (size_type row_index = 0; row_index < nrows_; ++row_index) {
-        auto it = row_to_column_map_.equal_range(row_index);
-        if (it.first == it.second) {
+        auto it = row_to_column_map_.find(row_index);
+        if (it == std::cend(row_to_column_map_)) {
             auto previous_offset = columns_offset_[columns_offset_.size() - 1];
             columns_offset_.push_back(previous_offset);
             continue;
         }
 
+        // *it == std::pair<size_type const, std::set<size_type>>
+
         size_type size = 0;
-        for (auto it2 = it.first; it2 != it.second; ++it2) {
-            auto column_index = it2->second;
+        for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
+            auto column_index = *it2;
             if ((*this)(row_index, column_index)) {
                 columns_.push_back(column_index);
                 size++;
@@ -249,22 +253,26 @@ SparseMatrix2D::finalizeColumnIndices() const {
 
 void
 SparseMatrix2D::finalizeRowIndices() const {
+    // Note: It is assumed that all the row indices
+    // in column_to_row_map_[column] are sorted!
     size_type container_size = row_to_column_map_.size();
     rows_offset_.reserve(ncols_ + 1);
     rows_.reserve(container_size);
     rows_offset_.push_back(0);
-    size_type row_offset = 0;
+    size_type row_offset{0};
     for (size_type column_index = 0; column_index < ncols_; ++column_index) {
-        auto it = column_to_row_map_.equal_range(column_index);
-        if (it.first == it.second) {
+        auto it = column_to_row_map_.find(column_index);
+        if (it == std::cend(column_to_row_map_)) {
             auto previous_offset = rows_offset_[rows_offset_.size() - 1];
             rows_offset_.push_back(previous_offset);
             continue;
         }
 
+        // *it == std::pair<size_type const, std::set<size_type>>
+
         size_type size = 0;
-        for (auto it2 = it.first; it2 != it.second; ++it2) {
-            auto row_index = it2->second;
+        for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
+            auto row_index = *it2;
             if ((*this)(row_index, column_index)) {
                 rows_.push_back(row_index);
                 size++;

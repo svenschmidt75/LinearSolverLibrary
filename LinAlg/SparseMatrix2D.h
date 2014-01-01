@@ -127,7 +127,9 @@ namespace LinAlg_NS {
         using Col_t = std::map<size_type, double>;
         using Row_t = std::map<size_type, Col_t>;
 
-        using IndexMapping_t = std::multimap<size_type, size_type>;
+        // ensure sorted indices in value item of
+        // std::pair<size_type const, std::set<size_type>>!!!
+        using IndexMapping_t = std::map<size_type, std::set<size_type>>;
 
     private:
         // to provide exception-safe copy-assignment

@@ -29,8 +29,7 @@
 #include "ParallelLinAlgOperationsTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixTest);
-//CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
 
 #if 0
