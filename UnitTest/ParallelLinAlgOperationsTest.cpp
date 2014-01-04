@@ -951,3 +951,66 @@ ParallelLinAlgOperationsTest::testChunkedLargeMatrixTranspose() {
     CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
     CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
 }
+
+void
+ParallelLinAlgOperationsTest::testNonSquareTransposeNonChunkedParallel() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+
+
+    // generate a non-square 7x3 matrix form m
+    SparseMatrix2D m1{7, 3};
+    for (auto row = 7; row < 7 + 7; ++row) {
+        for (auto column = 7; column < 7 + 3; ++column) {
+            m1(row - 7, column - 7) = m(row, column);
+        }
+    }
+    m1.finalize();
+    //    m1.print();
+
+    // generate a non-square 3x2 matrix form m
+    SparseMatrix2D m2{ 3, 2 };
+    for (auto row = 10; row < 10 + 3; ++row) {
+        for (auto column = 12; column < 12 + 2; ++column) {
+            m2(row - 10, column - 12) = m(row, column);
+        }
+    }
+    m2.finalize();
+    //    m2.print();
+
+
+    Vector v{ m2.cols() };
+    std::iota(std::begin(v), std::end(v), 1);
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = helper::matrixMul(m1, m2);
+    }
+    //    serial_result.print();
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = chunkedParallelMatrixMatrixMultiplication(m1, m2);
+    }
+    //    parallel_result.print();
+
+    Vector result1;
+    result1 = serial_result * v;
+
+    Vector result2;
+    result2 = parallel_result * v;
+
+    //     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+    //         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+}

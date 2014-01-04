@@ -31,6 +31,7 @@ class ParallelLinAlgOperationsTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testChunkedMatrixTranspose);
     CPPUNIT_TEST(testNonChunkedLargeMatrixTranspose);
     CPPUNIT_TEST(testChunkedLargeMatrixTranspose);
+    CPPUNIT_TEST(testNonSquareTransposeNonChunkedParallel);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -55,4 +56,5 @@ protected:
     void testChunkedMatrixTranspose();
     void testNonChunkedLargeMatrixTranspose();
     void testChunkedLargeMatrixTranspose();
+    void testNonSquareTransposeNonChunkedParallel();
 };
