@@ -608,8 +608,8 @@ LinAlgOperatorTest::test3by3MatrixTimes3by3MatrixEqualsIdentity() {
 }
 
 void
-LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
-    // A * (A * v) == A^{2} * v
+LinAlgOperatorTest::test3x5x5MatrixMulVector() {
+    // A * (A * (A * v)) == A^{3} * v
     MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
     stencil <<
          2, -1,  9,  2,  1,
@@ -639,4 +639,53 @@ LinAlgOperatorTest::testMatrixTimesMatrixTimesVector() {
     result2 = m2 * v;
     
     CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-15));
+}
+
+namespace {
+
+    class HighResTimer {
+    public:
+        HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
+        ~HighResTimer() {
+            auto end = boost::chrono::high_resolution_clock::now();
+            auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
+            auto d = (end - start_).count() * frac;
+            std::cout << std::endl << "Duration: " << d << std::endl;
+        }
+
+    private:
+        boost::chrono::steady_clock::time_point start_;
+    };
+
+}
+
+void
+LinAlgOperatorTest::test3x25x25MatrixMulVector() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(25 * 25);
+//   m.print();
+
+    Vector v{m.cols()};
+    std::iota(std::begin(v), std::end(v), 1);
+
+    // compute m * (m * (m * v))
+    {
+        HighResTimer t;
+        SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
+    }
+
+    // compute (m * m * m) * v
+    {
+        HighResTimer t;
+        SparseMatrix2D m2 = (m * m) * m;
+    }
+//    m2.print();
 }

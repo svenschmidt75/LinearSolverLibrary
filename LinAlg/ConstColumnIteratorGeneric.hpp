@@ -23,8 +23,11 @@ namespace LinAlg_NS {
     public:
         ConstColumnIterator(MATRIX_EXPR const & m, size_type row)
             :
-            m_(m), row_(row) {
-
+            m_(m),
+            row_(row),
+            column_{0},
+            index_{0},
+            column_indices_{m.getNonZeroColumnIndicesForRow(row)} {
 #ifdef _DEBUG
             common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
 #endif
@@ -35,6 +38,8 @@ namespace LinAlg_NS {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
             column_                       = in.column_;
             row_                          = in.row_;
+            index_                        = in.index_;
+            column_indices_               = in.column_indices_;
             return *this;
         }
 
@@ -47,13 +52,7 @@ namespace LinAlg_NS {
         }
 
         size_type numberOfNonZeroMatrixElements() const {
-            size_type ncol{0};
-            for (size_type column = 0; column < m_.cols(); ++column)
-            {
-                if (m_(row_, column))
-                    ++ncol;
-            }
-            return ncol;
+            return column_indices_.size();
         }
 
         size_type column() const {
@@ -88,26 +87,19 @@ namespace LinAlg_NS {
 
     private:
         void jumpToFirstElement() const {
-            for (column_ = 0; column_ < m_.cols(); ++column_)
-            {
-                if (m_(row_, column_))
-                    break;
-            }
+            column_ = column_indices_.empty() ? m_.cols() : column_indices_[index_];
         }
 
         void jumpToNextElement() const {
-            ++column_;
-            for (; column_ < m_.cols(); ++column_)
-            {
-                if (m_(row_, column_))
-                    break;
-            }
+            column_ = index_ == column_indices_.size() - 1 ? m_.cols() : column_indices_[++index_];
         }
 
     private:
-        MATRIX_EXPR const & m_;
-        mutable size_type   column_;
-        size_type           row_;
+        MATRIX_EXPR const &    m_;
+        mutable size_type      column_;
+        size_type              row_;
+        mutable size_type      index_;
+        std::vector<size_type> column_indices_;
     };
 
 } // namespace LinAlg_NS

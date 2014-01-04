@@ -261,19 +261,24 @@ namespace LinAlg_NS {
         // compresses row storage format
         mutable bool  finalized_ = false;
 
-        /* Compressed row storage format
+        /* extended Compressed row storage (eCSR) format
          * 
-         * elements_ contains the non-zero elements in sequential order.
-         * columns_ contains the column for the element.
-         * nelements_: Contains the increasing number of elements per row.
+         * The difference to CSR is that we also store the row indices,
+         * so iterating down a column is much much faster. This makes
+         * a huge difference in sparse matrix multiplication!!!
          * 
-         * The number of rows can be determined from nelements_: 
-         * nelements_.size() == #rows + 1
+         * elements_ : contains the non-zero elements in sequential order.
+         * columns_ : contains the column for the element
+         * columns_offset_ : columns_offset_[row] is the offset in columns_ for that row, i.e.
+         * columns_[columns_offset_[row]] is the column index of the 1st non-zero element in row
+         * 'row'
+         * 
+         * row_ and rows_offset_ similar to above.
          */
         mutable std::vector<double>    elements_;
-        mutable std::vector<size_type> rows_;
         mutable std::vector<size_type> columns_;
         mutable std::vector<size_type> columns_offset_;
+        mutable std::vector<size_type> rows_;
         mutable std::vector<size_type> rows_offset_;
     };
 

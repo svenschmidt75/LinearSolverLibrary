@@ -29,7 +29,9 @@ namespace LinAlg_NS {
             :
             m_{m},
             column_{column},
-            row_{0} {
+            row_{0},
+            index_{0},
+            row_indices_{m.getNonZeroRowIndicesForColumn(column)} {
 
 #ifdef _DEBUG
             common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
@@ -41,6 +43,8 @@ namespace LinAlg_NS {
             const_cast<MATRIX_EXPR &>(m_) = in.m_;
             column_                       = in.column_;
             row_                          = in.row_;
+            index_                        = in.index_;
+            row_indices_                  = in.row_indices_;
             return *this;
         }
 
@@ -53,13 +57,7 @@ namespace LinAlg_NS {
         }
 
         size_type numberOfNonZeroMatrixElements() const {
-            auto nelements = 0;
-            for (auto row = 0; row < m_.rows(); ++row) {
-                // find the 1st non-zero element in column 'column_'
-                if (m_(row, column_))
-                    ++nelements;
-            }
-            return nelements;
+            return row_indices_.size();
         }
 
         size_type row() const {
@@ -94,26 +92,19 @@ namespace LinAlg_NS {
 
     private:
         void jumpToFirstElement() const {
-            for (row_ = 0; row_ < m_.rows(); ++row_) {
-                // find the 1st non-zero element in column 'column_'
-                if (m_(row_, column_))
-                    break;
-            }
+            row_ = row_indices_.empty() ? m_.rows() : row_indices_[index_];
         }
 
         void jumpToNextElement() const {
-            ++row_;
-            for (; row_ < m_.rows(); ++row_) {
-                // find the 1st non-zero element in column 'column_'
-                if (m_(row_, column_))
-                    break;
-            }
+            row_ = index_ == row_indices_.size() - 1 ? m_.rows() : row_indices_[++index_];
         }
 
     private:
-        MATRIX_EXPR const & m_;
-        size_type           column_;
-        mutable size_type   row_;
+        MATRIX_EXPR const &    m_;
+        size_type              column_;
+        mutable size_type      row_;
+        mutable size_type      index_;
+        std::vector<size_type> row_indices_;
     };
 
 } // namespace LinAlg_NS

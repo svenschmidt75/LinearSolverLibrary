@@ -611,7 +611,7 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelNonSquareMatrixProduct() {
 
 
     // generate a non-square 7x3 matrix form m
-    SparseMatrix2D m1{ 7, 3 };
+    SparseMatrix2D m1{7, 3};
     for (auto row = 7; row < 7 + 7; ++row) {
         for (auto column = 7; column < 7 + 3; ++column) {
             m1(row - 7, column - 7) = m(row, column);
@@ -621,7 +621,7 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelNonSquareMatrixProduct() {
 //    m1.print();
 
     // generate a non-square 3x2 matrix form m
-    SparseMatrix2D m2{ 3, 2 };
+    SparseMatrix2D m2{3, 2};
     for (auto row = 10; row < 10 + 3; ++row) {
         for (auto column = 12; column < 12 + 2; ++column) {
             m2(row - 10, column - 12) = m(row, column);
@@ -776,7 +776,7 @@ ParallelLinAlgOperationsTest::testChunkedMatrixIsSymmetric() {
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     // in order to modify the matrix to make it asymmetric, we have to create a new one
-    SparseMatrix2D m_asymmetric{ m.rows(), m.cols() };
+    SparseMatrix2D m_asymmetric{m.rows(), m.cols()};
     for (SparseMatrix2D::size_type row = 0; row < m.rows(); ++row) {
         for (SparseMatrix2D::size_type column = 0; column < m.cols(); ++column) {
             double value = m(row, column);
