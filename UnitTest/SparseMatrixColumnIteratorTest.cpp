@@ -11,14 +11,14 @@ namespace {
     {
         SparseMatrix2D m(3);
         m(0, 0) = 1;
-        m(0, 1) = 0;
+//        m(0, 1) = 0;
         m(0, 2) = 3;
-        m(1, 0) = 0;
-        m(1, 1) = 0;
+//        m(1, 0) = 0;
+//        m(1, 1) = 0;
         m(1, 2) = 6;
         m(2, 0) = 7;
         m(2, 1) = 1;
-        m(2, 2) = 0;
+//        m(2, 2) = 0;
         m.finalize();
         return m;
     }
@@ -338,12 +338,12 @@ void
 SparseMatrixColumnIteratorTest::ColumnIteratorDereferenceReturnsCorrectMatrixElementsIf1stOneNull() {
     SparseMatrix2D matrix(3);
     matrix(0, 2) = 3;
-    matrix(1, 0) = 0;
-    matrix(1, 1) = 0;
+//    matrix(1, 0) = 0;
+//    matrix(1, 1) = 0;
     matrix(1, 2) = 6;
     matrix(2, 0) = 7;
-    matrix(2, 1) = 0;
-    matrix(2, 2) = 0;
+//    matrix(2, 1) = 0;
+//    matrix(2, 2) = 0;
     matrix.finalize();
     ConstRowColumnIterator<SparseMatrix2D> it = MatrixIterators::getConstRowColumnIterator(matrix);
     ConstColumnIterator<SparseMatrix2D> rowit = *it;

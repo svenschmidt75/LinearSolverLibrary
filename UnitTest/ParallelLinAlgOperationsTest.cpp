@@ -14,7 +14,7 @@ namespace FS = boost::filesystem;
 
 // use this to work with a small matrix/vector
 #define SIMPLE 1
-//#undef SIMPLE
+#undef SIMPLE
 
 
 #ifdef SIMPLE
@@ -813,7 +813,7 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixTranspose() {
          0,  1, -2,  7,  2;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(115 * 115);
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
     SparseMatrix2D serial_result;
     {

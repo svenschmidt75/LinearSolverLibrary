@@ -35,7 +35,8 @@ helper::transposeSerial(SparseMatrix2D const & m) {
         while (columnIterator) {
             auto column = columnIterator.column();
             double value = m(row, column);
-            transpose(column, row) = value;
+            if (value)
+                transpose(column, row) = value;
             ++columnIterator;
         }
     }
@@ -65,7 +66,8 @@ helper::transposeParallelNonChunked(SparseMatrix2D const & m) {
         while (columnIterator) {
             auto column = columnIterator.column();
             double value = m(row, column);
-            chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
+            if (value)
+                chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
             ++columnIterator;
         }
     });
@@ -114,7 +116,8 @@ helper::transposeParallelChunked(SparseMatrix2D const & m) {
             while (columnIterator) {
                 auto column = columnIterator.column();
                 double value = m(row, column);
-                chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
+                if (value)
+                    chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
                 ++columnIterator;
             }
         }

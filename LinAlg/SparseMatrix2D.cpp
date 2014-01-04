@@ -222,12 +222,12 @@ void
 SparseMatrix2D::finalizeColumnIndices() const {
     // Note: It is assumed that all the column indices
     // in row_to_column_map_[row] are sorted!
-    size_type container_size = row_to_column_map_.size();
+    size_type container_size{row_to_column_map_.size()};
     columns_offset_.reserve(nrows_ + 1);
     columns_.reserve(container_size);
     columns_offset_.push_back(0);
     size_type column_offset{0};
-    for (size_type row_index = 0; row_index < nrows_; ++row_index) {
+    for (size_type row_index{0}; row_index < nrows_; ++row_index) {
         auto it = row_to_column_map_.find(row_index);
         if (it == std::cend(row_to_column_map_)) {
             auto previous_offset = columns_offset_[columns_offset_.size() - 1];
@@ -237,15 +237,24 @@ SparseMatrix2D::finalizeColumnIndices() const {
 
         // *it == std::pair<size_type const, std::set<size_type>>
 
-        size_type size = 0;
-        for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
-            auto column_index = *it2;
-            if ((*this)(row_index, column_index)) {
-                columns_.push_back(column_index);
-                size++;
-            }
-        }
-        column_offset += size;
+        // Uncomment the following if explicit zeros are allowed.
+        // This will have a negative performance impact, as we then
+        // have to llokup values, which is slow.
+
+//         size_type size{0};
+//         for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
+//             auto column_index = *it2;
+//             if ((*this)(row_index, column_index)) {
+//                 columns_.push_back(column_index);
+//                 size++;
+//             }
+//         }
+//        column_offset += size;
+
+        // comment the next 2 lines if explicit zeros are allowed
+        columns_.insert(std::end(columns_), std::cbegin(it->second), std::cend(it->second));
+        column_offset += it->second.size();
+
         columns_offset_.push_back(column_offset);
     }
     row_to_column_map_.clear();
@@ -255,12 +264,12 @@ void
 SparseMatrix2D::finalizeRowIndices() const {
     // Note: It is assumed that all the row indices
     // in column_to_row_map_[column] are sorted!
-    size_type container_size = row_to_column_map_.size();
+    size_type container_size{column_to_row_map_.size()};
     rows_offset_.reserve(ncols_ + 1);
     rows_.reserve(container_size);
     rows_offset_.push_back(0);
     size_type row_offset{0};
-    for (size_type column_index = 0; column_index < ncols_; ++column_index) {
+    for (size_type column_index{0}; column_index < ncols_; ++column_index) {
         auto it = column_to_row_map_.find(column_index);
         if (it == std::cend(column_to_row_map_)) {
             auto previous_offset = rows_offset_[rows_offset_.size() - 1];
@@ -270,18 +279,51 @@ SparseMatrix2D::finalizeRowIndices() const {
 
         // *it == std::pair<size_type const, std::set<size_type>>
 
-        size_type size = 0;
-        for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
-            auto row_index = *it2;
-            if ((*this)(row_index, column_index)) {
-                rows_.push_back(row_index);
-                size++;
-            }
-        }
-        row_offset += size;
+        // Uncomment the following if explicit zeros are allowed.
+        // This will have a negative performance impact, as we then
+        // have to llokup values, which is slow.
+
+//         size_type size{0};
+//         for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
+//             auto row_index = *it2;
+//             if ((*this)(row_index, column_index)) {
+//                 rows_.push_back(row_index);
+//                 size++;
+//             }
+//         }
+//         row_offset += size;
+
+        // comment the next 2 lines if explicit zeros are allowed
+        rows_.insert(std::end(rows_), std::cbegin(it->second), std::cend(it->second));
+        row_offset += it->second.size();
+
         rows_offset_.push_back(row_offset);
     }
     column_to_row_map_.clear();
+}
+
+void
+SparseMatrix2D::finalizeElements() const {
+    for (auto const & row_item : data_) {
+        Col_t const & col{row_item.second};
+        for (auto const & col_item : col) {
+            double value{col_item.second};
+
+            // we do not allow explicit 0 for performance reasons
+            if (!value) {
+                size_type row{ row_item.first };
+                size_type column{col_item.first};
+                boost::format format = boost::format("SparseMatrix2D::finalizeElements: m(%1%, %2%) = 0!\n") % row % column;
+                common_NS::reporting::error(format.str());
+                throw std::runtime_error(format.str());
+            }
+            elements_.push_back(value);
+        }
+    }
+    // As long as we do not allow explicit 0, neither finalizeColumnIndices nor finalizeRowIndices
+    // depend data_. If explicit zeros are necessary, both need data_ to lookup for 0 values!
+    // This comes with a negative performance impact.
+    data_.clear();
 }
 
 void
@@ -289,27 +331,19 @@ SparseMatrix2D::finalize() const {
     /* Convert to extended compressed sparse row storage format, eCSR.
      * All explicit 0 are dropped.
      */
-    finalizeColumnIndices(); 
+#ifndef PARALLEL
+    concurrency::parallel_invoke(
+        [this] {finalizeColumnIndices();},
+        [this] {finalizeRowIndices();},
+        [this] {finalizeElements();}
+    );
+#else
+    finalizeColumnIndices();
     finalizeRowIndices();
-
-    for (auto const & row_item : data_) {
-//        int row = (*row_it).first;
-        Col_t const & col = row_item.second;
-
-        for (auto const & col_item : col) {
-//            size_type col(col_item.first);
-            double value(col_item.second);
-            if (!value)
-                continue;
-            elements_.push_back(value);
-        }
-    }
-
+    finalizeElements();
+#endif
     // Matrix has been finalized
     finalized_ = true;
-
-    // release old data
-    data_.clear();
 }
 
 std::vector<SparseMatrix2D::size_type>

@@ -105,6 +105,8 @@ private:
         IMatrix2D::size_type baseMatrixRow;
         IMatrix2D::size_type baseMatrixColumn;
 
+        auto & writable_check_matrix = const_cast<SparseMatrix2D &>(check_matrix_);
+
         // center stencil around this matrix position
         std::tie(baseMatrixRow, baseMatrixColumn) = mapIndexToMatrixPosition(matrix_row, row_size);
         for (short stencil_index = 0; stencil_index < static_cast<short>(values_.size()); ++stencil_index) {
@@ -126,14 +128,15 @@ private:
                 common_NS::reporting::error(format.str());
                 throw std::runtime_error(format.str());
             }
-            m(matrix_row, mapped_column_index) = values_[stencil_index];
-            check_matrix_(matrix_row, mapped_column_index) = 1.0;
+            if (values_[stencil_index])
+                m(matrix_row, mapped_column_index) = values_[stencil_index];
+            writable_check_matrix(matrix_row, mapped_column_index) = 1.0;
         }
     }
 
 private:
     std::vector<double>               values_;
-    mutable SparseMatrix2D            check_matrix_;
+    SparseMatrix2D                    check_matrix_;
     mutable BOUNDARY_CONDITION_POLICY bc_policy_;
 };
 

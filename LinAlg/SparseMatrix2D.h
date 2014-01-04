@@ -137,6 +137,7 @@ namespace LinAlg_NS {
 
         void finalizeColumnIndices() const;
         void finalizeRowIndices() const;
+        void finalizeElements() const;
 
         template<typename MATRIX_EXPR>
         void sparseMatrix_serial(MATRIX_EXPR && in) {
