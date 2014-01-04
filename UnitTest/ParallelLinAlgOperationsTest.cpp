@@ -801,3 +801,86 @@ ParallelLinAlgOperationsTest::testChunkedMatrixIsSymmetric() {
     }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
 }
+
+namespace {
+
+    SparseMatrix2D
+    transpose_serial(SparseMatrix2D const & m) {
+        /* Transpose a sparse matrix. My first idea was to write a wrapper that behaves like the transpose,
+         * but when multiplying this wrapper with a vector, we end up doing a dense matrix multiplication.
+         * Hence this explicit construction.
+         */
+        auto nrows = m.rows();
+        auto ncols = m.cols();
+        SparseMatrix2D transposed{ncols, nrows};
+        for (IMatrix2D::size_type row{0}; row < nrows; ++row) {
+            ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+            while (columnIterator) {
+                auto column = columnIterator.column();
+                double value = m(row, column);
+                transposed(column, row) = value;
+                ++columnIterator;
+            }
+        }
+        transposed.finalize();
+        return transposed;
+    }
+
+    SparseMatrix2D
+    transpose_parallelNonChunked(SparseMatrix2D const & m) {
+        auto nrows = m.rows();
+        auto ncols = m.cols();
+        SparseMatrix2D result{ncols, nrows};
+        using size_type = IMatrix2D::size_type;
+
+        // each chunk must only access its own private memory as
+        // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+        // is not thread safe!
+        using TupleType_t = std::tuple<size_type, size_type, double>;
+        std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{nrows};
+
+        concurrency::parallel_for(size_type{0}, nrows, [&m, &chunkPrivateMemory, ncols](size_type row) {
+            ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+            while (columnIterator) {
+                auto column = columnIterator.column();
+                double value = m(row, column);
+                chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
+                ++columnIterator;
+            }
+        });
+        std::for_each(std::cbegin(chunkPrivateMemory), std::cend(chunkPrivateMemory), [&result](std::forward_list<TupleType_t> const & chunkItem) {
+            std::for_each(std::cbegin(chunkItem), std::cend(chunkItem), [&result](std::tuple<size_type, size_type, double> const & item) {
+                auto row = std::get<0>(item);
+                auto column = std::get<1>(item);
+                auto value = std::get<2>(item);
+                result(row, column) = value;
+            });
+
+        });
+        result.finalize();
+        return result;
+    }
+
+
+}
+
+void
+ParallelLinAlgOperationsTest::testNonChunkedMatrixTranspose() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+    m.print();
+
+    SparseMatrix2D const m_transpose = transpose_serial(m);
+    m_transpose.print();
+
+}

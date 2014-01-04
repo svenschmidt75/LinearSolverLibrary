@@ -670,22 +670,27 @@ LinAlgOperatorTest::test3x25x25MatrixMulVector() {
          0,  1, -2,  7,  2;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(25 * 25);
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 //   m.print();
 
     Vector v{m.cols()};
     std::iota(std::begin(v), std::end(v), 1);
 
     // compute m * (m * (m * v))
+    Vector result1;
     {
         HighResTimer t;
         SparseMatrix2D m2 = helper::matrixMul(helper::matrixMul(m, m), m);
+        result1 = m2 * v;
     }
 
     // compute (m * m * m) * v
+    Vector result2;
     {
         HighResTimer t;
         SparseMatrix2D m2 = (m * m) * m;
+        result2 = m2 * v;
     }
-//    m2.print();
+
+    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-15));
 }

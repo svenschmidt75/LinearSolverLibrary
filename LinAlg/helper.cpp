@@ -195,7 +195,7 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     SparseMatrix2D tmp{nrows, ncols};
     for (IMatrix2D::size_type row = 0; row < nrows; ++row) {
         auto value = 0.0;
-       ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
         for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
            ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
