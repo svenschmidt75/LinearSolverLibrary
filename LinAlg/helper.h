@@ -22,6 +22,10 @@
 #include "ConstColumnRowIteratorGeneric.hpp"
 
 
+// forward declarations
+class ParallelLinAlgOperationsTest;
+
+
 namespace LinAlg_NS {
 
     class Vector;
@@ -31,6 +35,10 @@ namespace LinAlg_NS {
 
 
     class LINALG_DECL_SYMBOLS helper {
+
+        friend class ParallelLinAlgOperationsTest;
+
+
     public:
         using size_type = IMatrix2D::size_type;
 
@@ -85,9 +93,6 @@ namespace LinAlg_NS {
         }
 
         static bool isSymmetric(SparseMatrix2D const & m);
-        static bool isSymmetricSerial(SparseMatrix2D const & m);
-        static bool matrixIsSymmetricParallelNonChunked(SparseMatrix2D const & m);
-        static bool matrixIsSymmetricParallelChunked(SparseMatrix2D const & m);
 
         static SparseMatrix2D matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
 
@@ -116,6 +121,15 @@ namespace LinAlg_NS {
 
             return value;
         }
+
+    private:
+        static SparseMatrix2D  transposeSerial(SparseMatrix2D const & m);
+        static SparseMatrix2D  transposeParallelNonChunked(SparseMatrix2D const & m);
+        static SparseMatrix2D  transposeParallelChunked(SparseMatrix2D const & m);
+
+        static bool isSymmetricSerial(SparseMatrix2D const & m);
+        static bool matrixIsSymmetricParallelNonChunked(SparseMatrix2D const & m);
+        static bool matrixIsSymmetricParallelChunked(SparseMatrix2D const & m);
     };
 
 } // namespace LinAlg_NS

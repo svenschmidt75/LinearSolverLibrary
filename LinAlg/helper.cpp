@@ -12,21 +12,125 @@ helper::transpose(SparseMatrix2D const & m) {
      * but when multiplying this wrapper with a vector, we end up doing a dense matrix multiplication.
      * Hence this explicit construction.
      */
-    SparseMatrix2D transposed(m.cols(), m.rows());
-    for (SparseMatrix2D::size_type row = 0; row < m.rows(); ++row) {
-        // Number of non-zero columns for this row
-        IMatrix2D::size_type ncol = m.columns_offset_[row + 1] - m.columns_offset_[row];
-        IMatrix2D::size_type offset = m.columns_offset_[row];
+#ifdef PARALLEL
+    return transposeParallelNonChunked(m);
+//    return transposeParallelChunked(m);
+#else
+    return transposeSerial(m);
+#endif
+}
 
-        // all non-zero columns
-        for (int icol = 0; icol < ncol; ++icol) {
-            IMatrix2D::size_type col = m.columns_[offset + icol];
-            double a_ij = m.elements_[offset + icol];
-            transposed(col, row) = a_ij;
+SparseMatrix2D
+helper::transposeSerial(SparseMatrix2D const & m) {
+    /* Transpose a sparse matrix. My first idea was to write a wrapper that behaves like the transpose,
+        * but when multiplying this wrapper with a vector, we end up doing a dense matrix multiplication.
+        * Hence this explicit construction.
+        */
+    auto nrows = m.rows();
+    auto ncols = m.cols();
+    SparseMatrix2D transpose{ncols, nrows};
+    for (IMatrix2D::size_type row{0}; row < nrows; ++row) {
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+        ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+        while (columnIterator) {
+            auto column = columnIterator.column();
+            double value = m(row, column);
+            transpose(column, row) = value;
+            ++columnIterator;
         }
     }
-    transposed.finalize();
-    return transposed;
+    transpose.finalize();
+    return transpose;
+}
+
+SparseMatrix2D
+helper::transposeParallelNonChunked(SparseMatrix2D const & m) {
+    auto nrows = m.rows();
+    auto ncols = m.cols();
+    SparseMatrix2D m_transpose{ncols, nrows};
+    using size_type = IMatrix2D::size_type;
+
+    // each chunk must only access its own private memory as
+    // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+    // is not thread safe!
+    using TupleType_t = std::tuple<size_type, size_type, double>;
+    std::vector<std::vector<TupleType_t>> chunkPrivateMemory{nrows};
+    for (size_type row{0}; row < nrows; ++row) {
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+        chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+    }
+    concurrency::parallel_for(size_type{0}, nrows, [&m, &chunkPrivateMemory, ncols](size_type row) {
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+        ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+        while (columnIterator) {
+            auto column = columnIterator.column();
+            double value = m(row, column);
+            chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
+            ++columnIterator;
+        }
+    });
+    for (size_type row{0}; row < nrows; ++row) {
+        std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
+        for (size_type item_position{0}; item_position < items.size(); ++item_position) {
+            TupleType_t const & item = items[item_position];
+            auto row = std::get<0>(item);
+            auto column = std::get<1>(item);
+            auto value = std::get<2>(item);
+            m_transpose(column, row) = value;
+        }
+    }
+    m_transpose.finalize();
+    return m_transpose;
+}
+
+SparseMatrix2D
+helper::transposeParallelChunked(SparseMatrix2D const & m) {
+    auto nrows = m.rows();
+    auto ncols = m.cols();
+    SparseMatrix2D m_transpose{ncols, nrows};
+
+    using size_type = IMatrix2D::size_type;
+    size_type numberOfProcessors = std::thread::hardware_concurrency();
+    if (nrows < numberOfProcessors)
+        numberOfProcessors = nrows;
+    IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
+    auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
+
+    // each chunk must only access its own private memory as
+    // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+    // is not thread safe!
+    using TupleType_t = std::tuple<size_type, size_type, double>;
+    std::vector<std::vector<TupleType_t>> chunkPrivateMemory{ nrows };
+    for (size_type row{0}; row < nrows; ++row) {
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+        chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+    }
+    concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &chunkPrivateMemory, nrows, ncols, numberOfProcessors, chunk_size](size_type row_index) {
+        size_type start_index, end_size;
+        std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
+        for (size_type row = start_index; row < end_size; ++row) {
+            ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+            ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+            while (columnIterator) {
+                auto column = columnIterator.column();
+                double value = m(row, column);
+                chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
+                ++columnIterator;
+            }
+        }
+    });//, concurrency::static_partitioner);
+    for (size_type row{0}; row < nrows; ++row) {
+        std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
+        for (size_type item_position{0}; item_position < items.size(); ++item_position) {
+            TupleType_t const & item = items[item_position];
+            auto row = std::get<0>(item);
+            auto column = std::get<1>(item);
+            auto value = std::get<2>(item);
+            m_transpose(column, row) = value;
+        }
+    }
+    m_transpose.finalize();
+    return m_transpose;
 }
 
 template<typename MATRIX_EXPR>
@@ -35,7 +139,6 @@ helper::get_value(MATRIX_EXPR const & m, IMatrix2D::size_type row, IMatrix2D::si
     double value = m(row, col);
     return value;
 }
-
 
 bool
 helper::isSymmetric(SparseMatrix2D const & m) {
