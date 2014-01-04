@@ -812,57 +812,110 @@ namespace {
          */
         auto nrows = m.rows();
         auto ncols = m.cols();
-        SparseMatrix2D transposed{ncols, nrows};
+        SparseMatrix2D transpose{ncols, nrows};
         for (IMatrix2D::size_type row{0}; row < nrows; ++row) {
             ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
             ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
             while (columnIterator) {
                 auto column = columnIterator.column();
                 double value = m(row, column);
-                transposed(column, row) = value;
+                transpose(column, row) = value;
                 ++columnIterator;
             }
         }
-        transposed.finalize();
-        return transposed;
+        transpose.finalize();
+        return transpose;
     }
 
     SparseMatrix2D
     transpose_parallelNonChunked(SparseMatrix2D const & m) {
         auto nrows = m.rows();
         auto ncols = m.cols();
-        SparseMatrix2D result{ncols, nrows};
+        SparseMatrix2D m_transpose{ncols, nrows};
         using size_type = IMatrix2D::size_type;
 
         // each chunk must only access its own private memory as
         // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
         // is not thread safe!
         using TupleType_t = std::tuple<size_type, size_type, double>;
-        std::vector<std::forward_list<TupleType_t>> chunkPrivateMemory{nrows};
-
+        std::vector<std::vector<TupleType_t>> chunkPrivateMemory{nrows};
+        for (size_type row{0}; row < nrows; ++row) {
+            ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+            chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+        }
         concurrency::parallel_for(size_type{0}, nrows, [&m, &chunkPrivateMemory, ncols](size_type row) {
             ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
             ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
             while (columnIterator) {
                 auto column = columnIterator.column();
                 double value = m(row, column);
-                chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
+                chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
                 ++columnIterator;
             }
         });
-        std::for_each(std::cbegin(chunkPrivateMemory), std::cend(chunkPrivateMemory), [&result](std::forward_list<TupleType_t> const & chunkItem) {
-            std::for_each(std::cbegin(chunkItem), std::cend(chunkItem), [&result](std::tuple<size_type, size_type, double> const & item) {
+        for (size_type row{0}; row < nrows; ++row) {
+            std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
+            for (size_type item_position{0}; item_position < items.size(); ++item_position) {
+                TupleType_t const & item = items[item_position];
                 auto row = std::get<0>(item);
                 auto column = std::get<1>(item);
                 auto value = std::get<2>(item);
-                result(row, column) = value;
-            });
-
-        });
-        result.finalize();
-        return result;
+                m_transpose(column, row) = value;
+            }
+        }
+        m_transpose.finalize();
+        return m_transpose;
     }
 
+    SparseMatrix2D
+    transpose_parallelChunked(SparseMatrix2D const & m) {
+        auto nrows = m.rows();
+        auto ncols = m.cols();
+        SparseMatrix2D m_transpose{ncols, nrows};
+
+        using size_type = IMatrix2D::size_type;
+        size_type numberOfProcessors = std::thread::hardware_concurrency();
+        if (nrows < numberOfProcessors)
+            numberOfProcessors = nrows;
+        IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
+        auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
+
+        // each chunk must only access its own private memory as
+        // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+        // is not thread safe!
+        using TupleType_t = std::tuple<size_type, size_type, double>;
+        std::vector<std::vector<TupleType_t>> chunkPrivateMemory{ nrows };
+        for (size_type row{0}; row < nrows; ++row) {
+            ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+            chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+        }
+        concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &chunkPrivateMemory, nrows, ncols, numberOfProcessors, chunk_size](size_type row_index) {
+            size_type start_index, end_size;
+            std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(nrows, size_type{numberOfProcessors}, row_index);
+            for (size_type row = start_index; row < end_size; ++row) {
+                ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
+                ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+                while (columnIterator) {
+                    auto column = columnIterator.column();
+                    double value = m(row, column);
+                    chunkPrivateMemory[row].push_back(std::make_tuple(row, column, value));
+                    ++columnIterator;
+                }
+            }
+        });//, concurrency::static_partitioner);
+        for (size_type row{0}; row < nrows; ++row) {
+            std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
+            for (size_type item_position{0}; item_position < items.size(); ++item_position) {
+                TupleType_t const & item = items[item_position];
+                auto row = std::get<0>(item);
+                auto column = std::get<1>(item);
+                auto value = std::get<2>(item);
+                m_transpose(column, row) = value;
+            }
+        }
+        m_transpose.finalize();
+        return m_transpose;
+    }
 
 }
 
@@ -877,10 +930,141 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixTranspose() {
          0,  1, -2,  7,  2;
 
     // 25x25 square matrix
-    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
-    m.print();
+    SparseMatrix2D const & m = stencil.generateMatrix(115 * 115);
 
-    SparseMatrix2D const m_transpose = transpose_serial(m);
-    m_transpose.print();
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = transpose_serial(m);
+    }
 
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = transpose_parallelNonChunked(m);
+    }
+
+    Vector v{m.cols()};
+    std::iota(std::begin(v), std::end(v), 1);
+
+    Vector reference;
+    reference = m * v;
+
+    Vector result1;
+    result1 = transpose_serial(serial_result) * v;
+
+    Vector result2;
+    result2 = transpose_serial(parallel_result) * v;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testChunkedMatrixTranspose() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(115 * 115);
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = transpose_serial(m);
+    }
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = transpose_parallelChunked(m);
+    }
+
+    Vector v{m.cols()};
+    std::iota(std::begin(v), std::end(v), 1);
+
+    Vector reference;
+    reference = m * v;
+
+    Vector result1;
+    result1 = transpose_serial(serial_result) * v;
+
+    Vector result2;
+    result2 = transpose_serial(parallel_result) * v;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testNonChunkedLargeMatrixTranspose() {
+    Vector b = createVectorOfSize(dim);
+    SparseMatrix2D const & m = readMatrix();
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = transpose_serial(m);
+    }
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = transpose_parallelNonChunked(m);
+    }
+
+    Vector reference;
+    reference = m * b;
+
+    Vector result1;
+    result1 = transpose_serial(serial_result) * b;
+
+    Vector result2;
+    result2 = transpose_serial(parallel_result) * b;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testChunkedLargeMatrixTranspose() {
+    Vector b = createVectorOfSize(dim);
+    SparseMatrix2D const & m = readMatrix();
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = transpose_serial(m);
+    }
+
+    SparseMatrix2D parallel_result;
+    {
+        HighResTimer t;
+        parallel_result = transpose_parallelChunked(m);
+    }
+
+    Vector reference;
+    reference = m * b;
+
+    Vector result1;
+    result1 = transpose_serial(serial_result) * b;
+
+    Vector result2;
+    result2 = transpose_serial(parallel_result) * b;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
 }

@@ -29,8 +29,8 @@
 #include "ParallelLinAlgOperationsTest.h"
 
 
-//CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
 
 #if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
