@@ -230,8 +230,10 @@ namespace LinAlg_NS {
                     auto value = 0.0;
                     for (size_type column = 0; column < ncols; ++column) {
                         double value = in(row, column);
-                        if (value)
-                            chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
+                        if (value) {
+                            auto chunk_index = row_index / chunk_size;
+                            chunkPrivateMemory[chunk_index].push_front(std::make_tuple(row, column, value));
+                        }
                     }
                 }
             });//, concurrency::static_partitioner);
