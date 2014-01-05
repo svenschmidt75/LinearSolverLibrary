@@ -102,7 +102,7 @@ helper::transposeParallelChunked(SparseMatrix2D const & m) {
     // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
     // is not thread safe!
     using TupleType_t = std::tuple<size_type, size_type, double>;
-    std::vector<std::vector<TupleType_t>> chunkPrivateMemory{ nrows };
+    std::vector<std::vector<TupleType_t>> chunkPrivateMemory{nrows};
     for (size_type row{0}; row < nrows; ++row) {
         ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
         chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());

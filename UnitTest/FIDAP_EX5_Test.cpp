@@ -93,10 +93,10 @@ FIDAP_EX5_Test::CGTest() {
     }
     CPPUNIT_ASSERT_MESSAGE("CG failed to solve linear system", success);
 
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 3.0 * 1E-8);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 7.85 * 1E-8);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 6.0 * 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in CG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 7.85 * 1E-8));
 }
 
 void
@@ -113,10 +113,10 @@ FIDAP_EX5_Test::BiCGTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m_, LinAlg_NS::helper::transpose(m_), b_, 10000);
     }
 
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 3.0 * 1E-8);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 7.1 * 1E-8);
 
     CPPUNIT_ASSERT_MESSAGE("BiCG failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 6.0 * 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 7.1 * 1E-8));
 }
 
 void
@@ -133,10 +133,10 @@ FIDAP_EX5_Test::GMRESTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GMRES(m_, b_, 680, 10000);
     }
 
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 2.3 * 1E-8);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 4.1 * 1E-8);
 
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 6.0 * 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 4.1 * 1E-8));
 }
 
 void
@@ -169,10 +169,10 @@ FIDAP_EX5_Test::GCRWithNoRestartTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 170, 30);
     }
 
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 1.3 * 1E-8);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 6.0 * 1E-8);
 
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 9.0 * 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 6.0 * 1E-8));
 }
 
 void
@@ -189,10 +189,10 @@ FIDAP_EX5_Test::GCRWithRestartTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 25, 100);
     }
 
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 5.4 * 1E-8);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 7.9 * 1E-8);
 
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 3.0 * 1E-7));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 7.9 * 1E-7));
 }
 
 void
@@ -205,8 +205,9 @@ FIDAP_EX5_Test::MINRESTest() {
     {
         HighResTimer t;
 
-        // needs 103 iterations
-        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m_, b_, 110);
+        // needs 103 iterations (in serial!)
+        std::tie(success, x, iterations, tol) = ConjugateGradientMethods::MINRES(m_, b_, 120);
+//        std::cout << std::endl << iterations << std::endl;
     }
     CPPUNIT_ASSERT_MESSAGE("MINRES failed to solve linear system", success);
 
@@ -214,14 +215,14 @@ FIDAP_EX5_Test::MINRESTest() {
     // Note: The condition number is cond(A) = 6.64996e+07, \approx 1e+8. With a
     // default tolerance of 1E-15 (close to double eps), we cannot expect much
     // more than 1E-7 in the final result.
-    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 3.0 * 1E-8));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 6.0 * 1E-8));
 
     /* Why is the following comparison so bad?
      * Maybe because of the high condition number. We multiply the resulting
      * vector x by m_ to get b', which we diff with b_. Small error can have
      * a big effect due to the high condition number?
      */
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 4.7 * 1E-2);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 0.01);
 }
 
 void
@@ -243,6 +244,6 @@ FIDAP_EX5_Test::MINRESLanProTest() {
     // Note: The condition number is cond(A) = 6.64996e+07, \approx 1e+8. With a
     // default tolerance of 1E-15 (close to double eps), we cannot expect much
     // more than 1E-7 in the final result.
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 2.9 * 1E-4);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 7.0 * 1E-9));
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 0.0035);
+    CPPUNIT_ASSERT_MESSAGE("mismatch in SOR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 5.6 * 1E-8));
 }

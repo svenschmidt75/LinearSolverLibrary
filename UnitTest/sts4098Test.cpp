@@ -169,5 +169,5 @@ sts4098Test::GMRESTest() {
     // Note: The condition number is cond(A) = 2.17087e+8. With a default tolerance
     // of 1E-15 (close to double eps), we cannot expect much more than 1E-7 in the
     // final result. However, GMRES performs much better, hence 1E-11!!!
-    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 1E-11);
+    checkThatMatrixTimesVectorYieldsRightHandSide(m_, b_, x, 1.1 * 1E-11);
 }

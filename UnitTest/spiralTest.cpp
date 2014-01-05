@@ -150,7 +150,7 @@ spiralTest::spiralGMRESTest() {
     CPPUNIT_ASSERT_MESSAGE("GMRES failed to solve linear system", success);
 
     // compare vectors
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-8));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GMRES solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 2.0 * 1E-8));
 }
 
 void

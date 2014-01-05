@@ -101,7 +101,7 @@ fs_680_1_Test::BiCGTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::BiCG(m_, LinAlg_NS::helper::transpose(m_), b_, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("BiCG failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-8));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in BiCG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1.4 * 1E-7));
 }
 
 void
@@ -152,7 +152,7 @@ fs_680_1_Test::TFQMRTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::TFQMR(m_, b_, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("TFQMR failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-7));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in TFQMR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 3.0 * 1E-6));
 }
 
 void
@@ -169,7 +169,7 @@ fs_680_1_Test::GCRWithNoRestartTest() {
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::GCR(m_, b_, 170, 10000);
     }
     CPPUNIT_ASSERT_MESSAGE("GCR failed to solve linear system", success);
-    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 1E-9));
+    CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 2.4 * 1E-9));
 }
 
 void

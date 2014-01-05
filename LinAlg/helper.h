@@ -107,11 +107,6 @@ namespace LinAlg_NS {
             ConstColumnIterator<MATRIX_EXPR_1> columnIterator = *columnRowIterator;
             ConstRowIterator<MATRIX_EXPR_2> rowIterator = *rowColumnIterator;
 
-            if (row == 1538 && column == 633) {
-//                __debugbreak();
-            }
-
-
             // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
             while (columnIterator && columnIterator.column() < lhs.cols()) {
                 while (rowIterator && rowIterator.row() < columnIterator.column()) {
