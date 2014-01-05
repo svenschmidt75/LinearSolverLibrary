@@ -14,7 +14,7 @@ namespace FS = boost::filesystem;
 
 // use this to work with a small matrix/vector
 #define SIMPLE 1
-#undef SIMPLE
+//#undef SIMPLE
 
 
 #ifdef SIMPLE
@@ -953,7 +953,7 @@ ParallelLinAlgOperationsTest::testChunkedLargeMatrixTranspose() {
 }
 
 void
-ParallelLinAlgOperationsTest::testNonSquareTransposeNonChunkedParallel() {
+ParallelLinAlgOperationsTest::testNonSquareRowsLessThanColsTransposeNonChunkedParallel() {
     MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
     stencil <<
          2, -1,  9,  2,  1,
@@ -964,53 +964,129 @@ ParallelLinAlgOperationsTest::testNonSquareTransposeNonChunkedParallel() {
 
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+    auto dim = m.cols();
 
-
-    // generate a non-square 7x3 matrix form m
-    SparseMatrix2D m1{7, 3};
-    for (auto row = 7; row < 7 + 7; ++row) {
-        for (auto column = 7; column < 7 + 3; ++column) {
-            m1(row - 7, column - 7) = m(row, column);
+    // generate a non-square matrix form m
+    SparseMatrix2D m1{dim - dim / 2, dim};
+    for (auto row = 0; row < m1.rows(); ++row) {
+        for (auto column = 0; column < m1.cols(); ++column) {
+            auto value = m(row, column);
+            if (value)
+                m1(row, column) = value;
         }
     }
     m1.finalize();
-    //    m1.print();
+//    m1.print();
 
-    // generate a non-square 3x2 matrix form m
-    SparseMatrix2D m2{ 3, 2 };
-    for (auto row = 10; row < 10 + 3; ++row) {
-        for (auto column = 12; column < 12 + 2; ++column) {
-            m2(row - 10, column - 12) = m(row, column);
-        }
-    }
-    m2.finalize();
-    //    m2.print();
-
-
-    Vector v{ m2.cols() };
-    std::iota(std::begin(v), std::end(v), 1);
+    Vector b{m1.cols()};
+    std::iota(std::begin(b), std::end(b), 1);
 
     SparseMatrix2D serial_result;
     {
         HighResTimer t;
-        serial_result = helper::matrixMul(m1, m2);
+        serial_result = helper::transposeSerial(m1);
     }
-    //    serial_result.print();
+//    serial_result.print();
 
-    SparseMatrix2D parallel_result;
+    SparseMatrix2D non_chunked_parallel_result;
     {
         HighResTimer t;
-        parallel_result = chunkedParallelMatrixMatrixMultiplication(m1, m2);
+        non_chunked_parallel_result = helper::transposeParallelNonChunked(m1);
     }
-    //    parallel_result.print();
+//    non_chunked_parallel_result.print();
+
+    SparseMatrix2D chunked_parallel_result;
+    {
+        HighResTimer t;
+        chunked_parallel_result = helper::transposeParallelChunked(m1);
+    }
+//    chunked_parallel_result.print();
+
+    Vector reference;
+    reference = m1 * b;
 
     Vector result1;
-    result1 = serial_result * v;
+    result1 = helper::transposeSerial(serial_result) * b;
 
     Vector result2;
-    result2 = parallel_result * v;
+    result2 = helper::transposeSerial(non_chunked_parallel_result) * b;
 
-    //     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
-    //         __debugbreak();
-    CPPUNIT_ASSERT_MESSAGE("matrix-matrix multiplication mismatch", SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12));
+    Vector result3;
+    result3 = helper::transposeSerial(chunked_parallel_result) * b;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result3, 1E-12));
+}
+
+void
+ParallelLinAlgOperationsTest::testNonSquareRowsBiggerThanColsTransposeNonChunkedParallel() {
+    MatrixStencil<PeriodicBoundaryConditionPolicy> stencil;
+    stencil <<
+         2, -1,  9,  2,  1,
+        -1,  4, -1, -6, -3,
+         7, -1,  3, -7, -8,
+         3,  5, -8, -9, -3,
+         0,  1, -2,  7,  2;
+
+    // 25x25 square matrix
+    SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
+    auto dim = m.cols();
+
+    // generate a non-square matrix form m
+    SparseMatrix2D m1{dim, dim - dim / 2};
+    for (auto row = 0; row < m1.rows(); ++row) {
+        for (auto column = 0; column < m1.cols(); ++column) {
+            auto value = m(row, column);
+            if (value)
+                m1(row, column) = value;
+        }
+    }
+    m1.finalize();
+//    m1.print();
+
+
+    Vector b{m1.cols()};
+    std::iota(std::begin(b), std::end(b), 1);
+
+    SparseMatrix2D serial_result;
+    {
+        HighResTimer t;
+        serial_result = helper::transposeSerial(m1);
+    }
+//    serial_result.print();
+
+    SparseMatrix2D non_chunked_parallel_result;
+    {
+        HighResTimer t;
+        non_chunked_parallel_result = helper::transposeParallelNonChunked(m1);
+    }
+//    non_chunked_parallel_result.print();
+
+    SparseMatrix2D chunked_parallel_result;
+    {
+        HighResTimer t;
+        chunked_parallel_result = helper::transposeParallelChunked(m1);
+    }
+//    chunked_parallel_result.print();
+
+    Vector reference;
+    reference = m1 * b;
+
+    Vector result1;
+    result1 = helper::transposeSerial(serial_result) * b;
+
+    Vector result2;
+    result2 = helper::transposeSerial(non_chunked_parallel_result) * b;
+
+    Vector result3;
+    result3 = helper::transposeSerial(chunked_parallel_result) * b;
+
+//     if (SparseLinearSolverUtil::isVectorEqual(result1, result2, 1E-12) == false)
+//         __debugbreak();
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result1, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result2, 1E-12));
+    CPPUNIT_ASSERT_MESSAGE("matrix transpose mismatch", SparseLinearSolverUtil::isVectorEqual(reference, result3, 1E-12));
 }
