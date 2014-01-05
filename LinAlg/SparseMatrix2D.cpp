@@ -239,7 +239,7 @@ SparseMatrix2D::finalizeColumnIndices() const {
 
         // Uncomment the following if explicit zeros are allowed.
         // This will have a negative performance impact, as we then
-        // have to llokup values, which is slow.
+        // have to lookup values, which is slow.
 
 //         size_type size{0};
 //         for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
@@ -281,7 +281,7 @@ SparseMatrix2D::finalizeRowIndices() const {
 
         // Uncomment the following if explicit zeros are allowed.
         // This will have a negative performance impact, as we then
-        // have to llokup values, which is slow.
+        // have to lookup values, which is slow.
 
 //         size_type size{0};
 //         for (auto it2 = std::cbegin(it->second); it2 != std::cend(it->second); ++it2) {
@@ -308,12 +308,11 @@ SparseMatrix2D::finalizeElements() const {
         Col_t const & col{row_item.second};
         for (auto const & col_item : col) {
             double value{col_item.second};
-
             // we do not allow explicit 0 for performance reasons
             if (!value) {
                 size_type row{ row_item.first };
                 size_type column{col_item.first};
-                boost::format format = boost::format("SparseMatrix2D::finalizeElements: m(%1%, %2%) = 0!\n") % row % column;
+                boost::format format = boost::format("\nSparseMatrix2D::finalizeElements: m(%1%, %2%) = 0!\n") % row % column;
                 common_NS::reporting::error(format.str());
                 throw std::runtime_error(format.str());
             }
@@ -329,9 +328,9 @@ SparseMatrix2D::finalizeElements() const {
 void
 SparseMatrix2D::finalize() const {
     /* Convert to extended compressed sparse row storage format, eCSR.
-     * All explicit 0 are dropped.
+     * Explicit 0 are NOT allowed due to performance reasons.
      */
-#ifndef PARALLEL
+#ifdef PARALLEL
     concurrency::parallel_invoke(
         [this] {finalizeColumnIndices();},
         [this] {finalizeRowIndices();},

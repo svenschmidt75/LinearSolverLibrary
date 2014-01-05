@@ -22,12 +22,9 @@ namespace {
         // 7        0        0
 
         matrix(0, 2) = 3;
-//        matrix(1, 0) = 0;
         matrix(1, 1) = 8;
         matrix(1, 2) = 6;
         matrix(2, 0) = 7;
-//        matrix(2, 1) = 0;
-//        matrix(2, 2) = 0;
         matrix.finalize();
 //        matrix.print();
         return matrix;
@@ -365,7 +362,7 @@ SparseMatrixTest::testRowIndicesForMatrixMatrixMul() {
     // 1        0        0
     // 0        9       18
     // 0        0       36
-    //    c.print();
+//    c.print();
 
     using size_type = SparseMatrix2D::size_type;
 
