@@ -48,7 +48,7 @@ VectorMath::chunkedParallelDotProduct(Vector const & v1, Vector const & v2) {
     auto size = common_NS::getAdjustedSize(vector_size, numberOfProcessors);
     concurrency::parallel_for(size_type{0}, size, chunk_size, [&part_sums, &v1, &v2, vector_size, numberOfProcessors](size_type index) {
         size_type start_row, end_size;
-        std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(vector_size, size_type{ numberOfProcessors }, index);
+        std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(vector_size, size_type{numberOfProcessors}, index);
         double part_result = 0;
         for (size_type i = start_row; i < end_size; ++i) {
             double tmp = v1(i) * v2(i);

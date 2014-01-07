@@ -64,9 +64,11 @@ namespace LinAlg_NS {
             std::vector<size_type> getNonZeroColumnIndicesForRow(size_type row) const {
                 auto const & op1_column_indices = op1_.getNonZeroColumnIndicesForRow(row);
                 std::vector<IMatrix2D::size_type> non_zero_indices;
+                non_zero_indices.reserve(cols());
                 for (size_type column = 0; column < cols(); ++column) {
                     auto const & op2_row_indices = op2_.getNonZeroRowIndicesForColumn(column);
                     std::vector<IMatrix2D::size_type> tmp;
+                    tmp.reserve(op2_row_indices.size());
                     std::set_intersection(std::cbegin(op1_column_indices), std::cend(op1_column_indices), std::cbegin(op2_row_indices), std::cend(op2_row_indices), std::back_insert_iterator<std::vector<IMatrix2D::size_type>>{tmp});
                     if (tmp.empty() == false)
                         non_zero_indices.push_back(column);
@@ -77,9 +79,11 @@ namespace LinAlg_NS {
             std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const {
                 auto const & op2_row_indices = op2_.getNonZeroRowIndicesForColumn(column);
                 std::vector<IMatrix2D::size_type> non_zero_indices;
+                non_zero_indices.reserve(rows());
                 for (size_type row = 0; row < rows(); ++row) {
                     auto const & op1_column_indices = op1_.getNonZeroColumnIndicesForRow(row);
                     std::vector<IMatrix2D::size_type> tmp;
+                    tmp.reserve(op1_column_indices.size());
                     std::set_intersection(std::cbegin(op1_column_indices), std::cend(op1_column_indices), std::cbegin(op2_row_indices), std::cend(op2_row_indices), std::back_insert_iterator<std::vector<IMatrix2D::size_type>>{tmp});
                     if (tmp.empty() == false)
                         non_zero_indices.push_back(row);

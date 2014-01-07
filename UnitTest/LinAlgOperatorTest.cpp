@@ -257,7 +257,7 @@ LinAlgOperatorTest::vectorPlusEqualVectorBinaryExprTest() {
     Vector v2 = createVector(10);
     std::iota(std::begin(v2), std::end(v2), 20);
 
-    Vector result{ v1 };
+    Vector result{v1};
     result += (v1 - v2);
 
     // compare to this result

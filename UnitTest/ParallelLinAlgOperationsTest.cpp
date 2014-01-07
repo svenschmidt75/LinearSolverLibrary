@@ -66,7 +66,7 @@ namespace {
     Vector
     nonChunkedParallelMatrixVectorMultiplication(SparseMatrix2D const & m, Vector const & x) {
         Vector result{x.size()};
-        concurrency::parallel_for(IMatrix2D::size_type{ 0 }, x.size(), [&m, &x, &result](IMatrix2D::size_type row) {
+        concurrency::parallel_for(IMatrix2D::size_type{0}, x.size(), [&m, &x, &result](IMatrix2D::size_type row) {
             double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, row);
             result(row) = result_row;
         }, concurrency::static_partitioner());
@@ -262,7 +262,7 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmUneven() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 8
-    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 7 * chunk_size });
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{7 * chunk_size});
     expected = 17;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 19;
@@ -307,7 +307,7 @@ ParallelLinAlgOperationsTest::testChunkGenerationAlgorithmEven() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk end index mismatch", expected, end_size);
 
     // chunk 7
-    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{ numberOfProcessors }, size_type{ 6 * chunk_size });
+    std::tie(start_index, end_size) = common_NS::getChunkStartEndIndex(total_size, size_type{numberOfProcessors}, size_type{6 * chunk_size});
     expected = 18;
     CPPUNIT_ASSERT_EQUAL_MESSAGE("chunk start index mismatch", expected, start_index);
     expected = 21;
@@ -524,7 +524,7 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelMatrixProduct() {
          3,  5, -8, -9, -3,
          0,  1, -2,  7,  2;
     
-    // 25x25 square matrix
+    // 35x35 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(35 * 35);
 
     Vector v{m.cols()};
@@ -568,7 +568,7 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixProduct() {
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
 
-    Vector v{ m.cols() };
+    Vector v{m.cols()};
     std::iota(std::begin(v), std::end(v), 1);
 
     SparseMatrix2D serial_result;
