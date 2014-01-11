@@ -29,10 +29,13 @@
 #include "ParallelLinAlgOperationsTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixTest);
+
+
+// CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
+// CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 
 #if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);

@@ -108,7 +108,7 @@ namespace LinAlg_NS {
 
         template<typename VECTOR_EXPR>
         void vector_parallelNonChunked(VECTOR_EXPR && in) {
-            concurrency::parallel_for(size_type{ 0 }, in.size(), [this, &in](size_type row) {
+            concurrency::parallel_for(size_type{0}, in.size(), [this, &in](size_type row) {
                 (*this)(row) = in(row);
             }, concurrency::static_partitioner());
         }

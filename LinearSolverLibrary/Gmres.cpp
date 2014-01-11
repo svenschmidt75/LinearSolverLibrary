@@ -51,6 +51,8 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
      *  R. Barrett et al, "Templates for the Solution of Linear Systems:
      *  Building Blocks for Iterative Methods", SIAM, 1994.
      */
+    using size_type = SparseMatrix2D::size_type;
+
     double normb = VectorMath::norm(b);
 
     // guessed x = null vector
@@ -73,7 +75,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
         // check orthogonality of Arnoldi vectors
         std::cout << std::endl;
 
-        for (SparseMatrix2D::size_type k = 1; k < q.size(); ++k) {
+        for (size_type k{1}; k < q.size(); ++k) {
             double test = VectorMath::dotProduct(q[k], q[k - 1]);
             std::cout << test << std::endl;
             std::cout << std::endl;
@@ -84,7 +86,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
     // the Givens coefficients
     Vector s(m + 1), cs(m + 1), sn(m + 1), w(dim);
 
-    SparseMatrix2D::size_type j = 1;
+    size_type j{1};
 
     UHMatrix H(m + 1);
 
@@ -94,7 +96,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
         q.emplace_back((1.0 / beta) * r);
         s(0) = beta;
 
-        for (SparseMatrix2D::size_type i = 0; i < m && j <= maxIterations; ++i, ++j) {
+        for (size_type i{0}; i < m && j <= maxIterations; ++i, ++j) {
             // compute the next basis vector in the iterative QR factorization
             // of A
             w = A * q[i];
@@ -111,7 +113,7 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
             // next normalized basis vector of Krylov space
             q.emplace_back((1.0 / normw) * w);
 
-//             H.print();
+//                 H.print();
 
             // apply all previous Givens rotations to the last column
             // of H. See Iterative Methods for Solving Linear systems,

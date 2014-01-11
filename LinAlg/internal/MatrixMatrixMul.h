@@ -14,7 +14,38 @@
 
 namespace LinAlg_NS {
 
+
+
+
     namespace internal {
+
+        class IndexMap {
+        public:
+            using size_type = IMatrix2D::size_type;
+
+        public:
+            IndexMap(std::function<std::vector<size_type> (size_type)> const & callback, size_type size)
+                :
+                callback_(callback) {
+                indices_.resize(size);
+            }
+
+            std::vector<size_type>
+            getIndices(size_type index) const {
+#ifdef _DEBUG
+                common_NS::reporting::checkUppderBound(index, indices_.size() - 1);
+#endif
+                auto const & indices = indices_[index];
+                if (indices.empty())
+                    indices_[index] = callback_(index);
+                return indices;
+            }
+
+        private:
+            mutable std::vector<std::vector<size_type>>       indices_;
+            std::function<std::vector<size_type> (size_type)> callback_;
+        };
+
 
         template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
         class MatrixMatrixMul {
@@ -24,8 +55,10 @@ namespace LinAlg_NS {
         public:
             MatrixMatrixMul(MATRIX_EXPR_1 const & op1, MATRIX_EXPR_2 const & op2)
                 :
-                op1_(op1),
-                op2_(op2) {
+                op1_{op1},
+                op2_{op2},
+                row_index_map_{std::bind(&MatrixMatrixMul::getNonZeroRowIndicesForColumn_internal, this, std::placeholders::_1), op2.cols()},
+                column_index_map_{std::bind(&MatrixMatrixMul::getNonZeroColumnIndicesForRow_internal, this, std::placeholders::_1), op1.rows()} {
                     static_assert(typename entity_traits<MATRIX_EXPR_1>::is_matrix_expression == true, "op1 not a matrix-like type");
                     static_assert(typename entity_traits<MATRIX_EXPR_2>::is_matrix_expression == true, "op2 not a vector-like type");
                     common_NS::reporting::checkConditional(op1.cols() == op2.rows(), "MatrixMatrixMul: Matrices incompatible");
@@ -62,6 +95,15 @@ namespace LinAlg_NS {
             }
 
             std::vector<size_type> getNonZeroColumnIndicesForRow(size_type row) const {
+                return column_index_map_.getIndices(row);
+            }
+
+            std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const {
+                return row_index_map_.getIndices(column);
+            }
+
+        private:
+            std::vector<size_type> getNonZeroColumnIndicesForRow_internal(size_type row) const {
                 auto const & op1_column_indices = op1_.getNonZeroColumnIndicesForRow(row);
                 std::vector<IMatrix2D::size_type> non_zero_indices;
                 non_zero_indices.reserve(cols());
@@ -76,7 +118,7 @@ namespace LinAlg_NS {
                 return non_zero_indices;
             }
 
-            std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const {
+            std::vector<size_type> getNonZeroRowIndicesForColumn_internal(size_type column) const {
                 auto const & op2_row_indices = op2_.getNonZeroRowIndicesForColumn(column);
                 std::vector<IMatrix2D::size_type> non_zero_indices;
                 non_zero_indices.reserve(rows());
@@ -92,6 +134,8 @@ namespace LinAlg_NS {
             }
 
         private:
+            IndexMap              row_index_map_;
+            IndexMap              column_index_map_;
             MATRIX_EXPR_1 const & op1_;
             MATRIX_EXPR_2 const & op2_;
         };

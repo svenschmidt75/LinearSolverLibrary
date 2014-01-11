@@ -41,9 +41,17 @@ operator-=(Vector & lhs, VECTOR_EXPR const & rhs) {
 #ifdef _DEBUG
     common_NS::reporting::checkConditional(lhs.size() == rhs.size());
 #endif
-    for (Vector::size_type i = 0; i < lhs.size(); ++i) {
+    using size_type = Vector::size_type;
+
+#ifdef PARALLEL
+    concurrency::parallel_for(size_type{0}, lhs.size(), [&lhs, &rhs](size_type row) {
+        lhs(row) -= rhs(row);
+    });
+#else
+    for (size_type i{0}; i < lhs.size(); ++i) {
         lhs(i) -= rhs(i);
     }
+#endif
     return lhs;
 }
 

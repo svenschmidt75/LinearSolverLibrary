@@ -138,7 +138,6 @@ namespace {
                 auto value = std::get<2>(item);
                 result(row, column) = value;
             });
-
         });
         result.finalize();
         return result;
