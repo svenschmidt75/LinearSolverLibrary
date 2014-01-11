@@ -159,5 +159,8 @@
     <ClInclude Include="entity_operation_traits.hpp">
       <Filter>entities</Filter>
     </ClInclude>
+    <ClInclude Include="IndexMap.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

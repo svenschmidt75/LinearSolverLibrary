@@ -256,6 +256,7 @@
     <ClInclude Include="DirichletBoundaryConditionPolicy.hpp" />
     <ClInclude Include="entity_operation_traits.hpp" />
     <ClInclude Include="helper.h" />
+    <ClInclude Include="IndexMap.hpp" />
     <ClInclude Include="internal\entity_traits.h" />
     <ClInclude Include="internal\MatrixMatrixMul.h" />
     <ClInclude Include="internal\primitiveOperators.h" />

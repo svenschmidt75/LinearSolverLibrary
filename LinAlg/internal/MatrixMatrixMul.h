@@ -8,44 +8,13 @@
 #pragma once
 
 #include "entity_traits.h"
-
 #include "IMatrix2D.h"
+#include "IndexMap.hpp"
 
 
 namespace LinAlg_NS {
 
-
-
-
     namespace internal {
-
-        class IndexMap {
-        public:
-            using size_type = IMatrix2D::size_type;
-
-        public:
-            IndexMap(std::function<std::vector<size_type> (size_type)> const & callback, size_type size)
-                :
-                callback_(callback) {
-                indices_.resize(size);
-            }
-
-            std::vector<size_type>
-            getIndices(size_type index) const {
-#ifdef _DEBUG
-                common_NS::reporting::checkUppderBound(index, indices_.size() - 1);
-#endif
-                auto const & indices = indices_[index];
-                if (indices.empty())
-                    indices_[index] = callback_(index);
-                return indices;
-            }
-
-        private:
-            mutable std::vector<std::vector<size_type>>       indices_;
-            std::function<std::vector<size_type> (size_type)> callback_;
-        };
-
 
         template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
         class MatrixMatrixMul {
@@ -139,7 +108,6 @@ namespace LinAlg_NS {
             MATRIX_EXPR_1 const & op1_;
             MATRIX_EXPR_2 const & op2_;
         };
-
 
     } // namespace internal
 
