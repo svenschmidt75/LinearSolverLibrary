@@ -9,7 +9,7 @@ using namespace EntityReader_NS;
 
 
 void
-FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type rows, LinAlg_NS::IMatrix2D::size_type cols, std::string const & symmetry_strategy) const {
+FloridaSparseMatrixBuilder::init(IMatrix2D::size_type rows, IMatrix2D::size_type cols, std::string const & symmetry_strategy) const {
     data_.reset(new SparseMatrix2D(rows, cols));
     rows_ = rows;
     cols_ = cols;
@@ -22,7 +22,7 @@ FloridaSparseMatrixBuilder::init(LinAlg_NS::IMatrix2D::size_type rows, LinAlg_NS
 }
 
 void
-FloridaSparseMatrixBuilder::insertMatrixElement(LinAlg_NS::IMatrix2D::size_type row, LinAlg_NS::IMatrix2D::size_type col, double value) const {
+FloridaSparseMatrixBuilder::insertMatrixElement(IMatrix2D::size_type row, IMatrix2D::size_type col, double value) const {
 #ifdef _DEBUG
     bool assert_cond = row < rows_ && col < cols_ && bool(data_);
     BOOST_ASSERT_MSG(assert_cond, "FloridaSparseMatrixBuilder::insertMatrixElement: pre-condition error");
