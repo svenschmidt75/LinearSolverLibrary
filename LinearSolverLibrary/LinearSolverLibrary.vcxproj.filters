@@ -168,5 +168,9 @@
     <ClInclude Include="AMGDirectInterpolation.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="AMGDriver.hpp" />
+    <ClInclude Include="AMGMonitor.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

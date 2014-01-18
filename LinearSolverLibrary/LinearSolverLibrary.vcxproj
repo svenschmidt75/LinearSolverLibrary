@@ -255,6 +255,8 @@
     <ClCompile Include="VariableSetIteratorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGDriver.hpp" />
+    <ClInclude Include="AMGMonitor.h" />
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="AMGStandardSplitting.h" />
