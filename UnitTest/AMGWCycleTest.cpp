@@ -17,7 +17,7 @@ AMGWCycleTest::tearDown() {}
 
 void
 AMGWCycleTest::TestThatThrowsOnZeroGridHierarchyDepth() {
-    size_t grid_hierarchy_depth{0};
+    size_t grid_hierarchy_depth{2};
     CPPUNIT_ASSERT_THROW(AMGWCycle({2, grid_hierarchy_depth}), std::runtime_error);
 }
 
