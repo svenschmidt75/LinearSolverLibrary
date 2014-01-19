@@ -21,13 +21,15 @@ namespace LinearSolverLibrary_NS {
 
         size_t currentLevel() const;
         size_t setNextLevel() const;
+        void   print() const;
 
     private:
         void initialize();
 
     private:
-        size_t    max_depth_;
-        short     gamma_;
+        std::vector<size_t> levels_;
+        size_t              max_depth_;
+        short               gamma_;
     };
 
 } // LinearSolverLibrary_NS
