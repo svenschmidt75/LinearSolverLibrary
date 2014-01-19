@@ -27,6 +27,8 @@ AMGWCycle::initialize() {
     levels_.push_back(0);
     generateLevel(1);
     levels_.push_back(0);
+
+    FCycle();
     print();
 }
 
@@ -42,6 +44,30 @@ AMGWCycle::generateLevel(int current_level) {
         }
         levels_.push_back(current_level);
     }
+}
+
+void
+AMGWCycle::FCycle() {
+    max_depth_ = 4;
+
+    levels_.clear();
+    int current_level = 0;
+    int turning_level = -1;
+    int direction = 1;
+    int number_of_turnarounds = 0;
+    do {
+        levels_.push_back(current_level);
+        if (current_level == turning_level) {
+            direction *= -1;
+        }
+        if (current_level == max_depth_) {
+            turning_level = max_depth_ - ++number_of_turnarounds;
+            direction *= -1;
+        }
+        current_level += direction;
+        continue;
+    } while (current_level > 0);
+    levels_.push_back(current_level);
 }
 
 int

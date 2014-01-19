@@ -15,6 +15,7 @@
 
 namespace LinearSolverLibrary_NS {
 
+
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGWCycle {
     public:
         AMGWCycle(short gamma, int max_depth);
@@ -26,6 +27,11 @@ namespace LinearSolverLibrary_NS {
     private:
         void initialize();
         void generateLevel(int current_level);
+
+
+        void FCycle();
+
+
 
     private:
         std::vector<int> levels_;
