@@ -13,9 +13,13 @@
 class AMGWCycleTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(AMGWCycleTest);
     CPPUNIT_TEST(TestThatThrowsOnZeroGridHierarchyDepth);
-    CPPUNIT_TEST(Test1LevelGridHierarchy);
-    CPPUNIT_TEST(Test2LevelGridHierarchy);
-    CPPUNIT_TEST(Test3LevelGridHierarchy);
+    CPPUNIT_TEST(Test1LevelGridHierarchyVCycle);
+    CPPUNIT_TEST(Test3LevelGridHierarchyVCycle);
+    CPPUNIT_TEST(Test2LevelGridHierarchyGamma2);
+    CPPUNIT_TEST(Test2LevelGridHierarchyGamma3);
+    CPPUNIT_TEST(Test3LevelGridHierarchyGamma2);
+    CPPUNIT_TEST(Test3LevelGridHierarchyGamma3);
+    CPPUNIT_TEST(Test4LevelGridHierarchyGamma2);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,7 +28,11 @@ public:
 
 protected:
     void TestThatThrowsOnZeroGridHierarchyDepth();
-    void Test1LevelGridHierarchy();
-    void Test2LevelGridHierarchy();
-    void Test3LevelGridHierarchy();
+    void Test1LevelGridHierarchyVCycle();
+    void Test3LevelGridHierarchyVCycle();
+    void Test2LevelGridHierarchyGamma2();
+    void Test2LevelGridHierarchyGamma3();
+    void Test3LevelGridHierarchyGamma2();
+    void Test3LevelGridHierarchyGamma3();
+    void Test4LevelGridHierarchyGamma2();
 };
