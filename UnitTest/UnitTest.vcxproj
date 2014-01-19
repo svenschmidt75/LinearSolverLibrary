@@ -36,6 +36,7 @@
     <ClCompile Include="AMGVariableCardinalityTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="AMGWCycleTest.cpp" />
     <ClCompile Include="bcsstk05Test.cpp" />
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="AMGStandardCoarseningTest.h" />
     <ClInclude Include="AMGStandardSplittingTest.h" />
     <ClInclude Include="AMGVariableCardinalityTest.h" />
+    <ClInclude Include="AMGWCycleTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />

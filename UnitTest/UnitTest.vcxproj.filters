@@ -66,6 +66,9 @@
       <Filter>Solver</Filter>
     </ClCompile>
     <ClCompile Include="ParallelLinAlgOperationsTest.cpp" />
+    <ClCompile Include="AMGWCycleTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -124,5 +127,8 @@
       <Filter>Solver</Filter>
     </ClInclude>
     <ClInclude Include="ParallelLinAlgOperationsTest.h" />
+    <ClInclude Include="AMGWCycleTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

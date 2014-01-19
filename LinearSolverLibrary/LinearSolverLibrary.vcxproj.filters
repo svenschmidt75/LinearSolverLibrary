@@ -13,6 +13,9 @@
     <Filter Include="AMG">
       <UniqueIdentifier>{76663ce7-a933-4239-b1e0-1504968764b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AMG\Cycles">
+      <UniqueIdentifier>{6a4dfc19-41a0-4f81-a08e-0dd736f4d20c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="internal\MultiColor_internal.cpp">
@@ -84,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="AMGStandardSplitting.cpp">
       <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGWCycle.cpp">
+      <Filter>AMG\Cycles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,9 +174,12 @@
     <ClInclude Include="AMGDirectInterpolation.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGDriver.hpp" />
     <ClInclude Include="AMGMonitor.h">
       <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGSolver.hpp" />
+    <ClInclude Include="AMGWCycle.h">
+      <Filter>AMG\Cycles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

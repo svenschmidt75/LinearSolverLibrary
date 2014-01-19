@@ -153,7 +153,7 @@ LUDecomposition::physicalToLogicalRowIndex(IMatrix2D::size_type physical_row_ind
     return logical_row_index;
 }
 
-LinAlg_NS::Vector
+Vector
 LUDecomposition::solve(LinAlg_NS::Vector const & rhs) const {
     BOOST_ASSERT_MSG(LU_->cols() == rhs.size(), "LUDecomposition::solve: Vector row mismatch");
     auto y = forwardSubstitute(rhs);

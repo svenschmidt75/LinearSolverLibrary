@@ -45,7 +45,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         mutable std::unique_ptr<LinAlg_NS::Matrix2D> LU_;
-        mutable std::vector<size_type> partial_pivoting_map_;
+        mutable std::vector<size_type>               partial_pivoting_map_;
     };
 
 } // LinearSolverLibrary_NS
