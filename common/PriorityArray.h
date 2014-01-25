@@ -16,7 +16,7 @@
 namespace common_NS {
 
 
-    template<typename T, template<typename> class COMPARER>
+    template<typename T, template<typename> class COMPARATOR>
     class PriorityArray {
 
 
@@ -24,12 +24,12 @@ namespace common_NS {
 
 
     public:
-        using size_type = std::int64_t;
-        using Heap_t = std::vector<size_type>;
-
-        using const_iterator = typename std::vector<T>::const_iterator;
+        using size_type = typename BinaryHeap<T, COMPARATOR>::size_type;
 
     public:
+        PriorityArray() {}
+        PriorityArray(COMPARATOR<T> const & comparator) : heap_{comparator} {}
+
         void add(T const & element) {
             heap_.add(element);
         }
@@ -50,8 +50,12 @@ namespace common_NS {
             return heap_.empty();
         }
 
+        void updatePriority(size_type node_index) {
+            heap_.update(node_index);
+        }
+
     private:
-        BinaryHeap<T, COMPARER> heap_;
+        BinaryHeap<T, COMPARATOR> heap_;
     };
 
 } // namespace common_NS

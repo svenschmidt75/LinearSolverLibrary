@@ -11,7 +11,7 @@
 namespace common_NS {
 
 
-    template<typename T, template<typename> class COMPARER>
+    template<typename T, template<typename> class COMPARATOR>
     class BinaryHeap {
 
 
@@ -25,7 +25,8 @@ namespace common_NS {
         using const_iterator = typename std::vector<T>::const_iterator;
 
     public:
-        BinaryHeap() : heaped_{false} {}
+        BinaryHeap() : BinaryHeap{COMPARATOR<T>{}} {}
+        BinaryHeap(COMPARATOR<T> const & comparator) : comparator_{comparator}, heaped_{false} {}
 
         void add(T const & element) {
             // Add element respecting the shape property, i.e.
@@ -57,15 +58,33 @@ namespace common_NS {
             size_type last_node_index = keys_.size() - 1;
             std::swap(heap_[node_index], heap_[last_node_index]);
             remove_key_and_adjust_mapping(last_node_index);
+
             if (node_index == 0)
                 heapify(0);
             else {
                 auto heap_size = static_cast<size_type>(heap_.size());
                 if (node_index < heap_size) {
                     size_type parent_node_index = (node_index - 1) / 2;
-                    if (COMPARER<T>()(key(node_index), key(parent_node_index)))
+                    if (comparator_(key(node_index), key(parent_node_index)))
                         swim_up(node_index);
-                    else if (COMPARER<T>()(key(parent_node_index), key(node_index)))
+                    else if (comparator_(key(parent_node_index), key(node_index)))
+                        heapify(node_index);
+                }
+            }
+        }
+
+        void update(size_type node_index) {
+            common_NS::reporting::checkUppderBound(node_index, static_cast<size_type>(keys_.size() - 1));
+            build_heap_if_needed();
+            if (node_index == 0)
+                heapify(0);
+            else {
+                auto heap_size = static_cast<size_type>(heap_.size());
+                if (node_index < heap_size) {
+                    size_type parent_node_index = (node_index - 1) / 2;
+                    if (comparator_(key(node_index), key(parent_node_index)))
+                        swim_up(node_index);
+                    else if (comparator_(key(parent_node_index), key(node_index)))
                         heapify(node_index);
                 }
             }
@@ -123,10 +142,10 @@ namespace common_NS {
             auto left_child_index = 2 * parent_node_index + 1;
             auto right_child_index = left_child_index + 1;
             auto i = parent_node_index;
-            if (left_child_index < heap_size && COMPARER<T>()(key(left_child_index), key(parent_node_index)))
+            if (left_child_index < heap_size && comparator_(key(left_child_index), key(parent_node_index)))
                 // swap left child with its parent
                 i = left_child_index;
-            if (right_child_index < heap_size && COMPARER<T>()(key(right_child_index), key(i)))
+            if (right_child_index < heap_size && comparator_(key(right_child_index), key(i)))
                 // swap right child with its parent
                 i = right_child_index;
             if (i != parent_node_index) {
@@ -141,7 +160,7 @@ namespace common_NS {
             size_type parent_node_index = (node_index - 1) / 2;
 
             // as long as the child node is bigger/smaller than its parent
-            while (node_index > 0 && COMPARER<T>()(key(node_index), key(parent_node_index)))
+            while (node_index > 0 && comparator_(key(node_index), key(parent_node_index)))
             {
                 // swap child with parent
                 std::swap(heap_[parent_node_index], heap_[node_index]);
@@ -158,6 +177,7 @@ namespace common_NS {
         mutable bool   heaped_;
         mutable Heap_t heap_;
         std::vector<T> keys_;
+        COMPARATOR<T>  comparator_;
     };
 
 } // namespace common_NS
