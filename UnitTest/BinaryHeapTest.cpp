@@ -108,6 +108,50 @@ BinaryHeapTest::TestBuildHeap4() {
     priority_array.build_heap();
 }
 
+namespace {
+
+    struct NonTrivialType {
+        double x;
+    };
+
+    template<typename T>
+    struct Comparer {
+        bool operator()(struct NonTrivialType const & lhs, struct NonTrivialType const & rhs) const {
+            return lhs.x > rhs.x;
+        }
+    };
+
+}
+
+void
+BinaryHeapTest::TestBuildHeap5() {
+    BinaryHeap<NonTrivialType, Comparer> priority_array;
+    /*
+     *           22
+     *          /  \
+     *         25  39
+     */
+    priority_array.add({22});
+    priority_array.add({25});
+    priority_array.add({39});
+    priority_array.build_heap();
+
+    /*
+     *           39
+     *          /  \
+     *         25  22
+     */
+    auto get_value = [&priority_array](int node_index) {
+        return priority_array.keys_[priority_array.heap_[node_index]];
+    };
+    double expected = 39.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0).x, 1E-10);
+    expected = 25.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(1).x, 1E-10);
+    expected = 22.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(2).x, 1E-10);
+}
+
 void
 BinaryHeapTest::TestBuildHeapComplex1() {
     BinaryHeap<double, std::greater> priority_array;

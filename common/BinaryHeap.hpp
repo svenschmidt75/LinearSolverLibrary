@@ -14,6 +14,7 @@ namespace common_NS {
     template<typename T, template<typename> class COMPARER>
     class BinaryHeap {
 
+
         friend class BinaryHeapTest;
 
 

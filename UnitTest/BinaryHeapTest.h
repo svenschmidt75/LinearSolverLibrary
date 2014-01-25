@@ -16,6 +16,7 @@ class BinaryHeapTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(TestBuildHeap2);
     CPPUNIT_TEST(TestBuildHeap3);
     CPPUNIT_TEST(TestBuildHeap4);
+    CPPUNIT_TEST(TestBuildHeap5);
     CPPUNIT_TEST(TestBuildHeapComplex1);
     CPPUNIT_TEST(TestBuildHeapComplex2);
     CPPUNIT_TEST(TestInsertSimple);
@@ -31,6 +32,7 @@ protected:
     void TestBuildHeap2();
     void TestBuildHeap3();
     void TestBuildHeap4();
+    void TestBuildHeap5();
     void TestBuildHeapComplex1();
     void TestBuildHeapComplex2();
     void TestInsertSimple();
