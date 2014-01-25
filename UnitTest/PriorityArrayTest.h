@@ -12,7 +12,8 @@
 
 class PriorityArrayTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(PriorityArrayTest);
-    CPPUNIT_TEST(Test1);
+    CPPUNIT_TEST(TestPop1);
+    CPPUNIT_TEST(TestUpdatePriority);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -20,5 +21,6 @@ public:
     void tearDown();
 
 protected:
-    void Test1();
+    void TestPop1();
+    void TestUpdatePriority();
 };

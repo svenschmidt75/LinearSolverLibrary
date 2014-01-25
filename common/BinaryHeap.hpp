@@ -16,7 +16,7 @@ namespace common_NS {
 
 
         friend class BinaryHeapTest;
-
+        friend class PriorityArrayTest;
 
     public:
         using size_type = std::int64_t;
