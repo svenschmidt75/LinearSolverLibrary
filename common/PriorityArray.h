@@ -4,6 +4,9 @@
 * Use   : Priority array based in binary heap implementation.
 *         Note: This implementation does NOT save the priorities, rather
 *         they are supplied implicitly via the comparator!
+*         After changing the priorities outside the priority array, you MUST
+*         update all elements accordingly for the priority array to be in a 
+*         consistent state.
 * Author: Sven Schmidt
 * Date  : 01/25/2014
 */

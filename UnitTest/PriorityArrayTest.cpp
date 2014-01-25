@@ -61,31 +61,42 @@ PriorityArrayTest::TestPop1() {
 namespace {
 
     struct NonTrivialType2 {
-        int index;
+        int node_index;
     };
 
     template<typename T>
     class Comparator2 {
     public:
-        Comparator2(std::vector<int> & priorities) : priorities_{priorities} {}
+        Comparator2(std::map<int, int> & nodes) : nodes_{nodes} {}
 
-        Comparator2(Comparator2 const & in) : priorities_{in.priorities_} {}
+        Comparator2(Comparator2 const & in) : nodes_{in.nodes_} {}
 
         bool operator()(T const & lhs, T const & rhs) const {
-            return priorities_[lhs.index] > priorities_[rhs.index];
+            return nodes_[lhs.node_index] > nodes_[rhs.node_index];
         }
 
-        std::vector<int> & priorities_;
+        int getPriority(int node_index) const {
+            return nodes_[node_index];
+        }
+
+        void setPriority(int node_index, int priority) {
+            nodes_[node_index] = priority;
+        }
+
+        std::map<int, int> & nodes_;
     };
 }
 
 void
 PriorityArrayTest::TestUpdatePriority() {
-    std::vector<int> priorities{25, 39, 22};
-
-    PriorityArray<NonTrivialType2, Comparator2> priority_array{
-        Comparator2<struct NonTrivialType2>{priorities}
+    std::map<int, int> nodes = {
+        {0, 25},
+        {1, 39},
+        {2, 22}
     };
+
+    Comparator2<struct NonTrivialType2> comparator{nodes};
+    PriorityArray<NonTrivialType2, Comparator2> priority_array{comparator};
      /*
      *           25
      *          /  \
@@ -100,10 +111,10 @@ PriorityArrayTest::TestUpdatePriority() {
      *          /  \
      *         25  22
      */
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, priorities[priority_array.top().index]);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, comparator.getPriority(priority_array.top().node_index));
 
     // change priority of element 25 in position 1 and update
-    priorities[0] = 50;
+    comparator.setPriority(0, 50);
     priority_array.updatePriority(1);
 
      /*
@@ -117,8 +128,77 @@ PriorityArrayTest::TestUpdatePriority() {
     while (priority_array.empty() == false) {
         struct NonTrivialType2 element = priority_array.top();
         int expected = expected_priorities[i++];
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", expected, expected_priorities[element.index]);
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", expected, expected_priorities[element.node_index]);
         priority_array.pop();
         CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 3ull - i, priority_array.heap_.keys_.size());
     }
+}
+
+void
+PriorityArrayTest::TestUpdatePrioritiesInDifferentOrders() {
+    /* Here we change several priorities before updating any elements.
+     * When updating one element, the priority of others have already
+     * changed, but the elements have not yet been updated.
+     * Check that after updating all of the changed elements, the
+     * priority queue is consistent.
+     */
+    std::map<int, int> nodes = {
+        {0, 25},
+        {1, 39},
+        {2, 22}
+    };
+
+    Comparator2<struct NonTrivialType2> comparator{ nodes };
+    PriorityArray<NonTrivialType2, Comparator2> priority_array{ comparator };
+    /*
+     *           25
+     *          /  \
+     *         39  22
+     */
+
+    // insert node 0 with priority 25
+    priority_array.add(struct NonTrivialType2{0});
+
+    // insert node 1 with priority 39
+    priority_array.add(struct NonTrivialType2{1});
+
+    // insert node 2 with priority 22
+    priority_array.add(struct NonTrivialType2{2});
+
+    /*
+     *          1: 39
+     *         /     \
+     *      0: 25   2: 22
+     */
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, comparator.getPriority(priority_array.top().node_index));
+
+    // change priority of element 25 in position 1
+    comparator.setPriority(0, 39);
+
+    // change priority of element 39 in position 0
+    comparator.setPriority(1, 12);
+
+    // change priority of element 22 in position 2
+    comparator.setPriority(2, 99);
+
+    priority_array.updatePriority(1);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, comparator.getPriority(priority_array.heap_.heap_[0]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 12, comparator.getPriority(priority_array.heap_.heap_[1]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 99, comparator.getPriority(priority_array.heap_.heap_[2]));
+
+    priority_array.updatePriority(0);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 99, comparator.getPriority(priority_array.heap_.heap_[0]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 12, comparator.getPriority(priority_array.heap_.heap_[1]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, comparator.getPriority(priority_array.heap_.heap_[2]));
+
+    priority_array.updatePriority(2);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 99, comparator.getPriority(priority_array.heap_.heap_[0]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 12, comparator.getPriority(priority_array.heap_.heap_[1]));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("priority array error", 39, comparator.getPriority(priority_array.heap_.heap_[2]));
+
+     /*
+      *           99
+      *          /  \
+      *         12  39
+      */
 }
