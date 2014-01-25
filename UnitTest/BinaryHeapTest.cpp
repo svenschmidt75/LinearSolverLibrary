@@ -348,7 +348,7 @@ BinaryHeapTest::TestRemoveFromEnd() {
 }
 
 void
-BinaryHeapTest::TestRemoveInside() {
+BinaryHeapTest::TestRemoveInside1() {
     BinaryHeap<double, std::greater> priority_array;
      std::initializer_list<std::pair<int, double>> initial_structure = {
         {0, 39.0},
@@ -380,6 +380,61 @@ BinaryHeapTest::TestRemoveInside() {
         {4, 22.0},
         {5, -34.0},
         {6, 3.0},
+        {7, 4.0}
+    };
+
+    for (auto item : expected) {
+        double exp = item.second;
+        double value = get_value(item.first);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", exp, value, 1E-10);
+    }
+}
+
+void
+BinaryHeapTest::TestRemoveInside2() {
+    BinaryHeap<double, std::greater> priority_array;
+    /*
+     *                           39
+     *                         /    \
+     *                        /      \
+     *                       /        \
+     *                      /          \
+     *                     33           3
+     *                   /    \       /   \
+     *                  17    22    -34   -55   
+     *                 /  \ 
+     *                4   14
+     */
+    std::initializer_list<std::pair<int, double>> initial_structure = {
+        {0, 39.0},
+        {1, 33.0},
+        {2, 3.0},
+        {3, 17.0},
+        {4, 22.0},
+        {5, -34.0},
+        {6, -55.0},
+        {7, 4.0},
+        {8, 14.0}
+    };
+    for (auto item : initial_structure)
+        priority_array.add(item.second);
+    priority_array.build_heap();
+
+    auto get_value = [&priority_array](int node_index) {
+        return priority_array.keys_[priority_array.heap_[node_index]];
+    };
+
+    // remove item 1, 33
+    priority_array.remove(1);
+
+    std::initializer_list<std::pair<int, double>> expected = {
+        {0, 39.0},
+        {1, 22.0},
+        {2, 3.0},
+        {3, 17.0},
+        {4, 14.0},
+        {5, -34.0},
+        {6, -55.0},
         {7, 4.0}
     };
 

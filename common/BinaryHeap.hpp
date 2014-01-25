@@ -3,7 +3,7 @@
 * Path  :
 * Use   : Binary heap implementation.
 * Author: Sven Schmidt
-* Date  : 01/24/2013
+* Date  : 01/24/2014
 */
 #pragma once
 
@@ -76,8 +76,7 @@ namespace common_NS {
         T const & top(T const & element) {
             // swap last element with 1st
             if (keys_.empty() == false) {
-                if (heaped_ == false)
-                    build_heap();
+                build_heap_if_needed();
                 return keys_[heap_[0]];
             }
         }
@@ -85,8 +84,7 @@ namespace common_NS {
         void pop() {
             // swap last element with 1st
             if (keys_.empty() == false) {
-                if (heaped_ == false)
-                    build_heap();
+                build_heap_if_needed();
                 std::swap(heap_[0], heap_[heap_.size() - 1]);
                 heap_.pop_back();
                 keys_.pop_back();
@@ -109,6 +107,20 @@ namespace common_NS {
         void build_heap_if_needed() {
             if (keys_.empty() == false && heaped_ == false)
                 build_heap();
+        }
+
+        void build_heap() {
+            initialize_heap();
+            size_type heap_size = keys_.size();
+            for (auto i = heap_size / 2 - 1; i >= 0; i--)
+                heapify(i);
+            heaped_ = true;
+        }
+
+        void initialize_heap() {
+            auto heap_size = keys_.size();
+            heap_.resize(heap_size);
+            std::iota(std::begin(heap_), std::end(heap_), 0);
         }
 
         void heapify(size_type parent_node_index) {
@@ -144,20 +156,6 @@ namespace common_NS {
                 node_index = parent_node_index;
                 parent_node_index = (node_index - 1) / 2;
             }
-        }
-
-        void build_heap() {
-            initialize_heap();
-            size_type heap_size = keys_.size();
-            for (auto i = heap_size / 2 - 1; i >= 0; i--)
-                heapify(i);
-            heaped_ = true;
-        }
-
-        void initialize_heap() {
-            auto heap_size = keys_.size();
-            heap_.resize(heap_size);
-            std::iota(std::begin(heap_), std::end(heap_), 0);
         }
 
     private:
