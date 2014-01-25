@@ -102,6 +102,13 @@ BinaryHeapTest::TestBuildHeap3() {
 }
 
 void
+BinaryHeapTest::TestBuildHeap4() {
+    BinaryHeap<double, std::greater> priority_array;
+    priority_array.add(22);
+    priority_array.build_heap();
+}
+
+void
 BinaryHeapTest::TestBuildHeapComplex() {
     BinaryHeap<double, std::greater> priority_array;
     /*
@@ -131,10 +138,19 @@ BinaryHeapTest::TestBuildHeapComplex() {
     auto get_value = [&priority_array](int node_index) {
         return priority_array.keys_[priority_array.heap_[node_index]];
     };
-    double expected = 39.0;
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0), 1E-10);
-    expected = 25.0;
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(1), 1E-10);
-    expected = 22.0;
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(2), 1E-10);
+    std::initializer_list<std::pair<int, double>> expected = {
+        {0, 18.0},
+        {1, 16.0},
+        {2, 17.0},
+        {3, 14.0},
+        {4, 11.0},
+        {5, 12.0},
+        {6, 15.0},
+        {7, 13.0}
+    };
+    for (auto item : expected) {
+        double exp = item.second;
+        double value = get_value(item.first);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", exp, value, 1E-10);
+    }
 }

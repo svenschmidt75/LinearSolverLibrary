@@ -46,25 +46,25 @@ namespace common_NS {
             if (heap_.empty() == false) {
                 if (heaped_ == false)
                     build_heap();
-                std::swap(&heap_[0], &heap_[heap_.size() - 1]);
+                std::swap(heap_[0], heap_[heap_.size() - 1]);
                 heap_.pop_back();
                 heapify(0);
             }
         }
 
-        //    private:
+    private:
         void heapify(size_type parent_node_index) {
             auto heap_size = static_cast<size_type>(heap_.size());
             auto left_child_index = 2 * parent_node_index + 1;
             auto right_child_index = left_child_index + 1;
             auto i = parent_node_index;
-            auto priority = [this](size_type node_index) {
-                return keys_[node_index];
+            auto key = [this](size_type node_index) {
+                return keys_[heap_[node_index]];
             };
-            if (left_child_index < heap_size && std::greater<T>()(priority(left_child_index), priority(parent_node_index)))
+            if (left_child_index < heap_size && COMPARER<T>()(key(left_child_index), key(parent_node_index)))
                 // swap left child with its parent
                 i = left_child_index;
-            if (right_child_index < heap_size && std::greater<T>()(priority(right_child_index), priority(i)))
+            if (right_child_index < heap_size && COMPARER<T>()(key(right_child_index), key(i)))
                 // swap right child with its parent
                 i = right_child_index;
             if (i != parent_node_index) {
@@ -74,12 +74,35 @@ namespace common_NS {
         }
 
         void build_heap() {
+            initialize_heap();
+            int tree_depth = get_tree_depth();
+            for (int level = tree_depth; level > 0; --level) {
+                int start_node;
+                int end_node;
+                std::tie(start_node, end_node) = get_node_range_for_tree_level(level);
+                while (start_node < end_node) {
+                    heapify(start_node);
+                    start_node++;
+                }
+            }
+            heaped_ = true;
+        }
+
+        std::tuple<int, int> get_node_range_for_tree_level(int tree_level) const {
+            int start_node = static_cast<int>(std::pow(2, tree_level - 1)) - 1;
+            int end_node = static_cast<int>(std::pow(2, tree_level)) - 1;
+            return std::make_tuple(start_node, end_node);
+        }
+
+        void initialize_heap() {
             auto heap_size = keys_.size();
             heap_.resize(heap_size);
             std::iota(std::begin(heap_), std::end(heap_), 0);
-            for (size_type i = heap_size / 2 - 1; i >= 0; --i)
-                heapify(i);
-            heaped_ = true;
+        }
+
+        int get_tree_depth() const {
+            auto heap_size = keys_.size();
+            return static_cast<int>(std::log2(heap_size));
         }
 
     private:
