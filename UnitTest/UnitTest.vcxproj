@@ -38,6 +38,10 @@
     </ClCompile>
     <ClCompile Include="AMGWCycleTest.cpp" />
     <ClCompile Include="bcsstk05Test.cpp" />
+    <ClCompile Include="BinaryHeapTest.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="FloridaSparseMatrixReaderTest.cpp" />
     <ClCompile Include="FloridaVectorReaderTest.cpp" />
     <ClCompile Include="fs_680_1_Test.cpp" />
@@ -83,6 +87,7 @@
     <ClInclude Include="AMGVariableCardinalityTest.h" />
     <ClInclude Include="AMGWCycleTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
+    <ClInclude Include="BinaryHeapTest.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />
     <ClInclude Include="fs_680_1_Test.h" />

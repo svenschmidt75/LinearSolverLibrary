@@ -69,6 +69,7 @@
     <ClCompile Include="AMGWCycleTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="BinaryHeapTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -130,5 +131,6 @@
     <ClInclude Include="AMGWCycleTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryHeapTest.h" />
   </ItemGroup>
 </Project>

@@ -28,9 +28,11 @@
 #include "FIDAP_EX5_Test.h"
 #include "ParallelLinAlgOperationsTest.h"
 #include "AMGWCycleTest.h"
+#include "BinaryHeapTest.h"
 
+CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
+//CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);

@@ -28,8 +28,8 @@ AMGWCycle::initialize() {
     generateLevel(1);
     levels_.push_back(0);
 
-//     FCycle();
-//     print();
+    FCycle();
+    print();
 
     FMGCycle();
     print();
@@ -51,7 +51,7 @@ AMGWCycle::generateLevel(int current_level) {
 
 void
 AMGWCycle::FCycle() {
-    max_depth_ = 4;
+    max_depth_ = 9;
 
     levels_.clear();
     int current_level = 0;
@@ -74,7 +74,7 @@ AMGWCycle::FCycle() {
 
 void
 AMGWCycle::FMGCycle() {
-    max_depth_ = 3;
+    max_depth_ = 7;
 
     levels_.clear();
     int current_level = max_depth_;

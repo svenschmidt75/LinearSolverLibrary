@@ -33,6 +33,7 @@
     <ClCompile Include="reporting.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryHeap.hpp" />
     <ClInclude Include="DeclSpec.h" />
     <ClInclude Include="InputIterator.hpp" />
     <ClInclude Include="IInputIteratorLogic.h" />
