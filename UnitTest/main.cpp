@@ -29,7 +29,9 @@
 #include "ParallelLinAlgOperationsTest.h"
 #include "AMGWCycleTest.h"
 #include "BinaryHeapTest.h"
+#include "PriorityArrayTest.h"
 
+CPPUNIT_TEST_SUITE_REGISTRATION(PriorityArrayTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);
 
 //CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);

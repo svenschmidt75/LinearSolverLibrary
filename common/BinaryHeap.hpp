@@ -35,6 +35,12 @@ namespace common_NS {
             heaped_ = false;
         }
 
+        T const & get(size_type node_index) const {
+            common_NS::reporting::checkUppderBound(node_index, static_cast<size_type>(keys_.size() - 1));
+            build_heap_if_needed();
+            return keys_[heap_[node_index]];
+        }
+
         void insert(T const & element) {
             // Insert element while preserving the heap property.
             build_heap_if_needed();
@@ -73,23 +79,9 @@ namespace common_NS {
             return std::cend(keys_);
         }
 
-        T const & top(T const & element) {
-            // swap last element with 1st
-            if (keys_.empty() == false) {
-                build_heap_if_needed();
-                return keys_[heap_[0]];
-            }
-        }
-
-        void pop() {
-            // swap last element with 1st
-            if (keys_.empty() == false) {
-                build_heap_if_needed();
-                std::swap(heap_[0], heap_[heap_.size() - 1]);
-                heap_.pop_back();
-                keys_.pop_back();
-                heapify(0);
-            }
+        bool empty() const {
+            build_heap_if_needed();
+            return heap_.empty();
         }
 
     private:
@@ -104,12 +96,12 @@ namespace common_NS {
             }
         }
 
-        void build_heap_if_needed() {
+        void build_heap_if_needed() const {
             if (keys_.empty() == false && heaped_ == false)
                 build_heap();
         }
 
-        void build_heap() {
+        void build_heap() const {
             initialize_heap();
             size_type heap_size = keys_.size();
             for (auto i = heap_size / 2 - 1; i >= 0; i--)
@@ -117,13 +109,13 @@ namespace common_NS {
             heaped_ = true;
         }
 
-        void initialize_heap() {
+        void initialize_heap() const {
             auto heap_size = keys_.size();
             heap_.resize(heap_size);
             std::iota(std::begin(heap_), std::end(heap_), 0);
         }
 
-        void heapify(size_type parent_node_index) {
+        void heapify(size_type parent_node_index) const {
             // Move down from 'parent_node_index' and restore the
             // heap property (i.e. the parent is bigger/smaller
             // then both of its children).
@@ -163,8 +155,8 @@ namespace common_NS {
             return keys_[heap_[node_index]];
         };
 
-        bool           heaped_;
-        Heap_t         heap_;
+        mutable bool   heaped_;
+        mutable Heap_t heap_;
         std::vector<T> keys_;
     };
 

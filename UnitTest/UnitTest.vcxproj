@@ -64,6 +64,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Integration Test Release With Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PriorityArrayTest.cpp" />
     <ClCompile Include="SparseLinearSolverTest.cpp" />
     <ClCompile Include="SparseMatrixColumnIteratorTest.cpp" />
     <ClCompile Include="SparseMatrixRowIteratorTest.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="OffshoreTest.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PriorityArrayTest.h" />
     <ClInclude Include="SparseLinearSolverTest.h" />
     <ClInclude Include="SparseMatrixColumnIteratorTest.h" />
     <ClInclude Include="SparseMatrixRowIteratorTest.h" />

@@ -70,6 +70,7 @@
       <Filter>AMG</Filter>
     </ClCompile>
     <ClCompile Include="BinaryHeapTest.cpp" />
+    <ClCompile Include="PriorityArrayTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -132,5 +133,6 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="BinaryHeapTest.h" />
+    <ClInclude Include="PriorityArrayTest.h" />
   </ItemGroup>
 </Project>

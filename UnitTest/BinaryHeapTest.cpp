@@ -16,24 +16,24 @@ BinaryHeapTest::tearDown() {}
 
 void
 BinaryHeapTest::TestBuildHeap1() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *           25
      *          /  \
      *         39  22
      */
-    priority_array.add(25);
-    priority_array.add(39);
-    priority_array.add(22);
-    priority_array.build_heap();
+    binary_heap.add(25);
+    binary_heap.add(39);
+    binary_heap.add(22);
+    binary_heap.build_heap();
 
     /*
      *           39
      *          /  \
      *         25  22
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0), 1E-10);
@@ -45,24 +45,24 @@ BinaryHeapTest::TestBuildHeap1() {
 
 void
 BinaryHeapTest::TestBuildHeap2() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *           25
      *          /  \
      *         22  39
      */
-    priority_array.add(25);
-    priority_array.add(22);
-    priority_array.add(39);
-    priority_array.build_heap();
+    binary_heap.add(25);
+    binary_heap.add(22);
+    binary_heap.add(39);
+    binary_heap.build_heap();
 
     /*
      *           39
      *          /  \
      *         22  25
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0), 1E-10);
@@ -74,24 +74,24 @@ BinaryHeapTest::TestBuildHeap2() {
 
 void
 BinaryHeapTest::TestBuildHeap3() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *           22
      *          /  \
      *         25  39
      */
-    priority_array.add(22);
-    priority_array.add(25);
-    priority_array.add(39);
-    priority_array.build_heap();
+    binary_heap.add(22);
+    binary_heap.add(25);
+    binary_heap.add(39);
+    binary_heap.build_heap();
 
     /*
      *           39
      *          /  \
      *         25  22
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0), 1E-10);
@@ -103,9 +103,9 @@ BinaryHeapTest::TestBuildHeap3() {
 
 void
 BinaryHeapTest::TestBuildHeap4() {
-    BinaryHeap<double, std::greater> priority_array;
-    priority_array.add(22);
-    priority_array.build_heap();
+    BinaryHeap<double, std::greater> binary_heap;
+    binary_heap.add(22);
+    binary_heap.build_heap();
 }
 
 namespace {
@@ -125,24 +125,24 @@ namespace {
 
 void
 BinaryHeapTest::TestBuildHeap5() {
-    BinaryHeap<NonTrivialType, Comparer> priority_array;
+    BinaryHeap<NonTrivialType, Comparer> binary_heap;
     /*
      *           22
      *          /  \
      *         25  39
      */
-    priority_array.add({22});
-    priority_array.add({25});
-    priority_array.add({39});
-    priority_array.build_heap();
+    binary_heap.add({22});
+    binary_heap.add({25});
+    binary_heap.add({39});
+    binary_heap.build_heap();
 
     /*
      *           39
      *          /  \
      *         25  22
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0).x, 1E-10);
@@ -154,7 +154,7 @@ BinaryHeapTest::TestBuildHeap5() {
 
 void
 BinaryHeapTest::TestBuildHeapComplex1() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *                           13
      *                          /  \
@@ -167,20 +167,20 @@ BinaryHeapTest::TestBuildHeapComplex1() {
      *                   /
      *                  16
      */
-    priority_array.add(13);
-    priority_array.add(14);
-    priority_array.add(15);
-    priority_array.add(18);
-    priority_array.add(11);
-    priority_array.add(12);
-    priority_array.add(17);
-    priority_array.add(16);
-    priority_array.build_heap();
+    binary_heap.add(13);
+    binary_heap.add(14);
+    binary_heap.add(15);
+    binary_heap.add(18);
+    binary_heap.add(11);
+    binary_heap.add(12);
+    binary_heap.add(17);
+    binary_heap.add(16);
+    binary_heap.build_heap();
 
     /*
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     std::initializer_list<std::pair<int, double>> expected = {
         {0, 18.0},
@@ -201,7 +201,7 @@ BinaryHeapTest::TestBuildHeapComplex1() {
 
 void
 BinaryHeapTest::TestBuildHeapComplex2() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *                           45
      *                         /    \
@@ -227,11 +227,11 @@ BinaryHeapTest::TestBuildHeapComplex2() {
         {9, 22.0}
     };
     for (auto item : expected)
-        priority_array.add(item.second);
-    priority_array.build_heap();
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
 
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     for (auto item : expected) {
         double exp = item.second;
@@ -242,23 +242,23 @@ BinaryHeapTest::TestBuildHeapComplex2() {
 
 void
 BinaryHeapTest::TestInsertSimple() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *           25
      *          /  \
      *         22  39
      */
-    priority_array.add(25);
-    priority_array.add(22);
-    priority_array.insert(39);
+    binary_heap.add(25);
+    binary_heap.add(22);
+    binary_heap.insert(39);
 
     /*
      *           39
      *          /  \
      *         22  25
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", expected, get_value(0), 1E-10);
@@ -270,7 +270,7 @@ BinaryHeapTest::TestInsertSimple() {
 
 void
 BinaryHeapTest::TestInsertComplex() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *                           45
      *                         /    \
@@ -297,14 +297,14 @@ BinaryHeapTest::TestInsertComplex() {
         {9, 22.0}
     };
     for (auto item : expected)
-        priority_array.add(item.second);
-    priority_array.build_heap();
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
 
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
 
-    priority_array.insert(39);
+    binary_heap.insert(39);
     double exp = 39;
     double value = get_value(1);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", exp, value, 1E-10);
@@ -312,44 +312,44 @@ BinaryHeapTest::TestInsertComplex() {
 
 void
 BinaryHeapTest::TestRemoveThrowsWhenEmpty() {
-    BinaryHeap<double, std::greater> priority_array;
-    CPPUNIT_ASSERT_THROW_MESSAGE("Exception not thrown", priority_array.remove(1), std::runtime_error);
+    BinaryHeap<double, std::greater> binary_heap;
+    CPPUNIT_ASSERT_THROW_MESSAGE("Exception not thrown", binary_heap.remove(1), std::runtime_error);
 }
 
 void
 BinaryHeapTest::TestRemoveFromEnd() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *           22
      *          /  \
      *         25  39
      */
-    priority_array.add(22);
-    priority_array.add(25);
-    priority_array.add(39);
-    priority_array.build_heap();
+    binary_heap.add(22);
+    binary_heap.add(25);
+    binary_heap.add(39);
+    binary_heap.build_heap();
 
     /*
      *           39
      *          /  \
      *         25  22
      */
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
 
-    priority_array.remove(2);
+    binary_heap.remove(2);
 
     double expected = 39.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("heap error", expected, get_value(0), 1E-10);
     expected = 25.0;
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("heap error", expected, get_value(1), 1E-10);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("heap error", 2ull, priority_array.keys_.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("heap error", 2ull, binary_heap.keys_.size());
 }
 
 void
 BinaryHeapTest::TestRemoveInside1() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
      std::initializer_list<std::pair<int, double>> initial_structure = {
         {0, 39.0},
         {1, 33.0},
@@ -362,15 +362,15 @@ BinaryHeapTest::TestRemoveInside1() {
         {8, 14.0}
     };
     for (auto item : initial_structure)
-        priority_array.add(item.second);
-    priority_array.build_heap();
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
 
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
 
     // remove -55
-    priority_array.remove(6);
+    binary_heap.remove(6);
 
     std::initializer_list<std::pair<int, double>> expected = {
         {0, 39.0},
@@ -392,7 +392,7 @@ BinaryHeapTest::TestRemoveInside1() {
 
 void
 BinaryHeapTest::TestRemoveInside2() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *                           39
      *                         /    \
@@ -417,15 +417,15 @@ BinaryHeapTest::TestRemoveInside2() {
         {8, 14.0}
     };
     for (auto item : initial_structure)
-        priority_array.add(item.second);
-    priority_array.build_heap();
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
 
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
 
     // remove item 1, 33
-    priority_array.remove(1);
+    binary_heap.remove(1);
 
     std::initializer_list<std::pair<int, double>> expected = {
         {0, 39.0},
@@ -447,7 +447,7 @@ BinaryHeapTest::TestRemoveInside2() {
 
 void
 BinaryHeapTest::TestRemoveRoot() {
-    BinaryHeap<double, std::greater> priority_array;
+    BinaryHeap<double, std::greater> binary_heap;
     /*
      *                           45
      *                         /    \
@@ -473,15 +473,15 @@ BinaryHeapTest::TestRemoveRoot() {
         {9, 22.0}
     };
     for (auto item : initial_structure)
-        priority_array.add(item.second);
-    priority_array.build_heap();
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
 
-    auto get_value = [&priority_array](int node_index) {
-        return priority_array.keys_[priority_array.heap_[node_index]];
+    auto get_value = [&binary_heap](int node_index) {
+        return binary_heap.keys_[binary_heap.heap_[node_index]];
     };
 
     // remove root, 45
-    priority_array.remove(0);
+    binary_heap.remove(0);
 
     std::initializer_list<std::pair<int, double>> expected = {
         {0, 39.0},
