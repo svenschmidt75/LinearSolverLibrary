@@ -28,11 +28,19 @@ AMGWCycle::initialize() {
     generateLevel(1);
     levels_.push_back(0);
 
-    FCycle();
-    print();
 
-    FMGCycle();
-    print();
+
+
+
+//     levels_.clear();
+//     FCycle2(0);
+//     print();
+
+
+
+
+//    FMGCycle();
+//    print();
 }
 
 void
@@ -48,6 +56,31 @@ AMGWCycle::generateLevel(int current_level) {
         levels_.push_back(current_level);
     }
 }
+
+void
+AMGWCycle::FCycle2(short current_level) {
+    max_depth_ = 6;
+    levels_.push_back(current_level);
+    if (current_level == max_depth_ - 1)
+        return;
+    FCycle3(current_level + 1);
+    VCycle(current_level);
+//    levels_.push_back(current_level);
+}
+
+void
+AMGWCycle::FCycle3(short current_level) {
+    FCycle2(current_level);
+}
+
+void
+AMGWCycle::VCycle(short current_level) {
+    for (int i = current_level; i < max_depth_; ++i)
+        levels_.push_back(i);
+    for (int i = max_depth_ - 2; i >= current_level; --i)
+        levels_.push_back(i);
+}
+
 
 void
 AMGWCycle::FCycle() {

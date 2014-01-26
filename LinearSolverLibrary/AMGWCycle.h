@@ -30,6 +30,9 @@ namespace LinearSolverLibrary_NS {
 
 
         void FCycle();
+        void FCycle2(short);
+        void FCycle3(short);
+        void VCycle(short);
         void FMGCycle();
 
 
