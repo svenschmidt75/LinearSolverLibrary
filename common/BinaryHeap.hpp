@@ -33,6 +33,8 @@ namespace common_NS {
             // add the left child first, but do not construct
             // heap yet (faster to initialize).
             keys_.push_back(element);
+            auto heap_size = heap_.size();
+            heap_.push_back(heap_size);
             heaped_ = false;
         }
 
@@ -168,6 +170,29 @@ namespace common_NS {
                 node_index = parent_node_index;
                 parent_node_index = (node_index - 1) / 2;
             }
+        }
+
+        bool check_heap_property() const {
+            // Check whether all parent nodes are larger/smaller than their
+            // children.
+            bool heap_valid = true;
+//            build_heap_if_needed();
+            size_type heap_size = keys_.size();
+            for (auto parent_node_index = heap_size / 2 - 1; parent_node_index >= 0; parent_node_index--) {
+                auto left_child_index = 2 * parent_node_index + 1;
+                auto right_child_index = left_child_index + 1;
+                if (left_child_index < heap_size && comparator_(key(left_child_index), key(parent_node_index))) {
+//                     std::cout << "Heap property violated" << std ::endl;
+//                     std::cout << "Parent node index: " << parent_node_index << std::endl;
+                    heap_valid = false;
+                }
+                if (right_child_index < heap_size && comparator_(key(right_child_index), key(parent_node_index))) {
+//                     std::cout << "Heap property violated" << std::endl;
+//                     std::cout << "Parent node index: " << parent_node_index << std::endl;
+                    heap_valid = false;
+                }
+            }
+            return heap_valid;
         }
 
     private:

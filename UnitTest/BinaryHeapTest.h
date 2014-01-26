@@ -28,6 +28,7 @@ class BinaryHeapTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(TestRemoveRoot);
     CPPUNIT_TEST(TestGetElement);
     CPPUNIT_TEST(TestGetIndexForElement);
+    CPPUNIT_TEST(TestCheckHeapProperty);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -51,4 +52,5 @@ protected:
     void TestRemoveRoot();
     void TestGetElement();
     void TestGetIndexForElement();
+    void TestCheckHeapProperty();
 };
