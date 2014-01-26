@@ -67,7 +67,10 @@ namespace {
     template<typename T>
     class Comparator2 {
     public:
-        Comparator2(std::map<int, int> & nodes) : nodes_{nodes} {}
+        using size_type = std::int64_t;
+
+    public:
+        Comparator2(std::map<size_type, int> & nodes) : nodes_{nodes} {}
 
         Comparator2(Comparator2 const & in) : nodes_{in.nodes_} {}
 
@@ -75,21 +78,21 @@ namespace {
             return nodes_[lhs.node_index] > nodes_[rhs.node_index];
         }
 
-        int getPriority(int node_index) const {
+        int getPriority(size_type node_index) const {
             return nodes_[node_index];
         }
 
-        void setPriority(int node_index, int priority) {
+        void setPriority(size_type node_index, int priority) {
             nodes_[node_index] = priority;
         }
 
-        std::map<int, int> & nodes_;
+        std::map<size_type, int> & nodes_;
     };
 }
 
 void
 PriorityArrayTest::TestUpdatePriority() {
-    std::map<int, int> nodes = {
+    std::map<std::int64_t, int> nodes = {
         {0, 25},
         {1, 39},
         {2, 22}
@@ -142,7 +145,7 @@ PriorityArrayTest::TestUpdatePrioritiesInDifferentOrders() {
      * Check that after updating all of the changed elements, the
      * priority queue is consistent.
      */
-    std::map<int, int> nodes = {
+    std::map<std::int64_t, int> nodes = {
         {0, 25},
         {1, 39},
         {2, 22}
