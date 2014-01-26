@@ -501,3 +501,91 @@ BinaryHeapTest::TestRemoveRoot() {
         CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("build heap error", exp, value, 1E-10);
     }
 }
+
+void
+BinaryHeapTest::TestGetElement() {
+    BinaryHeap<double, std::greater> binary_heap;
+    /*
+     *                           45
+     *                         /    \
+     *                        /      \
+     *                       /        \
+     *                      /          \
+     *                     39           3
+     *                   /    \       /   \
+     *                  17    33    -34   -55   
+     *                 /  \   / \
+     *                4   14 22
+     */
+    std::initializer_list<std::pair<int, double>> initial_structure = {
+        {0, 45.0},
+        {1, 3.0},
+        {2, 39.0},
+        {3, 17.0},
+        {4, 22.0},
+        {5, -34.0},
+        {6, 4.0},
+        {7, 14.0},
+        {8, 33.0},
+        {9, -55.0}
+    };
+    for (auto item : initial_structure)
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
+
+    double expected = 45.0;
+    double value = binary_heap.getElement(0);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("heap error", expected, value, 1E-10);
+
+    expected = -55.0;
+    value = binary_heap.getElement(9);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("heap error", expected, value, 1E-10);
+
+    expected = 14.0;
+    value = binary_heap.getElement(7);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("heap error", expected, value, 1E-10);
+}
+
+void
+BinaryHeapTest::TestGetIndexForElement() {
+    BinaryHeap<double, std::greater> binary_heap;
+    /*
+     *                           45
+     *                         /    \
+     *                        /      \
+     *                       /        \
+     *                      /          \
+     *                     39           3
+     *                   /    \       /   \
+     *                  17    33    -34   -55   
+     *                 /  \   / \
+     *                4   14 22
+     */
+    std::initializer_list<std::pair<int, double>> initial_structure = {
+        {0, 45.0},
+        {1, 3.0},
+        {2, 39.0},
+        {3, 17.0},
+        {4, 22.0},
+        {5, -34.0},
+        {6, 4.0},
+        {7, 14.0},
+        {8, 33.0},
+        {9, -55.0}
+    };
+    for (auto item : initial_structure)
+        binary_heap.add(item.second);
+    binary_heap.build_heap();
+
+    decltype(binary_heap.getIndexForElement(0)) expected = 0;
+    auto value = binary_heap.getIndexForElement(45.0);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("heap error", expected, value);
+
+    expected = 9;
+    value = binary_heap.getIndexForElement(-55.0);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("heap error", expected, value);
+
+    expected = 7;
+    value = binary_heap.getIndexForElement(14.0);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("heap error", expected, value);
+}

@@ -42,7 +42,7 @@ namespace common_NS {
         }
 
         T const & top() const {
-            return heap_.get(0);
+            return heap_.getElement(0);
         }
 
         void pop() {

@@ -36,10 +36,19 @@ namespace common_NS {
             heaped_ = false;
         }
 
-        T const & get(size_type node_index) const {
+        T const & getElement(size_type node_index) const {
             common_NS::reporting::checkUppderBound(node_index + 1, static_cast<size_type>(keys_.size()));
             build_heap_if_needed();
             return keys_[heap_[node_index]];
+        }
+
+        size_type getIndexForElement(T const & element) const {
+            auto it = std::find(std::cbegin(keys_), std::cend(keys_), element);
+            if (it == std::cend(keys_))
+                throw std::runtime_error("BinaryHeap::getIndexForElement: Element not found");
+            size_type position = it - std::cbegin(keys_);
+            size_type index = heap_[position];
+            return index;
         }
 
         void insert(T const & element) {
