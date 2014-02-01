@@ -36,8 +36,8 @@ namespace LinearSolverLibrary_NS {
 
     private:
         Queue_t initializeVariableCardinality();
-        void categorizeVariablesStronglyInfluencing(LinAlg_NS::IMatrix2D::size_type variable);
-        void adjustCardinalityOfStrongInfluencers(std::set<LinAlg_NS::IMatrix2D::size_type> const & variable);
+        void    categorizeVariablesStronglyInfluencing(LinAlg_NS::IMatrix2D::size_type variable);
+        void    adjustCardinalityOfStrongInfluencers(std::set<LinAlg_NS::IMatrix2D::size_type> const & variable);
 
     private:
         LinAlg_NS::SparseMatrix2D const &  m_;

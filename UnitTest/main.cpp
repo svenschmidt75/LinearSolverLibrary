@@ -31,8 +31,10 @@
 #include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
+#include "AMGPolicyTest.h"
 
 
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGPolicyTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVCycleTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
 

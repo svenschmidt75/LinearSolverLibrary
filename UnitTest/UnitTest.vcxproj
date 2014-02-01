@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AMGPolicyTest.cpp" />
     <ClCompile Include="AMGStandardCoarseningTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -84,6 +85,7 @@
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGPolicyTest.h" />
     <ClInclude Include="AMGStandardCoarseningTest.h" />
     <ClInclude Include="AMGStandardSplittingTest.h" />
     <ClInclude Include="AMGVariableCardinalityTest.h" />

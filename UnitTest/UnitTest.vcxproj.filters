@@ -74,6 +74,9 @@
     <ClCompile Include="AMGVCycleTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGPolicyTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="BinaryHeapTest.h" />
     <ClInclude Include="PriorityArrayTest.h" />
     <ClInclude Include="AMGVCycleTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGPolicyTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>
