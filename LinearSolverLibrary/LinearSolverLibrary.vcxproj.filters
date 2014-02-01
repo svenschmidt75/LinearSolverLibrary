@@ -177,9 +177,11 @@
     <ClInclude Include="AMGMonitor.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGSolver.hpp" />
     <ClInclude Include="AMGWCycle.h">
       <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGSolver.hpp">
+      <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
 /*
-* Name  : AMGWCycle
+* Name  : AMGVCycle
 * Path  :
-* Use   : 
+* Use   :
 * Author: Sven Schmidt
-* Date  : 01/19/2014
+* Date  : 02/01/2014
 */
 #pragma once
 
@@ -18,7 +18,7 @@
 namespace LinearSolverLibrary_NS {
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGWCycle : public IAMGCycle {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGWCycle : public AMGVWCycleBase {
     public:
         AMGWCycle(short gamma, int max_depth);
 

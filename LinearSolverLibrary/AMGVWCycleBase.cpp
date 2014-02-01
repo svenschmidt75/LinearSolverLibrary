@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "AMGWCycle.h"
+#include "AMGVWCycleBase.h"
 
 #include <memory>
 
@@ -8,44 +8,23 @@
 using namespace LinearSolverLibrary_NS;
 
 
-AMGWCycle::AMGWCycle(short gamma, int max_depth)
+AMGVWCycleBase::AMGVWCycleBase(short gamma)
     :
     gamma_{gamma},
-    max_depth_{max_depth},
     levels_index_{0} {
-    common_NS::reporting::checkLowerBound(max_depth_, 1);
     common_NS::reporting::checkLowerBound(gamma, static_cast<short>(1));
-    initialize();
 }
-
-namespace {
-}
-
 
 void
-AMGWCycle::initialize() {
+AMGVWCycleBase::initialize(short max_level) const {
+    max_depth_ = max_level;
     levels_.push_back(0);
     generateLevel(1);
     levels_.push_back(0);
-
-
-
-
-    max_depth_ = 3;
-    gamma_ = 1;
-    levels_.clear();
-    FCycle();
-    print();
-
-
-
-
-//    FMGCycle();
-//    print();
 }
 
 void
-AMGWCycle::generateLevel(int current_level) {
+AMGVWCycleBase::generateLevel(int current_level) {
     common_NS::reporting::checkUppderBound(current_level, max_depth_);
     if (current_level == max_depth_)
         levels_.push_back(current_level);
@@ -59,14 +38,14 @@ AMGWCycle::generateLevel(int current_level) {
 }
 
 void
-AMGWCycle::FCycle() {
+AMGVWCycleBase::FCycle() {
     levels_.push_back(0);
     FCycle_internal(1);
     levels_.push_back(0);
 }
 
 void
-AMGWCycle::FCycle_internal(short current_level) {
+AMGVWCycleBase::FCycle_internal(short current_level) {
     levels_.push_back(current_level);
     if (current_level == max_depth_)
         return;
@@ -75,7 +54,7 @@ AMGWCycle::FCycle_internal(short current_level) {
 }
 
 void
-AMGWCycle::VCycle(short current_level, short number_of_cycles) {
+AMGVWCycleBase::VCycle(short current_level, short number_of_cycles) {
     levels_.push_back(current_level);
     for (short i = 0; i < number_of_cycles; ++i) {
         move_to_deepest_level(current_level + 1);
@@ -84,19 +63,19 @@ AMGWCycle::VCycle(short current_level, short number_of_cycles) {
 }
 
 void
-AMGWCycle::move_to_deepest_level(short current_level) {
+AMGVWCycleBase::move_to_deepest_level(short current_level) {
     for (int i = current_level; i <= max_depth_; ++i)
         levels_.push_back(i);
 }
 
 void
-AMGWCycle::move_from_deepest_to_current_level(short current_level) {
+AMGVWCycleBase::move_from_deepest_to_current_level(short current_level) {
     for (int i = max_depth_ - 1; i >= current_level; --i)
         levels_.push_back(i);
 }
 
 void
-AMGWCycle::FMGCycle() {
+AMGVWCycleBase::FMGCycle() {
     max_depth_ = 7;
 
     levels_.clear();
@@ -124,12 +103,12 @@ AMGWCycle::FMGCycle() {
 }
 
 int
-AMGWCycle::currentLevel() const {
+AMGVWCycleBase::currentLevel() const {
     return levels_[levels_index_];
 }
 
 int
-AMGWCycle::setNextLevel() const {
+AMGVWCycleBase::setNextLevel() const {
     common_NS::reporting::checkUppderBound(levels_index_, levels_.size() - 1);
     auto level = levels_[levels_index_];
     ++levels_index_;
@@ -137,7 +116,7 @@ AMGWCycle::setNextLevel() const {
 }
 
 void
-AMGWCycle::print() const {
+AMGVWCycleBase::print() const {
     std::cout << std::endl;
     for (auto row = 0; row <= max_depth_; ++row) {
         for (auto column = 0; column < levels_.size(); ++column) {
