@@ -198,5 +198,11 @@
     <ClInclude Include="AMGVWCycleBase.h">
       <Filter>AMG\Cycles</Filter>
     </ClInclude>
+    <ClInclude Include="AMGHierarchyBuilder.hpp">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGLevel.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

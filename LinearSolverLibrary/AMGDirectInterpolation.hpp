@@ -27,10 +27,10 @@ namespace LinearSolverLibrary_NS {
 
         std::tuple<LinAlg_NS::SparseMatrix2D, LinAlg_NS::SparseMatrix2D> computeInterpolationOperator() const {
             // compute C/F splitting
-            AMGStandardCoarseningStrengthPolicy strength_policy(m);
-            VariableCategorizer variable_categorizer(m.rows());
-            VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-            AMGSplittingPolicy splitting(m, influence_accessor, variable_categorizer);
+            AMGStandardCoarseningStrengthPolicy strength_policy{m};
+            VariableCategorizer variable_categorizer{m.rows()};
+            VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+            AMGSplittingPolicy splitting{m, influence_accessor, variable_categorizer};
             splitting.generateSplitting();
 
             // Compute interpolation and restriction operators

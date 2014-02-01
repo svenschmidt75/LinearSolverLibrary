@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IAMGCycle.h"
+#include "AMGLevel.h"
 
 
 namespace LinearSolverLibrary_NS {
@@ -19,7 +20,7 @@ namespace LinearSolverLibrary_NS {
             :
             m_{m},
             b_{b},
-
+            cycle_scheme_{cycle_scheme},
             monitor_{monitor} {
         
             // setup the multigrid hierarchy
@@ -83,18 +84,5 @@ namespace LinearSolverLibrary_NS {
         AMGMonitor &                      monitor_;
         std::vector<AMGLevel>             amg_levels_;
     };
-
-
-    class AMGLevel {
-    public:
-
-    private:
-        LinAlg_NS::SparseMatrix2D prolongator;
-        LinAlg_NS::SparseMatrix2D interpolator;
-        LinAlg_NS::SparseMatrix2D A_;
-        LinAlg_NS::Vector         f_;
-        LinAlg_NS::Vector         x_;
-    };
-
-
+    
 } // LinearSolverLibrary_NS

@@ -12,9 +12,9 @@ using namespace LinAlg_NS;
 
 AMGStandardSplitting::AMGStandardSplitting(SparseMatrix2D const & m, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
     :
-    m_(m),
-    variable_influence_accessor_(variable_influence_accessor),
-    categorizer_(categorizer) {}
+    m_{m},
+    variable_influence_accessor_{variable_influence_accessor},
+    categorizer_{categorizer} {}
 
 void
 AMGStandardSplitting::generateSplitting() {
