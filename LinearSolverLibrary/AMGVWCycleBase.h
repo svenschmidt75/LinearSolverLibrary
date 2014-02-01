@@ -7,6 +7,8 @@
 */
 #pragma once
 
+#include "DeclSpec.h"
+
 #include "IAMGCycle.h"
 
 
@@ -16,10 +18,11 @@
 namespace LinearSolverLibrary_NS {
 
 
-    class AMGVWCycleBase : public IAMGCycle {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGVWCycleBase : public IAMGCycle {
     public:
         AMGVWCycleBase(short gamma);
 
+        // FROM IAMGCycle
         void initialize(short max_level) const;
         int  currentLevel() const;
         void setNextLevel() const;
@@ -27,10 +30,6 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void generateLevel(int current_level) const;
-
-        void VCycle(short, short number_of_cycles);
-        void move_to_deepest_level(short current_level);
-        void move_from_deepest_to_current_level(short current_level);
 
     private:
         mutable std::vector<int> levels_;

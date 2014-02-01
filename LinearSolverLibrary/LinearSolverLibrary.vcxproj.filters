@@ -91,6 +91,12 @@
     <ClCompile Include="AMGWCycle.cpp">
       <Filter>AMG\Cycles</Filter>
     </ClCompile>
+    <ClCompile Include="AMGVWCycleBase.cpp">
+      <Filter>AMG\Cycles</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGVCycle.cpp">
+      <Filter>AMG\Cycles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -182,6 +188,15 @@
     </ClInclude>
     <ClInclude Include="AMGSolver.hpp">
       <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="IAMGCycle.h">
+      <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGVCycle.h">
+      <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGVWCycleBase.h">
+      <Filter>AMG\Cycles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

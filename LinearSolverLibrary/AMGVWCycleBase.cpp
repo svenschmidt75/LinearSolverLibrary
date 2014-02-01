@@ -17,6 +17,7 @@ AMGVWCycleBase::AMGVWCycleBase(short gamma)
 
 void
 AMGVWCycleBase::initialize(short max_level) const {
+    common_NS::reporting::checkLowerBound(max_level, static_cast<short>(1));
     max_depth_ = max_level;
     levels_.push_back(0);
     generateLevel(1);
@@ -24,7 +25,7 @@ AMGVWCycleBase::initialize(short max_level) const {
 }
 
 void
-AMGVWCycleBase::generateLevel(int current_level) {
+AMGVWCycleBase::generateLevel(int current_level) const {
     common_NS::reporting::checkUppderBound(current_level, max_depth_);
     if (current_level == max_depth_)
         levels_.push_back(current_level);
@@ -37,82 +38,15 @@ AMGVWCycleBase::generateLevel(int current_level) {
     }
 }
 
-void
-AMGVWCycleBase::FCycle() {
-    levels_.push_back(0);
-    FCycle_internal(1);
-    levels_.push_back(0);
-}
-
-void
-AMGVWCycleBase::FCycle_internal(short current_level) {
-    levels_.push_back(current_level);
-    if (current_level == max_depth_)
-        return;
-    FCycle_internal(current_level + 1);
-    VCycle(current_level, gamma_);
-}
-
-void
-AMGVWCycleBase::VCycle(short current_level, short number_of_cycles) {
-    levels_.push_back(current_level);
-    for (short i = 0; i < number_of_cycles; ++i) {
-        move_to_deepest_level(current_level + 1);
-        move_from_deepest_to_current_level(current_level);
-    }
-}
-
-void
-AMGVWCycleBase::move_to_deepest_level(short current_level) {
-    for (int i = current_level; i <= max_depth_; ++i)
-        levels_.push_back(i);
-}
-
-void
-AMGVWCycleBase::move_from_deepest_to_current_level(short current_level) {
-    for (int i = max_depth_ - 1; i >= current_level; --i)
-        levels_.push_back(i);
-}
-
-void
-AMGVWCycleBase::FMGCycle() {
-    max_depth_ = 7;
-
-    levels_.clear();
-    int current_level = max_depth_;
-    int turning_level = max_depth_ - 1;
-    int direction = 1;
-    int number_of_turnarounds = 0;
-    do {
-        levels_.push_back(current_level);
-        if (current_level == turning_level) {
-            direction *= -1;
-        }
-        else if (current_level == max_depth_) {
-            turning_level = max_depth_ - ++number_of_turnarounds;
-            direction *= -1;
-        }
-        current_level += direction;
-    } while (current_level > 0);
-
-    // attach v cycle
-    for (current_level = 0; current_level <= max_depth_; ++current_level)
-        levels_.push_back(current_level);
-    for (current_level = max_depth_ - 1; current_level >= 0; --current_level)
-        levels_.push_back(current_level);
-}
-
 int
 AMGVWCycleBase::currentLevel() const {
     return levels_[levels_index_];
 }
 
-int
+void
 AMGVWCycleBase::setNextLevel() const {
-    common_NS::reporting::checkUppderBound(levels_index_, levels_.size() - 1);
-    auto level = levels_[levels_index_];
+    common_NS::reporting::checkUppderBound(levels_index_ + 1, levels_.size());
     ++levels_index_;
-    return level;
 }
 
 void

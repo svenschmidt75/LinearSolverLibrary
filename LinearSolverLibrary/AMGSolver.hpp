@@ -7,6 +7,8 @@
 */
 #pragma once
 
+#include "IAMGCycle.h"
+
 
 namespace LinearSolverLibrary_NS {
 
