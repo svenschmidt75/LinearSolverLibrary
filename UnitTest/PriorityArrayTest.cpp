@@ -2,7 +2,7 @@
 
 #include "PriorityArrayTest.h"
 
-#include "common/PriorityArray.h"
+#include "common/PriorityArray.hpp"
 
 
 using namespace common_NS;

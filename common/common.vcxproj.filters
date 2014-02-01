@@ -12,6 +12,6 @@
     <ClInclude Include="IInputIteratorLogic.h" />
     <ClInclude Include="parallel.hpp" />
     <ClInclude Include="BinaryHeap.hpp" />
-    <ClInclude Include="PriorityArray.h" />
+    <ClInclude Include="PriorityArray.hpp" />
   </ItemGroup>
 </Project>

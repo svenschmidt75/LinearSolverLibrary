@@ -20,9 +20,9 @@ namespace LinearSolverLibrary_NS {
     public:
         AMGWCycle(short gamma, int max_depth);
 
-        int currentLevel() const;
-        int setNextLevel() const;
-        void   print() const;
+        int  currentLevel() const;
+        int  setNextLevel() const;
+        void print() const;
 
     private:
         void initialize();
@@ -30,9 +30,13 @@ namespace LinearSolverLibrary_NS {
 
 
         void FCycle();
-        void FCycle2(short);
+
+        void FCycle2();
         void FCycle3(short);
         void VCycle(short);
+        void move_to_deepest_level(short current_level);
+        void move_from_deepest_to_current_level(short current_level);
+
         void FMGCycle();
 
 

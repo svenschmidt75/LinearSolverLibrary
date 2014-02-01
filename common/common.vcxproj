@@ -39,7 +39,7 @@
     <ClInclude Include="IInputIteratorLogic.h" />
     <ClInclude Include="parallel.hpp" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PriorityArray.h" />
+    <ClInclude Include="PriorityArray.hpp" />
     <ClInclude Include="reporting.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
