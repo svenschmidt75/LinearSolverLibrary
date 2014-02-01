@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <map>
 #include <queue>
+#include <memory>
 
 #include <boost/math/special_functions/round.hpp>
 #include <boost/assert.hpp>

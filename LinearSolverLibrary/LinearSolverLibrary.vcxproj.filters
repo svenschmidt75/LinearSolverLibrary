@@ -97,6 +97,9 @@
     <ClCompile Include="AMGVCycle.cpp">
       <Filter>AMG\Cycles</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStandardSplittingPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -202,6 +205,12 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGLevel.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardSplittingPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGPolicy.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>

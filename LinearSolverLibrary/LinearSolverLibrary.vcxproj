@@ -217,6 +217,7 @@
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="AMGStandardSplitting.cpp" />
+    <ClCompile Include="AMGStandardSplittingPolicy.cpp" />
     <ClCompile Include="AMGVCycle.cpp" />
     <ClCompile Include="AMGVWCycleBase.cpp" />
     <ClCompile Include="AMGWCycle.cpp" />
@@ -260,11 +261,13 @@
   <ItemGroup>
     <ClInclude Include="AMGHierarchyBuilder.hpp" />
     <ClInclude Include="AMGLevel.h" />
+    <ClInclude Include="AMGPolicy.hpp" />
     <ClInclude Include="AMGSolver.hpp" />
     <ClInclude Include="AMGMonitor.h" />
     <ClInclude Include="AMGStandardCoarsening.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
     <ClInclude Include="AMGStandardSplitting.h" />
+    <ClInclude Include="AMGStandardSplittingPolicy.h" />
     <ClInclude Include="AMGVCycle.h" />
     <ClInclude Include="AMGVWCycleBase.h" />
     <ClInclude Include="AMGWCycle.h" />
