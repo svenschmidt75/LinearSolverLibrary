@@ -34,7 +34,7 @@ AMGWCycle::initialize() {
     max_depth_ = 5;
 
     levels_.clear();
-    FCycle2();
+    FCycle();
     print();
 
 
@@ -59,18 +59,18 @@ AMGWCycle::generateLevel(int current_level) {
 }
 
 void
-AMGWCycle::FCycle2() {
+AMGWCycle::FCycle() {
     levels_.push_back(0);
-    FCycle3(1);
+    FCycle_internal(1);
     levels_.push_back(0);
 }
 
 void
-AMGWCycle::FCycle3(short current_level) {
+AMGWCycle::FCycle_internal(short current_level) {
     levels_.push_back(current_level);
     if (current_level == max_depth_)
         return;
-    FCycle3(current_level + 1);
+    FCycle_internal(current_level + 1);
     VCycle(current_level, gamma_);
 }
 
@@ -81,7 +81,6 @@ AMGWCycle::VCycle(short current_level, short number_of_cycles) {
         move_to_deepest_level(current_level + 1);
         move_from_deepest_to_current_level(current_level);
     }
-//    levels_.push_back(current_level);
 }
 
 void
@@ -94,29 +93,6 @@ void
 AMGWCycle::move_from_deepest_to_current_level(short current_level) {
     for (int i = max_depth_ - 1; i >= current_level; --i)
         levels_.push_back(i);
-}
-
-void
-AMGWCycle::FCycle() {
-    max_depth_ = 9;
-
-    levels_.clear();
-    int current_level = 0;
-    int turning_level = -1;
-    int direction = 1;
-    int number_of_turnarounds = 0;
-    do {
-        levels_.push_back(current_level);
-        if (current_level == turning_level) {
-            direction *= -1;
-        }
-        else if (current_level == max_depth_) {
-            turning_level = max_depth_ - ++number_of_turnarounds;
-            direction *= -1;
-        }
-        current_level += direction;
-    } while (current_level > 0);
-    levels_.push_back(current_level);
 }
 
 void
