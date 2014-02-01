@@ -71,13 +71,17 @@ AMGWCycle::FCycle3(short current_level) {
     if (current_level == max_depth_)
         return;
     FCycle3(current_level + 1);
-    VCycle(current_level);
+    VCycle(current_level, gamma_);
 }
 
 void
-AMGWCycle::VCycle(short current_level) {
-    move_to_deepest_level(current_level);
-    move_from_deepest_to_current_level(current_level);
+AMGWCycle::VCycle(short current_level, short number_of_cycles) {
+    levels_.push_back(current_level);
+    for (short i = 0; i < number_of_cycles; ++i) {
+        move_to_deepest_level(current_level + 1);
+        move_from_deepest_to_current_level(current_level);
+    }
+//    levels_.push_back(current_level);
 }
 
 void

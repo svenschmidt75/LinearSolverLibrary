@@ -33,7 +33,7 @@ namespace LinearSolverLibrary_NS {
 
         void FCycle2();
         void FCycle3(short);
-        void VCycle(short);
+        void VCycle(short, short number_of_cycles);
         void move_to_deepest_level(short current_level);
         void move_from_deepest_to_current_level(short current_level);
 
