@@ -8,6 +8,19 @@ using namespace LinAlg_NS;
 
 namespace LinearSolverLibrary_NS {
 
+LUDecomposition::LUDecomposition(LUDecomposition const & in) {
+    if (in.LU_)
+        LU_ = std::make_unique<Matrix2D>(*(in.LU_));
+    partial_pivoting_map_ = in.partial_pivoting_map_;
+}
+
+LUDecomposition &
+LUDecomposition::operator=(LUDecomposition const & in) {
+    if (in.LU_)
+        LU_ = std::make_unique<Matrix2D>(*(in.LU_));
+    partial_pivoting_map_ = in.partial_pivoting_map_;
+    return *this;
+}
 
 bool
 LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
@@ -15,7 +28,7 @@ LUDecomposition::decompose(LinAlg_NS::Matrix2D const & A) const {
      * with partial pivoting.
      * Note: the 1 on the diagonal is implicit, i.e. is not written
      * into LU_.
-     * Also, we do not actuall compute the LU decomposition of A, but
+     * Also, we do not actual compute the LU decomposition of A, but
      * that of PA, where P is a permutation matrix.
      */
     IMatrix2D::size_type max_row = A.rows();

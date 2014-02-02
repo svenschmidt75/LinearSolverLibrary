@@ -32,6 +32,10 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
+        LUDecomposition() = default;
+        LUDecomposition(LUDecomposition const &);
+        LUDecomposition & operator=(LUDecomposition const &);
+
         bool              decompose(LinAlg_NS::Matrix2D const & A) const;
         LinAlg_NS::Vector solve(LinAlg_NS::Vector const & rhs) const;
 

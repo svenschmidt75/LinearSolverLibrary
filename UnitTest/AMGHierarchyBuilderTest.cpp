@@ -28,5 +28,7 @@ AMGHierarchyBuilderTest::test1() {
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
     AMGDirectInterpolationPolicy splitting_policy;
-    AMGHierarchyBuilder<AMGDirectInterpolationPolicy> builder{m};
+    AMGHierarchyBuilder<AMGDirectInterpolationPolicy> builder;
+
+    auto amg_levels = builder.build(m);
 }

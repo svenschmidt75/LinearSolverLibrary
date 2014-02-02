@@ -36,11 +36,10 @@ Matrix2D::operator=(Matrix2D const & in) {
 
 Matrix2D::Matrix2D(Matrix2D && in)
     :
-    rows_(in.rows_),
-    cols_(in.cols_),
-    data_(std::move(in.data_)) {}
+    rows_{in.rows_},
+    cols_{in.cols_},
+    data_{std::move(in.data_)} {}
     
-
 Matrix2D &
 Matrix2D::operator=(Matrix2D && in) {
     /* Strong exception safety: First, assign in to a temp

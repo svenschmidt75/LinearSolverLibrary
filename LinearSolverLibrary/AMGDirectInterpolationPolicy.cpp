@@ -27,6 +27,11 @@ AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
 }
 
 SparseMatrix2D
+AMGDirectInterpolationPolicy::coarseLevelMatrix() const {
+    return SparseMatrix2D{ 5 };
+}
+
+SparseMatrix2D
 AMGDirectInterpolationPolicy::prolongator() const {
     return SparseMatrix2D{5};
 }

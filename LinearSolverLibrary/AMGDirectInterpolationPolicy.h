@@ -32,6 +32,7 @@ namespace LinearSolverLibrary_NS {
         AMGDirectInterpolationPolicy & operator=(AMGDirectInterpolationPolicy const &) = delete;
 
         bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
+        LinAlg_NS::SparseMatrix2D coarseLevelMatrix() const;
         LinAlg_NS::SparseMatrix2D prolongator() const;
         LinAlg_NS::SparseMatrix2D interpolator() const;
     };
