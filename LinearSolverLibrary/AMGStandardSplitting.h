@@ -27,6 +27,7 @@ namespace LinearSolverLibrary_NS {
         AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
                              VariableCategorizer & categorizer);
+
         void generateSplitting();
 
     private:

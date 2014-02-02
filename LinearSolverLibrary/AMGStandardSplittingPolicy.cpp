@@ -10,12 +10,28 @@ using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGStandardSplittingPolicy::AMGStandardSplittingPolicy(LinAlg_NS::SparseMatrix2D const & m)
-    :
-    m_{m} {
-    // compute C/F splitting
-    strength_policy_ = std::make_unique<AMGStandardCoarseningStrengthPolicy>(m);
-    variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
-    variable_influence_accessor_ = std::make_unique<VariableInfluenceAccessor>(*strength_policy_, *variable_categorizer_);
-    splitting_ = std::make_unique<AMGStandardSplitting>(m, *variable_influence_accessor_, *variable_categorizer_);
+AMGStandardSplittingPolicy::AMGStandardSplittingPolicy() {}
+
+bool
+AMGStandardSplittingPolicy::generate(SparseMatrix2D const & m) {
+    AMGStandardCoarseningStrengthPolicy strength_policy{m};
+    VariableCategorizer variable_categorizer{m.rows()};
+    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+    AMGStandardSplitting splitting{m, influence_accessor, variable_categorizer};
+    splitting.generateSplitting();
+
+    // compute interpolation operator
+//    AMGDirectInterpolation
+
+    return true;
+}
+
+SparseMatrix2D
+AMGStandardSplittingPolicy::prolongator() const {
+    return SparseMatrix2D{5};
+}
+
+SparseMatrix2D
+AMGStandardSplittingPolicy::interpolator() const {
+    return SparseMatrix2D{ 5 };
 }

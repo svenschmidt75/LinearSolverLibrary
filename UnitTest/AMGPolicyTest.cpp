@@ -28,6 +28,6 @@ AMGPolicyTest::test1() {
 
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
-    AMGStandardSplittingPolicy splitting_policy{m};
-    AMGPolicy<AMGStandardSplittingPolicy, AMGStandardCoarsening> policy{m};
+    AMGStandardSplittingPolicy splitting_policy;
+    splitting_policy.generate(m);
 }

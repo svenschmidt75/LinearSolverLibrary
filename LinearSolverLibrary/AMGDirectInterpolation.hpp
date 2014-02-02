@@ -17,7 +17,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    template<typename AMGSplittingPolicy>
+    template<typename CoarseningStrategy>
     class AMGDirectInterpolation {
     public:
         AMGDirectInterpolation(LinAlg_NS::SparseMatrix2D const & m) : m_(m) {}
@@ -27,8 +27,8 @@ namespace LinearSolverLibrary_NS {
 
         std::tuple<LinAlg_NS::SparseMatrix2D, LinAlg_NS::SparseMatrix2D> computeInterpolationOperator() const {
             // compute C/F splitting
-            AMGSplittingPolicy splitting_policy{m};
-            splitting.generateSplitting();
+            CoarseningStrategy coarsening_strategy{m};
+            coarsening_strategy.coarsen();
 
             // Compute interpolation and restriction operators
             SparseMatrix2D interpolation;

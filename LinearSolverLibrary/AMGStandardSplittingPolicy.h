@@ -26,17 +26,14 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplittingPolicy {
     public:
-        AMGStandardSplittingPolicy(LinAlg_NS::SparseMatrix2D const & m);
+        AMGStandardSplittingPolicy();
 
         AMGStandardSplittingPolicy(AMGStandardSplittingPolicy const &) = delete;
         AMGStandardSplittingPolicy & operator=(AMGStandardSplittingPolicy const &) = delete;
 
-    private:
-        LinAlg_NS::SparseMatrix2D const &                    m_;
-        std::unique_ptr<AMGStandardCoarseningStrengthPolicy> strength_policy_;
-        std::unique_ptr<VariableCategorizer>                 variable_categorizer_;
-        std::unique_ptr<VariableInfluenceAccessor>           variable_influence_accessor_;
-        std::unique_ptr<AMGStandardSplitting>                splitting_;
+        bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
+        LinAlg_NS::SparseMatrix2D prolongator() const;
+        LinAlg_NS::SparseMatrix2D interpolator() const;
     };
 
 } // LinearSolverLibrary_NS

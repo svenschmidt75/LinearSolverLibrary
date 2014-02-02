@@ -10,7 +10,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    template<typename SplittingStrategy, typename CoarseningStrategy>
+    template<typename CoarseningStrategy, typename InterpolationStrategy>
     class AMGPolicy {
     public:
         AMGPolicy(LinAlg_NS::SparseMatrix2D const & m) : m_{m} {}
