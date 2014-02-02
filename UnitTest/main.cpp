@@ -31,10 +31,14 @@
 #include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
-#include "AMGPolicyTest.h"
+#include "AMGDirectInterpolationPolicyTest.h"
+#include "AMGHierarchyBuilderTest.h"
+#include "AMGSolverTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGPolicyTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGHierarchyBuilderTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGDirectInterpolationPolicyTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVCycleTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
 

@@ -45,7 +45,7 @@ LUDecompositionTest::Test3by3_1() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -103,7 +103,7 @@ LUDecompositionTest::Test3by3_2() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -161,7 +161,7 @@ LUDecompositionTest::Test3by3_3() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -217,7 +217,7 @@ LUDecompositionTest::Test3by3_4() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -291,7 +291,7 @@ LUDecompositionTest::Test3by3_5() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -375,7 +375,7 @@ LUDecompositionTest::Test4by4_1() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -451,7 +451,7 @@ LUDecompositionTest::Test4by4_2() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -527,7 +527,7 @@ LUDecompositionTest::Test4by4_3() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 
@@ -601,7 +601,7 @@ LUDecompositionTest::Test4by4_4() {
 
 //     A.print();
 
-    LUDecomposition ludecomp = LinearSolverLibrary_NS::LUDecomposition();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(A);
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
 

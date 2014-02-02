@@ -66,3 +66,4 @@
 #include "LinearSolverLibrary/VariableSet.h"
 #include "LinearSolverLibrary/internal/BucketList.h"
 #include "LinearSolverLibrary/internal/BucketElement.h"
+#include "LinearSolverLibrary/LUDecomposition.h"

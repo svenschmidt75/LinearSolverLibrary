@@ -1,17 +1,17 @@
 /*
-* Name  : AMGPolicyTest
+* Name  : AMGHierarchyBuilderTest
 * Path  :
 * Use   :
 * Author: Sven Schmidt
-* Date  : 02/01/2014
+* Date  : 02/02/2014
 */
 #pragma once
 
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class AMGPolicyTest : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(AMGPolicyTest);
+class AMGHierarchyBuilderTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(AMGHierarchyBuilderTest);
     CPPUNIT_TEST(test1);
     CPPUNIT_TEST_SUITE_END();
 

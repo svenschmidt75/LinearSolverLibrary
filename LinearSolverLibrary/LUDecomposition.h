@@ -1,7 +1,7 @@
 /*
  * Name  : LUDecomposition
  * Path  : 
- * Use   : Implements sparse linear solver algorithm MINRES
+ * Use   : Implement LU decomposition with row pivoting
  * Author: Sven Schmidt
  * Date  : 08/03/2013
  * 
@@ -12,6 +12,10 @@
 #pragma once
 
 #include "DeclSpec.h"
+
+
+// forward declaration
+class LUDecompositionTest;
 
 
 #pragma warning(disable:4275)
@@ -28,20 +32,20 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        bool decompose(LinAlg_NS::Matrix2D const & A) const;
+        bool              decompose(LinAlg_NS::Matrix2D const & A) const;
         LinAlg_NS::Vector solve(LinAlg_NS::Vector const & rhs) const;
 
     private:
-        void initializePivoting(size_type rows) const;
-        size_type getPivotElementsRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index) const;
-        void adjustPivotingMap(size_type source_row, size_type dest_row) const;
+        void                initializePivoting(size_type rows) const;
+        size_type           getPivotElementsRowIndex(LinAlg_NS::Matrix2D const & A, size_type column_index) const;
+        void                adjustPivotingMap(size_type source_row, size_type dest_row) const;
         LinAlg_NS::Matrix2D rearrangeDueToPivoting() const;
-        void print(LinAlg_NS::Matrix2D const & A) const;
-        inline size_type logicalToPhysicalRowIndex(size_type physical_row_index) const;
-        inline size_type physicalToLogicalRowIndex(size_type logical_row_index) const;
-        void swapRows(LinAlg_NS::IMatrix2D::size_type row1, LinAlg_NS::IMatrix2D::size_type row2) const;
-        LinAlg_NS::Vector forwardSubstitute(LinAlg_NS::Vector const & rhs ) const;
-        LinAlg_NS::Vector backwardSubstitute(LinAlg_NS::Vector const & rhs ) const;
+        void                print(LinAlg_NS::Matrix2D const & A) const;
+        inline size_type    logicalToPhysicalRowIndex(size_type physical_row_index) const;
+        inline size_type    physicalToLogicalRowIndex(size_type logical_row_index) const;
+        void                swapRows(LinAlg_NS::IMatrix2D::size_type row1, LinAlg_NS::IMatrix2D::size_type row2) const;
+        LinAlg_NS::Vector   forwardSubstitute(LinAlg_NS::Vector const & rhs ) const;
+        LinAlg_NS::Vector   backwardSubstitute(LinAlg_NS::Vector const & rhs ) const;
 
     private:
         mutable std::unique_ptr<LinAlg_NS::Matrix2D> LU_;

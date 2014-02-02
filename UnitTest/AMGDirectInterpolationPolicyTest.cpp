@@ -1,11 +1,10 @@
 #include "pch.h"
 
-#include "AMGPolicyTest.h"
+#include "AMGDirectInterpolationPolicyTest.h"
 
 #include "LinAlg/MatrixStencil.hpp"
 
-#include "LinearSolverLibrary/AMGPolicy.hpp"
-#include "LinearSolverLibrary/AMGStandardSplittingPolicy.h"
+#include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardSplitting.h"
 
 
@@ -14,13 +13,13 @@ using namespace LinearSolverLibrary_NS;
 
 
 void
-AMGPolicyTest::setUp() {}
+AMGDirectInterpolationPolicyTest::setUp() {}
 
 void
-AMGPolicyTest::tearDown() {}
+AMGDirectInterpolationPolicyTest::tearDown() {}
 
 void
-AMGPolicyTest::test1() {
+AMGDirectInterpolationPolicyTest::test1() {
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << 0, -1,  0,
               -1,  4, -1,
@@ -28,6 +27,6 @@ AMGPolicyTest::test1() {
 
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
-    AMGStandardSplittingPolicy splitting_policy;
+    AMGDirectInterpolationPolicy splitting_policy;
     splitting_policy.generate(m);
 }

@@ -74,7 +74,13 @@
     <ClCompile Include="AMGVCycleTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGPolicyTest.cpp">
+    <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGSolverTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGHierarchyBuilderTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,7 +149,13 @@
     <ClInclude Include="AMGVCycleTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGPolicyTest.h">
+    <ClInclude Include="AMGDirectInterpolationPolicyTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGSolverTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGHierarchyBuilderTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>

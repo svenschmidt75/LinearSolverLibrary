@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "AMGStandardSplittingPolicy.h"
+#include "AMGDirectInterpolationPolicy.h"
 #include "AMGStandardCoarseningStrengthPolicy.h"
 #include "VariableCategorizer.h"
 #include "VariableInfluenceAccessor.h"
@@ -10,10 +10,10 @@ using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGStandardSplittingPolicy::AMGStandardSplittingPolicy() {}
+AMGDirectInterpolationPolicy::AMGDirectInterpolationPolicy() {}
 
 bool
-AMGStandardSplittingPolicy::generate(SparseMatrix2D const & m) {
+AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
     AMGStandardCoarseningStrengthPolicy strength_policy{m};
     VariableCategorizer variable_categorizer{m.rows()};
     VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
@@ -27,11 +27,11 @@ AMGStandardSplittingPolicy::generate(SparseMatrix2D const & m) {
 }
 
 SparseMatrix2D
-AMGStandardSplittingPolicy::prolongator() const {
+AMGDirectInterpolationPolicy::prolongator() const {
     return SparseMatrix2D{5};
 }
 
 SparseMatrix2D
-AMGStandardSplittingPolicy::interpolator() const {
+AMGDirectInterpolationPolicy::interpolator() const {
     return SparseMatrix2D{ 5 };
 }

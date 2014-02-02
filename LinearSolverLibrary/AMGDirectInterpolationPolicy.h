@@ -1,5 +1,5 @@
 /*
-* Name  : AMGStandardSplittingPolicy
+* Name  : AMGDirectInterpolationPolicy
 * Path  :
 * Use   : 
 * Author: Sven Schmidt
@@ -24,12 +24,12 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplittingPolicy {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGDirectInterpolationPolicy {
     public:
-        AMGStandardSplittingPolicy();
+        AMGDirectInterpolationPolicy();
 
-        AMGStandardSplittingPolicy(AMGStandardSplittingPolicy const &) = delete;
-        AMGStandardSplittingPolicy & operator=(AMGStandardSplittingPolicy const &) = delete;
+        AMGDirectInterpolationPolicy(AMGDirectInterpolationPolicy const &) = delete;
+        AMGDirectInterpolationPolicy & operator=(AMGDirectInterpolationPolicy const &) = delete;
 
         bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
         LinAlg_NS::SparseMatrix2D prolongator() const;

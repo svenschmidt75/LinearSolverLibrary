@@ -1,5 +1,5 @@
 /*
-* Name  : AMGSolverAMGHierarchyBuilder
+* Name  : AMGHierarchyBuilder
 * Path  :
 * Use   : Generates AMG hierarchy
 * Author: Sven Schmidt
@@ -13,9 +13,9 @@
 namespace LinearSolverLibrary_NS {
 
     template<typename AMGPolicy>
-    class AMGSolverAMGHierarchyBuilder {
+    class AMGHierarchyBuilder {
     public:
-        AMGSolverAMGHierarchyBuilder(LinAlg_NS::SparseMatrix2D const & m)
+        AMGHierarchyBuilder(LinAlg_NS::SparseMatrix2D const & m)
             :
             m_{m},
             amg_policy_{AMGPolicy{}} {}
@@ -49,7 +49,7 @@ namespace LinearSolverLibrary_NS {
                 current_level_index = next_level_index;
 
 
-                while (m.cols() > max_size) {
+                while (current_level.m.cols() > max_size) {
                     amg_levels.push_back(AMGLevel{});
                     next_level_index++;
                     next_level = &amg_levels[next_level_index];
@@ -60,6 +60,8 @@ namespace LinearSolverLibrary_NS {
                     next_level.interpolator = amg_policy_.interpolator();
                     current_level = next_level;
                 }
+
+                // do LU decomposition for last level
             }
             return amg_levels;
         }
