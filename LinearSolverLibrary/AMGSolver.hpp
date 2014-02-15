@@ -9,6 +9,8 @@
 
 #include "IAMGCycle.h"
 #include "AMGLevel.h"
+#include "AMGMonitor.h"
+#include "AMGHierarchyBuilder.hpp"
 
 
 namespace LinearSolverLibrary_NS {
@@ -24,9 +26,9 @@ namespace LinearSolverLibrary_NS {
             monitor_{monitor} {
         
             // setup the multigrid hierarchy
-            AMGHierarchyBuilder<AMGPolicy> amg_builder{m_};
-            amg_levels_ = amg_builder.build();
-            cycle_scheme_.initialize(amg_levels_.size());
+            AMGHierarchyBuilder<AMGPolicy> amg_builder;
+            amg_levels_ = amg_builder.build(m);
+            cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
         }
 
         LinAlg_NS::Vector
@@ -79,7 +81,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         LinAlg_NS::SparseMatrix2D const & m_;
-        LinAlg_NS::Vector const &         r_;
+        LinAlg_NS::Vector const &         b_;
         IAMGCycle const &                 cycle_scheme_;
         AMGMonitor &                      monitor_;
         std::vector<AMGLevel>             amg_levels_;
