@@ -35,7 +35,7 @@ namespace LinAlg_NS {
 
         explicit operator bool() const;
 
-        bool isValid() const;
+        bool      isValid() const;
         size_type maxRows() const;
         size_type row() const;
         size_type numberOfNonZeroMatrixElements() const;

@@ -16,7 +16,6 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::SparseMatrix2D m;
         LinAlg_NS::Vector         f;
         LinAlg_NS::Vector         x;
-        LUDecomposition           lu_;
     };
 
 } // LinearSolverLibrary_NS

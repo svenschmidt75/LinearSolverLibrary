@@ -73,7 +73,7 @@ AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that strongly influence variable 'variable'
     // TODO SS: Use std::make_unique
-    std::shared_ptr<VariableSet> variable_set(new VariableSet());
+    std::shared_ptr<VariableSet> variable_set = std::make_shared<VariableSet>();
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(*Si_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {
@@ -87,7 +87,7 @@ std::shared_ptr<IVariableSet>
 AMGStandardCoarseningStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that variable 'variable' strongly influences
-    std::shared_ptr<VariableSet> variable_set(new VariableSet());
+    std::shared_ptr<VariableSet> variable_set = std::make_shared<VariableSet>();
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(*Sit_, variable);
     auto column_it = *row_it;
     for (; column_it.isValid(); ++column_it) {

@@ -24,11 +24,13 @@ namespace LinearSolverLibrary_NS {
             b_{b},
             cycle_scheme_{cycle_scheme},
             monitor_{monitor} {
-        
+
             // setup the multigrid hierarchy
             AMGHierarchyBuilder<AMGPolicy> amg_builder;
             amg_levels_ = amg_builder.build(m);
             cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
+
+            // do LU decomposition for last level
         }
 
         LinAlg_NS::Vector
@@ -85,6 +87,7 @@ namespace LinearSolverLibrary_NS {
         IAMGCycle const &                 cycle_scheme_;
         AMGMonitor &                      monitor_;
         std::vector<AMGLevel>             amg_levels_;
+        LUDecomposition                   lu_;
     };
     
 } // LinearSolverLibrary_NS

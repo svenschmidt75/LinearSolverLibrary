@@ -16,7 +16,7 @@ namespace LinearSolverLibrary_NS {
     class AMGHierarchyBuilder {
     public:
         std::vector<AMGLevel>
-        build(LinAlg_NS::SparseMatrix2D const & m) const {
+        build(SparseMatrix2D const & m) const {
             AMGPolicy amg_policy;
             std::vector<AMGLevel> amg_levels;
 
@@ -46,7 +46,6 @@ namespace LinearSolverLibrary_NS {
                 current_level = next_level;
                 current_level_index = next_level_index;
 
-
                 while (current_level->m.cols() > max_size) {
                     amg_levels.push_back(AMGLevel{});
                     next_level_index++;
@@ -58,8 +57,6 @@ namespace LinearSolverLibrary_NS {
                     next_level->interpolator = amg_policy.interpolator();
                     current_level = next_level;
                 }
-
-                // do LU decomposition for last level
             }
             return amg_levels;
         }
