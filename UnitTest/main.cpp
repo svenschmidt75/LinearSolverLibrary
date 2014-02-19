@@ -85,7 +85,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(LinAlgOperatorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(SparseMatrixTest);
 #endif
 
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int argc, char ** argv) {
     // informs test-listener about testresults
     CPPUNIT_NS::TestResult testresult;
 
@@ -107,5 +107,13 @@ int main(int /*argc*/, char ** /*argv*/) {
     compileroutputter.write ();
 
     // return 0 if tests were successful
-    return collectedresults.wasSuccessful() ? 0 : 1;
+    auto cppunit_result = collectedresults.wasSuccessful() ? 0 : 1;
+
+    testing::InitGoogleMock(&argc, argv);
+    return cppunit_result == 0 && RUN_ALL_TESTS();
+}
+
+TEST(MyTestClass, Test1) {
+    std::string encoded = "B";
+    ASSERT_THAT(encoded, testing::Eq("A"));
 }

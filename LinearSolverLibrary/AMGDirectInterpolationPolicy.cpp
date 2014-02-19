@@ -34,7 +34,7 @@ AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
 }
 
 void
-AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & /*variable_categorizer*/) {
     using size_type = IMatrix2D::size_type;
 
     // The interpolation operator has as many rows as there are

@@ -27,6 +27,8 @@
 
 #include <ppl.h>
 
+#include <gmock/gmock.h>
+
 /* stable headers in other projects */
 
 #include "common/reporting.h"
