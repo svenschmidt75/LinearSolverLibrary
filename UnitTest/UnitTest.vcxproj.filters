@@ -83,6 +83,9 @@
     <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGCoarseVariableIndexerTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">

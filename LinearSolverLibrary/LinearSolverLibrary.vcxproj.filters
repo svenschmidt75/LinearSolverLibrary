@@ -100,6 +100,9 @@
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGCoarseVariableIndexer.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -207,5 +210,9 @@
     <ClInclude Include="AMGDirectInterpolationPolicy.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="AMGCoarseVariableIndexer.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
 </Project>

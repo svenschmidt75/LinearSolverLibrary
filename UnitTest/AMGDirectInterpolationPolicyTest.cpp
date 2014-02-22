@@ -11,7 +11,6 @@ using namespace LinearSolverLibrary_NS;
 using namespace testing;
 
 
-
 class DirectInterpolationPolicyTest : public Test {
 public:
     void SetUp() override {

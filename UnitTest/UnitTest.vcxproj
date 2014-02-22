@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AMGCoarseVariableIndexerTest.cpp" />
     <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp" />
     <ClCompile Include="AMGHierarchyBuilderTest.cpp" />
     <ClCompile Include="AMGSolverTest.cpp" />

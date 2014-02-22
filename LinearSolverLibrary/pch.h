@@ -24,6 +24,7 @@
 #include "common/IInputIteratorLogic.h"
 
 #include "LinAlg/EntityOperators.h"
+#include "LinAlg/IMatrix2D.h"
 #include "LinAlg/Matrix2D.h"
 #include "LinAlg/SparseMatrix2D.h"
 #include "LinAlg/UHMatrix.h"

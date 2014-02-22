@@ -66,8 +66,6 @@ AMGStandardCoarseningStrengthPolicy::computeConnections() {
     }
     Si_->finalize();
     Sit_->finalize();
-
-    Si_->print();
 }
 
 std::shared_ptr<IVariableSet>

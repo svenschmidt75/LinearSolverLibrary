@@ -211,6 +211,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AMGCoarseVariableIndexer.cpp" />
     <ClCompile Include="AMGStandardCoarsening.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="AMGStandardSplitting.cpp" />
@@ -267,8 +268,10 @@
     <ClInclude Include="AMGVCycle.h" />
     <ClInclude Include="AMGVWCycleBase.h" />
     <ClInclude Include="AMGWCycle.h" />
+    <ClInclude Include="AMGCoarseVariableIndexer.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="IAMGCycle.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UndefinedVariableSetDecorator.h" />
     <ClInclude Include="VariableSetDecoratorIteratorLogic.h" />
     <ClInclude Include="ConjugateGradientMethods.hpp" />

@@ -28,6 +28,11 @@ VariableCategorizer::SetType(size_type variable, Type type) {
     data_[variable] = type;
 }
 
+VariableCategorizer::size_type
+VariableCategorizer::NumberOfVariables() const {
+    return data_.size();
+}
+
 void
 VariableCategorizer::print() const {
     int row_size = static_cast<int>(std::sqrt(data_.size()));

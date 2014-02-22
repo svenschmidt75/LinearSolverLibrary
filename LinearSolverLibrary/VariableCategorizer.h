@@ -26,9 +26,10 @@ namespace LinearSolverLibrary_NS {
     public:
         VariableCategorizer(size_type numberOfVariables);
 
-        Type GetType(size_type variable) const;
-        void SetType(size_type variable, Type type);
-        void print() const;
+        Type      GetType(size_type variable) const;
+        void      SetType(size_type variable, Type type);
+        size_type NumberOfVariables() const;
+        void      print() const;
 
     private:
         void initializeVariablesToUndefined();

@@ -5,6 +5,7 @@
 #include "VariableCategorizer.h"
 #include "VariableInfluenceAccessor.h"
 #include "AMGStandardSplitting.h"
+#include "AMGCoarseVariableIndexer.h"
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
@@ -45,9 +46,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
 
     std::map<std::pair<size_type, size_type>, double> interpolation_op;
 
-
-    std::map<size_type, size_type> mapper;
-    size_type index = 0;
+    AMGCoarseVariableIndexer indexer{variable_categorizer};
 
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m);
     while (row_it) {
@@ -55,10 +54,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
 
         if (variable_categorizer.GetType(fine_variable) == VariableCategorizer::Type::COARSE) {
             // no interpolation needed
-            auto it = mapper.find(fine_variable);
-            if (it == std::cend(mapper))
-                mapper[fine_variable] = index++;
-            auto cv = mapper[fine_variable];
+            auto cv = indexer.Index(fine_variable);
             interpolation_op[{fine_variable, cv}] = 1;
             ++row_it;
             continue;
@@ -97,18 +93,14 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double a_ik = m(fine_variable, coarse_variable);
             double w_ik = - alpha * a_ik / a_ii;
 
-            auto it = mapper.find(coarse_variable);
-            if (it == std::cend(mapper))
-                mapper[coarse_variable] = index++;
-
-            auto cv = mapper[coarse_variable];
+            auto cv = indexer.Index(coarse_variable);
             interpolation_op[{fine_variable, cv}] = w_ik;
         }
 
         ++row_it;
     }
 
-    interpolation_operator_ = SparseMatrix2D{m.rows(), index};
+    interpolation_operator_ = SparseMatrix2D{m.rows(), indexer.NumberOfVariables()};
 
     // construct interpolation operator
     for (auto const & item : interpolation_op) {
