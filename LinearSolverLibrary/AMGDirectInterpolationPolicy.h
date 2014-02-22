@@ -38,6 +38,9 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+
+    private:
+        LinAlg_NS::SparseMatrix2D interpolation_operator_;
     };
 
 } // LinearSolverLibrary_NS

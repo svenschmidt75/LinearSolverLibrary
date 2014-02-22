@@ -31,12 +31,10 @@
 #include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
-#include "AMGDirectInterpolationPolicyTest.h"
 #include "AMGHierarchyBuilderTest.h"
 #include "AMGSolverTest.h"
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGDirectInterpolationPolicyTest);
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGHierarchyBuilderTest);
@@ -111,9 +109,4 @@ int main(int argc, char ** argv) {
 
     testing::InitGoogleMock(&argc, argv);
     return cppunit_result == 0 && RUN_ALL_TESTS();
-}
-
-TEST(MyTestClass, Test1) {
-    std::string encoded = "B";
-    ASSERT_THAT(encoded, testing::Eq("A"));
 }

@@ -87,7 +87,6 @@
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AMGDirectInterpolationPolicyTest.h" />
     <ClInclude Include="AMGHierarchyBuilderTest.h" />
     <ClInclude Include="AMGSolverTest.h" />
     <ClInclude Include="AMGStandardCoarseningTest.h" />

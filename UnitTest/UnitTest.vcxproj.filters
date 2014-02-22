@@ -74,13 +74,13 @@
     <ClCompile Include="AMGVCycleTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
     <ClCompile Include="AMGSolverTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
     <ClCompile Include="AMGHierarchyBuilderTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
   </ItemGroup>
@@ -147,9 +147,6 @@
     <ClInclude Include="BinaryHeapTest.h" />
     <ClInclude Include="PriorityArrayTest.h" />
     <ClInclude Include="AMGVCycleTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
-    <ClInclude Include="AMGDirectInterpolationPolicyTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGSolverTest.h">
