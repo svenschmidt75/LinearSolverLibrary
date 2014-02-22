@@ -41,3 +41,30 @@ TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectCols) {
     auto const & interpolation_operator = splitting_policy.interpolator();
     EXPECT_EQ(interpolation_operator.cols(), 5);
 }
+
+TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator1stRow) {
+    auto const & interpolation_operator = splitting_policy.interpolator();
+    std::vector<double> expected;
+    for (int i{0}; i < interpolation_operator.cols(); ++i)
+        expected.push_back{interpolation_operator(0, i)};
+    double tol = 1E-15;
+    ASSERT_THAT(expected, ElementsAre(DoubleNear(1.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator2ndRow) {
+    auto const & interpolation_operator = splitting_policy.interpolator();
+    std::vector<double> expected;
+    for (int i{0}; i < interpolation_operator.cols(); ++i)
+        expected.push_back{interpolation_operator(1, i)};
+    double tol = 1E-15;
+    ASSERT_THAT(expected, ElementsAre(DoubleNear(0.25, tol), DoubleNear(0.25, tol), DoubleNear(0.25, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator6thdRow) {
+    auto const & interpolation_operator = splitting_policy.interpolator();
+    std::vector<double> expected;
+    for (int i{ 0 }; i < interpolation_operator.cols(); ++i)
+        expected.push_back{ interpolation_operator(5, i) };
+    double tol = 1E-15;
+    ASSERT_THAT(expected, ElementsAre(DoubleNear(0.0, tol), DoubleNear(0.25, tol), DoubleNear(0.25, tol), DoubleNear(0.0, tol), DoubleNear(0.25, tol)));
+}

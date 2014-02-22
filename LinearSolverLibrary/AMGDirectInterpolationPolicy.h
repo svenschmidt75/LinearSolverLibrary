@@ -26,6 +26,12 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGDirectInterpolationPolicy {
     public:
+        using size_type = LinAlg_NS::IMatrix2D::size_type;
+
+    private:
+        using Interpolation_t = std::map<std::pair<size_type, size_type>, double>;
+
+    public:
         AMGDirectInterpolationPolicy();
 
         AMGDirectInterpolationPolicy(AMGDirectInterpolationPolicy const &) = delete;
@@ -38,6 +44,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
 
     private:
         LinAlg_NS::SparseMatrix2D interpolation_operator_;
