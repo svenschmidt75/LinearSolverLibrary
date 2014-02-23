@@ -39,9 +39,9 @@ namespace LinearSolverLibrary_NS {
 
                 amg_policy.generate(m);
                 current_level->m = m;
-                current_level->prolongator = amg_policy.prolongator();
-                next_level->interpolator = amg_policy.interpolator();
-                next_level->m = amg_policy.coarseLevelMatrix();
+                current_level->restrictor = amg_policy.Restrictor();
+                next_level->interpolator = amg_policy.Interpolator();
+                next_level->m = amg_policy.GalerkinMatrix();
 
                 current_level = next_level;
                 current_level_index = next_level_index;
@@ -53,8 +53,8 @@ namespace LinearSolverLibrary_NS {
                     auto const & A = current_level->m;
                     current_level->m = A;
                     amg_policy.generate(A);
-                    current_level->prolongator = amg_policy.prolongator();
-                    next_level->interpolator = amg_policy.interpolator();
+                    current_level->restrictor = amg_policy.Restrictor();
+                    next_level->interpolator = amg_policy.Interpolator();
                     current_level = next_level;
                 }
             }

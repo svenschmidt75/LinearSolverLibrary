@@ -58,7 +58,7 @@ namespace LinearSolverLibrary_NS {
                     // restrict, move to next coarser level
                     x = pre_smooth(amg_level.A_, f, x);
                     Vector r_h = f - amg_level.A_ * x;
-                    Vector r_2h = amg_level.prolongator * r_h;
+                    Vector r_2h = amg_level.restrictor * r_h;
                     f = r_2h;
                     cycle_scheme.setNextLevel();
                     prev_level = level;

@@ -15,29 +15,14 @@ AMGDirectInterpolationPolicy::AMGDirectInterpolationPolicy() {}
 
 bool
 AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
-
-
-
-
-
-
-    // TODO SS: This is one object!
     AMGStandardCoarseningStrengthPolicy strength_policy{m};
     VariableCategorizer variable_categorizer{m.rows()};
     VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
     AMGStandardSplitting splitting{m, influence_accessor, variable_categorizer};
     splitting.generateSplitting();
-
-
-
-
-
-
-
-
-    // TODO SS: pass the above object here!
     ComputeInterpolationOperator(m, strength_policy, variable_categorizer);
-
+    ComputeRestrictionOperator(interpolation_operator_);
+    ComputeGalerkinMatrix(m, interpolation_operator_, prolongation_operator_);
     return true;
 }
 
@@ -117,17 +102,27 @@ AMGDirectInterpolationPolicy::CreateInterpolationOperator(size_type rows, size_t
 //    interpolation_operator_.print();
 }
 
-SparseMatrix2D
-AMGDirectInterpolationPolicy::coarseLevelMatrix() const {
-    return SparseMatrix2D{ 5 };
+void 
+AMGDirectInterpolationPolicy::ComputeRestrictionOperator(SparseMatrix2D const & interpolation_operator) {
+    prolongation_operator_ = helper::transpose(interpolation_operator);
+}
+
+void 
+AMGDirectInterpolationPolicy::ComputeGalerkinMatrix(SparseMatrix2D const & m, SparseMatrix2D const & interpolation_operator, SparseMatrix2D const & restriction_operator) {
+    galerkinMatrix_ = helper::matrixMul(restriction_operator, helper::matrixMul(m, interpolation_operator));
 }
 
 SparseMatrix2D
-AMGDirectInterpolationPolicy::prolongator() const {
-    return SparseMatrix2D{5};
+AMGDirectInterpolationPolicy::GalerkinMatrix() const {
+    return galerkinMatrix_;
 }
 
 SparseMatrix2D
-AMGDirectInterpolationPolicy::interpolator() const {
+AMGDirectInterpolationPolicy::Restrictor() const {
+    return prolongation_operator_;
+}
+
+SparseMatrix2D
+AMGDirectInterpolationPolicy::Interpolator() const {
     return interpolation_operator_;
 }

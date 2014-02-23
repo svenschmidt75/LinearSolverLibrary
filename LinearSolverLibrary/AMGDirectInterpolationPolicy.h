@@ -38,16 +38,20 @@ namespace LinearSolverLibrary_NS {
         AMGDirectInterpolationPolicy & operator=(AMGDirectInterpolationPolicy const &) = delete;
 
         bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
-        LinAlg_NS::SparseMatrix2D coarseLevelMatrix() const;
-        LinAlg_NS::SparseMatrix2D prolongator() const;
-        LinAlg_NS::SparseMatrix2D interpolator() const;
+        LinAlg_NS::SparseMatrix2D GalerkinMatrix() const;
+        LinAlg_NS::SparseMatrix2D Restrictor() const;
+        LinAlg_NS::SparseMatrix2D Interpolator() const;
 
     private:
-        void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
+        void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);
+        void ComputeGalerkinMatrix(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);
 
     private:
         LinAlg_NS::SparseMatrix2D interpolation_operator_;
+        LinAlg_NS::SparseMatrix2D prolongation_operator_;
+        LinAlg_NS::SparseMatrix2D galerkinMatrix_;
     };
 
 } // LinearSolverLibrary_NS

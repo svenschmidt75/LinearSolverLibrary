@@ -32,18 +32,18 @@ TEST_F(DirectInterpolationPolicyTest, TestInitialization) {
     ASSERT_THAT(success, true);
 }
 
-TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectRows) {
-    auto const & interpolation_operator = splitting_policy.interpolator();
+TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectRowDimension) {
+    auto const & interpolation_operator = splitting_policy.Interpolator();
     EXPECT_EQ(interpolation_operator.rows(), 9);
 }
 
-TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectCols) {
-    auto const & interpolation_operator = splitting_policy.interpolator();
+TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectColumnDimension) {
+    auto const & interpolation_operator = splitting_policy.Interpolator();
     EXPECT_EQ(interpolation_operator.cols(), 5);
 }
 
 TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator1stRow) {
-    auto const & interpolation_operator = splitting_policy.interpolator();
+    auto const & interpolation_operator = splitting_policy.Interpolator();
     std::vector<double> expected;
     for (int i{0}; i < interpolation_operator.cols(); ++i)
         expected.push_back{interpolation_operator(0, i)};
@@ -52,7 +52,7 @@ TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator1stRow) {
 }
 
 TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator2ndRow) {
-    auto const & interpolation_operator = splitting_policy.interpolator();
+    auto const & interpolation_operator = splitting_policy.Interpolator();
     std::vector<double> expected;
     for (int i{0}; i < interpolation_operator.cols(); ++i)
         expected.push_back{interpolation_operator(1, i)};
@@ -61,10 +61,30 @@ TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator2ndRow) {
 }
 
 TEST_F(DirectInterpolationPolicyTest, TestInterpolationOperator6thdRow) {
-    auto const & interpolation_operator = splitting_policy.interpolator();
+    auto const & interpolation_operator = splitting_policy.Interpolator();
     std::vector<double> expected;
     for (int i{ 0 }; i < interpolation_operator.cols(); ++i)
-        expected.push_back{ interpolation_operator(5, i) };
+        expected.push_back{interpolation_operator(5, i)};
     double tol = 1E-15;
     ASSERT_THAT(expected, ElementsAre(DoubleNear(0.0, tol), DoubleNear(0.25, tol), DoubleNear(0.25, tol), DoubleNear(0.0, tol), DoubleNear(0.25, tol)));
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestProlongationOperatorHasCorrectRowDimension) {
+    auto const & prolongation_operator = splitting_policy.Restrictor();
+    EXPECT_EQ(prolongation_operator.rows(), 5);
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestProlongationOperatorHasCorrectColumnDimension) {
+    auto const & prolongation_operator = splitting_policy.Restrictor();
+    EXPECT_EQ(prolongation_operator.cols(), 9);
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectRowDimension) {
+    auto const & galerkin_operator = splitting_policy.GalerkinMatrix();
+    EXPECT_EQ(galerkin_operator.rows(), 5);
+}
+
+TEST_F(DirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectColumnDimension) {
+    auto const & galerkin_operator = splitting_policy.GalerkinMatrix();
+    EXPECT_EQ(galerkin_operator.cols(), 5);
 }

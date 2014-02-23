@@ -38,7 +38,7 @@ AMGStandardSplitting::categorizeVariablesStronglyInfluencing(IMatrix2D::size_typ
         BOOST_ASSERT_MSG(categorizer_.GetType(otherVariable) == VariableCategorizer::Type::UNDEFINED, "Variable must be of type undefined");
         categorizer_.SetType(otherVariable, VariableCategorizer::Type::FINE);
         auto const & a = variable_influence_accessor_.GetVariableInfluencedUndefined(otherVariable);
-        variables.insert(std::begin(*a), std::end(*a));
+        variables.insert(std::cbegin(*a), std::cend(*a));
     }
     adjustCardinalityOfStrongInfluencers(variables);
 }
