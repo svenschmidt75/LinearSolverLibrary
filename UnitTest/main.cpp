@@ -31,13 +31,11 @@
 #include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
-#include "AMGHierarchyBuilderTest.h"
 #include "AMGSolverTest.h"
 
 
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGHierarchyBuilderTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGVCycleTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
 

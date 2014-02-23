@@ -11,8 +11,8 @@
 namespace LinearSolverLibrary_NS {
 
     struct AMGLevel {
-        LinAlg_NS::SparseMatrix2D restrictor;
-        LinAlg_NS::SparseMatrix2D interpolator;
+        std::shared_ptr<LinAlg_NS::SparseMatrix2D> restrictor;
+        std::shared_ptr<LinAlg_NS::SparseMatrix2D> interpolator;
         LinAlg_NS::SparseMatrix2D m;
         LinAlg_NS::Vector         f;
         LinAlg_NS::Vector         x;

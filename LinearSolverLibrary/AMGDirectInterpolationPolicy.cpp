@@ -22,7 +22,7 @@ AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
     splitting.generateSplitting();
     ComputeInterpolationOperator(m, strength_policy, variable_categorizer);
     ComputeRestrictionOperator(interpolation_operator_);
-    ComputeGalerkinMatrix(m, interpolation_operator_, prolongation_operator_);
+    ComputeGalerkinMatrix(m, interpolation_operator_, restriction_operator_);
     return true;
 }
 
@@ -104,7 +104,7 @@ AMGDirectInterpolationPolicy::CreateInterpolationOperator(size_type rows, size_t
 
 void 
 AMGDirectInterpolationPolicy::ComputeRestrictionOperator(SparseMatrix2D const & interpolation_operator) {
-    prolongation_operator_ = helper::transpose(interpolation_operator);
+    restriction_operator_ = helper::transpose(interpolation_operator);
 }
 
 void 
@@ -119,7 +119,7 @@ AMGDirectInterpolationPolicy::GalerkinMatrix() const {
 
 SparseMatrix2D
 AMGDirectInterpolationPolicy::Restrictor() const {
-    return prolongation_operator_;
+    return restriction_operator_;
 }
 
 SparseMatrix2D

@@ -26,7 +26,7 @@ namespace LinearSolverLibrary_NS {
             monitor_{monitor} {
 
             // setup the multigrid hierarchy
-            AMGHierarchyBuilder<AMGPolicy> amg_builder;
+            AMGHierarchyBuilder<AMGPolicy> amg_builder{monitor_};
             amg_levels_ = amg_builder.build(m);
             cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
 

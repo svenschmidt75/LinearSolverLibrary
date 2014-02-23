@@ -11,9 +11,16 @@
 namespace LinearSolverLibrary_NS {
 
     struct AMGMonitor {
+        // Input
         size_t number_of_max_iterations;
-        size_t number_of_iterations_needed;
         double tolerance;
+
+        // If the size of the matrix falls below this limit,
+        // we solve for it directly (via LU decomposition).
+        int min_galerkin_size_;
+
+        // Output
+        size_t number_of_iterations_needed;
     };
 
 } // LinearSolverLibrary_NS

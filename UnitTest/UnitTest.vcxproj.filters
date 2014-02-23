@@ -155,8 +155,5 @@
     <ClInclude Include="AMGSolverTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGHierarchyBuilderTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

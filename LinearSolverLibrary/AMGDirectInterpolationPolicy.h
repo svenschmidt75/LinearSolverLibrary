@@ -50,7 +50,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         LinAlg_NS::SparseMatrix2D interpolation_operator_;
-        LinAlg_NS::SparseMatrix2D prolongation_operator_;
+        LinAlg_NS::SparseMatrix2D restriction_operator_;
         LinAlg_NS::SparseMatrix2D galerkinMatrix_;
     };
 

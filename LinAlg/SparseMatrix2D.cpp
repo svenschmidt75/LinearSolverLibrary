@@ -119,7 +119,7 @@ SparseMatrix2D::operator=(SparseMatrix2D && in) {
 
     // force move copy-construction, is exception safe
     SparseMatrix2D temp(std::move(in));
-    swap(temp);
+    swap(std::move(temp));
     return *this;
 }
 
@@ -135,6 +135,20 @@ SparseMatrix2D::swap(SparseMatrix2D const & in) {
     rows_           = in.rows_;
     columns_offset_ = in.columns_offset_;
     rows_offset_    = in.rows_offset_;
+}
+
+void
+SparseMatrix2D::swap(SparseMatrix2D && in) {
+    // to enable the safe exception guarantee
+    nrows_          = in.nrows_;
+    ncols_          = in.ncols_;
+    data_           = std::move(in.data_);
+    finalized_      = in.finalized_;
+    elements_       = std::move(in.elements_);
+    columns_        = std::move(in.columns_);
+    rows_           = std::move(in.rows_);
+    columns_offset_ = std::move(in.columns_offset_);
+    rows_offset_    = std::move(in.rows_offset_);
 }
 
 SparseMatrix2D::size_type

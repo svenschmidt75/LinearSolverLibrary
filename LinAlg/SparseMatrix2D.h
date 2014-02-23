@@ -134,6 +134,7 @@ namespace LinAlg_NS {
     private:
         // to provide exception-safe copy-assignment
         void swap(SparseMatrix2D const & in);
+        void swap(SparseMatrix2D && in);
 
         void finalizeColumnIndices() const;
         void finalizeRowIndices() const;
