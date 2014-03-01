@@ -38,7 +38,7 @@ namespace LinearSolverLibrary_NS {
         AMGDirectInterpolationPolicy & operator=(AMGDirectInterpolationPolicy const &) = delete;
 
         bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
-        LinAlg_NS::SparseMatrix2D GalerkinMatrix() const;
+        LinAlg_NS::SparseMatrix2D GalerkinOperator() const;
         LinAlg_NS::SparseMatrix2D Restrictor() const;
         LinAlg_NS::SparseMatrix2D Interpolator() const;
 
@@ -46,7 +46,7 @@ namespace LinearSolverLibrary_NS {
         void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
         void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);
-        void ComputeGalerkinMatrix(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);
+        void ComputeGalerkinOperator(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);
 
     private:
         LinAlg_NS::SparseMatrix2D interpolation_operator_;

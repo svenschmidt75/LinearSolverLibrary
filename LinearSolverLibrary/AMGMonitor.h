@@ -17,7 +17,7 @@ namespace LinearSolverLibrary_NS {
 
         // If the size of the matrix falls below this limit,
         // we solve for it directly (via LU decomposition).
-        int min_galerkin_size_;
+        int direct_solver_threshold_;
 
         // Output
         size_t number_of_iterations_needed;

@@ -27,58 +27,66 @@ namespace LinearSolverLibrary_NS {
         std::vector<AMGLevel>
         build(SparseMatrix2D const & m) const {
             AMGPolicy amg_policy;
-            std::vector<AMGLevel> amg_levels;
 
-            int const max_size = monitor_.min_galerkin_size_;
-
-
+            // TODO SS: Find better name
+            int const max_size = monitor_.direct_solver_threshold_;
 
 
             // TODO SS: test this branch!!!
             if (m.cols() < max_size) {
                 AMGLevel amg_level;
                 amg_level.m = m;
-                amg_levels.emplace_back(amg_level);
+                amg_levels_.emplace_back(amg_level);
             }
             else {
                 // do 1st level
-                amg_levels.emplace_back();
-                amg_levels.emplace_back();
-                int current_level_index = 0;
-                int next_level_index = current_level_index + 1;
-
-                AMGLevel * current_level = &amg_levels[current_level_index];
-                AMGLevel * next_level = &amg_levels[next_level_index];
-
-                amg_policy.generate(m);
-                current_level->m = m;
-                current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
-                next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
-                next_level->m = amg_policy.GalerkinMatrix();
-
-                current_level = next_level;
-                current_level_index = next_level_index;
-
-                // all further levels
-
-                while (current_level->m.cols() > max_size) {
-                    amg_levels.emplace_back();
-                    current_level = &amg_levels[current_level_index++];
-                    next_level_index++;
-                    next_level = &amg_levels[next_level_index];
-                    auto const & A = current_level->m;
-                    amg_policy.generate(A);
+                Handle1stLevel(amg_policy, m);
+                MoveToNextLevel();
+                while (SolveWithDirectMethod(amg_levels_[current_level_index_].m, max_size) == false) {
+                    amg_levels_.emplace_back();
+                    AMGLevel * current_level = &amg_levels_[current_level_index_];
+                    MoveToNextLevel();
+                    AMGLevel * next_level = &amg_levels_[current_level_index_];
+                    amg_policy.generate(current_level->m);
                     current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
                     next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
-                    next_level->m = amg_policy.GalerkinMatrix();
-                    current_level = next_level;
+                    next_level->m = amg_policy.GalerkinOperator();
                 }
             }
-            return amg_levels;
+            return amg_levels_;
+        }
+
+        bool
+        SolveWithDirectMethod(SparseMatrix2D const & m, int max_size) const {
+            return m.cols() <= max_size;
+        }
+
+        void
+        MoveToNextLevel() const {
+            current_level_index_++;
+        }
+
+        void
+        Handle1stLevel(AMGPolicy & amg_policy, SparseMatrix2D const & m) const {
+            amg_levels_.emplace_back();
+            amg_levels_.emplace_back();
+            current_level_index_ = 0;
+            int next_level_index = current_level_index_ + 1;
+
+            AMGLevel * current_level = &amg_levels_[current_level_index_];
+            AMGLevel * next_level = &amg_levels_[next_level_index];
+
+            amg_policy.generate(m);
+            current_level->m = m;
+            current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
+            next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
+            next_level->m = amg_policy.GalerkinOperator();
         }
 
     private:
-        AMGMonitor const & monitor_;
+        AMGMonitor const &            monitor_;
+        mutable std::vector<AMGLevel> amg_levels_;
+        mutable int                   current_level_index_;
     };
 
 } // LinearSolverLibrary_NS

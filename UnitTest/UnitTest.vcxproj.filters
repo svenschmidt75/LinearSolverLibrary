@@ -86,6 +86,12 @@
     <ClCompile Include="AMGCoarseVariableIndexerTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="MultigridTutorialExampleTestFramework.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="MultigridTutorialExampleTestFrameworkTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -153,6 +159,9 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGSolverTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="MultigridTutorialExampleTestFramework.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>

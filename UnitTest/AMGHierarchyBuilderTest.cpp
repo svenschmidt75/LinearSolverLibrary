@@ -23,7 +23,7 @@ public:
 
         AMGDirectInterpolationPolicy splitting_policy;
         AMGMonitor monitor;
-        monitor.min_galerkin_size_ = 3;
+        monitor.direct_solver_threshold_ = 3;
         AMGHierarchyBuilder<AMGDirectInterpolationPolicy> builder{monitor};
         amg_levels = builder.build(m);
     }

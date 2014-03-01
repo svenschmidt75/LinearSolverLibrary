@@ -61,6 +61,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MatrixStencilTest.cpp" />
     <ClCompile Include="MultiColorTest.cpp" />
+    <ClCompile Include="MultigridTutorialExampleTestFramework.cpp" />
+    <ClCompile Include="MultigridTutorialExampleTestFrameworkTest.cpp" />
     <ClCompile Include="OffshoreTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -106,6 +108,7 @@
     <ClInclude Include="LUDecompositionTest.h" />
     <ClInclude Include="MatrixStencilTest.h" />
     <ClInclude Include="MultiColorTest.h" />
+    <ClInclude Include="MultigridTutorialExampleTestFramework.h" />
     <ClInclude Include="OffshoreTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PriorityArrayTest.h" />

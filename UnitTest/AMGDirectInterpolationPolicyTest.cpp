@@ -80,11 +80,11 @@ TEST_F(DirectInterpolationPolicyTest, TestProlongationOperatorHasCorrectColumnDi
 }
 
 TEST_F(DirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectRowDimension) {
-    auto const & galerkin_operator = splitting_policy.GalerkinMatrix();
+    auto const & galerkin_operator = splitting_policy.GalerkinOperator();
     EXPECT_EQ(galerkin_operator.rows(), 5);
 }
 
 TEST_F(DirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectColumnDimension) {
-    auto const & galerkin_operator = splitting_policy.GalerkinMatrix();
+    auto const & galerkin_operator = splitting_policy.GalerkinOperator();
     EXPECT_EQ(galerkin_operator.cols(), 5);
 }

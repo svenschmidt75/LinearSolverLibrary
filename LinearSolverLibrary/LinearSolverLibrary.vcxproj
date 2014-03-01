@@ -212,7 +212,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AMGCoarseVariableIndexer.cpp" />
-    <ClCompile Include="AMGStandardCoarsening.cpp" />
+    <ClCompile Include="AMGStandardCoarsening.cpp">
+      <SuppressStartupBanner Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</SuppressStartupBanner>
+    </ClCompile>
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="AMGStandardSplitting.cpp" />
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp" />

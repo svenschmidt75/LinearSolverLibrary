@@ -22,7 +22,7 @@ AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
     splitting.generateSplitting();
     ComputeInterpolationOperator(m, strength_policy, variable_categorizer);
     ComputeRestrictionOperator(interpolation_operator_);
-    ComputeGalerkinMatrix(m, interpolation_operator_, restriction_operator_);
+    ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
     return true;
 }
 
@@ -71,7 +71,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double a_num = ComputeNumerator(fine_variable, *row_it);
             auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
             if (interpolatory_set->size() == 0)
-                throw std::runtime_error("AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable has no strong connections to C variable");
+                throw std::runtime_error("AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable has no strong connections to coarse variables");
             double a_denum = ComputeDenumerator(fine_variable, m, *interpolatory_set, variable_categorizer);
             double alpha = a_num / a_denum;
             double a_ii = m(fine_variable, fine_variable);
@@ -108,12 +108,12 @@ AMGDirectInterpolationPolicy::ComputeRestrictionOperator(SparseMatrix2D const & 
 }
 
 void 
-AMGDirectInterpolationPolicy::ComputeGalerkinMatrix(SparseMatrix2D const & m, SparseMatrix2D const & interpolation_operator, SparseMatrix2D const & restriction_operator) {
+AMGDirectInterpolationPolicy::ComputeGalerkinOperator(SparseMatrix2D const & m, SparseMatrix2D const & interpolation_operator, SparseMatrix2D const & restriction_operator) {
     galerkinMatrix_ = helper::matrixMul(restriction_operator, helper::matrixMul(m, interpolation_operator));
 }
 
 SparseMatrix2D
-AMGDirectInterpolationPolicy::GalerkinMatrix() const {
+AMGDirectInterpolationPolicy::GalerkinOperator() const {
     return galerkinMatrix_;
 }
 
