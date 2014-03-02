@@ -80,4 +80,16 @@ VectorMath::norm(Vector const & v) {
     return std::sqrt(dotProduct(v, v));
 }
 
+double
+VectorMath::LinfError(Vector const & lhs, Vector const & rhs) {
+    common_NS::reporting::checkConditional(lhs.size() == rhs.size(), "VectorMath::LinfError: Incompatible vectors");
+    double abs = 0;
+    for (Vector::size_type index{0}; index < lhs.size(); ++index) {
+        double delta = std::fabs(lhs(index) - rhs(index));
+        if (delta > abs)
+            abs = delta;
+    }
+    return abs;
+}
+
 } // namespace LinAlg_NS

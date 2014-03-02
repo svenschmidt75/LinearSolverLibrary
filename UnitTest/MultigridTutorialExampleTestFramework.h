@@ -9,11 +9,6 @@
 
 
 class MultigridTutorialExampleTestFramework {
-
-
-    friend class MultigridTutorialExampleTestFrameworkTest;
-
-
 public:
     MultigridTutorialExampleTestFramework();
     MultigridTutorialExampleTestFramework(int mesh_size);
@@ -29,12 +24,15 @@ public:
     double            f(double x, double y) const;
     double            Solution(double x, double y) const;
     LinAlg_NS::Vector DirectSolve() const;
+    double            LinfError(Vector const & in) const;
 
     // to facilitate unit testing
     double            Factor() const;
     LinAlg_NS::Vector CreateRHS() const;
+    LinAlg_NS::Vector CreateExactSolutionVector() const;
+    LinAlg_NS::Vector ComputeVector(std::function<double(double, double)> const & func) const;
 
-private:
+public:
     LinAlg_NS::SparseMatrix2D m_;
     int                       mesh_size_;
     double                    factor_;

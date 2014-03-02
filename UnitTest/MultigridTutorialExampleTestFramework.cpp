@@ -2,9 +2,8 @@
 
 #include "MultigridTutorialExampleTestFramework.h"
 
-#include "LinAlg/MatrixStencil.hpp"
 
-#include "LinearSolverLibrary/LUDecomposition.h"
+#include "LinAlg/MatrixStencil.hpp"
 
 
 using namespace LinAlg_NS;
@@ -24,7 +23,8 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil1() {
               -1,  4, -1,
                0, -1,  0;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (mesh_size_ * mesh_size_);
+//    factor_ = 1.0 / (mesh_size_ * mesh_size_);
+    factor_ = 1.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
@@ -34,7 +34,8 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil2() {
                 0,  4,  0,
                -1,  0, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (2.0 * mesh_size_ * mesh_size_);
+//    factor_ = 1.0 / (2.0 * mesh_size_ * mesh_size_);
+    factor_ = 1.0 / (2.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
@@ -44,7 +45,8 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil3() {
                -1,  8, -1,
                -1, -1, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (8.0 * mesh_size_ * mesh_size_);
+//    factor_ = 1.0 / (8.0 * mesh_size_ * mesh_size_);
+    factor_ = 1.0 / (8.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
@@ -54,48 +56,45 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil4() {
                -4, 20, -4,
                -1, -4, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (20.0 * mesh_size_ * mesh_size_);
+//    factor_ = 1.0 / (20.0 * mesh_size_ * mesh_size_);
+    factor_ = 1.0 / (20.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 double
 MultigridTutorialExampleTestFramework::GetX(int i) const {
     common_NS::reporting::checkUppderBound(i, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(i, 0);
-    double offset = 1.0 / (mesh_size_ + 1);
-    return (i + 1) * offset;
+    double h = 1.0 / (mesh_size_ + 1);
+    return (i + 1) * h;
 }
 
 double
 MultigridTutorialExampleTestFramework::GetY(int j) const {
     common_NS::reporting::checkUppderBound(j, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(j, 0);
-    double offset = 1.0 / (mesh_size_ + 1);
-    return (j + 1) * offset;
+    double h = 1.0 / (mesh_size_ + 1);
+    return (j + 1) * h;
 }
 
 double
 MultigridTutorialExampleTestFramework::f(double x, double y) const {
-    double term11 = 1.0 - 6.0 * x * x;
-    double term12 = term11 * y * y * (1.0 - y * y);
-    double term21 = 1.0 - 6.0 * y * y;
-    double term22 = term21 * x * x * (1.0 - x * x);
-    double result = 2.0 * (term12 + term22);
+    double term1 = (1.0 - 6.0 * x * x) * y * y * (1.0 - y * y);
+    double term2 = (1.0 - 6.0 * y * y) * x * x * (1.0 - x * x);
+    double result = 2.0 * (term1 + term2);
     return result * factor_;
 }
 
 double
 MultigridTutorialExampleTestFramework::Solution(double x, double y) const {
-    double term11 = x * x;
-    double term12 = y * y;
-    double term21 = term11 - term11 * term11;
-    double term22 = term12 * term12 - term12;
-    return term21 * term22;
+    double result = x * x * ( 1.0 - x * x) * y * y * (y * y - 1.0);
+    return result;
 }
 
 Vector
 MultigridTutorialExampleTestFramework::DirectSolve() const {
-    LUDecomposition ludecomp;
     Matrix2D dense = helper::SparseToDense(m_);
+    dense.print();
+    LUDecomposition ludecomp;
     bool success = ludecomp.decompose(dense);
     common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::DirectSolve: LU decomposition failed");
     Vector rhs = CreateRHS();
@@ -103,19 +102,39 @@ MultigridTutorialExampleTestFramework::DirectSolve() const {
     return x;
 }
 
+double
+MultigridTutorialExampleTestFramework::LinfError(Vector const & in) const {
+    Vector solution = CreateExactSolutionVector();
+    return VectorMath::LinfError(in, solution);
+}
+
 Vector
 MultigridTutorialExampleTestFramework::CreateRHS() const {
-    Vector rhs{static_cast<Vector::size_type>(mesh_size_) * mesh_size_};
-    for (int i = 0; i < mesh_size_; ++i) {
-        for (int j = 0; j < mesh_size_; ++j) {
+    return ComputeVector([this](double x, double y) -> double {
+        return f(x, y);
+    });
+}
+
+Vector
+MultigridTutorialExampleTestFramework::CreateExactSolutionVector() const {
+    return ComputeVector([this](double x, double y) -> double {
+        return Solution(x, y);
+    });
+}
+
+Vector
+MultigridTutorialExampleTestFramework::ComputeVector(std::function<double (double, double)> const & func) const {
+    Vector solution{static_cast<Vector::size_type>(mesh_size_) * mesh_size_};
+    for (int j = 0; j < mesh_size_; ++j) {
+        double y = GetY(j);
+        for (int i = 0; i < mesh_size_; ++i) {
             double x = GetX(i);
-            double y = GetX(j);
-            double value = f(x, y);
-            int index = i * mesh_size_ + j;
-            rhs(index) = value;
+            double value = func(x, y);
+            int index = j * mesh_size_ + i;
+            solution(index) = value;
         }
     }
-    return rhs;
+    return solution;
 }
 
 double

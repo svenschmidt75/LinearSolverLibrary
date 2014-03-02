@@ -27,6 +27,8 @@ namespace LinAlg_NS {
         static double nonChunkedParallelDotProduct(Vector const & v1, Vector const & v2);
 
         static double norm(Vector const & v);
+
+        static double LinfError(Vector const & lhs, Vector const & rhs);
     };
 
 } // namespace LinAlg_NS

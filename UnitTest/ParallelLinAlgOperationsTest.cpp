@@ -57,7 +57,7 @@ namespace {
     serialMatrixVectorMultiplication(SparseMatrix2D const & m, Vector const & x) {
         Vector result{x.size()};
         for (IMatrix2D::size_type row = 0; row < x.size(); ++row) {
-            double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, row);
+            double result_row = helper::matrix_vector_mul<Vector>(m, x, row);
             result(row) = result_row;
         }
         return result;
@@ -67,7 +67,7 @@ namespace {
     nonChunkedParallelMatrixVectorMultiplication(SparseMatrix2D const & m, Vector const & x) {
         Vector result{x.size()};
         concurrency::parallel_for(IMatrix2D::size_type{0}, x.size(), [&m, &x, &result](IMatrix2D::size_type row) {
-            double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, row);
+            double result_row = helper::matrix_vector_mul<Vector>(m, x, row);
             result(row) = result_row;
         }, concurrency::static_partitioner());
         return result;
@@ -84,7 +84,7 @@ namespace {
             size_type start_row, end_size;
             std::tie(start_row, end_size) = common_NS::getChunkStartEndIndex(x.size(), size_type{numberOfProcessors}, row);
             for (size_type i = start_row; i < end_size; ++i) {
-                double result_row = LinAlg_NS::helper::matrix_vector_mul<Vector>(m, x, i);
+                double result_row = helper::matrix_vector_mul<Vector>(m, x, i);
                 result(i) = result_row;
             }
         }, concurrency::static_partitioner());
@@ -93,7 +93,7 @@ namespace {
     
     SparseMatrix2D
     nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
-        common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMul: Matrices incompatible");
+        common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "ParallelLinAlgOperationsTest::nonChunkedParallelMatrixMatrixMultiplication: Matrices incompatible");
         auto nrows = lhs.rows();
         auto ncols = rhs.cols();
         SparseMatrix2D result{nrows, ncols};
@@ -145,7 +145,7 @@ namespace {
 
     SparseMatrix2D
     chunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
-        common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMul: Matrices incompatible");
+        common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "ParallelLinAlgOperationsTest::chunkedParallelMatrixMatrixMultiplication: Matrices incompatible");
         auto nrows = lhs.rows();
         auto ncols = rhs.cols();
         SparseMatrix2D result{nrows, ncols};
@@ -429,7 +429,7 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
         bool parallel_result;
         {
             HighResTimer t;
-            parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelChunked(m);
+            parallel_result = helper::matrixIsSymmetricParallelChunked(m);
         }
         CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
     }
@@ -756,7 +756,7 @@ ParallelLinAlgOperationsTest::testNonChunkedMatrixIsSymmetric() {
     bool parallel_result;
     {
         HighResTimer t;
-        parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelNonChunked(m_asymmetric);
+        parallel_result = helper::matrixIsSymmetricParallelNonChunked(m_asymmetric);
     }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
 }
@@ -796,7 +796,7 @@ ParallelLinAlgOperationsTest::testChunkedMatrixIsSymmetric() {
     bool parallel_result;
     {
         HighResTimer t;
-        parallel_result = LinAlg_NS::helper::matrixIsSymmetricParallelChunked(m_asymmetric);
+        parallel_result = helper::matrixIsSymmetricParallelChunked(m_asymmetric);
     }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("symmetry mismatch between serial and parallel version", serial_result, parallel_result);
 }

@@ -25,22 +25,22 @@ public:
 
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil1) {
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (mesh_size * mesh_size), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / ((mesh_size + 1) * (mesh_size + 1)), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil2) {
     framework.InitializeWithStencil2();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (2.0 * (mesh_size * mesh_size)), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (2.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil3) {
     framework.InitializeWithStencil3();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (8.0 * mesh_size * mesh_size), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (8.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil4) {
     framework.InitializeWithStencil4();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (20.0 * mesh_size * mesh_size), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (20.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestGetXCoordinateThrowsForLowerLimitViolation) {
@@ -103,7 +103,21 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionForInnerNodes
     ASSERT_THAT(framework.Solution(x, y), DoubleNear(-0.0462962962962963, tol));
 }
 
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveIsConsistent) {
+    Vector solution = framework.DirectSolve();
+    Vector ax = framework.m_ * solution;
+    Vector rhs = framework.CreateRHS();
+    double error = VectorMath::LinfError(ax, rhs);
+    ASSERT_THAT(error, DoubleNear(0.0, tol));
+
+    solution = framework.CreateExactSolutionVector();
+    ax = framework.m_ * solution;
+    rhs = framework.CreateRHS();
+    error = VectorMath::LinfError(ax, rhs);
+    ASSERT_THAT(error, DoubleNear(0.0, tol));
+}
+
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolve) {
     Vector solution = framework.DirectSolve();
-    ASSERT_THAT(framework.L1Error(solution), DoubleNear(1.0, tol));
+    ASSERT_THAT(framework.LinfError(solution), DoubleNear(1.0, tol));
 }

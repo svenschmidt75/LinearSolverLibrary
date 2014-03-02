@@ -36,6 +36,7 @@ namespace LinAlg_NS {
 
     class LINALG_DECL_SYMBOLS helper {
 
+
         friend class ParallelLinAlgOperationsTest;
 
 

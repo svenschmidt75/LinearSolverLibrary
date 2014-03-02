@@ -329,7 +329,7 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
 }
 
 Matrix2D
-SparseToDense(SparseMatrix2D const & sparse) {
+helper::SparseToDense(SparseMatrix2D const & sparse) {
     Matrix2D dense{sparse.rows(), sparse.cols()};
     for (IMatrix2D::size_type row{0}; row < sparse.rows(); ++row) {
         ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(sparse, row);

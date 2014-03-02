@@ -62,7 +62,9 @@
     <ClCompile Include="MatrixStencilTest.cpp" />
     <ClCompile Include="MultiColorTest.cpp" />
     <ClCompile Include="MultigridTutorialExampleTestFramework.cpp" />
-    <ClCompile Include="MultigridTutorialExampleTestFrameworkTest.cpp" />
+    <ClCompile Include="MultigridTutorialExampleTestFrameworkTest.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="OffshoreTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
