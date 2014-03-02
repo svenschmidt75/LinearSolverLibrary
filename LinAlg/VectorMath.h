@@ -29,6 +29,7 @@ namespace LinAlg_NS {
         static double norm(Vector const & v);
 
         static double LinfError(Vector const & lhs, Vector const & rhs);
+        static double L2Error(Vector const & lhs, Vector const & rhs);
     };
 
 } // namespace LinAlg_NS

@@ -25,22 +25,23 @@ public:
 
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil1) {
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / ((mesh_size + 1) * (mesh_size + 1)), tol));
+    framework.InitializeWithStencil1();
+    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (mesh_size * mesh_size), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil2) {
     framework.InitializeWithStencil2();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (2.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(2.0 / (mesh_size * mesh_size), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil3) {
     framework.InitializeWithStencil3();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (8.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(8.0 / (mesh_size * mesh_size), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestFactorForStencil4) {
     framework.InitializeWithStencil4();
-    ASSERT_THAT(framework.Factor(), DoubleNear(1.0 / (20.0 * (mesh_size + 1) * (mesh_size + 1)), tol));
+    ASSERT_THAT(framework.Factor(), DoubleNear(20.0 / (mesh_size * mesh_size), tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestGetXCoordinateThrowsForLowerLimitViolation) {
@@ -52,15 +53,18 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestGetXCoordinateThrowsForUpp
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test1stGridPointXCoordinate) {
-    ASSERT_THAT(framework.GetX(0), DoubleNear(1.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetX(0), DoubleNear(offset, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test2ndGridPointXCoordinate) {
-    ASSERT_THAT(framework.GetX(1), DoubleNear(2.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetX(1), DoubleNear(offset + 1.0 / mesh_size, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test4thGridPointXCoordinate) {
-    ASSERT_THAT(framework.GetX(4), DoubleNear(5.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetX(4), DoubleNear(offset + 4.0 / mesh_size, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestGetYCoordinateThrowsForLowerLimitViolation) {
@@ -72,15 +76,18 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestGetYCoordinateThrowsForUpp
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test1stGridPointYCoordinate) {
-    ASSERT_THAT(framework.GetY(0), DoubleNear(1.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetY(0), DoubleNear(offset, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test2ndGridPointYCoordinate) {
-    ASSERT_THAT(framework.GetY(1), DoubleNear(2.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetY(1), DoubleNear(offset + 1.0 / mesh_size, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, Test4thGridPointYCoordinate) {
-    ASSERT_THAT(framework.GetY(4), DoubleNear(5.0 / (mesh_size + 1), tol));
+    double offset = 1.0 / (2.0 * mesh_size);
+    ASSERT_THAT(framework.GetY(4), DoubleNear(offset + 4.0 / mesh_size, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestThatRightHandSideAtBoundaryIsZero) {
@@ -100,7 +107,7 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionAtBoundaryIsZ
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionForInnerNodes) {
     double x = framework.GetX(3);
     double y = framework.GetY(2);
-    ASSERT_THAT(framework.Solution(x, y), DoubleNear(-0.0462962962962963, tol));
+    ASSERT_THAT(framework.Solution(x, y), DoubleNear(-0.046856250000000002, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveIsConsistent) {
@@ -109,15 +116,22 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveIsConsistent) {
     Vector rhs = framework.CreateRHS();
     double error = VectorMath::LinfError(ax, rhs);
     ASSERT_THAT(error, DoubleNear(0.0, tol));
+}
 
-    solution = framework.CreateExactSolutionVector();
-    ax = framework.m_ * solution;
-    rhs = framework.CreateRHS();
-    error = VectorMath::LinfError(ax, rhs);
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveL2Error) {
+    Vector solution = framework.DirectSolve();
+    Vector ax = framework.m_ * solution;
+    Vector rhs = framework.CreateRHS();
+    double error = VectorMath::L2Error(ax, rhs);
     ASSERT_THAT(error, DoubleNear(0.0, tol));
 }
 
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolve) {
+    // Note: The result is not exact as the mesh spacing is rather coarse,
+    // but we compare against the exact solution.
+    // Increasing the mesh size will show that the error is gradually
+    // reduced though.
     Vector solution = framework.DirectSolve();
-    ASSERT_THAT(framework.LinfError(solution), DoubleNear(1.0, tol));
+    double tol = 1E-5;
+    ASSERT_THAT(framework.LinfError(solution), DoubleNear(0.0416835, tol));
 }

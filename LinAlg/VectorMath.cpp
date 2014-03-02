@@ -92,4 +92,16 @@ VectorMath::LinfError(Vector const & lhs, Vector const & rhs) {
     return abs;
 }
 
+double
+VectorMath::L2Error(Vector const & lhs, Vector const & rhs) {
+    common_NS::reporting::checkConditional(lhs.size() == rhs.size(), "VectorMath::LinfError: Incompatible vectors");
+    double sum_squares = 0;
+    for (Vector::size_type index{ 0 }; index < lhs.size(); ++index) {
+        double delta = lhs(index) - rhs(index);
+        sum_squares += delta * delta;
+    }
+    sum_squares = std::sqrt(sum_squares);
+    return sum_squares;
+}
+
 } // namespace LinAlg_NS

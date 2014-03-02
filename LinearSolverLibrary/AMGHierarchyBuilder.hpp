@@ -71,6 +71,8 @@ namespace LinearSolverLibrary_NS {
             amg_levels_.emplace_back();
             amg_levels_.emplace_back();
             current_level_index_ = 0;
+
+            // TODO SS: use MoveToNextLevel
             int next_level_index = current_level_index_ + 1;
 
             AMGLevel * current_level = &amg_levels_[current_level_index_];

@@ -9,6 +9,14 @@
 
 
 class MultigridTutorialExampleTestFramework {
+
+
+    friend class MultigridTutorialExampleTestFrameworkTest_TestExactSolutionForInnerNodes_Test;
+    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveIsConsistent_Test;
+    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveL2Error_Test;
+    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveLinfError_Test;
+
+
 public:
     MultigridTutorialExampleTestFramework();
     MultigridTutorialExampleTestFramework(int mesh_size);
@@ -24,7 +32,9 @@ public:
     double            f(double x, double y) const;
     double            Solution(double x, double y) const;
     LinAlg_NS::Vector DirectSolve() const;
+    LinAlg_NS::Vector SolveWithCG() const;
     double            LinfError(Vector const & in) const;
+    double            L2Error(Vector const & in) const;
 
     // to facilitate unit testing
     double            Factor() const;
@@ -32,8 +42,8 @@ public:
     LinAlg_NS::Vector CreateExactSolutionVector() const;
     LinAlg_NS::Vector ComputeVector(std::function<double(double, double)> const & func) const;
 
-public:
+private:
     LinAlg_NS::SparseMatrix2D m_;
     int                       mesh_size_;
-    double                    factor_;
+    double                    h_;
 };

@@ -23,8 +23,7 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil1() {
               -1,  4, -1,
                0, -1,  0;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-//    factor_ = 1.0 / (mesh_size_ * mesh_size_);
-    factor_ = 1.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
+    h_ = 1.0 / (mesh_size_ * mesh_size_);
 }
 
 void
@@ -34,8 +33,7 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil2() {
                 0,  4,  0,
                -1,  0, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-//    factor_ = 1.0 / (2.0 * mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (2.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
+    h_ = 2.0 / (mesh_size_ * mesh_size_);
 }
 
 void
@@ -45,8 +43,7 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil3() {
                -1,  8, -1,
                -1, -1, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-//    factor_ = 1.0 / (8.0 * mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (8.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
+    h_ = 8.0 / (mesh_size_ * mesh_size_);
 }
 
 void
@@ -56,24 +53,25 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil4() {
                -4, 20, -4,
                -1, -4, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-//    factor_ = 1.0 / (20.0 * mesh_size_ * mesh_size_);
-    factor_ = 1.0 / (20.0 * (mesh_size_ + 1) * (mesh_size_ + 1));
+    h_ = 20.0 / (mesh_size_ * mesh_size_);
 }
 
 double
 MultigridTutorialExampleTestFramework::GetX(int i) const {
     common_NS::reporting::checkUppderBound(i, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(i, 0);
-    double h = 1.0 / (mesh_size_ + 1);
-    return (i + 1) * h;
+    double h = 1.0 / mesh_size_;
+    double offset = 1.0 / (2.0 * mesh_size_);
+    return offset + i * h;
 }
 
 double
 MultigridTutorialExampleTestFramework::GetY(int j) const {
     common_NS::reporting::checkUppderBound(j, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(j, 0);
-    double h = 1.0 / (mesh_size_ + 1);
-    return (j + 1) * h;
+    double h = 1.0 / mesh_size_;
+    double offset = 1.0 / (2.0 * mesh_size_);
+    return offset + j * h;
 }
 
 double
@@ -81,19 +79,22 @@ MultigridTutorialExampleTestFramework::f(double x, double y) const {
     double term1 = (1.0 - 6.0 * x * x) * y * y * (1.0 - y * y);
     double term2 = (1.0 - 6.0 * y * y) * x * x * (1.0 - x * x);
     double result = 2.0 * (term1 + term2);
-    return result * factor_;
+    return result * h_;
 }
 
 double
 MultigridTutorialExampleTestFramework::Solution(double x, double y) const {
-    double result = x * x * ( 1.0 - x * x) * y * y * (y * y - 1.0);
+    double x2 = x * x;
+    double y2 = y * y;
+    double term1 = 1.0 - x2;
+    double term2 = y2 - 1.0;
+    double result = x2 * term1 * y2 * term2;
     return result;
 }
 
 Vector
 MultigridTutorialExampleTestFramework::DirectSolve() const {
     Matrix2D dense = helper::SparseToDense(m_);
-    dense.print();
     LUDecomposition ludecomp;
     bool success = ludecomp.decompose(dense);
     common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::DirectSolve: LU decomposition failed");
@@ -102,10 +103,28 @@ MultigridTutorialExampleTestFramework::DirectSolve() const {
     return x;
 }
 
+Vector
+MultigridTutorialExampleTestFramework::SolveWithCG() const {
+    Vector rhs = CreateRHS();
+    Vector x{rhs.size()};
+    SparseMatrix2D::size_type iterations;
+    double tol;
+    bool success;
+    std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m_, rhs, 10000);
+    common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::SolveWithCG: CG did not converge");
+    return x;
+}
+
 double
 MultigridTutorialExampleTestFramework::LinfError(Vector const & in) const {
     Vector solution = CreateExactSolutionVector();
     return VectorMath::LinfError(in, solution);
+}
+
+double
+MultigridTutorialExampleTestFramework::L2Error(Vector const & in) const {
+    Vector solution = CreateExactSolutionVector();
+    return VectorMath::L2Error(in, solution);
 }
 
 Vector
@@ -139,5 +158,5 @@ MultigridTutorialExampleTestFramework::ComputeVector(std::function<double (doubl
 
 double
 MultigridTutorialExampleTestFramework::Factor() const {
-    return factor_;
+    return h_;
 }

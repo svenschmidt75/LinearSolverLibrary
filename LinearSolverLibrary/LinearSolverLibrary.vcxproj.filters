@@ -55,9 +55,6 @@
     <ClCompile Include="VariableSet.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGStandardCoarsening.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
     <ClCompile Include="VariableCategorizer.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
@@ -142,9 +139,6 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="VariableSet.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
-    <ClInclude Include="AMGStandardCoarsening.h">
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="IVariableSet.h">
