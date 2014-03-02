@@ -26,10 +26,13 @@ public:
     double GetX(int i) const;
     double GetY(int j) const;
 
-    double f(double x, double y) const;
+    double            f(double x, double y) const;
+    double            Solution(double x, double y) const;
+    LinAlg_NS::Vector DirectSolve() const;
 
     // to facilitate unit testing
-    double Factor() const;
+    double            Factor() const;
+    LinAlg_NS::Vector CreateRHS() const;
 
 private:
     LinAlg_NS::SparseMatrix2D m_;

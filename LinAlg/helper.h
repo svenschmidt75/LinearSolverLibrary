@@ -122,6 +122,8 @@ namespace LinAlg_NS {
             return value;
         }
 
+        static Matrix2D SparseToDense(SparseMatrix2D const & sparse);
+
     private:
         static SparseMatrix2D  transposeSerial(SparseMatrix2D const & m);
         static SparseMatrix2D  transposeParallelNonChunked(SparseMatrix2D const & m);

@@ -83,9 +83,27 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, Test4thGridPointYCoordinate) {
     ASSERT_THAT(framework.GetY(4), DoubleNear(5.0 / (mesh_size + 1), tol));
 }
 
-TEST_F(MultigridTutorialExampleTestFrameworkTest, TestThatRightHandSizeAtBoundaryIsZero) {
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestThatRightHandSideAtBoundaryIsZero) {
     ASSERT_THAT(framework.f(0, 0), DoubleNear(0.0, tol));
     ASSERT_THAT(framework.f(0, 1), DoubleNear(0.0, tol));
     ASSERT_THAT(framework.f(1, 1), DoubleNear(0.0, tol));
     ASSERT_THAT(framework.f(1, 0), DoubleNear(0.0, tol));
+}
+
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionAtBoundaryIsZero) {
+    ASSERT_THAT(framework.Solution(0, 0), DoubleNear(0.0, tol));
+    ASSERT_THAT(framework.Solution(0, 1), DoubleNear(0.0, tol));
+    ASSERT_THAT(framework.Solution(1, 1), DoubleNear(0.0, tol));
+    ASSERT_THAT(framework.Solution(1, 0), DoubleNear(0.0, tol));
+}
+
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionForInnerNodes) {
+    double x = framework.GetX(3);
+    double y = framework.GetY(2);
+    ASSERT_THAT(framework.Solution(x, y), DoubleNear(-0.0462962962962963, tol));
+}
+
+TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolve) {
+    Vector solution = framework.DirectSolve();
+    ASSERT_THAT(framework.L1Error(solution), DoubleNear(1.0, tol));
 }

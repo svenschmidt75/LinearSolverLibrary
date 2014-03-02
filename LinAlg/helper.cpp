@@ -328,6 +328,23 @@ helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     return tmp;
 }
 
+Matrix2D
+SparseToDense(SparseMatrix2D const & sparse) {
+    Matrix2D dense{sparse.rows(), sparse.cols()};
+    for (IMatrix2D::size_type row{0}; row < sparse.rows(); ++row) {
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(sparse, row);
+        ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+        while (columnIterator) {
+            auto column = columnIterator.column();
+            double value = sparse(row, column);
+            if (value)
+                dense(row, column) = value;
+            ++columnIterator;
+        }
+    }
+    return dense;
+}
+
 // create explicit template instantiations
 template LINALG_DECL_SYMBOLS double helper::get_value(Matrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);
 template LINALG_DECL_SYMBOLS double helper::get_value(SparseMatrix2D const & m, IMatrix2D::size_type row, IMatrix2D::size_type col);

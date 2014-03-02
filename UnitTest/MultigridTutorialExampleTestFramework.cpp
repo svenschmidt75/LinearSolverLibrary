@@ -4,6 +4,12 @@
 
 #include "LinAlg/MatrixStencil.hpp"
 
+#include "LinearSolverLibrary/LUDecomposition.h"
+
+
+using namespace LinAlg_NS;
+using namespace LinearSolverLibrary_NS;
+
 
 MultigridTutorialExampleTestFramework::MultigridTutorialExampleTestFramework() {}
 
@@ -75,6 +81,41 @@ MultigridTutorialExampleTestFramework::f(double x, double y) const {
     double term22 = term21 * x * x * (1.0 - x * x);
     double result = 2.0 * (term12 + term22);
     return result * factor_;
+}
+
+double
+MultigridTutorialExampleTestFramework::Solution(double x, double y) const {
+    double term11 = x * x;
+    double term12 = y * y;
+    double term21 = term11 - term11 * term11;
+    double term22 = term12 * term12 - term12;
+    return term21 * term22;
+}
+
+Vector
+MultigridTutorialExampleTestFramework::DirectSolve() const {
+    LUDecomposition ludecomp;
+    Matrix2D dense = helper::SparseToDense(m_);
+    bool success = ludecomp.decompose(dense);
+    common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::DirectSolve: LU decomposition failed");
+    Vector rhs = CreateRHS();
+    Vector x = ludecomp.solve(rhs);
+    return x;
+}
+
+Vector
+MultigridTutorialExampleTestFramework::CreateRHS() const {
+    Vector rhs{static_cast<Vector::size_type>(mesh_size_) * mesh_size_};
+    for (int i = 0; i < mesh_size_; ++i) {
+        for (int j = 0; j < mesh_size_; ++j) {
+            double x = GetX(i);
+            double y = GetX(j);
+            double value = f(x, y);
+            int index = i * mesh_size_ + j;
+            rhs(index) = value;
+        }
+    }
+    return rhs;
 }
 
 double
