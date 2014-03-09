@@ -13,10 +13,19 @@
 #include "AMGHierarchyBuilder.hpp"
 
 
+// forward declarations
+class AMGSolverTest_TestBasicSetup_Test;
+
+
 namespace LinearSolverLibrary_NS {
 
     template<typename AMGPolicy>
     class AMGSolver {
+
+
+        friend class AMGSolverTest_TestBasicSetup_Test;
+
+
     public:
         AMGSolver(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, IAMGCycle const & cycle_scheme, AMGMonitor & monitor)
             :
@@ -25,12 +34,28 @@ namespace LinearSolverLibrary_NS {
             cycle_scheme_{cycle_scheme},
             monitor_{monitor} {
 
-            // setup the multigrid hierarchy
-            AMGHierarchyBuilder<AMGPolicy> amg_builder{monitor_};
-            amg_levels_ = amg_builder.build(m);
-            cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
+            BuildGalerkinOperatorHierarchy();
+            BuildGridHierarchy();
+            LUDecompositionForLastLevelGalerkinOperator();
+        }
 
-            // do LU decomposition for last level
+        void
+        BuildGridHierarchy() {
+            cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
+        }
+
+        void
+        BuildGalerkinOperatorHierarchy() {
+            AMGHierarchyBuilder<AMGPolicy> amg_builder{monitor_};
+            amg_levels_ = amg_builder.build(m_);
+        }
+
+        void
+        LUDecompositionForLastLevelGalerkinOperator() {
+            auto const & last_level = amg_levels_[amg_levels_.size() - 1];
+            Matrix2D dense = helper::SparseToDense(last_level.m);
+            bool success = lu_.decompose(dense);
+            common_NS::reporting::checkConditional(success, "AMGSolver::LUDecompositionForLastLevelGalerkinOperator: LU decomposition failed");
         }
 
         LinAlg_NS::Vector
