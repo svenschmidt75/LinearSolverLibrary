@@ -23,10 +23,10 @@ namespace LinearSolverLibrary_NS {
         AMGVWCycleBase(short gamma);
 
         // FROM IAMGCycle
-        void initialize(short max_level) const;
-        int  currentLevel() const;
-        void setNextLevel() const;
-        void print() const;
+        void initialize(short max_level) const override;
+        int  currentLevel() const override;
+        void setNextLevel() const override;
+        void print() const override;
 
     private:
         void generateLevel(int current_level) const;

@@ -46,13 +46,11 @@ namespace LinAlg_NS {
         UHMatrix & operator=(UHMatrix && in);
 
         // FROM IMatrix2D
-        size_type rows() const;
-        size_type cols() const;
-        double    operator()(size_type row, size_type col) const;
-        double &  operator()(size_type row, size_type col);
-
-        // Local methods
-        void print() const;
+        size_type rows() const override;
+        size_type cols() const override;
+        double    operator()(size_type row, size_type col) const override;
+        double &  operator()(size_type row, size_type col) override;
+        void      print() const override;
 
     private:
         // to provide exception-safe copy-assignment

@@ -30,8 +30,8 @@ namespace LinearSolverLibrary_NS {
         VariableInfluenceAccessor(AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
 
         // FROM VariableInfluenceAccessor
-        std::unique_ptr<IVariableSet> GetVariableInfluencedUndefined(size_type variable) const;
-        std::unique_ptr<IVariableSet> GetVariableInfluencedFine(size_type variable) const;
+        std::unique_ptr<IVariableSet> GetVariableInfluencedUndefined(size_type variable) const override;
+        std::unique_ptr<IVariableSet> GetVariableInfluencedFine(size_type variable) const override;
 
     private:
         AMGStandardCoarseningStrengthPolicy const & strength_policy_;
