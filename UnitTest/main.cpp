@@ -31,7 +31,6 @@
 #include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
-#include "AMGSolverTest.h"
 
 
 

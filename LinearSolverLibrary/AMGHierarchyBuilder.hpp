@@ -20,7 +20,11 @@ namespace LinearSolverLibrary_NS {
     template<typename AMGPolicy>
     class AMGHierarchyBuilder {
     public:
-        AMGHierarchyBuilder(AMGMonitor const & monitor) : monitor_{monitor} {}
+        AMGHierarchyBuilder(AMGMonitor const & monitor)
+            :
+            monitor_{monitor},
+            current_level_index_{0} {}
+
         AMGHierarchyBuilder(AMGHierarchyBuilder const &) = delete;
         AMGHierarchyBuilder & operator=(AMGHierarchyBuilder const &) = delete;
 
@@ -42,11 +46,11 @@ namespace LinearSolverLibrary_NS {
                 // do 1st level
                 Handle1stLevel(amg_policy, m);
                 MoveToNextLevel();
-                while (SolveWithDirectMethod(amg_levels_[current_level_index_].m, max_size) == false) {
+                while (SolveWithDirectMethod(GetCurrentLevel()->m, max_size) == false) {
                     amg_levels_.emplace_back();
-                    AMGLevel * current_level = &amg_levels_[current_level_index_];
+                    AMGLevel * current_level = GetCurrentLevel();
+                    AMGLevel * next_level = GetNextLevel();
                     MoveToNextLevel();
-                    AMGLevel * next_level = &amg_levels_[current_level_index_];
                     amg_policy.generate(current_level->m);
                     current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
                     next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
@@ -54,6 +58,16 @@ namespace LinearSolverLibrary_NS {
                 }
             }
             return amg_levels_;
+        }
+
+        AMGLevel *
+        GetCurrentLevel() const {
+            return &amg_levels_[current_level_index_];
+        }
+
+        AMGLevel *
+        GetNextLevel() const {
+            return &amg_levels_[current_level_index_ + 1];
         }
 
         bool
@@ -70,14 +84,8 @@ namespace LinearSolverLibrary_NS {
         Handle1stLevel(AMGPolicy & amg_policy, SparseMatrix2D const & m) const {
             amg_levels_.emplace_back();
             amg_levels_.emplace_back();
-            current_level_index_ = 0;
-
-            // TODO SS: use MoveToNextLevel
-            int next_level_index = current_level_index_ + 1;
-
-            AMGLevel * current_level = &amg_levels_[current_level_index_];
-            AMGLevel * next_level = &amg_levels_[next_level_index];
-
+            AMGLevel * current_level = GetCurrentLevel();
+            AMGLevel * next_level = GetNextLevel();
             amg_policy.generate(m);
             current_level->m = m;
             current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
