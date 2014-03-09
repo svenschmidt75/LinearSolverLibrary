@@ -14,7 +14,7 @@
 
 
 // forward declarations
-class AMGSolverTest_TestBasicSetup_Test;
+class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
 
 
 namespace LinearSolverLibrary_NS {
@@ -23,7 +23,7 @@ namespace LinearSolverLibrary_NS {
     class AMGSolver {
 
 
-        friend class AMGSolverTest_TestBasicSetup_Test;
+        friend class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
 
 
     public:

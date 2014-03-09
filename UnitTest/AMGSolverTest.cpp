@@ -12,7 +12,7 @@ using namespace LinearSolverLibrary_NS;
 using namespace testing;
 
 
-class AMGSolverTest : public Test {
+class BasicAMGSolverTest : public Test {
 public:
     void SetUp() override {
         MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
@@ -30,12 +30,34 @@ public:
 };
 
 
-TEST_F(AMGSolverTest, TestBasicSetup) {
+TEST_F(BasicAMGSolverTest, TestExpectedGridHierarchyDepth) {
     Vector b;
     AMGVCycle cycle;
     AMGMonitor monitor;
     monitor.direct_solver_threshold_ = 3;
 
     AMGSolver<AMGDirectInterpolationPolicy> amg_solver{m_, b, cycle, monitor};
+
     ASSERT_THAT(amg_solver.amg_levels_.size(), Eq(3));
+}
+
+TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
+    Vector b;
+    AMGVCycle cycle;
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold_ = 3;
+
+    AMGSolver<AMGDirectInterpolationPolicy> amg_solver{ m_, b, cycle, monitor };
+
+
+    // test all the cycle indices!
+    std::vector<int> cycle_levels;
+    do {
+    } while (cycle.setNextLevel());
+
+
+    ASSERT_THAT(cycle., ElementsAre(DoubleNear(1.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
+
+
+
 }
