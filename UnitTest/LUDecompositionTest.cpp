@@ -663,3 +663,25 @@ Permutation P:
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(2), -98.0 / 17.0));
     CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(3), -233.0 / 17.0));
 }
+
+void
+LUDecompositionTest::Test1by1_1() {
+    // Extreme case test that may happen with AMG
+    Matrix2D A(1, 1);
+    A(0, 0) = -1;
+
+    LUDecomposition ludecomp;
+    bool success = ludecomp.decompose(A);
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", success);
+
+    auto const LU = ludecomp.rearrangeDueToPivoting();
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(LU(0, 0), -1.0));
+
+
+    // solve for rhs
+    Vector rhs(1);
+    rhs(0) = 3;
+    Vector x = ludecomp.solve(rhs);
+
+    CPPUNIT_ASSERT_MESSAGE("error in LU decomposition", almostEqual(x(0), -3.0 / 1.0));
+}

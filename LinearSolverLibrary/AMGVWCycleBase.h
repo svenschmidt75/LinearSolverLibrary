@@ -23,21 +23,21 @@ namespace LinearSolverLibrary_NS {
         AMGVWCycleBase(short gamma);
 
         // FROM IAMGCycle
-        void initialize(short max_level) const override;
-        int  currentLevel() const override;
-        void setNextLevel() const override;
-        void print() const override;
-        common_NS::InputIterator<int> cbegin() const override;
-        common_NS::InputIterator<int> cend() const override;
+        void     initialize(short max_level) const override;
+        int      currentLevel() const override;
+        void     setNextLevel() const override;
+        void     print() const override;
+        iterator begin() const override;
+        iterator end() const override;
 
     private:
         void generateLevel(int current_level) const;
 
     private:
-        mutable std::vector<int> levels_;
-        mutable size_t           levels_index_;
-        mutable int              max_depth_;
-        short                    gamma_;
+        mutable Type_t levels_;
+        mutable size_t levels_index_;
+        mutable int    max_depth_;
+        short          gamma_;
     };
 
 } // LinearSolverLibrary_NS

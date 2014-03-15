@@ -49,15 +49,9 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
 
     AMGSolver<AMGDirectInterpolationPolicy> amg_solver{ m_, b, cycle, monitor };
 
-
     // test all the cycle indices!
-//     std::vector<int> cycle_levels;
-//     do {
-//     } while (cycle.setNextLevel());
-// 
-// 
-//     ASSERT_THAT(cycle., ElementsAre(DoubleNear(1.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
+    std::vector<int> cycle_levels;
+    cycle_levels.assign(std::cbegin(cycle), std::cend(cycle));
 
-
-
+    ASSERT_THAT(cycle_levels, ElementsAre(0, 1, 2, 3, 2, 1, 0));
 }

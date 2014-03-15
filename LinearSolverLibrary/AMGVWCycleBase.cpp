@@ -67,55 +67,12 @@ AMGVWCycleBase::print() const {
     std::cout << std::endl;
 }
 
-namespace {
-
-    class IteratorLogic : public common_NS::IInputIteratorLogic<int> {
-    public:
-        IteratorLogic(std::vector<int> const & levels, std::vector<int>::const_iterator position)
-            :
-            levels_{levels},
-            position_{position} {}
-
-        IteratorLogic & operator=(IteratorLogic const &) = delete;
-
-        // FROM IInputIteratorLogic<int>
-        int get() const {
-            return 0;
-        }
-
-        void next() {
-        }
-        
-        bool equal(IInputIteratorLogic const &) const{
-            return false;
-        }
-        
-        std::unique_ptr<IInputIteratorLogic<int>> clone() const {
-            return nullptr;
-        }
-
-    private:
-        std::vector<int> const &         levels_;
-        std::vector<int>::const_iterator position_;
-    };
-
+AMGVWCycleBase::iterator
+AMGVWCycleBase::begin() const {
+    return std::cbegin(levels_);
 }
 
-namespace {
-
-    template<typename U, typename T>
-    std::unique_ptr<U> unique_pointer_cast(std::unique_ptr<T> && in) {
-        return std::unique_ptr<U>(std::move(in));
-    }
-
-}
-
-common_NS::InputIterator<int>
-AMGVWCycleBase::cbegin() const {
-    return common_NS::InputIterator<int>{std::make_unique<IteratorLogic>(levels_, std::cbegin(levels_))};
-}
-
-common_NS::InputIterator<int>
-AMGVWCycleBase::cend() const {
-    return common_NS::InputIterator<int>(std::make_unique<IteratorLogic>(levels_, std::cend(levels_)));
+AMGVWCycleBase::iterator
+AMGVWCycleBase::end() const {
+    return std::cend(levels_);
 }

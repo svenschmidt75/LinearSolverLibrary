@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <map>
 #include <queue>
+#include <algorithm>
 
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>

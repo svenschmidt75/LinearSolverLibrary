@@ -21,6 +21,7 @@ class LUDecompositionTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(Test4by4_2);
     CPPUNIT_TEST(Test4by4_3);
     CPPUNIT_TEST(Test4by4_4);
+    CPPUNIT_TEST(Test1by1_1);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -37,4 +38,5 @@ protected:
     void Test4by4_2();
     void Test4by4_3();
     void Test4by4_4();
+    void Test1by1_1();
 };
