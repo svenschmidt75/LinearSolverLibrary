@@ -51,12 +51,12 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
 
 
     // test all the cycle indices!
-    std::vector<int> cycle_levels;
-    do {
-    } while (cycle.setNextLevel());
-
-
-    ASSERT_THAT(cycle., ElementsAre(DoubleNear(1.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
+//     std::vector<int> cycle_levels;
+//     do {
+//     } while (cycle.setNextLevel());
+// 
+// 
+//     ASSERT_THAT(cycle., ElementsAre(DoubleNear(1.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol), DoubleNear(0.0, tol)));
 
 
 

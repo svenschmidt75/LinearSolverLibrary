@@ -27,6 +27,8 @@ namespace LinearSolverLibrary_NS {
         int  currentLevel() const override;
         void setNextLevel() const override;
         void print() const override;
+        common_NS::InputIterator<int> cbegin() const override;
+        common_NS::InputIterator<int> cend() const override;
 
     private:
         void generateLevel(int current_level) const;
