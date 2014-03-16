@@ -40,17 +40,6 @@ AMGVWCycleBase::generateLevel(int current_level) const {
     }
 }
 
-int
-AMGVWCycleBase::currentLevel() const {
-    return levels_[levels_index_];
-}
-
-void
-AMGVWCycleBase::setNextLevel() const {
-    common_NS::reporting::checkUppderBound(levels_index_ + 1, levels_.size());
-    ++levels_index_;
-}
-
 void
 AMGVWCycleBase::print() const {
     std::cout << std::endl;

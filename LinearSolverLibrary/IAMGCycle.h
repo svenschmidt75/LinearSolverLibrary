@@ -22,8 +22,6 @@ namespace LinearSolverLibrary_NS {
         virtual ~IAMGCycle() {}
 
         virtual void     build(short max_level) = 0;
-        virtual int      currentLevel() const = 0;
-        virtual void     setNextLevel() const = 0;
         virtual void     print() const = 0;
         virtual iterator begin() const = 0;
         virtual iterator end() const = 0;

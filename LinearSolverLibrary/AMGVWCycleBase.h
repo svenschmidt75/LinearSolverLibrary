@@ -24,8 +24,6 @@ namespace LinearSolverLibrary_NS {
 
         // FROM IAMGCycle
         void     build(short max_level) override;
-        int      currentLevel() const override;
-        void     setNextLevel() const override;
         void     print() const override;
         iterator begin() const override;
         iterator end() const override;

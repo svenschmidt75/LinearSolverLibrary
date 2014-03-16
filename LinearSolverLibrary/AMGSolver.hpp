@@ -61,45 +61,49 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::Vector
         solve(LinAlg_NS::Vector const & x_initial) const {
             using size_type = IMatrix2D::size_type;
-            size_type level = 0;
-            size_type prev_level = -1;
-            size_type max_level = amg_levels_.size() - 1;
-            amg_levels_[0].x_ = x_initial;
-            Vector f{b};
+            amg_levels_[0].x = x_initial;
+            Vector f{b_};
+            Vector x{x_initial};
 
-            short direction = 1;
-            do {
-                level = cycle_scheme.currentLevel();
-                short direction = level - prev_level;
-                auto & amg_level = amg_levels_[level];
-                if (level == max_level) {
+            auto cycle_scheme_it = std::begin(cycle_scheme_);
+            auto cycle_scheme_end_it = std::end(cycle_scheme_);
+            int grid_level{0};
+            int prev_grid_level{0};
+            int max_level{static_cast<int>(amg_levels_.size() - 1)};
+
+            short direction{1};
+            while (cycle_scheme_it != cycle_scheme_end_it) {
+                grid_level = *cycle_scheme_it;
+                short direction = grid_level - prev_grid_level;
+                auto & amg_level = amg_levels_[grid_level];
+                if (grid_level == max_level) {
                     // solve directly via LU decomposition
-                    amg_level.x_ = LUSolve(amg_level.A_, f);
-                    prev_level = level;
-                    cycle_scheme.setNextLevel();
+                    amg_level.x = lu_.solve(f);
+                    prev_grid_level = grid_level;
+                    ++cycle_scheme_it;
                     continue;
                 }
-                x = amg_level.x_;
+                x = amg_level.x;
                 if (direction > 0) {
                     // restrict, move to next coarser level
-                    x = pre_smooth(amg_level.A_, f, x);
-                    Vector r_h = f - amg_level.A_ * x;
-                    Vector r_2h = amg_level.restrictor * r_h;
+                    //                    x = pre_smooth(amg_level.m, f, x);
+                    Vector r_h = f - amg_level.m * x;
+                    Vector r_2h = (*amg_level.restrictor) * r_h;
                     f = r_2h;
-                    cycle_scheme.setNextLevel();
-                    prev_level = level;
+                    prev_grid_level = grid_level;
+                    ++cycle_scheme_it;
                     continue;
                 }
                 else {
                     // interpolate, i.e. move to next finer level
-                    Vector e_h = amg_levels_[level - 1].interpolator * x;
-                    x = amg_levels_[level - 1].x + e_h;
-                    x = post_smooth(amg_level.A_, f, x);
-                    cycle_scheme.setNextLevel();
-                    prev_level = level;
+                    Vector e_h = *(amg_levels_[grid_level - 1].interpolator) * x;
+                    x = amg_levels_[grid_level - 1].x + e_h;
+                    //                    x = post_smooth(amg_level.m, f, x);
+                    prev_grid_level = grid_level;
+                    ++cycle_scheme_it;
                     continue;
                 }
-            } while (cycle_scheme.next());
+            }
             return x;
         }
 
@@ -112,7 +116,7 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::Vector const &         b_;
         AMGCycleScheme                    cycle_scheme_;
         AMGMonitor &                      monitor_;
-        std::vector<AMGLevel>             amg_levels_;
+        mutable std::vector<AMGLevel>     amg_levels_;
         LUDecomposition                   lu_;
     };
     
