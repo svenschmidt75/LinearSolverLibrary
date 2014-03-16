@@ -15,23 +15,23 @@
 
 // forward declarations
 class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
+class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
 
 
 namespace LinearSolverLibrary_NS {
 
-    template<typename AMGPolicy>
+    template<typename AMGPolicy, typename AMGCycleScheme>
     class AMGSolver {
 
 
         friend class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
-
+        friend class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
 
     public:
-        AMGSolver(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, IAMGCycle const & cycle_scheme, AMGMonitor & monitor)
+        AMGSolver(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, AMGMonitor & monitor)
             :
             m_{m},
             b_{b},
-            cycle_scheme_{cycle_scheme},
             monitor_{monitor} {
 
             BuildGalerkinOperatorHierarchy();
@@ -41,7 +41,7 @@ namespace LinearSolverLibrary_NS {
 
         void
         BuildGridHierarchy() {
-            cycle_scheme_.initialize(static_cast<short>(amg_levels_.size()));
+            cycle_scheme_.build(static_cast<short>(amg_levels_.size()));
         }
 
         void
@@ -60,6 +60,7 @@ namespace LinearSolverLibrary_NS {
 
         LinAlg_NS::Vector
         solve(LinAlg_NS::Vector const & x_initial) const {
+            using size_type = IMatrix2D::size_type;
             size_type level = 0;
             size_type prev_level = -1;
             size_type max_level = amg_levels_.size() - 1;
@@ -109,7 +110,7 @@ namespace LinearSolverLibrary_NS {
     private:
         LinAlg_NS::SparseMatrix2D const & m_;
         LinAlg_NS::Vector const &         b_;
-        IAMGCycle const &                 cycle_scheme_;
+        AMGCycleScheme                    cycle_scheme_;
         AMGMonitor &                      monitor_;
         std::vector<AMGLevel>             amg_levels_;
         LUDecomposition                   lu_;

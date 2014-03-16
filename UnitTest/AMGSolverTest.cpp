@@ -32,26 +32,43 @@ public:
 
 TEST_F(BasicAMGSolverTest, TestExpectedGridHierarchyDepth) {
     Vector b;
-    AMGVCycle cycle;
     AMGMonitor monitor;
     monitor.direct_solver_threshold_ = 3;
 
-    AMGSolver<AMGDirectInterpolationPolicy> amg_solver{m_, b, cycle, monitor};
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
     ASSERT_THAT(amg_solver.amg_levels_.size(), Eq(3));
 }
 
 TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
     Vector b;
-    AMGVCycle cycle;
     AMGMonitor monitor;
     monitor.direct_solver_threshold_ = 3;
 
-    AMGSolver<AMGDirectInterpolationPolicy> amg_solver{ m_, b, cycle, monitor };
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
     // test all the cycle indices!
     std::vector<int> cycle_levels;
-    cycle_levels.assign(std::cbegin(cycle), std::cend(cycle));
+    cycle_levels.assign(std::cbegin(amg_solver.cycle_scheme_), std::cend(amg_solver.cycle_scheme_));
 
     ASSERT_THAT(cycle_levels, ElementsAre(0, 1, 2, 3, 2, 1, 0));
+}
+
+TEST_F(BasicAMGSolverTest, TestVSolve) {
+    Vector b{3};
+    b(0) = 1;
+    b(1) = 1;
+    b(2) = 1;
+
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold_ = 3;
+
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+
+    Vector x{3};
+    x(0) = 0;
+    x(1) = 0;
+    x(2) = 0;
+    x = amg_solver.solve(x);
+
 }

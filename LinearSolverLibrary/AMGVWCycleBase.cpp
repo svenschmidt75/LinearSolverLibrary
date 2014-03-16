@@ -18,7 +18,7 @@ AMGVWCycleBase::AMGVWCycleBase(short gamma)
 }
 
 void
-AMGVWCycleBase::initialize(short max_level) const {
+AMGVWCycleBase::build(short max_level) {
     common_NS::reporting::checkLowerBound(max_level, static_cast<short>(1));
     max_depth_ = max_level;
     levels_.push_back(0);
