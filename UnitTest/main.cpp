@@ -27,16 +27,12 @@
 #include "OffshoreTest.h"
 #include "FIDAP_EX5_Test.h"
 #include "ParallelLinAlgOperationsTest.h"
-#include "AMGWCycleTest.h"
-#include "AMGVCycleTest.h"
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
 
 
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGVCycleTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGWCycleTest);
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);

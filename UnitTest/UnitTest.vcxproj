@@ -95,8 +95,6 @@
     <ClInclude Include="AMGStandardCoarseningTest.h" />
     <ClInclude Include="AMGStandardSplittingTest.h" />
     <ClInclude Include="AMGVariableCardinalityTest.h" />
-    <ClInclude Include="AMGVCycleTest.h" />
-    <ClInclude Include="AMGWCycleTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="BinaryHeapTest.h" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />

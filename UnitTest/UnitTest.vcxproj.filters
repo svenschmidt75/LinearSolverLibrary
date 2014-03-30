@@ -150,14 +150,8 @@
       <Filter>Solver</Filter>
     </ClInclude>
     <ClInclude Include="ParallelLinAlgOperationsTest.h" />
-    <ClInclude Include="AMGWCycleTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
     <ClInclude Include="BinaryHeapTest.h" />
     <ClInclude Include="PriorityArrayTest.h" />
-    <ClInclude Include="AMGVCycleTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
     <ClInclude Include="MultigridTutorialExampleTestFramework.h">
       <Filter>AMG</Filter>
     </ClInclude>

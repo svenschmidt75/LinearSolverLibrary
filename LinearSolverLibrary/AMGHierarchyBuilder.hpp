@@ -30,6 +30,9 @@ namespace LinearSolverLibrary_NS {
 
         std::vector<AMGLevel>
         build(SparseMatrix2D const & m) const {
+
+            // TODO SS: Inject IVariableAccessor or create adapter
+            // that exposes the set of variables (coarse, fine, undefined)...
             AMGPolicy amg_policy;
 
             // TODO SS: Find better name
@@ -70,14 +73,14 @@ namespace LinearSolverLibrary_NS {
             return &amg_levels_[current_level_index_ + 1];
         }
 
-        bool
-        SolveWithDirectMethod(SparseMatrix2D const & m, int max_size) const {
-            return m.cols() <= max_size;
-        }
-
         void
         MoveToNextLevel() const {
             current_level_index_++;
+        }
+
+        bool
+        SolveWithDirectMethod(SparseMatrix2D const & m, int max_size) const {
+            return m.cols() <= max_size;
         }
 
         void
