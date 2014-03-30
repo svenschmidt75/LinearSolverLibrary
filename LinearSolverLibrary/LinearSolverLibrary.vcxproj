@@ -256,6 +256,7 @@
     <ClCompile Include="VariableSetIteratorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGCThenFRelaxationPolicy.hpp" />
     <ClInclude Include="AMGHierarchyBuilder.hpp" />
     <ClInclude Include="AMGLevel.h" />
     <ClInclude Include="AMGSolver.hpp" />

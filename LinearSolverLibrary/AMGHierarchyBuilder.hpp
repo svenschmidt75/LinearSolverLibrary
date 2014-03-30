@@ -17,7 +17,7 @@ namespace LinearSolverLibrary_NS {
     struct AMGMonitor;
 
 
-    template<typename AMGPolicy>
+    template<typename AMGPolicy, typename AMGRelaxationPolicy = void>
     class AMGHierarchyBuilder {
     public:
         AMGHierarchyBuilder(AMGMonitor const & monitor)
@@ -44,8 +44,7 @@ namespace LinearSolverLibrary_NS {
                 AMGLevel amg_level;
                 amg_level.m = m;
                 amg_levels_.emplace_back(amg_level);
-            }
-            else {
+            } else {
                 // do 1st level
                 Handle1stLevel(amg_policy, m);
                 MoveToNextLevel();
@@ -54,7 +53,7 @@ namespace LinearSolverLibrary_NS {
                     AMGLevel * current_level = GetCurrentLevel();
                     AMGLevel * next_level = GetNextLevel();
                     MoveToNextLevel();
-                    amg_policy.generate(current_level->m);
+                    amg_policy.Generate(current_level->m);
                     current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
                     next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
                     next_level->m = amg_policy.GalerkinOperator();
@@ -89,7 +88,7 @@ namespace LinearSolverLibrary_NS {
             amg_levels_.emplace_back();
             AMGLevel * current_level = GetCurrentLevel();
             AMGLevel * next_level = GetNextLevel();
-            amg_policy.generate(m);
+            amg_policy.Generate(m);
             current_level->m = m;
             current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
             next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());

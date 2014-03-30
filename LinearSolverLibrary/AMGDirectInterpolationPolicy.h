@@ -18,8 +18,6 @@
 namespace LinearSolverLibrary_NS {
     class AMGStandardCoarseningStrengthPolicy;
     class VariableCategorizer;
-    class VariableInfluenceAccessor;
-    class AMGStandardSplitting;
 }
 
 namespace LinearSolverLibrary_NS {
@@ -37,10 +35,12 @@ namespace LinearSolverLibrary_NS {
         AMGDirectInterpolationPolicy(AMGDirectInterpolationPolicy const &) = delete;
         AMGDirectInterpolationPolicy & operator=(AMGDirectInterpolationPolicy const &) = delete;
 
-        bool                      generate(LinAlg_NS::SparseMatrix2D const & m);
+        bool                      Generate(LinAlg_NS::SparseMatrix2D const & m);
         LinAlg_NS::SparseMatrix2D GalerkinOperator() const;
         LinAlg_NS::SparseMatrix2D Restrictor() const;
         LinAlg_NS::SparseMatrix2D Interpolator() const;
+
+        VariableCategorizer const & GetVariableCategorizer() const;
 
     private:
         void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
@@ -49,9 +49,10 @@ namespace LinearSolverLibrary_NS {
         void ComputeGalerkinOperator(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);
 
     private:
-        LinAlg_NS::SparseMatrix2D interpolation_operator_;
-        LinAlg_NS::SparseMatrix2D restriction_operator_;
-        LinAlg_NS::SparseMatrix2D galerkinMatrix_;
+        std::unique_ptr<VariableCategorizer> variable_categorizer_;
+        LinAlg_NS::SparseMatrix2D            interpolation_operator_;
+        LinAlg_NS::SparseMatrix2D            restriction_operator_;
+        LinAlg_NS::SparseMatrix2D            galerkinMatrix_;
     };
 
 } // LinearSolverLibrary_NS

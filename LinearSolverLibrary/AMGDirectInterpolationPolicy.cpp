@@ -14,13 +14,13 @@ using namespace LinearSolverLibrary_NS;
 AMGDirectInterpolationPolicy::AMGDirectInterpolationPolicy() {}
 
 bool
-AMGDirectInterpolationPolicy::generate(SparseMatrix2D const & m) {
+AMGDirectInterpolationPolicy::Generate(SparseMatrix2D const & m) {
     AMGStandardCoarseningStrengthPolicy strength_policy{m};
-    VariableCategorizer variable_categorizer{m.rows()};
-    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
-    AMGStandardSplitting splitting{m, influence_accessor, variable_categorizer};
+    variable_categorizer_ = std::make_unique<VariableCategorizer>{m.rows()};
+    VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
+    AMGStandardSplitting splitting{m, influence_accessor, *variable_categorizer_};
     splitting.generateSplitting();
-    ComputeInterpolationOperator(m, strength_policy, variable_categorizer);
+    ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_);
     ComputeRestrictionOperator(interpolation_operator_);
     ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
     return true;
@@ -125,4 +125,9 @@ AMGDirectInterpolationPolicy::Restrictor() const {
 SparseMatrix2D
 AMGDirectInterpolationPolicy::Interpolator() const {
     return interpolation_operator_;
+}
+
+VariableCategorizer const &
+AMGDirectInterpolationPolicy::GetVariableCategorizer() const {
+    return *variable_categorizer_;
 }

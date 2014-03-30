@@ -19,7 +19,7 @@ public:
                   -1,  4, -1,
                    0, -1,  0;
         SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
-        success = splitting_policy.generate(m);
+        success = splitting_policy.Generate(m);
     }
 
 public:

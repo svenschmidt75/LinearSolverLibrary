@@ -208,5 +208,8 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="AMGCThenFRelaxationPolicy.hpp">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

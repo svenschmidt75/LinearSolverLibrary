@@ -20,7 +20,7 @@ class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
 
 namespace LinearSolverLibrary_NS {
 
-    template<typename AMGPolicy, typename AMGCycleScheme>
+    template<typename AMGPolicy, typename AMGCycleScheme, typename AMGRelaxationPolicy = void>
     class AMGSolver {
 
 
@@ -46,7 +46,7 @@ namespace LinearSolverLibrary_NS {
 
         void
         BuildGalerkinOperatorHierarchy() {
-            AMGHierarchyBuilder<AMGPolicy> amg_builder{monitor_};
+            AMGHierarchyBuilder<AMGPolicy, AMGRelaxationPolicy> amg_builder{monitor_};
             amg_levels_ = amg_builder.build(m_);
         }
 
@@ -86,7 +86,7 @@ namespace LinearSolverLibrary_NS {
                 x = amg_level.x;
                 if (direction > 0) {
                     // restrict, move to next coarser level
-                    //                    x = pre_smooth(amg_level.m, f, x);
+//                    x = pre_smooth(amg_level.m, f, x);
                     Vector r_h = f - amg_level.m * x;
                     Vector r_2h = (*amg_level.restrictor) * r_h;
                     f = r_2h;
@@ -98,7 +98,7 @@ namespace LinearSolverLibrary_NS {
                     // interpolate, i.e. move to next finer level
                     Vector e_h = *(amg_levels_[grid_level - 1].interpolator) * x;
                     x = amg_levels_[grid_level - 1].x + e_h;
-                    //                    x = post_smooth(amg_level.m, f, x);
+//                    x = post_smooth(amg_level.m, f, x);
                     prev_grid_level = grid_level;
                     ++cycle_scheme_it;
                     continue;
