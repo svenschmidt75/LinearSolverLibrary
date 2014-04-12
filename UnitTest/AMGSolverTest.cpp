@@ -2,10 +2,6 @@
 
 #include "LinAlg/MatrixStencil.hpp"
 
-#include "LinearSolverLibrary/AMGSolver.hpp"
-#include "LinearSolverLibrary/AMGVCycle.h"
-#include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
-
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;

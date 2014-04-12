@@ -8,6 +8,7 @@
 #pragma once
 
 #include "AMGLevel.h"
+#include "AMGCThenFRelaxationPolicy.hpp"
 
 
 namespace LinearSolverLibrary_NS {
@@ -17,7 +18,7 @@ namespace LinearSolverLibrary_NS {
     struct AMGMonitor;
 
 
-    template<typename AMGPolicy, typename AMGRelaxationPolicy = void>
+    template<typename AMGInterpolationPolicy, typename AMGRelaxationPolicy = AMGCThenFRelaxationPolicy>
     class AMGHierarchyBuilder {
     public:
         AMGHierarchyBuilder(AMGMonitor const & monitor)
@@ -33,7 +34,10 @@ namespace LinearSolverLibrary_NS {
 
             // TODO SS: Inject IVariableAccessor or create adapter
             // that exposes the set of variables (coarse, fine, undefined)...
-            AMGPolicy amg_policy;
+            AMGInterpolationPolicy interpolation_policy;
+
+            // TODO SS: Does this need state?
+            AMGRelaxationPolicy relaxation_policy;
 
             // TODO SS: Find better name
             int const max_size = monitor_.direct_solver_threshold_;
@@ -43,20 +47,22 @@ namespace LinearSolverLibrary_NS {
             if (m.cols() < max_size) {
                 AMGLevel amg_level;
                 amg_level.m = m;
+                amg_level.variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
                 amg_levels_.emplace_back(amg_level);
             } else {
                 // do 1st level
-                Handle1stLevel(amg_policy, m);
+                Handle1stLevel(interpolation_policy, relaxation_policy, m);
                 MoveToNextLevel();
                 while (SolveWithDirectMethod(GetCurrentLevel()->m, max_size) == false) {
                     amg_levels_.emplace_back();
                     AMGLevel * current_level = GetCurrentLevel();
                     AMGLevel * next_level = GetNextLevel();
                     MoveToNextLevel();
-                    amg_policy.Generate(current_level->m);
-                    current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
-                    next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
-                    next_level->m = amg_policy.GalerkinOperator();
+                    interpolation_policy.Generate(current_level->m);
+                    current_level->restrictor = std::make_shared<SparseMatrix2D>(interpolation_policy.Restrictor());
+                    current_level->variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
+                    next_level->interpolator = std::make_shared<SparseMatrix2D>(interpolation_policy.Interpolator());
+                    next_level->m = interpolation_policy.GalerkinOperator();
                 }
             }
             return amg_levels_;
@@ -83,16 +89,17 @@ namespace LinearSolverLibrary_NS {
         }
 
         void
-        Handle1stLevel(AMGPolicy & amg_policy, SparseMatrix2D const & m) const {
+        Handle1stLevel(AMGInterpolationPolicy & interpolation_policy, AMGRelaxationPolicy & relaxation_policy, SparseMatrix2D const & m) const {
             amg_levels_.emplace_back();
             amg_levels_.emplace_back();
             AMGLevel * current_level = GetCurrentLevel();
             AMGLevel * next_level = GetNextLevel();
-            amg_policy.Generate(m);
+            interpolation_policy.Generate(m);
             current_level->m = m;
-            current_level->restrictor = std::make_shared<SparseMatrix2D>(amg_policy.Restrictor());
-            next_level->interpolator = std::make_shared<SparseMatrix2D>(amg_policy.Interpolator());
-            next_level->m = amg_policy.GalerkinOperator();
+            current_level->variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
+            current_level->restrictor = std::make_shared<SparseMatrix2D>(interpolation_policy.Restrictor());
+            next_level->interpolator = std::make_shared<SparseMatrix2D>(interpolation_policy.Interpolator());
+            next_level->m = interpolation_policy.GalerkinOperator();
         }
 
     private:

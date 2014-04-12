@@ -20,7 +20,7 @@ class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
 
 namespace LinearSolverLibrary_NS {
 
-    template<typename AMGPolicy, typename AMGCycleScheme, typename AMGRelaxationPolicy = void>
+    template<typename AMGInterpolationPolicy, typename AMGCycleScheme, typename AMGRelaxationPolicy = AMGCThenFRelaxationPolicy>
     class AMGSolver {
 
 
@@ -46,7 +46,7 @@ namespace LinearSolverLibrary_NS {
 
         void
         BuildGalerkinOperatorHierarchy() {
-            AMGHierarchyBuilder<AMGPolicy, AMGRelaxationPolicy> amg_builder{monitor_};
+            AMGHierarchyBuilder<AMGInterpolationPolicy, AMGRelaxationPolicy> amg_builder{monitor_};
             amg_levels_ = amg_builder.build(m_);
         }
 

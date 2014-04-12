@@ -24,6 +24,7 @@ namespace LinearSolverLibrary_NS {
         typedef ISO_t::size_type size_type;
 
     public:
+        MatrixDecomposition();
         MatrixDecomposition(ISO_t const & iso_data);
         MatrixDecomposition(MatrixDecomposition && in);
 

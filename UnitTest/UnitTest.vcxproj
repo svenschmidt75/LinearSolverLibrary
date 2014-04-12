@@ -30,7 +30,10 @@
     <ClCompile Include="AMGCoarseVariableIndexerTest.cpp" />
     <ClCompile Include="AMGCThenFReleaxationPolicyTest.cpp" />
     <ClCompile Include="AMGDirectInterpolationPolicyTest.cpp" />
-    <ClCompile Include="AMGHierarchyBuilderTest.cpp" />
+    <ClCompile Include="AMGHierarchyBuilderTest.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
+    </ClCompile>
     <ClCompile Include="AMGSolverTest.cpp" />
     <ClCompile Include="AMGStandardCoarseningTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
