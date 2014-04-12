@@ -15,6 +15,9 @@ using namespace testing;
 
 class AMGCThenFReleaxationPolicyTest : public Test {
 public:
+    using size_type = IMatrix2D::size_type;
+
+public:
     void SetUp() override {
         MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
         stencil << 0, -1,  0,
@@ -47,6 +50,16 @@ TEST_F(AMGCThenFReleaxationPolicyTest, Test1) {
 
     AMGCThenFRelaxationPolicy relaxation_policy;
     MatrixDecomposition decomposition = relaxation_policy.Decompose(interpolation_policy);
-    
-//    ASSERT_EQ(amg_levels.size(), 3);
+
+    auto variables = std::find_if(std::cbegin(decomposition), std::cend(decomposition), [](std::pair<size_type, std::set<size_type>> const & item) -> bool {
+        return item.first == 0;
+    });
+    ASSERT_THAT(variables, Ne(std::cend(decomposition)));
+    ASSERT_THAT(variables->second, ElementsAre(0, 2, 4, 6, 8));
+
+    variables = std::find_if(std::cbegin(decomposition), std::cend(decomposition), [](std::pair<size_type, std::set<size_type>> const & item) -> bool {
+        return item.first == 1;
+    });
+    ASSERT_THAT(variables, Ne(std::cend(decomposition)));
+    ASSERT_THAT(variables->second, ElementsAre(1, 3, 5, 7));
 }
