@@ -110,7 +110,7 @@ SparseLinearSolverTest::OffshoreLowerTriangularSORTest() {
         HighResTimer t;
 
         // needs 15 iterations
-        std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.1, 20);
+        std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m, b, 1.1, 20);
     }
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);

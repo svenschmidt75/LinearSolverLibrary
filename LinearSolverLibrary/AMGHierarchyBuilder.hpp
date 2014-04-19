@@ -50,7 +50,6 @@ namespace LinearSolverLibrary_NS {
                 amg_level.variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
                 amg_levels_.emplace_back(amg_level);
             } else {
-                // do 1st level
                 Handle1stLevel(interpolation_policy, relaxation_policy, m);
                 MoveToNextLevel();
                 while (SolveWithDirectMethod(GetCurrentLevel()->m, max_size) == false) {

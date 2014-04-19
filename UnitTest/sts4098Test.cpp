@@ -99,7 +99,7 @@ sts4098Test::SORTest() {
         HighResTimer t;
 
         // needs 10986 iterations
-        std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m_, b_, 1.1, 11000);
+        std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b_, 1.1, 11000);
     }
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 

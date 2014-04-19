@@ -27,6 +27,7 @@ namespace LinearSolverLibrary_NS {
         MatrixDecomposition();
         MatrixDecomposition(ISO_t const & iso_data);
         MatrixDecomposition(MatrixDecomposition && in);
+        MatrixDecomposition & operator=(MatrixDecomposition && in);
 
         // should be cbegin/cend, but range based for looks
         // for begin/end

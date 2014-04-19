@@ -45,7 +45,7 @@ int main(int /*argc*/, char* /*argv[]*/)
     Vector x(b.size());
     IMatrix2D::size_type iterations;
     double tol;
-    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m, b, 1.234, 200000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m, b, 1.234, 200000);
 
     BOOST_ASSERT_MSG(success, "SOR failed to solve linear system");
 

@@ -10,8 +10,8 @@ using namespace LinAlg_NS;
 
 bool
 SparseLinearSolverUtil::isStrictlyDiagonallyDominant(SparseMatrix2D const & m) {
-    /* Many (if not all) iterative linear solvers require that the
-     * matrix m is strictly diagonally dominant for convergence.
+    /* Many iterative linear solvers require the matrix m be strictly
+     * diagonally dominant for convergence.
      * Note: This is NOT a necessary, but not sufficient condition.
      * There are exceptions, i.e. matrices m that are not
      * diagonally dominant and yet the scheme converges.

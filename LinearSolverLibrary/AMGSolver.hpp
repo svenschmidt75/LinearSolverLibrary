@@ -61,7 +61,6 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::Vector
         solve(LinAlg_NS::Vector const & x_initial) const {
             using size_type = IMatrix2D::size_type;
-            amg_levels_[0].x = x_initial;
             Vector f{b_};
             Vector x{x_initial};
 
@@ -83,22 +82,32 @@ namespace LinearSolverLibrary_NS {
                     ++cycle_scheme_it;
                     continue;
                 }
-                x = amg_level.x;
-                if (direction > 0) {
+                if (direction >= 0) {
                     // restrict, move to next coarser level
-//                    x = pre_smooth(amg_level.m, f, x);
+                    bool success;
+                    Vector new_x;
+                    int iterations;
+                    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, x, f, amg_level.variableDecomposition, 1);
+                    amg_level.x = x;
                     Vector r_h = f - amg_level.m * x;
-                    Vector r_2h = (*amg_level.restrictor) * r_h;
+                    Vector r_2h = *(amg_level.restrictor) * r_h;
                     f = r_2h;
+                    x = *(amg_level.restrictor) * x;
+
                     prev_grid_level = grid_level;
                     ++cycle_scheme_it;
                     continue;
                 }
                 else {
                     // interpolate, i.e. move to next finer level
-                    Vector e_h = *(amg_levels_[grid_level - 1].interpolator) * x;
+                    Vector e_h = *(amg_levels_[grid_level].interpolator) * x;
                     x = amg_levels_[grid_level - 1].x + e_h;
-//                    x = post_smooth(amg_level.m, f, x);
+                    bool success;
+                    Vector new_x;
+                    int iterations;
+                    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, x, f, amg_level.variableDecomposition, 1);
+                    amg_levels_[grid_level - 1].x = x;
+
                     prev_grid_level = grid_level;
                     ++cycle_scheme_it;
                     continue;

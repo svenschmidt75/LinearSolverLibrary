@@ -95,7 +95,7 @@ VersteegMalalasekeraTest::SORTest() {
     int iterations;
 
     // needs 33 iterations
-    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m_, b_, 1.1, 10000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b_, 1.1, 10000);
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors
@@ -116,7 +116,7 @@ VersteegMalalasekeraTest::SORMultiColorTest() {
     int iterations;
 
     // needs 32 iterations
-    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSORMultiColor(m_, b_, m_decomp, 1.1, 10000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSORMultiColor(m_, b_, m_decomp, 1.1, 10000);
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 
     // compare vectors

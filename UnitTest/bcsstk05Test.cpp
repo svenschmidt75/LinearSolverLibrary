@@ -78,7 +78,7 @@ bcsstk05Test::SORTest() {
     int iterations;
 
     // needs 17687 iterations
-    std::tie(success, x, iterations) = SparseLinearSolverLibrary::sparseSOR(m_, b_, 1.1, 20000);
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b_, 1.1, 20000);
 
     CPPUNIT_ASSERT_MESSAGE("SOR failed to solve linear system", success);
 

@@ -2,6 +2,8 @@
 
 #include "LinAlg/MatrixStencil.hpp"
 
+#include "LinearSolverLibrary/AMGSolver.hpp"
+
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
@@ -51,20 +53,18 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
 }
 
 TEST_F(BasicAMGSolverTest, TestVSolve) {
-    Vector b{3};
-    b(0) = 1;
-    b(1) = 1;
-    b(2) = 1;
+    Vector b{m_.cols()};
+    std::fill(std::begin(b), std::end(b), 1);
 
     AMGMonitor monitor;
     monitor.direct_solver_threshold_ = 3;
 
     AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
-    Vector x{3};
-    x(0) = 0;
-    x(1) = 0;
-    x(2) = 0;
-//    x = amg_solver.solve(x);
+    m_.print();
+
+    Vector x{b.size()};
+    std::fill(std::begin(x), std::end(x), 0);
+    x = amg_solver.solve(x);
 
 }
