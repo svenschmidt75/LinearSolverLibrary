@@ -91,6 +91,8 @@ namespace LinAlg_NS {
         size_type      size() const;
         void           clear();
 
+        static Vector  MakeZeroVector(size_type size);
+
         const_iterator cbegin() const;
         const_iterator cend() const;
         iterator       begin();

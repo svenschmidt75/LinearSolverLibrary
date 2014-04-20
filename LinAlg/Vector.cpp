@@ -86,6 +86,11 @@ Vector::clear() {
         e = 0.0;
 }
 
+Vector
+Vector::MakeZeroVector(size_type size) {
+    return Vector{size};
+}
+
 Vector::const_iterator
 Vector::cbegin() const {
     return data_.cbegin();

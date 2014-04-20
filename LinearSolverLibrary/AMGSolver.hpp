@@ -58,78 +58,97 @@ namespace LinearSolverLibrary_NS {
             common_NS::reporting::checkConditional(success, "AMGSolver::LUDecompositionForLastLevelGalerkinOperator: LU decomposition failed");
         }
 
-        LinAlg_NS::Vector
-        solve(LinAlg_NS::Vector const & x_initial) const {
-            using size_type = IMatrix2D::size_type;
+        Vector
+        Relax(AMGLevel const & amg_level, Vector const & x_initial, short max_iterations) const {
+            bool success;
+            int iterations;
+            Vector x{x_initial.size()};
+            std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, x_initial, amg_level.f, amg_level.variableDecomposition, max_iterations);
+            return x;
+        }
 
+        void
+        MoveDown(Vector const & x, int current_grid_level) const {
+            auto & amg_level = amg_levels_[current_grid_level];
+            amg_level.x = Relax(amg_level, x, monitor_.nu1);
+            Vector r_h = amg_level.f - amg_level.m * amg_level.x;
+            amg_levels_[current_grid_level + 1].f = *(amg_level.restrictor) * r_h;
+        }
+
+        void
+        MoveUp(int current_grid_level) const {
+            AMGLevel & amg_level = amg_levels_[current_grid_level];
+            AMGLevel const & next_amg_level = amg_levels_[current_grid_level + 1];
+            Vector e_h = *(next_amg_level.interpolator) * next_amg_level.x;
+            amg_level.x += e_h;
+            amg_level.x = Relax(amg_level, amg_level.x, monitor_.nu2);
+        }
+
+        void
+        SolveExact(int current_grid_level) const {
+            auto & amg_level = amg_levels_[current_grid_level];
+            amg_level.x = lu_.solve(amg_level.f);
+        }
+
+        LinAlg_NS::Vector
+        Solve(LinAlg_NS::Vector const & x_initial) const {
             Vector x{x_initial};
+            double tolerance = 1E-16;
+            int iteration = 0;
+            int maxIterations = 100;
+            while (iteration <= maxIterations) {
+                x = Solve_internal(x);
+                ++iteration;
+
+                double normr = VectorMath::norm(b_ - m_ * x);
+                double residual = normr / VectorMath::norm(b_);
+                if (residual <= tolerance)
+//                    return std::make_tuple(true, x, iteration, residual);
+                    return x;
+            }
+
+            return x;
+        }
+        
+        LinAlg_NS::Vector
+        Solve_internal(LinAlg_NS::Vector const & x_initial) const {
+            using size_type = IMatrix2D::size_type;
 
             auto cycle_scheme_it = std::begin(cycle_scheme_);
             auto cycle_scheme_end_it = std::end(cycle_scheme_);
-            int grid_level;
+            int grid_level{0};
             int prev_grid_level;
             int max_level{static_cast<int>(amg_levels_.size() - 1)};
 
             // handle 1st level
-            auto & amg_level = amg_levels_[0];
+            auto & amg_level = amg_levels_[grid_level];
             amg_level.x = x_initial;
             amg_level.f = b_;
-            bool success;
-            int iterations;
-            std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, amg_level.x, amg_level.f, amg_level.variableDecomposition, 1);
-            amg_level.x = x;
-
-            Vector r_h = amg_level.f - amg_level.m * x;
-            amg_levels_[1].f = *(amg_level.restrictor) * r_h;
+            MoveDown(x_initial, grid_level);
 
             prev_grid_level = 0;
             ++cycle_scheme_it;
 
-
-
-
-
-
             while (cycle_scheme_it != cycle_scheme_end_it) {
                 grid_level = *cycle_scheme_it;
                 short direction = grid_level - prev_grid_level;
-                auto & amg_level = amg_levels_[grid_level];
+
                 if (grid_level == max_level) {
-                    // solve directly via LU decomposition
-                    amg_level.x = lu_.solve(amg_level.f);
-                    prev_grid_level = grid_level;
-                    ++cycle_scheme_it;
-                    continue;
+                    // At the deepest level, we solve exact via LU decomposition.
+                    SolveExact(grid_level);
                 }
-                if (direction > 0) {
+                else if (direction > 0) {
                     // restrict, move to next coarser level
-                    x = Vector{amg_level.m.cols()};
-                    bool success;
-                    int iterations;
-                    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, x, amg_level.f, amg_level.variableDecomposition, 1);
-                    amg_level.x = x;
-
-                    Vector r_h = amg_level.f - amg_level.m * x;
-                    amg_levels_[grid_level + 1].f = *(amg_level.restrictor) * r_h;
-
-                    prev_grid_level = grid_level;
-                    ++cycle_scheme_it;
-                    continue;
-                }
-                else {
+                    auto & amg_level = amg_levels_[grid_level];
+                    MoveDown(Vector::MakeZeroVector(amg_level.m.cols()), grid_level);
+                } else {
                     // interpolate, i.e. move to next finer level
-                    Vector e_h = *(amg_levels_[grid_level + 1].interpolator) * amg_levels_[grid_level + 1].x;
-                    amg_level.x += e_h;
-                    bool success;
-                    Vector new_x;
-                    int iterations;
-                    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, amg_level.x, amg_level.f, amg_level.variableDecomposition, 1);
-                    amg_level.x = x;
-
-                    prev_grid_level = grid_level;
-                    ++cycle_scheme_it;
-                    continue;
+                    MoveUp(grid_level);
                 }
+
+                prev_grid_level = grid_level;
+                ++cycle_scheme_it;
+                continue;
             }
             return amg_levels_[0].x;
         }

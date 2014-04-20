@@ -31,7 +31,7 @@ public:
 TEST_F(BasicAMGSolverTest, TestExpectedGridHierarchyDepth) {
     Vector b;
     AMGMonitor monitor;
-    monitor.direct_solver_threshold_ = 3;
+    monitor.direct_solver_threshold = 3;
 
     AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
@@ -41,7 +41,7 @@ TEST_F(BasicAMGSolverTest, TestExpectedGridHierarchyDepth) {
 TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
     Vector b;
     AMGMonitor monitor;
-    monitor.direct_solver_threshold_ = 3;
+    monitor.direct_solver_threshold = 3;
 
     AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
@@ -53,25 +53,25 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
 }
 
 TEST_F(BasicAMGSolverTest, TestVSolve) {
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold = 3;
+
     Vector b{m_.cols()};
     std::fill(std::begin(b), std::end(b), 1);
-
-    AMGMonitor monitor;
-    monitor.direct_solver_threshold_ = 3;
 
     AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
     m_.print();
 
-
     Vector x{b.size()};
     std::fill(std::begin(x), std::end(x), 0);
-    x = amg_solver.solve(x);
+    x = amg_solver.Solve(x);
 
+    Vector x_ref{b.size()};
     bool success;
     int iterations;
-    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
+    std::tie(success, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
 
-
-
+    // compare vectors
+    ASSERT_TRUE(SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-16));
 }

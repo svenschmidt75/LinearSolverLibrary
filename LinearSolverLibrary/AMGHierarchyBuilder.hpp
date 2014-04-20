@@ -40,7 +40,7 @@ namespace LinearSolverLibrary_NS {
             AMGRelaxationPolicy relaxation_policy;
 
             // TODO SS: Find better name
-            int const max_size = monitor_.direct_solver_threshold_;
+            int const max_size = monitor_.direct_solver_threshold;
 
 
             // TODO SS: test this branch!!!

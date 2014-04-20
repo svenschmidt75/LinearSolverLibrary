@@ -11,16 +11,21 @@
 namespace LinearSolverLibrary_NS {
 
     struct AMGMonitor {
+        AMGMonitor() : nu1{1}, nu2{1} {}
+
         // Input
         size_t number_of_max_iterations;
         double tolerance;
 
         // If the size of the matrix falls below this limit,
         // we solve for it directly (via LU decomposition).
-        int direct_solver_threshold_;
+        int direct_solver_threshold;
 
-        // Output
-        size_t number_of_iterations_needed;
+        // number of pre-smooting iterations
+        short nu1;
+
+        // number of post-smooting iterations
+        short nu2;
     };
 
 } // LinearSolverLibrary_NS
