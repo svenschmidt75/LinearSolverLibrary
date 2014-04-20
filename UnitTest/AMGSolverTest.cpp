@@ -49,7 +49,7 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
     std::vector<int> cycle_levels;
     cycle_levels.assign(std::cbegin(amg_solver.cycle_scheme_), std::cend(amg_solver.cycle_scheme_));
 
-    ASSERT_THAT(cycle_levels, ElementsAre(0, 1, 2, 3, 2, 1, 0));
+    ASSERT_THAT(cycle_levels, ElementsAre(0, 1, 2, 1, 0));
 }
 
 TEST_F(BasicAMGSolverTest, TestVSolve) {
@@ -63,8 +63,15 @@ TEST_F(BasicAMGSolverTest, TestVSolve) {
 
     m_.print();
 
+
     Vector x{b.size()};
     std::fill(std::begin(x), std::end(x), 0);
     x = amg_solver.solve(x);
+
+    bool success;
+    int iterations;
+    std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
+
+
 
 }
