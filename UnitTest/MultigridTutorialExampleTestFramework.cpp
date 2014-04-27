@@ -2,6 +2,7 @@
 
 #include "MultigridTutorialExampleTestFramework.h"
 
+#include "LinearSolverLibrary/AMGSolver.hpp"
 
 #include "LinAlg/MatrixStencil.hpp"
 
@@ -112,6 +113,21 @@ MultigridTutorialExampleTestFramework::SolveWithCG() const {
     bool success;
     std::tie(success, x, iterations, tol) = ConjugateGradientMethods::CG(m_, rhs, 10000);
     common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::SolveWithCG: CG did not converge");
+    return x;
+}
+
+Vector
+MultigridTutorialExampleTestFramework::SolveWithAMG(AMGMonitor & monitor) const {
+    Vector rhs = CreateRHS();
+    Vector x{rhs.size()};
+
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, rhs, monitor};
+
+//    m_.print();
+
+    bool success;
+    std::tie(success, x) = amg_solver.Solve(x);
+    common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::SolveWithAMG: AMG did not converge");
     return x;
 }
 

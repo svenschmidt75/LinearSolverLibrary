@@ -16,13 +16,28 @@ AMGDirectInterpolationPolicy::AMGDirectInterpolationPolicy() {}
 bool
 AMGDirectInterpolationPolicy::Generate(SparseMatrix2D const & m) {
     AMGStandardCoarseningStrengthPolicy strength_policy{m};
-    variable_categorizer_ = std::make_unique<VariableCategorizer>{m.rows()};
+    variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
     VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
     AMGStandardSplitting splitting{m, influence_accessor, *variable_categorizer_};
+
+    m.print();
+
     splitting.generateSplitting();
+
+    variable_categorizer_->print();
+    
     ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_);
+
+    interpolation_operator_.print();
+
     ComputeRestrictionOperator(interpolation_operator_);
+
+    restriction_operator_.print();
+
     ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
+
+    galerkinOperator_.print();
+
     return true;
 }
 
@@ -109,12 +124,16 @@ AMGDirectInterpolationPolicy::ComputeRestrictionOperator(SparseMatrix2D const & 
 
 void 
 AMGDirectInterpolationPolicy::ComputeGalerkinOperator(SparseMatrix2D const & m, SparseMatrix2D const & interpolation_operator, SparseMatrix2D const & restriction_operator) {
-    galerkinMatrix_ = helper::matrixMul(restriction_operator, helper::matrixMul(m, interpolation_operator));
+    galerkinOperator_ = helper::matrixMul(restriction_operator, helper::matrixMul(m, interpolation_operator));
+    //Matrix2D m1 = helper::SparseToDense(m);
+    //Matrix2D m2 = helper::SparseToDense(interpolation_operator);
+    //Matrix2D m3 = helper::SparseToDense(restriction_operator);
+    //galerkinOperator_ = helper::DenseToSparse(helper::matrixMul(m3, helper::matrixMul(m1, m2)));
 }
 
 SparseMatrix2D
 AMGDirectInterpolationPolicy::GalerkinOperator() const {
-    return galerkinMatrix_;
+    return galerkinOperator_;
 }
 
 SparseMatrix2D

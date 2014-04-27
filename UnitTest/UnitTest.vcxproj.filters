@@ -95,6 +95,9 @@
     <ClCompile Include="AMGCThenFReleaxationPolicyTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="MultigridTutorialExampleTestFrameworkAMGTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">

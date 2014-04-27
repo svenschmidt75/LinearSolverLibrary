@@ -112,6 +112,9 @@
     <ClInclude Include="MatrixStencilTest.h" />
     <ClInclude Include="MultiColorTest.h" />
     <ClInclude Include="MultigridTutorialExampleTestFramework.h" />
+    <ClCompile Include="MultigridTutorialExampleTestFrameworkAMGTest.cpp">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="OffshoreTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PriorityArrayTest.h" />

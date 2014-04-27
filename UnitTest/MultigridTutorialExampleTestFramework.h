@@ -8,6 +8,13 @@
 #pragma once
 
 
+// forward declarations
+namespace LinearSolverLibrary_NS {
+
+    struct AMGMonitor;
+}
+
+
 class MultigridTutorialExampleTestFramework {
 
 
@@ -33,6 +40,7 @@ public:
     double            Solution(double x, double y) const;
     LinAlg_NS::Vector DirectSolve() const;
     LinAlg_NS::Vector SolveWithCG() const;
+    LinAlg_NS::Vector SolveWithAMG(LinearSolverLibrary_NS::AMGMonitor & monitor) const;
     double            LinfError(Vector const & in) const;
     double            L2Error(Vector const & in) const;
 

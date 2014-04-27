@@ -98,6 +98,7 @@ namespace LinearSolverLibrary_NS {
             iteration = 0;
             auto maxIterations = monitor_.nmax_iterations;
             double normb = VectorMath::norm(b_);
+            double stall_previous_residual_norm = 1.0;
             double & normr = monitor_.residual;
             double previous_normr = 1.0;
             while (iteration <= maxIterations) {
@@ -112,15 +113,20 @@ namespace LinearSolverLibrary_NS {
                  * for matrices with very high condition number.
                  */
                 if (!(iteration % monitor_.nstall_iterations)) {
-                    double tmp = std::fabs(std::log(normr / previous_normr));
-                    if (tmp < required_tolerance)
+//                    double tmp = std::fabs(std::log2(normr / stall_previous_residual_norm));
+                    double tmp = std::fabs(std::log2(normr) - std::log2(stall_previous_residual_norm));
+                    if (tmp < 0.02)
                         return std::make_tuple(true, x);
+                    stall_previous_residual_norm = normr;
                 }
 
                 double residual_ratio = normr / previous_normr;
 
-                if (monitor_.verbosity)
+                if (monitor_.verbosity) {
+                    std::cout << "r2 : " << normr << std::endl;
                     std::cout << "dr : " << residual_ratio << std::endl;
+                    std::cout << std::endl;
+                }
 
                 previous_normr = normr;
 

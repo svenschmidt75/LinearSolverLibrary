@@ -52,7 +52,7 @@ namespace LinearSolverLibrary_NS {
         std::unique_ptr<VariableCategorizer> variable_categorizer_;
         LinAlg_NS::SparseMatrix2D            interpolation_operator_;
         LinAlg_NS::SparseMatrix2D            restriction_operator_;
-        LinAlg_NS::SparseMatrix2D            galerkinMatrix_;
+        LinAlg_NS::SparseMatrix2D            galerkinOperator_;
     };
 
 } // LinearSolverLibrary_NS

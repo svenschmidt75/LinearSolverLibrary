@@ -15,7 +15,8 @@ namespace LinearSolverLibrary_NS {
             :
             nmax_iterations{10000},
             required_tolerance{1E-16},
-            nstall_iterations{50} {}
+            nstall_iterations{50},
+            verbosity{0} {}
 
         /********************
          * INPUT

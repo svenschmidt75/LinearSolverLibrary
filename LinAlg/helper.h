@@ -95,6 +95,11 @@ namespace LinAlg_NS {
 
         static bool isSymmetric(SparseMatrix2D const & m);
 
+        static SparseMatrix2D nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
+        static SparseMatrix2D chunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
+        static SparseMatrix2D matrixMulSerial(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
+        static Matrix2D       matrixMulSerial(Matrix2D const & lhs, Matrix2D const & rhs);
+        static Matrix2D       matrixMul(Matrix2D const & lhs, Matrix2D const & rhs);
         static SparseMatrix2D matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
 
         template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
@@ -123,7 +128,8 @@ namespace LinAlg_NS {
             return value;
         }
 
-        static Matrix2D SparseToDense(SparseMatrix2D const & sparse);
+        static Matrix2D       SparseToDense(SparseMatrix2D const & sparse);
+        static SparseMatrix2D DenseToSparse(Matrix2D const & dense);
 
     private:
         static SparseMatrix2D  transposeSerial(SparseMatrix2D const & m);
