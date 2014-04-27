@@ -50,6 +50,10 @@ namespace LinearSolverLibrary_NS {
         }
 
         static std::tuple<bool, LinAlg_NS::Vector> Solve(LinAlg_NS::SparseMatrix2D const & m ,LinAlg_NS::Vector const & x_initial, LinAlg_NS::Vector const & b, MatrixDecomposition const & decomposition, short max_iterations, Monitor & monitor) {
+            // SparseGSMultiColor is used as the inner iteration scheme.
+            // In there, Monitor will be modified, but since we want
+            // to interpret these values based on the outer, AMG, iteration,
+            // we have to save its state and restore it.
             Monitor backup = monitor;
             std::tuple<bool, LinAlg_NS::Vector> result;
 

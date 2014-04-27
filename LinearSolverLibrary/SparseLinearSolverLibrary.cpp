@@ -277,7 +277,7 @@ SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector c
 
     } while (l_infinity_norm > max_linfinity_norm && iteration < monitor.nmax_iterations);
 
-    Vector residual_vector = m * x - f;
+    Vector residual_vector = f - m * x;
     monitor.residual = VectorMath::norm(residual_vector);
 
     if (iteration == monitor.nmax_iterations)

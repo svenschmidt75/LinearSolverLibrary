@@ -129,7 +129,7 @@ TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveL2Error) {
 TEST_F(MultigridTutorialExampleTestFrameworkTest, TestDirectSolve) {
     // Note: The result is not exact as the mesh spacing is rather coarse,
     // but we compare against the exact solution.
-    // Increasing the mesh size will show that the error is gradually
+    // Decreasing the mesh size will show that the error is gradually
     // reduced though.
     Vector solution = framework.DirectSolve();
     double tol = 1E-5;

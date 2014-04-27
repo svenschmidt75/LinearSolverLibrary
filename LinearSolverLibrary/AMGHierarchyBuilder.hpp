@@ -31,28 +31,18 @@ namespace LinearSolverLibrary_NS {
 
         std::vector<AMGLevel>
         build(SparseMatrix2D const & m) const {
-
-            // TODO SS: Inject IVariableAccessor or create adapter
-            // that exposes the set of variables (coarse, fine, undefined)...
             AMGInterpolationPolicy interpolation_policy;
-
-            // TODO SS: Does this need state?
             AMGRelaxationPolicy relaxation_policy;
 
-            // TODO SS: Find better name
-            int const max_size = monitor_.direct_solver_threshold;
+            int const direct_solver_threshold = monitor_.direct_solver_threshold;
 
-
-            // TODO SS: test this branch!!!
-            if (m.cols() < max_size) {
-                AMGLevel amg_level;
-                amg_level.m = m;
-                amg_level.variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
-                amg_levels_.emplace_back(amg_level);
+            if (m.cols() < direct_solver_threshold) {
+                throw std::logic_error("AMGHierarchyBuilder::build: The matrix has less columns than the direct solve threashold\n" \
+                    "resulting in a 1-level AMG hierarchy");
             } else {
                 Handle1stLevel(interpolation_policy, relaxation_policy, m);
                 MoveToNextLevel();
-                while (SolveWithDirectMethod(GetCurrentLevel()->m, max_size) == false) {
+                while (SolveWithDirectMethod(GetCurrentLevel()->m, direct_solver_threshold) == false) {
                     amg_levels_.emplace_back();
                     AMGLevel * current_level = GetCurrentLevel();
                     AMGLevel * next_level = GetNextLevel();

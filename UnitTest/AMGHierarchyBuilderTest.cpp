@@ -116,3 +116,17 @@ TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionForLastLevel) {
     auto variable_decomposition = amg_levels[2].variableDecomposition;
     ASSERT_THAT(std::cbegin(variable_decomposition), Eq(std::cend(variable_decomposition)));
 }
+
+TEST_F(AMGHierarchyBuilderTest, TestNumberOfColumnsLessThanDirectSolveThreshold) {
+        MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+        stencil << 0, -1,  0,
+                  -1,  4, -1,
+                   0, -1,  0;
+    SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
+
+    AMGDirectInterpolationPolicy splitting_policy;
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold = 10;
+    AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
+    ASSERT_THROW(builder.build(m), std::logic_error);
+}

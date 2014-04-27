@@ -98,13 +98,13 @@ namespace LinearSolverLibrary_NS {
             iteration = 0;
             auto maxIterations = monitor_.nmax_iterations;
             double normb = VectorMath::norm(b_);
+            double & normr = monitor_.residual;
             double previous_normr = 1.0;
             while (iteration <= maxIterations) {
                 x = AMGFullCycle(x);
                 ++iteration;
 
-                double normr = VectorMath::norm(b_ - m_ * x);
-                monitor_.residual = normr;
+                normr = VectorMath::norm(b_ - m_ * x);
 
                 /* The numerical scheme might get stuck, i.e. no improvements
                  * will be made w.r.t. the residual. In this case, there is
