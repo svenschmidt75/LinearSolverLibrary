@@ -2,6 +2,7 @@
 
 #include "SparseLinearSolverLibrary.h"
 #include "MatrixDecomposition.h"
+#include "Monitor.h"
 
 
 using namespace LinearSolverLibrary_NS;
@@ -193,8 +194,8 @@ SparseLinearSolverLibrary::SparseSORMultiColor(SparseMatrix2D const & m, Vector 
     return std::make_tuple(true, x, iteration);
 }
 
-std::tuple<bool, Vector, int>
-SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector const & x_initial, Vector const & f, MatrixDecomposition const & mc, int max_iterations) {
+std::tuple<bool, Vector>
+SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector const & x_initial, Vector const & f, MatrixDecomposition const & mc, Monitor & monitor) {
     /* Implements the Gauss-Seidel method with
      * multicolor decomposition.
      * 
@@ -206,7 +207,6 @@ SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector c
      * Returns:
      * bool  : indicates whether the iteration succeeded
      * Vector: the solution vector in case of success
-     * int   : number of iterations
      */
 
     common_NS::reporting::checkConditional(m.cols() == x_initial.size(), "AMGSolverSparseLinearSolverLibrary::SparseGSMultiColor: Matrix and initial vector dimensions incompatible");
@@ -218,11 +218,12 @@ SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector c
     Vector x{x_initial};
 
     // maximum allowed error
-    double max_linfinity_norm = 1E-16;
+    double max_linfinity_norm = monitor.required_tolerance;
     double l_infinity_norm;
 
     // Iteration count
-    int iteration = 0;
+    int & iteration = monitor.iterations;
+    iteration = 0;
 
     do {
         l_infinity_norm = 0;
@@ -274,10 +275,13 @@ SparseLinearSolverLibrary::SparseGSMultiColor(SparseMatrix2D const & m, Vector c
 
         iteration++;
 
-    } while (l_infinity_norm > max_linfinity_norm && iteration < max_iterations);
+    } while (l_infinity_norm > max_linfinity_norm && iteration < monitor.nmax_iterations);
 
-    if (iteration == max_iterations)
-        return std::make_tuple(false, x, iteration);
+    Vector residual_vector = m * x - f;
+    monitor.residual = VectorMath::norm(residual_vector);
 
-    return std::make_tuple(true, x, iteration);
+    if (iteration == monitor.nmax_iterations)
+        return std::make_tuple(false, x);
+
+    return std::make_tuple(true, x);
 }

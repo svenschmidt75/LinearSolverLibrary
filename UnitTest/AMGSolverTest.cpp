@@ -55,6 +55,12 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
 TEST_F(BasicAMGSolverTest, TestVSolve) {
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 3;
+    monitor.nmax_iterations = 101;
+    monitor.nu1 = monitor.nu2 = 1;
+
+    double tolerance = 1E-16;
+    monitor.required_tolerance = tolerance;
+
 
     Vector b{m_.cols()};
     std::fill(std::begin(b), std::end(b), 1);
@@ -65,13 +71,15 @@ TEST_F(BasicAMGSolverTest, TestVSolve) {
 
     Vector x{b.size()};
     std::fill(std::begin(x), std::end(x), 0);
-    x = amg_solver.Solve(x);
+    bool success;
+    std::tie(success, x) = amg_solver.Solve(x);
+    ASSERT_TRUE(success);
 
     Vector x_ref{b.size()};
-    bool success;
     int iterations;
     std::tie(success, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
+    ASSERT_TRUE(success);
 
     // compare vectors
-    ASSERT_TRUE(SparseLinearSolverUtil::isVectorEqual(x, x_ref, 1E-16));
+    ASSERT_TRUE(SparseLinearSolverUtil::isVectorEqual(x, x_ref, tolerance));
 }

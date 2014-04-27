@@ -277,6 +277,7 @@
     <ClInclude Include="AMGCoarseVariableIndexer.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="IAMGCycle.h" />
+    <ClInclude Include="Monitor.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UndefinedVariableSetDecorator.h" />
     <ClInclude Include="VariableSetDecoratorIteratorLogic.h" />

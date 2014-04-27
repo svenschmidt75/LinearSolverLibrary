@@ -211,5 +211,6 @@
     <ClInclude Include="AMGCThenFRelaxationPolicy.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="Monitor.h" />
   </ItemGroup>
 </Project>

@@ -61,9 +61,8 @@ namespace LinearSolverLibrary_NS {
         Vector
         Relax(AMGLevel const & amg_level, Vector const & x_initial, short max_iterations) const {
             bool success;
-            int iterations;
             Vector x{x_initial.size()};
-            std::tie(success, x, iterations) = SparseLinearSolverLibrary::SparseGSMultiColor(amg_level.m, x_initial, amg_level.f, amg_level.variableDecomposition, max_iterations);
+            std::tie(success, x) = AMGRelaxationPolicy::Solve(amg_level.m, x_initial, amg_level.f, amg_level.variableDecomposition, max_iterations, monitor_);
             return x;
         }
 
@@ -90,28 +89,51 @@ namespace LinearSolverLibrary_NS {
             amg_level.x = lu_.solve(amg_level.f);
         }
 
-        LinAlg_NS::Vector
+        std::tuple<bool, LinAlg_NS::Vector>
         Solve(LinAlg_NS::Vector const & x_initial) const {
             Vector x{x_initial};
-            double tolerance = 1E-16;
-            int iteration = 0;
-            int maxIterations = 100;
+            double required_tolerance = monitor_.required_tolerance;
+            double & achieved_tolerance = monitor_.achieved_tolerance;
+            int & iteration = monitor_.iterations;
+            iteration = 0;
+            auto maxIterations = monitor_.nmax_iterations;
+            double normb = VectorMath::norm(b_);
+            double previous_normr = 1.0;
             while (iteration <= maxIterations) {
-                x = Solve_internal(x);
+                x = AMGFullCycle(x);
                 ++iteration;
 
                 double normr = VectorMath::norm(b_ - m_ * x);
-                double residual = normr / VectorMath::norm(b_);
-                if (residual <= tolerance)
-//                    return std::make_tuple(true, x, iteration, residual);
-                    return x;
+                monitor_.residual = normr;
+
+                /* The numerical scheme might get stuck, i.e. no improvements
+                 * will be made w.r.t. the residual. In this case, there is
+                 * no point in keeping the iteration running. This might happen
+                 * for matrices with very high condition number.
+                 */
+                if (!(iteration % monitor_.nstall_iterations)) {
+                    double tmp = std::fabs(std::log(normr / previous_normr));
+                    if (tmp < required_tolerance)
+                        return std::make_tuple(true, x);
+                }
+
+                double residual_ratio = normr / previous_normr;
+
+                if (monitor_.verbosity)
+                    std::cout << "dr : " << residual_ratio << std::endl;
+
+                previous_normr = normr;
+
+                achieved_tolerance = normr / normb;
+                if (achieved_tolerance <= required_tolerance)
+                    return std::make_tuple(true, x);
             }
 
-            return x;
+            return std::make_tuple(false, x);
         }
         
         LinAlg_NS::Vector
-        Solve_internal(LinAlg_NS::Vector const & x_initial) const {
+        AMGFullCycle(LinAlg_NS::Vector const & x_initial) const {
             using size_type = IMatrix2D::size_type;
 
             auto cycle_scheme_it = std::begin(cycle_scheme_);
@@ -154,7 +176,7 @@ namespace LinearSolverLibrary_NS {
         }
 
         LinAlg_NS::Vector
-        solveFMG(LinAlg_NS::Vector const & x_initial) const {
+        SolveFMG(LinAlg_NS::Vector const & x_initial) const {
         }
 
     private:

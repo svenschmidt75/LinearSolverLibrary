@@ -10,6 +10,9 @@
 #pragma once
 
 
+#include "Monitor.h"
+
+
 // forward declarations
 namespace LinAlg_NS {
 
@@ -46,8 +49,17 @@ namespace LinearSolverLibrary_NS {
             return MatrixDecomposition{decomposition};
         }
 
-        LinAlg_NS::Vector Solve(MatrixDecomposition const & decompsition, LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, LinAlg_NS::Vector const & x_initial) const {
-            return LinAlg_NS::Vector{0};
+        static std::tuple<bool, LinAlg_NS::Vector> Solve(LinAlg_NS::SparseMatrix2D const & m ,LinAlg_NS::Vector const & x_initial, LinAlg_NS::Vector const & b, MatrixDecomposition const & decomposition, short max_iterations, Monitor & monitor) {
+            Monitor backup = monitor;
+            std::tuple<bool, LinAlg_NS::Vector> result;
+
+            try {
+                monitor.nmax_iterations = max_iterations;
+                result = SparseLinearSolverLibrary::SparseGSMultiColor(m, x_initial, b, decomposition, monitor);
+            } catch (...) {}
+
+            monitor = backup;
+            return result;
         }
     };
 

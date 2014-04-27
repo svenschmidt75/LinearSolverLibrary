@@ -101,6 +101,12 @@ Gmres::solve(SparseMatrix2D const & A, Vector const & b, SparseMatrix2D::size_ty
             // of A
             w = A * q[i];
 
+
+
+            // TODO SS: This can be done in parallel_for?!?
+            // chunck according to course...
+
+
             // compute the Hessenberg coefficients
             for (int k = 0; k <= i; ++k) {
                 H(k, i) = VectorMath::dotProduct(w, q[k]);
