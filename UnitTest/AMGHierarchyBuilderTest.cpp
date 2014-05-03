@@ -8,7 +8,7 @@ using namespace LinearSolverLibrary_NS;
 using namespace testing;
 
 
-class AMGHierarchyBuilderTest : public Test {
+class AMGHierarchyBuilderWithStandard5ptStencilTest : public Test {
 public:
     using size_type = IMatrix2D::size_type;
 
@@ -32,51 +32,51 @@ public:
 };
 
 
-TEST_F(AMGHierarchyBuilderTest, TestNumberOfLevels) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfLevels) {
     ASSERT_EQ(amg_levels.size(), 3);
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestThat1stLevelHasNoInterpolationOperator) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestThat1stLevelHasNoInterpolationOperator) {
     ASSERT_EQ(amg_levels[0].interpolator.get(), nullptr);
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestThatLastLevelHasNoRestrictionOperator) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestThatLastLevelHasNoRestrictionOperator) {
     ASSERT_EQ(amg_levels[2].restrictor.get(), nullptr);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test1stLevelRestrictionOperatorRowDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test1stLevelRestrictionOperatorRowDimension) {
     ASSERT_EQ(amg_levels[0].restrictor->rows(), 5);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test1stLevelRestrictionOperatorColumnDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test1stLevelRestrictionOperatorColumnDimension) {
     ASSERT_EQ(amg_levels[0].restrictor->cols(), 9);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test2ndLevelRestrictionOperatorRowDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test2ndLevelRestrictionOperatorRowDimension) {
     ASSERT_EQ(amg_levels[1].restrictor->rows(), 1);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test2ndLevelRestrictionOperatorColumnDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test2ndLevelRestrictionOperatorColumnDimension) {
     ASSERT_EQ(amg_levels[1].restrictor->cols(), 5);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test2ndLevelInterpolationOperatorRowDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test2ndLevelInterpolationOperatorRowDimension) {
     ASSERT_EQ(amg_levels[1].interpolator->rows(), 9);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test2ndLevelInterplationOperatorColumnDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test2ndLevelInterplationOperatorColumnDimension) {
     ASSERT_EQ(amg_levels[1].interpolator->cols(), 5);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test3rdLevelInterpolationOperatorRowDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test3rdLevelInterpolationOperatorRowDimension) {
     ASSERT_EQ(amg_levels[2].interpolator->rows(), 5);
 }
 
-TEST_F(AMGHierarchyBuilderTest, Test3rdLevelInterplationOperatorColumnDimension) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test3rdLevelInterplationOperatorColumnDimension) {
     ASSERT_EQ(amg_levels[2].interpolator->cols(), 1);
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionFor1stLevel) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionFor1stLevel) {
     auto variable_decomposition = amg_levels[0].variableDecomposition;
 
     // check coarse variables
@@ -94,7 +94,7 @@ TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionFor1stLevel) {
     ASSERT_THAT(variables->second, ElementsAre(1, 3, 5, 7));
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionFor2ndLevel) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionFor2ndLevel) {
     auto variable_decomposition = amg_levels[1].variableDecomposition;
 
     // check coarse variables
@@ -112,12 +112,12 @@ TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionFor2ndLevel) {
     ASSERT_THAT(variables->second, ElementsAre(0, 1, 3, 4));
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestCAndFVariableDecompositionForLastLevel) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionForLastLevel) {
     auto variable_decomposition = amg_levels[2].variableDecomposition;
     ASSERT_THAT(std::cbegin(variable_decomposition), Eq(std::cend(variable_decomposition)));
 }
 
-TEST_F(AMGHierarchyBuilderTest, TestNumberOfColumnsLessThanDirectSolveThreshold) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessThanDirectSolveThreshold) {
         MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
         stencil << 0, -1,  0,
                   -1,  4, -1,

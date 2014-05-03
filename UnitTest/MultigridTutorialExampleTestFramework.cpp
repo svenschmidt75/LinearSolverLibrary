@@ -123,8 +123,6 @@ MultigridTutorialExampleTestFramework::SolveWithAMG(AMGMonitor & monitor) const 
 
     AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, rhs, monitor};
 
-//    m_.print();
-
     bool success;
     std::tie(success, x) = amg_solver.Solve(x);
     common_NS::reporting::checkConditional(success, "MultigridTutorialExampleTestFramework::SolveWithAMG: AMG did not converge");

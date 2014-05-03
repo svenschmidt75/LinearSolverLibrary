@@ -85,8 +85,13 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
         } else {
             double a_num = ComputeNumerator(fine_variable, *row_it);
             auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
-            if (interpolatory_set->size() == 0)
+            if (interpolatory_set->size() == 0) {
+                // If a fine variable has no string connections to any coarse variable, this procedure
+                // fails, i.e. direct interpolation cannot be used.
+                // Instead, try to increase AMGMonitor.direct_solver_threshold such that there will
+                // be less levels in the hierarchy.
                 throw std::runtime_error("AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable has no strong connections to coarse variables");
+            }
             double a_denum = ComputeDenumerator(fine_variable, m, *interpolatory_set, variable_categorizer);
             double alpha = a_num / a_denum;
             double a_ii = m(fine_variable, fine_variable);

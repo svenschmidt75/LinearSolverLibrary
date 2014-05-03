@@ -26,7 +26,7 @@ namespace {
 
 
 TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
-    int mesh_size = 8;
+    int mesh_size = 4;
     auto framework = MultigridTutorialExampleTestFramework{mesh_size};
 //    framework.InitializeWithStencil1();
     framework.InitializeWithStencil2();   //  --> DOES NOT WORK
@@ -34,7 +34,7 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     //framework.InitializeWithStencil3();
 
     AMGMonitor monitor;
-    monitor.direct_solver_threshold = 1;
+    monitor.direct_solver_threshold = 2;
     monitor.nmax_iterations = 1001;
     monitor.nu1 = monitor.nu2 = 1;
     monitor.verbosity = 1;
@@ -50,8 +50,6 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
 
     Vector s = framework.SolveWithCG();
     double error = framework.L2Error(s);
-
-
 
 
     error = framework.L2Error(amg_solution_vector);

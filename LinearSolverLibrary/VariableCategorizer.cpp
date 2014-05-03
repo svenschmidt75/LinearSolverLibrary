@@ -35,13 +35,19 @@ VariableCategorizer::NumberOfVariables() const {
 
 void
 VariableCategorizer::print() const {
-    int row_size = static_cast<int>(std::sqrt(data_.size()));
     std::cout << std::endl;
-    for (size_t row = 0; row < row_size; ++row) {
-        std::cout << std::endl;
-        for (size_t col = 0; col < row_size; ++col) {
-            auto index = row * row_size + col;
-            std::cout << std::setw(2) << static_cast<char>(data_[index]);
+    int row_size = static_cast<int>(std::sqrt(data_.size()));
+    if (row_size * row_size != data_.size()) {
+        // data is not square
+        for (size_t i = 0; i < data_.size(); ++i)
+            std::cout << std::setw(2) << static_cast<char>(data_[i]);
+    } else {
+        for (size_t row = 0; row < row_size; ++row) {
+            std::cout << std::endl;
+            for (size_t col = 0; col < row_size; ++col) {
+                auto index = row * row_size + col;
+                std::cout << std::setw(2) << static_cast<char>(data_[index]);
+            }
         }
     }
     std::cout << std::endl;

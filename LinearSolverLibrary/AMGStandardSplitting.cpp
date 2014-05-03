@@ -60,6 +60,13 @@ AMGStandardSplitting::initializeVariableCardinality() {
     VariableCardinalityPolicy cardinalityPolicy(variable_influence_accessor_);
     for (auto variable = 0; variable < m_.rows(); ++variable) {
         auto cardinality = cardinalityPolicy.GetCardinalityForVariable(variable);
+        if (cardinality == 0) {
+            // Variables that have no strong connection to any other variable
+            // cannot be interpolated as there is nothing to interpolate from.
+            // Hence, they become F variables and are ignored.
+            categorizer_.SetType(variable, VariableCategorizer::Type::FINE);
+            continue;
+        }
         queue.emplace(cardinality, variable);
     }
     return queue;

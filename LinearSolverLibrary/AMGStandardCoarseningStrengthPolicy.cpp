@@ -23,6 +23,7 @@ namespace {
         double max_value = 0;
         for (; column_it.isValid(); ++column_it) {
             if (column_it.column() == row)
+                // skip diagonal element
                 continue;
             double matrix_value = std::abs(*column_it);
             max_value = std::max(max_value, matrix_value);
@@ -40,17 +41,17 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
     for (; column_it.isValid(); ++column_it) {
         auto j = column_it.column();
         if (j == i)
+            // skip diagonal element
             continue;
         double matrix_value = - *column_it;
         if (matrix_value >= max_element) {
             // variable i has a strong dependency on variable j
             (*Si_)(i, j) = 1.0;
 
-            // variable j strongly influences on variable i
+            // variable j strongly influences variable i
             (*Sit_)(j, i) = 1.0;
         }
     }
-
 }
 
 void

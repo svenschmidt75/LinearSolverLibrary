@@ -395,6 +395,11 @@ void
 SparseMatrix2D::print() const {
     std::cout << std::endl;
 
+    if (elements_.empty()) {
+        std::cout << "empty matrix" << std::endl;
+        return;
+    }
+
     for (size_type row = 0; row < nrows_; ++row) {
         // Number of non-zero columns for this row
         size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
@@ -406,7 +411,7 @@ SparseMatrix2D::print() const {
             column = columns_[offset + icol];
 
             // print leading 0
-            if (column > col) {
+            if (column > col || ncol == 0) {
                 std::cout << std::setw(8) << 0 << " ";
                 continue;
             }

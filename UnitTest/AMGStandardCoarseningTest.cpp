@@ -113,7 +113,7 @@ AMGStandardCoarseningTest::TestStrongConnectionsForRowForNinePointStencil2() {
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1.0 / 2.0,  -2,          -1.0 / 2.0,
                -1,           29.0 / 4.0, -1,
-               -1.0 / 8.0,   -2,         -1.0 / 8.0;
+               -1.0 / 8.0,  -2,          -1.0 / 8.0;
 
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
