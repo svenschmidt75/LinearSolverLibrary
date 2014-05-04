@@ -25,7 +25,7 @@ namespace {
 }
 
 
-TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
+TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
     int mesh_size = 32;
     auto framework = MultigridTutorialExampleTestFramework{mesh_size};
     framework.InitializeWithStencil1();
@@ -34,7 +34,7 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     //framework.InitializeWithStencil4();
 
     AMGMonitor monitor;
-    monitor.direct_solver_threshold = 2;
+    monitor.direct_solver_threshold = 4;
     monitor.nmax_iterations = 1001;
     monitor.nu1 = monitor.nu2 = 1;
     monitor.verbosity = 1;
@@ -45,20 +45,43 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     Vector amg_solution_vector;
     {
         HighResTimer t;
-        //amg_solution_vector = framework.SolveWithAMG(monitor);
+        amg_solution_vector = framework.SolveWithAMG(monitor);
     }
 
-    auto sol = framework.DirectSolve();
-    double error = framework.L2Error(sol);
-    std::cout << "DirectSolve: " << error << std::endl;
+    //auto sol = framework.DirectSolve();
+    //double error = framework.L2Error(sol);
+    //std::cout << "DirectSolve: " << error << std::endl;
 
-    //Vector s = framework.SolveWithCG();
-    //error = framework.L2Error(s);
-    //std::cout << "CG: " << error << std::endl;
+    Vector s = framework.SolveWithCG();
+    double error = framework.LinfError(s);
+    std::cout << "CG: " << error << std::endl;
 
 
-    //error = framework.L2Error(amg_solution_vector);
-    //std::cout << "AMG: " << error << std::endl;
+    error = framework.LinfError(amg_solution_vector);
+    std::cout << "AMG: " << error << std::endl;
 
     ASSERT_THAT(error, DoubleNear(0.0, 1E-13));
+}
+
+
+TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
+    double error[6];
+
+    for (int factor = 0; factor < 6; ++factor) {
+        int mesh_size = std::pow(2.0, factor + 2);
+        auto framework = MultigridTutorialExampleTestFramework{ mesh_size };
+        framework.InitializeWithStencil1();
+        //framework.InitializeWithStencil2();
+        //framework.InitializeWithStencil3();
+        //framework.InitializeWithStencil4();
+
+        Vector s = framework.SolveWithCG();
+        double err = framework.LinfError(s);
+        error[factor] = err;
+    }
+
+    for (int factor = 1; factor < 6; ++factor) {
+        double delta = error[factor - 1] / error[factor];
+        std::cout << delta << std::endl;
+    }
 }

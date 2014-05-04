@@ -24,9 +24,7 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil1() {
               -1,  4, -1,
                0, -1,  0;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    h2_ = 1.0 / (mesh_size_ * mesh_size_);
-
-//    m_.print();
+    h2_ = 1.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
@@ -36,7 +34,7 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil2() {
                 0,  4,  0,
                -1,  0, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    h2_ = 2.0 / (mesh_size_ * mesh_size_);
+    h2_ = 2.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
@@ -46,17 +44,19 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil3() {
                -1,  8, -1,
                -1, -1, -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    h2_ = 8.0 / (mesh_size_ * mesh_size_);
+    h2_ = 3.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
 }
 
 void
 MultigridTutorialExampleTestFramework::InitializeWithStencil4() {
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
-    stencil << -1, -4, -1,
-               -4, 20, -4,
-               -1, -4, -1;
+    stencil << -1, -4,  -1,
+               -4,  20, -4,
+               -1, -4,  -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
-    h2_ = 20.0 / (mesh_size_ * mesh_size_);
+    h2_ = 6.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
+
+//    m_.print();
 }
 
 double
@@ -64,8 +64,6 @@ MultigridTutorialExampleTestFramework::GetX(int i) const {
     common_NS::reporting::checkUppderBound(i, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(i, 0);
     double h = 1.0 / (mesh_size_ + 1);
-//    double offset = 1.0 / (2.0 * mesh_size_);
-    //return offset + i * h;
     return (1 + i) * h;
 }
 
@@ -74,8 +72,6 @@ MultigridTutorialExampleTestFramework::GetY(int j) const {
     common_NS::reporting::checkUppderBound(j, mesh_size_ - 1);
     common_NS::reporting::checkLowerBound(j, 0);
     double h = 1.0 / (mesh_size_ + 1);
-//     double offset = 1.0 / (2.0 * mesh_size_);
-//     return offset + j * h;
     return (1 + j) * h;
 }
 
@@ -84,8 +80,7 @@ MultigridTutorialExampleTestFramework::f(double x, double y) const {
     double term1 = (1.0 - 6.0 * x * x) * y * y * (1.0 - y * y);
     double term2 = (1.0 - 6.0 * y * y) * x * x * (1.0 - x * x);
     double result = 2.0 * (term1 + term2);
-//    result = result * 1.0 / mesh_size_ / mesh_size_; 
-    result = result / (mesh_size_ + 1) / (mesh_size_ + 1);
+    result = result * h2_;
     return result;
 }
 
@@ -114,12 +109,8 @@ MultigridTutorialExampleTestFramework::DirectSolve() const {
 
     for (int i = 0; i < x.size(); ++i) {
         double a1 = x(i);
-//        a1 /= h2_;
-
         double a2 = sol(i);
         double delta = std::fabs(a1 - a2);
-//        double delta = std::fabs(a2 / a1);
-
         std::cout << delta << std::endl;
     }
 
@@ -128,17 +119,11 @@ MultigridTutorialExampleTestFramework::DirectSolve() const {
 
 
 
-
-
-    // validate
+    // consistency check
     Vector tmp = m_ * x;
-    tmp *= (mesh_size_ + 1) / (mesh_size_ + 1);
     double error = VectorMath::L2Error(rhs, tmp);
-
-
-
-
-
+    if (error > 1E-14)
+        throw std::logic_error("MultigridTutorialExampleTestFramework::DirectSolve: Consistency check failed");
 
     return x;
 }
