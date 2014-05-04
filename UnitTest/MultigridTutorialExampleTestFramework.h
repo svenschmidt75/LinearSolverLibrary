@@ -53,5 +53,5 @@ public:
 private:
     LinAlg_NS::SparseMatrix2D m_;
     int                       mesh_size_;
-    double                    h_;
+    double                    h2_;
 };

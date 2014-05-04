@@ -96,7 +96,7 @@ double
 VectorMath::L2Error(Vector const & lhs, Vector const & rhs) {
     common_NS::reporting::checkConditional(lhs.size() == rhs.size(), "VectorMath::LinfError: Incompatible vectors");
     double sum_squares = 0;
-    for (Vector::size_type index{ 0 }; index < lhs.size(); ++index) {
+    for (Vector::size_type index{0}; index < lhs.size(); ++index) {
         double delta = lhs(index) - rhs(index);
         sum_squares += delta * delta;
     }

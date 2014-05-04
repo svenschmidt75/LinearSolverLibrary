@@ -115,7 +115,9 @@ namespace LinearSolverLibrary_NS {
                 if (!(iteration % monitor_.nstall_iterations)) {
 //                    double tmp = std::fabs(std::log2(normr / stall_previous_residual_norm));
                     double tmp = std::fabs(std::log2(normr) - std::log2(stall_previous_residual_norm));
-                    if (tmp < 0.02)
+
+                    // TODO SS: 0.07?
+                    if (tmp < 0.08)
                         return std::make_tuple(true, x);
                     stall_previous_residual_norm = normr;
                 }
