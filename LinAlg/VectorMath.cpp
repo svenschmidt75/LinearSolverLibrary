@@ -100,7 +100,8 @@ VectorMath::L2Error(Vector const & lhs, Vector const & rhs) {
         double delta = lhs(index) - rhs(index);
         sum_squares += delta * delta;
     }
-    sum_squares = std::sqrt(sum_squares);
+    double fac = 1.0 / lhs.size();
+    sum_squares = std::sqrt(fac * sum_squares);
     return sum_squares;
 }
 

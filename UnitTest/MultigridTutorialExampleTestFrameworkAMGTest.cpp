@@ -26,7 +26,7 @@ namespace {
 
 
 TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
-    int mesh_size = 32;
+    int mesh_size = 8;
     auto framework = MultigridTutorialExampleTestFramework{mesh_size};
     framework.InitializeWithStencil1();
     //framework.InitializeWithStencil2();
@@ -48,12 +48,12 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
         amg_solution_vector = framework.SolveWithAMG(monitor);
     }
 
-    //auto sol = framework.DirectSolve();
-    //double error = framework.L2Error(sol);
-    //std::cout << "DirectSolve: " << error << std::endl;
+    auto sol = framework.DirectSolve();
+    double error = framework.L2Error(sol);
+    std::cout << "DirectSolve: " << error << std::endl;
 
     Vector s = framework.SolveWithCG();
-    double error = framework.LinfError(s);
+    error = framework.LinfError(s);
     std::cout << "CG: " << error << std::endl;
 
 
@@ -65,7 +65,8 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
 
 
 TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
-    double error[6];
+    double error2[6];
+    double errorInf[6];
 
     for (int factor = 0; factor < 6; ++factor) {
         int mesh_size = std::pow(2.0, factor + 2);
@@ -76,12 +77,21 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
         //framework.InitializeWithStencil4();
 
         Vector s = framework.SolveWithCG();
-        double err = framework.LinfError(s);
-        error[factor] = err;
+
+        // must be Linferror, NOT L2Error!!! Why???
+        double e2 = framework.L2Error(s);
+        double eInf = framework.LinfError(s);
+        error2[factor] = e2;
+        errorInf[factor] = eInf;
     }
 
     for (int factor = 1; factor < 6; ++factor) {
-        double delta = error[factor - 1] / error[factor];
+        double delta = error2[factor - 1] / error2[factor];
+        std::cout << delta << std::endl;
+    }
+
+    for (int factor = 1; factor < 6; ++factor) {
+        double delta = errorInf[factor - 1] / errorInf[factor];
         std::cout << delta << std::endl;
     }
 }
