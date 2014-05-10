@@ -52,6 +52,24 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
     ASSERT_THAT(cycle_levels, ElementsAre(0, 1, 2, 1, 0));
 }
 
+TEST_F(BasicAMGSolverTest, TestGridComplexity) {
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold = 3;
+
+    Vector b{m_.cols()};
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    ASSERT_FLOAT_EQ(amg_solver.GridComplexity(), 1.66666663f);
+}
+
+TEST_F(BasicAMGSolverTest, TestOperatorComplexity) {
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold = 3;
+
+    Vector b{m_.cols()};
+    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    ASSERT_FLOAT_EQ(amg_solver.OperatorComplexity(), 1.66666663f);
+}
+
 TEST_F(BasicAMGSolverTest, TestVSolve) {
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 3;

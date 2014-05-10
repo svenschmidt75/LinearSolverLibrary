@@ -122,6 +122,7 @@ namespace LinAlg_NS {
         void                   finalize() const;
         std::vector<size_type> getNonZeroColumnIndicesForRow(size_type row) const;
         std::vector<size_type> getNonZeroRowIndicesForColumn(size_type column) const;
+        size_type              nnz() const;
 
     private:
         using Col_t = std::map<size_type, double>;

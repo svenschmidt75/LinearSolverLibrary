@@ -391,6 +391,11 @@ SparseMatrix2D::getNonZeroRowIndicesForColumn(size_type column) const {
     return row_indices;
 }
 
+IMatrix2D::size_type
+SparseMatrix2D::nnz() const {
+    return elements_.size();
+}
+
 void
 SparseMatrix2D::print() const {
     std::cout << std::endl;

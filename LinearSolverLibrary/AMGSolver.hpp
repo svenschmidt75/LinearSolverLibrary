@@ -35,6 +35,8 @@ namespace LinearSolverLibrary_NS {
             monitor_{monitor} {
 
             BuildGalerkinOperatorHierarchy();
+            ComputeGridComplexity();
+            ComputeOperatorComplexity();
             BuildGridHierarchy();
             LUDecompositionForLastLevelGalerkinOperator();
         }
@@ -56,6 +58,42 @@ namespace LinearSolverLibrary_NS {
             Matrix2D dense = helper::SparseToDense(last_level.m);
             bool success = lu_.decompose(dense);
             common_NS::reporting::checkConditional(success, "AMGSolver::LUDecompositionForLastLevelGalerkinOperator: LU decomposition failed");
+        }
+
+        void
+        ComputeGridComplexity() const {
+            BOOST_ASSERT(amg_levels_.size() > 0);
+            auto fine_grid_row_count = amg_levels_[0].m.rows();
+            float row_count{0};
+            for (unsigned short i = 0; i < amg_levels_.size(); ++i) {
+                auto rows = amg_levels_[i].m.rows();
+                row_count += rows;
+            }
+            BOOST_ASSERT(row_count > 0);
+            grid_complexity_ = row_count / fine_grid_row_count;
+        }
+
+        float
+        OperatorComplexity() const {
+            return operator_complexity_;
+        }
+
+        void
+        ComputeOperatorComplexity() const {
+            BOOST_ASSERT(amg_levels_.size() > 0);
+            auto fine_grid_nnz = amg_levels_[0].m.nnz();
+            float nnz_count{0};
+            for (unsigned short i = 0; i < amg_levels_.size(); ++i) {
+                auto nnz = amg_levels_[i].m.nnz();
+                nnz_count += nnz;
+            }
+            BOOST_ASSERT(nnz_count > 0);
+            operator_complexity_ = nnz_count / fine_grid_nnz;
+        }
+
+        float
+        GridComplexity() const {
+            return grid_complexity_;
         }
 
         Vector
@@ -194,6 +232,8 @@ namespace LinearSolverLibrary_NS {
         AMGMonitor &                      monitor_;
         mutable std::vector<AMGLevel>     amg_levels_;
         LUDecomposition                   lu_;
+        mutable float                     grid_complexity_;
+        mutable float                     operator_complexity_;
     };
     
 } // LinearSolverLibrary_NS
