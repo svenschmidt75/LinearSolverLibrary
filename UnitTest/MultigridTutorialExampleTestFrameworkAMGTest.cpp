@@ -24,8 +24,28 @@ namespace {
 
 }
 
+TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestAMGHierarchyBuilderWithCoarseningNotTooLastLevel) {
+    int mesh_size = 4;
+    auto framework = MultigridTutorialExampleTestFramework{mesh_size};
+    framework.InitializeWithStencil2();
+
+    AMGMonitor monitor;
+
+    // Instruct the AMGHierarchyBuilder to coarse until the Galerkin operator is a 1x1 matrix.
+    // With InitializeWithStencil2, coarsening cannot advance past 2x2.
+    monitor.direct_solver_threshold = 1;
+    monitor.nmax_iterations = 1001;
+    monitor.nu1 = monitor.nu2 = 1;
+    monitor.verbosity = 2;
+
+    AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
+    auto amg_levels = builder.build(framework.m_);
+
+    ASSERT_EQ(3, amg_levels.size());
+}
+
 TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
-    int mesh_size = 8;
+    int mesh_size = 4;
     auto framework = MultigridTutorialExampleTestFramework{mesh_size};
     //framework.InitializeWithStencil1();
     framework.InitializeWithStencil2();
@@ -33,7 +53,7 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     //framework.InitializeWithStencil4();
 
     AMGMonitor monitor;
-    monitor.direct_solver_threshold = 1;
+    monitor.direct_solver_threshold = 4;
     monitor.nmax_iterations = 1001;
     monitor.nu1 = monitor.nu2 = 1;
     monitor.verbosity = 2;
@@ -41,25 +61,19 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     double tolerance = 1E-17;
     monitor.required_tolerance = tolerance;
 
+    auto sol = framework.DirectSolve();
+    double error = framework.L2Error(sol);
+
     Vector amg_solution_vector;
     {
         HighResTimer t;
         amg_solution_vector = framework.SolveWithAMG(monitor);
     }
 
-    auto sol = framework.DirectSolve();
-    double error = framework.L2Error(sol);
-    std::cout << "DirectSolve: " << error << std::endl;
-
-    Vector s = framework.SolveWithCG();
-    error = framework.LinfError(s);
-    std::cout << "CG: " << error << std::endl;
-
-
     error = framework.LinfError(amg_solution_vector);
     std::cout << "AMG: " << error << std::endl;
 
-    ASSERT_THAT(error, DoubleNear(0.0, 1E-13));
+    ASSERT_DOUBLE_EQ(error, 0.013843463062068982);
 }
 
 #ifdef INTEGRATION_TEST

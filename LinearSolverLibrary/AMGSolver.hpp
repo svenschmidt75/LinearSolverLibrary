@@ -101,6 +101,10 @@ namespace LinearSolverLibrary_NS {
             double stall_previous_residual_norm = 1.0;
             double & normr = monitor_.residual;
             double previous_normr = 1.0;
+
+            if (monitor_.verbosity)
+                std::cout << "---- r2 ----      ---- dr ----  " << std::endl;
+
             while (iteration <= maxIterations) {
                 x = AMGFullCycle(x);
                 ++iteration;
@@ -124,11 +128,8 @@ namespace LinearSolverLibrary_NS {
 
                 double residual_ratio = normr / previous_normr;
 
-                if (monitor_.verbosity) {
-                    std::cout << "r2 : " << normr << std::endl;
-                    std::cout << "dr : " << residual_ratio << std::endl;
-                    std::cout << std::endl;
-                }
+                if (monitor_.verbosity)
+                    std::cout << normr << "       " << residual_ratio << std::endl;
 
                 previous_normr = normr;
 

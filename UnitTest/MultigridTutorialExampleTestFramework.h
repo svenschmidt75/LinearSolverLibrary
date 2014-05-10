@@ -22,6 +22,7 @@ class MultigridTutorialExampleTestFramework {
     friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveIsConsistent_Test;
     friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveL2Error_Test;
     friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveLinfError_Test;
+    friend class MultigridTutorialExampleTestFrameworkAMGTest_TestAMGHierarchyBuilderWithCoarseningNotTooLastLevel_Test;
 
 
 public:
