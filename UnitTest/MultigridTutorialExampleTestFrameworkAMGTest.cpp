@@ -24,7 +24,7 @@ namespace {
 
 }
 
-TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
+TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     int mesh_size = 8;
     auto framework = MultigridTutorialExampleTestFramework{mesh_size};
     //framework.InitializeWithStencil1();
@@ -33,10 +33,10 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, DISABLED_TestNEquals16Case) {
     //framework.InitializeWithStencil4();
 
     AMGMonitor monitor;
-    monitor.direct_solver_threshold = 4;
+    monitor.direct_solver_threshold = 1;
     monitor.nmax_iterations = 1001;
     monitor.nu1 = monitor.nu2 = 1;
-    monitor.verbosity = 1;
+    monitor.verbosity = 2;
 
     double tolerance = 1E-17;
     monitor.required_tolerance = tolerance;

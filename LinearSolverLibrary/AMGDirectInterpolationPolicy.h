@@ -43,7 +43,7 @@ namespace LinearSolverLibrary_NS {
         VariableCategorizer const & GetVariableCategorizer() const;
 
     private:
-        void ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
         void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);
         void ComputeGalerkinOperator(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);

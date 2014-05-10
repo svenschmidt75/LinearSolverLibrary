@@ -26,7 +26,8 @@ AMGDirectInterpolationPolicy::Generate(SparseMatrix2D const & m) {
 
 //    variable_categorizer_->print();
     
-    ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_);
+    if (ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_) == false)
+        return false;
 
 //    interpolation_operator_.print();
 
@@ -69,7 +70,7 @@ namespace {
 
 }
 
-void
+bool
 AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
@@ -86,18 +87,12 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double a_num = ComputeNumerator(fine_variable, *row_it);
             auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
             if (interpolatory_set->size() == 0) {
-                // If a fine variable has no strong connections to any coarse variable, this procedure
-                // fails, i.e. direct interpolation cannot be used.
-                // This means that variable i does not need to be solved for, i.e. it should be
-                // removed from the system, similar to Dirichlet boundary nodes.
-                // Instead, try to increase AMGMonitor.direct_solver_threshold such that there will
-                // be less levels in the hierarchy.
-                // 
-
-                // TODO SS: Introduce special exception typer her and throw. Catch in AMGHierarchyBuilder
-                // and use current level as AMGMonitor.direct_solver_threshold.
-                // // Or just return false here!!!
-                throw std::runtime_error("AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable has no strong connections to coarse variables");
+                // Fine variable 'fine_variable' has no string connections to any other coarse variable.
+                // This means that it can be solved for directly as it has no dependencies on any other
+                // variables. We therefore stop coarsening at this level and solve via direct solve (LU).
+                // Alternatively, the fine variable could be removed from the system. Then, we continue
+                // coarsening with the reduced system.
+                return false;
             }
             double a_denum = ComputeDenumerator(fine_variable, m, *interpolatory_set, variable_categorizer);
             double alpha = a_num / a_denum;
@@ -114,6 +109,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
         ++row_it;
     }
     CreateInterpolationOperator(m.rows(), indexer.NumberOfVariables(), interpolation_op);
+    return true;
 }
 
 void

@@ -103,22 +103,6 @@ MultigridTutorialExampleTestFramework::DirectSolve() const {
     Vector rhs = CreateRHS();
     Vector x = ludecomp.solve(rhs);
 
-    
-    
-    auto sol = CreateExactSolutionVector();
-
-    for (int i = 0; i < x.size(); ++i) {
-        double a1 = x(i);
-        double a2 = sol(i);
-        double delta = std::fabs(a1 - a2);
-        std::cout << delta << std::endl;
-    }
-
-    std::cout << std::endl << h2_ << std::endl;
-
-
-
-
     // consistency check
     Vector tmp = m_ * x;
     double error = VectorMath::L2Error(rhs, tmp);
