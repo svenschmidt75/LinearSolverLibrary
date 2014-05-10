@@ -117,7 +117,7 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecomposi
     ASSERT_THAT(std::cbegin(variable_decomposition), Eq(std::cend(variable_decomposition)));
 }
 
-TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessThanDirectSolveThreshold) {
+TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessThanDirectSolveThresholdWorks) {
         MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
         stencil << 0, -1,  0,
                   -1,  4, -1,
@@ -128,5 +128,5 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessTha
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 10;
     AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
-    ASSERT_THROW(builder.build(m), std::logic_error);
+    ASSERT_NO_THROW(builder.build(m));
 }

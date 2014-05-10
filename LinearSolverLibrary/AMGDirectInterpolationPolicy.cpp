@@ -19,26 +19,11 @@ AMGDirectInterpolationPolicy::Generate(SparseMatrix2D const & m) {
     variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
     VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
     AMGStandardSplitting splitting{m, influence_accessor, *variable_categorizer_};
-
-//    m.print();
-
     splitting.generateSplitting();
-
-//    variable_categorizer_->print();
-    
     if (ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_) == false)
         return false;
-
-//    interpolation_operator_.print();
-
     ComputeRestrictionOperator(interpolation_operator_);
-
-//    restriction_operator_.print();
-
     ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
-
-//    galerkinOperator_.print();
-
     return true;
 }
 

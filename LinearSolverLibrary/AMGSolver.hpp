@@ -127,11 +127,10 @@ namespace LinearSolverLibrary_NS {
                 }
 
                 double residual_ratio = normr / previous_normr;
+                previous_normr = normr;
 
                 if (monitor_.verbosity)
                     std::cout << normr << "       " << residual_ratio << std::endl;
-
-                previous_normr = normr;
 
                 achieved_tolerance = normr / normb;
                 if (achieved_tolerance <= required_tolerance)

@@ -56,7 +56,7 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals16Case) {
     monitor.direct_solver_threshold = 4;
     monitor.nmax_iterations = 1001;
     monitor.nu1 = monitor.nu2 = 1;
-    monitor.verbosity = 2;
+    monitor.verbosity = 0;
 
     double tolerance = 1E-17;
     monitor.required_tolerance = tolerance;

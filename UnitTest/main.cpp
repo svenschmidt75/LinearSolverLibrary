@@ -30,7 +30,7 @@
 #include "BinaryHeapTest.h"
 #include "PriorityArrayTest.h"
 
-
+// --gtest_filter=MultigridTutorialExampleTestFrameworkAMGTest.*
 
 // CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
 

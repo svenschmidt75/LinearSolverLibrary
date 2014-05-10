@@ -55,8 +55,6 @@ MultigridTutorialExampleTestFramework::InitializeWithStencil4() {
                -1, -4,  -1;
     m_ = stencil.generateMatrix(mesh_size_ * mesh_size_);
     h2_ = 6.0 / ((mesh_size_ + 1) * (mesh_size_ + 1));
-
-//    m_.print();
 }
 
 double
