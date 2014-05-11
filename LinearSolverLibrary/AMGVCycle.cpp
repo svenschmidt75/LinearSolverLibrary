@@ -6,6 +6,4 @@
 using namespace LinearSolverLibrary_NS;
 
 
-AMGVCycle::AMGVCycle()
-    :
-    AMGVWCycleBase{1} {}
+AMGVCycle::AMGVCycle() {}

@@ -74,36 +74,6 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals4Case) {
     ASSERT_DOUBLE_EQ(error, 0.013843463062068982);
 }
 
-TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestNEquals64Case) {
-    int mesh_size = 32;
-    auto framework = MultigridTutorialExampleTestFramework{mesh_size};
-    //framework.InitializeWithStencil1();
-    framework.InitializeWithStencil2();
-    //framework.InitializeWithStencil3();
-    //framework.InitializeWithStencil4();
-
-    AMGMonitor monitor;
-    monitor.direct_solver_threshold = 4;
-    monitor.nmax_iterations = 1001;
-    monitor.nu1 = monitor.nu2 = 1;
-    monitor.verbosity = 0;
-
-    double tolerance = 1E-17;
-    monitor.required_tolerance = tolerance;
-
-    auto sol = framework.DirectSolve();
-    double error = framework.L2Error(sol);
-
-    Vector amg_solution_vector;
-    {
-        HighResTimer t;
-        amg_solution_vector = framework.SolveWithAMG(monitor);
-    }
-
-    error = framework.LinfError(amg_solution_vector);
-    ASSERT_DOUBLE_EQ(error, 0.013843463062068982);
-}
-
 #ifdef INTEGRATION_TEST
 
 TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestThatErrorReducesBy1Over4WhenMeshSizeIncreasesBy1Over2) {

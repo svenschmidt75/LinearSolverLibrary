@@ -45,6 +45,7 @@ namespace LinearSolverLibrary_NS {
         void
         BuildGridHierarchy() {
             cycle_scheme_.build(static_cast<short>(amg_levels_.size() - 1));
+//            cycle_scheme_.print();
         }
 
         void

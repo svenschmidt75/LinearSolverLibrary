@@ -85,20 +85,14 @@
     <ClCompile Include="AMGStandardSplitting.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGWCycle.cpp">
-      <Filter>AMG\Cycles</Filter>
-    </ClCompile>
-    <ClCompile Include="AMGVWCycleBase.cpp">
-      <Filter>AMG\Cycles</Filter>
-    </ClCompile>
-    <ClCompile Include="AMGVCycle.cpp">
-      <Filter>AMG\Cycles</Filter>
-    </ClCompile>
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
     <ClCompile Include="AMGCoarseVariableIndexer.cpp">
       <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGVCycle.cpp">
+      <Filter>AMG\Cycles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,19 +174,10 @@
     <ClInclude Include="AMGMonitor.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGWCycle.h">
-      <Filter>AMG\Cycles</Filter>
-    </ClInclude>
     <ClInclude Include="AMGSolver.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="IAMGCycle.h">
-      <Filter>AMG\Cycles</Filter>
-    </ClInclude>
-    <ClInclude Include="AMGVCycle.h">
-      <Filter>AMG\Cycles</Filter>
-    </ClInclude>
-    <ClInclude Include="AMGVWCycleBase.h">
       <Filter>AMG\Cycles</Filter>
     </ClInclude>
     <ClInclude Include="AMGHierarchyBuilder.hpp">
@@ -212,5 +197,14 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="Monitor.h" />
+    <ClInclude Include="AMGVWCycleBase.hpp">
+      <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGWCycle.hpp">
+      <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGVCycle.h">
+      <Filter>AMG\Cycles</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

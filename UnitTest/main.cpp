@@ -32,16 +32,7 @@
 
 // --gtest_filter=MultigridTutorialExampleTestFrameworkAMGTest.*
 
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGSolverTest);
-
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
-// CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
-
-CPPUNIT_TEST_SUITE_REGISTRATION(bcsstk05Test);
-
-#if 0
+#if 1
 CPPUNIT_TEST_SUITE_REGISTRATION(PriorityArrayTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);
 

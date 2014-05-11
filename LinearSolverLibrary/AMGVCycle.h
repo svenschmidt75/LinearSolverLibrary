@@ -9,7 +9,7 @@
 
 #include "DeclSpec.h"
 
-#include "AMGVWCycleBase.h"
+#include "AMGVWCycleBase.hpp"
 
 
 #pragma warning(disable:4275)
@@ -18,7 +18,7 @@
 namespace LinearSolverLibrary_NS {
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGVCycle : public AMGVWCycleBase {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGVCycle : public AMGVWCycleBase<1> {
     public:
         AMGVCycle();
     };

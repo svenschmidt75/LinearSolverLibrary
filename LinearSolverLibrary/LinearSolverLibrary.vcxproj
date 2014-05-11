@@ -221,8 +221,6 @@
     <ClCompile Include="AMGStandardSplitting.cpp" />
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp" />
     <ClCompile Include="AMGVCycle.cpp" />
-    <ClCompile Include="AMGVWCycleBase.cpp" />
-    <ClCompile Include="AMGWCycle.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
     <ClCompile Include="UndefinedVariableSetDecorator.cpp" />
     <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
@@ -272,8 +270,8 @@
     <ClInclude Include="AMGStandardSplitting.h" />
     <ClInclude Include="AMGDirectInterpolationPolicy.h" />
     <ClInclude Include="AMGVCycle.h" />
-    <ClInclude Include="AMGVWCycleBase.h" />
-    <ClInclude Include="AMGWCycle.h" />
+    <ClInclude Include="AMGVWCycleBase.hpp" />
+    <ClInclude Include="AMGWCycle.hpp" />
     <ClInclude Include="AMGCoarseVariableIndexer.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="IAMGCycle.h" />
