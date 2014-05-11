@@ -98,7 +98,6 @@ namespace LinearSolverLibrary_NS {
             return m.cols() <= max_size;
         }
 
-
     private:
         AMGMonitor const &            monitor_;
         mutable std::vector<AMGLevel> amg_levels_;

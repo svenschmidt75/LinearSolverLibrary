@@ -121,7 +121,7 @@ TEST_F(BasicAMGSolverTest, TestWSolve) {
     Vector b{m_.cols()};
     std::fill(std::begin(b), std::end(b), 1);
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGDirectInterpolationPolicy, AMGWCycle> amg_solver{m_, b, monitor};
 
     //    m_.print();
 

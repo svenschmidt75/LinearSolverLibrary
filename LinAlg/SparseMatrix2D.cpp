@@ -407,7 +407,15 @@ SparseMatrix2D::print() const {
 
     short const int width = 12;
 
+    std::cout << std::setw(width) << " ";
+    for (size_type col = 0; col < ncols_; ++col) {
+        std::cout << std::setw(width) << "column " << col << " ";
+    }
+    std::cout << std::endl;
+
     for (size_type row = 0; row < nrows_; ++row) {
+        std::cout << std::setw(width) << "row " << row << " ";
+
         // Number of non-zero columns for this row
         size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
         size_type offset = columns_offset_[row];
@@ -430,8 +438,6 @@ SparseMatrix2D::print() const {
             std::cout.precision(2);
             std::cout.setf(std::ios::fixed, std::ios::floatfield);
             std::cout << std::setw(width) << a_ij << " ";
-
-//            std::cout << std::setw(8) << std::fixed << a_ij << " ";
 
             ++icol;
 
