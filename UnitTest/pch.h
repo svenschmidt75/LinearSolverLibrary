@@ -75,4 +75,5 @@
 #include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardSplitting.h"
 #include "LinearSolverLibrary/AMGVCycle.h"
+#include "LinearSolverLibrary/AMGWCycle.h"
 //#include "LinearSolverLibrary/AMGSolver.hpp"

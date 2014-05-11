@@ -27,6 +27,7 @@ namespace LinearSolverLibrary_NS {
         friend class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
         friend class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
 
+
     public:
         AMGSolver(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, AMGMonitor & monitor)
             :
@@ -141,7 +142,7 @@ namespace LinearSolverLibrary_NS {
             double previous_normr = 1.0;
 
             if (monitor_.verbosity)
-                std::cout << "---- r2 ----      ---- dr ----  " << std::endl;
+                std::cout << "---- i ----     ---- r2 ----      ---- dr ----  " << std::endl;
 
             while (iteration <= maxIterations) {
                 x = AMGFullCycle(x);
@@ -168,7 +169,7 @@ namespace LinearSolverLibrary_NS {
                 previous_normr = normr;
 
                 if (monitor_.verbosity)
-                    std::cout << normr << "       " << residual_ratio << std::endl;
+                    std::cout << iteration << "      " << normr << "       " << residual_ratio << std::endl;
 
                 achieved_tolerance = normr / normb;
                 if (achieved_tolerance <= required_tolerance)

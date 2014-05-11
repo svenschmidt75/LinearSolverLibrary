@@ -2,6 +2,8 @@
 
 #include "bcsstk05Test.h"
 
+#include "LinearSolverLibrary/AMGSolver.hpp"
+
 
 using namespace EntityReader_NS;
 using namespace LinAlg_NS;
@@ -241,4 +243,38 @@ bcsstk05Test::GCRWithRestartTest() {
 
     // compare vectors
     CPPUNIT_ASSERT_MESSAGE("mismatch in GCR solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, 2 * 1E-9));
+}
+
+void
+bcsstk05Test::AMGVCycleTest() {
+    AMGMonitor monitor;
+    monitor.direct_solver_threshold = 4;
+    monitor.nmax_iterations = 111001;
+    monitor.nu1 = monitor.nu2 = 1;
+    monitor.verbosity = 2;
+
+    double tolerance = 1E-10;
+    monitor.required_tolerance = tolerance;
+
+    Vector x{b_.size()};
+    bool success;
+    {
+        HighResTimer t;
+
+        AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b_, monitor};
+
+        //    m_.print();
+
+        std::fill(std::begin(x), std::end(x), 0);
+        std::tie(success, x) = amg_solver.Solve(x);
+        CPPUNIT_ASSERT(success);
+    }
+
+    Vector x_ref{b_.size()};
+    int iterations;
+    std::tie(success, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b_, 1.1, 111000);
+    ASSERT_TRUE(success);
+
+    // compare vectors
+    CPPUNIT_ASSERT_MESSAGE("mismatch in AMG solver result", SparseLinearSolverUtil::isVectorEqual(x, x_ref_, tolerance));
 }

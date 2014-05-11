@@ -405,6 +405,8 @@ SparseMatrix2D::print() const {
         return;
     }
 
+    short const int width = 12;
+
     for (size_type row = 0; row < nrows_; ++row) {
         // Number of non-zero columns for this row
         size_type ncol = columns_offset_[row + 1] - columns_offset_[row];
@@ -417,14 +419,19 @@ SparseMatrix2D::print() const {
 
             // print leading 0
             if (column > col || ncol == 0) {
-                std::cout << std::setw(8) << 0 << " ";
+                std::cout << std::setw(width) << 0 << " ";
                 continue;
             }
 
             common_NS::reporting::checkConditional(col == column);
 
             double a_ij = elements_[offset + icol];
-            std::cout << std::setw(8) << a_ij << " ";
+
+            std::cout.precision(2);
+            std::cout.setf(std::ios::fixed, std::ios::floatfield);
+            std::cout << std::setw(width) << a_ij << " ";
+
+//            std::cout << std::setw(8) << std::fixed << a_ij << " ";
 
             ++icol;
 
@@ -433,7 +440,7 @@ SparseMatrix2D::print() const {
                 size_type diff = ncols_ - col;
 
                 while(--diff)
-                    std::cout << std::setw(8) << 0 << " ";
+                    std::cout << std::setw(width) << 0 << " ";
 
                 break;
             }

@@ -100,16 +100,20 @@ namespace {
 
 double
 Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) const {
+#ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1, "Matrix2D::operator(): Out of range error");
     common_NS::reporting::checkUppderBound(col, cols() - 1, "Matrix2D::operator(): Out of range error");
+#endif
     size_type index = row * cols_ + col;
     return data_[index];
 }
 
 double &
 Matrix2D::operator()(Matrix2D::size_type row, Matrix2D::size_type col) {
+#ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row, rows() - 1, "Matrix2D::operator(): Out of range error");
     common_NS::reporting::checkUppderBound(col, cols() - 1, "Matrix2D::operator(): Out of range error");
+#endif
     Matrix2D::size_type index = row * cols_ + col;
     return data_[index];
 }

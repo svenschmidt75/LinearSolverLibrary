@@ -77,6 +77,10 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
                 // variables. We therefore stop coarsening at this level and solve via direct solve (LU).
                 // Alternatively, the fine variable could be removed from the system. Then, we continue
                 // coarsening with the reduced system.
+
+                m.print();
+
+
                 return false;
             }
             double a_denum = ComputeDenumerator(fine_variable, m, *interpolatory_set, variable_categorizer);
