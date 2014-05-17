@@ -41,7 +41,7 @@ ConstColumnIterator<SparseMatrix2D>::isValid() const {
 }
 
 ConstColumnIterator<SparseMatrix2D>::size_type
-ConstColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
+ConstColumnIterator<SparseMatrix2D>::nnz() const {
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(column_, m_.cols() - 1);
 #endif

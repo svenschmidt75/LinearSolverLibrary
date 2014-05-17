@@ -38,7 +38,7 @@ namespace LinAlg_NS {
         bool      isValid() const;
         size_type maxRows() const;
         size_type row() const;
-        size_type numberOfNonZeroMatrixElements() const;
+        size_type nnz() const;
 
         iter & operator++();
         iter   operator++(int);

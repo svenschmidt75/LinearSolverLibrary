@@ -38,7 +38,7 @@ namespace LinAlg_NS {
 
         size_type maxColumns() const;
         size_type column() const;
-        size_type numberOfNonZeroMatrixElements() const;
+        size_type nnz() const;
 
         iter & operator++();
         iter   operator++(int);

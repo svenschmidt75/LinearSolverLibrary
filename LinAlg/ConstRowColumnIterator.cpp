@@ -50,8 +50,8 @@ ConstRowColumnIterator<SparseMatrix2D>::row() const {
 }
 
 ConstRowColumnIterator<SparseMatrix2D>::size_type
-ConstRowColumnIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
-    return (*(*this)).numberOfNonZeroMatrixElements();
+ConstRowColumnIterator<SparseMatrix2D>::nnz() const {
+    return (*(*this)).nnz();
 }
 
 ConstRowColumnIterator<SparseMatrix2D> &

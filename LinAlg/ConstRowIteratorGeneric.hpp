@@ -56,7 +56,7 @@ namespace LinAlg_NS {
             return row_ < m_.rows();
         }
 
-        size_type numberOfNonZeroMatrixElements() const {
+        size_type nnz() const {
             return row_indices_.size();
         }
 

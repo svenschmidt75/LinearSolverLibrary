@@ -41,7 +41,7 @@ ConstRowIterator<SparseMatrix2D>::isValid() const {
 }
 
 ConstRowIterator<SparseMatrix2D>::size_type
-ConstRowIterator<SparseMatrix2D>::numberOfNonZeroMatrixElements() const {
+ConstRowIterator<SparseMatrix2D>::nnz() const {
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);
 #endif

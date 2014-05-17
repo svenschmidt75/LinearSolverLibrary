@@ -95,12 +95,12 @@ namespace LinAlg_NS {
 
         static bool isSymmetric(SparseMatrix2D const & m);
 
+        static SparseMatrix2D matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
+        static SparseMatrix2D matrixMulSerial(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
         static SparseMatrix2D nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
         static SparseMatrix2D chunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
-        static SparseMatrix2D matrixMulSerial(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
-        static Matrix2D       matrixMulSerial(Matrix2D const & lhs, Matrix2D const & rhs);
         static Matrix2D       matrixMul(Matrix2D const & lhs, Matrix2D const & rhs);
-        static SparseMatrix2D matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs);
+        static Matrix2D       matrixMulSerial(Matrix2D const & lhs, Matrix2D const & rhs);
 
         template<typename MATRIX_EXPR_1, typename MATRIX_EXPR_2>
         static double getMatrixMatrixMulElement(MATRIX_EXPR_1 const & lhs, MATRIX_EXPR_2 const & rhs, size_type row, size_type column) {

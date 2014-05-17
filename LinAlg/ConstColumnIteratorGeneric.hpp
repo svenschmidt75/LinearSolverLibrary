@@ -51,7 +51,7 @@ namespace LinAlg_NS {
             return column_ < m_.cols();
         }
 
-        size_type numberOfNonZeroMatrixElements() const {
+        size_type nnz() const {
             return column_indices_.size();
         }
 

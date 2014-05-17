@@ -32,7 +32,7 @@
 
 // --gtest_filter=MultigridTutorialExampleTestFrameworkAMGTest.*
 
-#if 1
+#if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(PriorityArrayTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);
 

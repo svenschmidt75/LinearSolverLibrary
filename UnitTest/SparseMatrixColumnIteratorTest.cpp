@@ -175,7 +175,7 @@ void
 SparseMatrixColumnIteratorTest::RowIteratorReturnsNumberOfNonZeroMatrixElementsInCurrentRow() {
     auto matrix = CreateSparseMatrix();
     ConstRowColumnIterator<SparseMatrix2D> it = MatrixIterators::getConstRowColumnIterator(matrix);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.numberOfNonZeroMatrixElements());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", 2ull, it.nnz());
 }
 
 void
@@ -189,7 +189,7 @@ SparseMatrixColumnIteratorTest::GenericRowIteratorReturnsNumberOfNonZeroMatrixEl
      */
     auto it = MatrixIterators::getConstRowColumnIterator(matrix2);
     auto expected = 3ull;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", expected, it.numberOfNonZeroMatrixElements());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of non-zero elements mismatch", expected, it.nnz());
 }
 
 namespace {

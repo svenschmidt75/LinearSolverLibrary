@@ -63,8 +63,8 @@ namespace LinAlg_NS {
             return row_;
         }
 
-        size_type numberOfNonZeroMatrixElements() const {
-            return (*(*this)).numberOfNonZeroMatrixElements();
+        size_type nnz() const {
+            return (*(*this)).nnz();
         }
 
         iter & operator++() {

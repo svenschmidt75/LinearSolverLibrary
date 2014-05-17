@@ -53,14 +53,14 @@ helper::transposeParallelNonChunked(SparseMatrix2D const & m) {
     SparseMatrix2D m_transpose{ncols, nrows};
     using size_type = IMatrix2D::size_type;
 
-    // each chunk must only access its own private memory as
-    // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+    // Each chunk must only access its own private memory as in
+    // SparseMatrix2D, the call to SparseMatrix2D::operator(row, column)
     // is not thread safe!
     using TupleType_t = std::tuple<size_type, size_type, double>;
     std::vector<std::vector<TupleType_t>> chunkPrivateMemory{nrows};
     for (size_type row{0}; row < nrows; ++row) {
         ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
-        chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+        chunkPrivateMemory[row].reserve(columnRowIterator.nnz());
     }
     concurrency::parallel_for(size_type{0}, nrows, [&m, &chunkPrivateMemory, ncols](size_type row) {
         ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
@@ -100,14 +100,14 @@ helper::transposeParallelChunked(SparseMatrix2D const & m) {
     IMatrix2D::size_type chunk_size = nrows / numberOfProcessors;
     auto size = common_NS::getAdjustedSize(nrows, numberOfProcessors);
 
-    // each chunk must only access its own private memory as
-    // SparseMatrix2D as the call to SparseMatrix2D::operator(row, column)
+    // Each chunk must only access its own private memory as in
+    // SparseMatrix2D, the call to SparseMatrix2D::operator(row, column)
     // is not thread safe!
     using TupleType_t = std::tuple<size_type, size_type, double>;
     std::vector<std::vector<TupleType_t>> chunkPrivateMemory{nrows};
     for (size_type row{0}; row < nrows; ++row) {
         ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(m, row);
-        chunkPrivateMemory[row].reserve(columnRowIterator.numberOfNonZeroMatrixElements());
+        chunkPrivateMemory[row].reserve(columnRowIterator.nnz());
     }
     concurrency::parallel_for(size_type{0}, size, chunk_size, [&m, &chunkPrivateMemory, nrows, ncols, numberOfProcessors, chunk_size](size_type row_index) {
         size_type start_index, end_size;
@@ -196,7 +196,7 @@ helper::isSymmetricSerial(SparseMatrix2D const & m) {
 
     // m.rows() + 1, because the last for the last row, there is
     // only the diagonal element a(m.rows() - 1, m.rows() - 1),
-    // so nothink to check.
+    // so nothing to check.
     for (size_type row{0}; row < m.rows() - 1; ++row) {
         for (size_type col{row + 1}; col < m.cols(); ++col) {
             double a_ij = m(row, col);
@@ -241,7 +241,7 @@ helper::matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
         * patterns, see helper::isSymmetric.
         * 
         * According to the concurrency visualizer, the slowdown is due to A LOT of
-        * synchcronization, effectively killing concurrency. The reason is that I
+        * synchronization, effectively killing concurrency. The reason is that I
         * only use 8 chunks (numberOfProcessors = std::thread::hardware_concurrency() = 8).
         * If I multiply this by a larger number, we get close to the performance of
         * 'matrixIsSymmetricParallelNonChunked'. Interesting...
@@ -296,6 +296,51 @@ helper::matrixIsSymmetricParallelChunked(SparseMatrix2D const & m) {
 }
 
 SparseMatrix2D
+helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
+#ifdef PARALLEL
+    return nonChunkedParallelMatrixMatrixMultiplication(lhs, rhs);
+    //    return chunkedParallelMatrixMatrixMultiplication(lhs, rhs);
+#else
+    return matrixMulSerial(lhs, rhs);
+#endif
+}
+
+SparseMatrix2D
+helper::matrixMulSerial(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
+    common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMulSerial: Matrices incompatible");
+    auto nrows = lhs.rows();
+    auto ncols = rhs.cols();
+    SparseMatrix2D tmp{nrows, ncols};
+    for (IMatrix2D::size_type row = 0; row < nrows; ++row) {
+        auto value = 0.0;
+        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
+        for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
+           ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
+           ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
+           ConstRowIterator<SparseMatrix2D> rowIterator = *rowColumnIterator;
+
+            // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
+            while (columnIterator && columnIterator.column() < lhs.cols()) {
+                while (rowIterator && rowIterator.row() < columnIterator.column()) {
+                    ++rowIterator;
+                }
+                if (!rowIterator)
+                    break;
+                if (rowIterator.row() == columnIterator.column())
+                    value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
+                ++columnIterator;
+            }
+            if (value) {
+                tmp(row, column) = value;
+                value = 0.0;
+            }
+        }
+    }
+    tmp.finalize();
+    return tmp;
+}
+
+SparseMatrix2D
 helper::nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
     common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::nonChunkedParallelMatrixMatrixMultiplication: Matrices incompatible");
     auto nrows = lhs.rows();
@@ -329,7 +374,7 @@ helper::nonChunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs,
                 ++columnIterator;
             }
             if (value) {
-                //                        result(row, column) = value;
+//                        result(row, column) = value;
                 chunkPrivateMemory[row].push_front(std::make_tuple(row, column, value));
                 value = 0.0;
             }
@@ -390,7 +435,7 @@ helper::chunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, Sp
                     ++columnIterator;
                 }
                 if (value) {
-                    //                        result(row, column) = value;
+//                        result(row, column) = value;
                     auto chunk_index = row_index / chunk_size;
                     chunkPrivateMemory[chunk_index].push_front(std::make_tuple(row, column, value));
                     value = 0.0;
@@ -410,39 +455,9 @@ helper::chunkedParallelMatrixMatrixMultiplication(SparseMatrix2D const & lhs, Sp
     return result;
 }
 
-SparseMatrix2D
-helper::matrixMulSerial(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
-    common_NS::reporting::checkConditional(lhs.cols() == rhs.rows(), "helper::matrixMulSerial: Matrices incompatible");
-    auto nrows = lhs.rows();
-    auto ncols = rhs.cols();
-    SparseMatrix2D tmp{nrows, ncols};
-    for (IMatrix2D::size_type row = 0; row < nrows; ++row) {
-        auto value = 0.0;
-        ConstRowColumnIterator<SparseMatrix2D> columnRowIterator = MatrixIterators::getConstRowColumnIterator(lhs, row);
-        for (IMatrix2D::size_type column = 0; column < ncols; ++column) {
-           ConstColumnRowIterator<SparseMatrix2D> rowColumnIterator = MatrixIterators::getConstColumnRowIterator(rhs, column);
-           ConstColumnIterator<SparseMatrix2D> columnIterator = *columnRowIterator;
-           ConstRowIterator<SparseMatrix2D> rowIterator = *rowColumnIterator;
-
-            // 1st element in row'th row of lhs: lhs(row, columnIterator.column())
-            while (columnIterator && columnIterator.column() < lhs.cols()) {
-                while (rowIterator && rowIterator.row() < columnIterator.column()) {
-                    ++rowIterator;
-                }
-                if (!rowIterator)
-                    break;
-                if (rowIterator.row() == columnIterator.column())
-                    value += lhs(row, rowIterator.row()) * rhs(rowIterator.row(), column);
-                ++columnIterator;
-            }
-            if (value) {
-                tmp(row, column) = value;
-                value = 0.0;
-            }
-        }
-    }
-    tmp.finalize();
-    return tmp;
+Matrix2D
+helper::matrixMul(Matrix2D const & lhs, Matrix2D const & rhs) {
+    return matrixMulSerial(lhs, rhs);
 }
 
 Matrix2D
@@ -463,21 +478,6 @@ helper::matrixMulSerial(Matrix2D const & lhs, Matrix2D const & rhs) {
         }
     }
     return tmp;
-}
-
-SparseMatrix2D
-helper::matrixMul(SparseMatrix2D const & lhs, SparseMatrix2D const & rhs) {
-#ifdef PARALLEL
-    return nonChunkedParallelMatrixMatrixMultiplication(lhs, rhs);
-    //    return chunkedParallelMatrixMatrixMultiplication(lhs, rhs);
-#else
-    return matrixMulSerial(lhs, rhs);
-#endif
-}
-
-Matrix2D
-helper::matrixMul(Matrix2D const & lhs, Matrix2D const & rhs) {
-    return matrixMulSerial(lhs, rhs);
 }
 
 Matrix2D

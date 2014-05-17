@@ -25,8 +25,8 @@ namespace {
             if (column_it.column() == row)
                 // skip diagonal element
                 continue;
-            double matrix_value = std::abs(*column_it);
-            max_value = std::max(max_value, matrix_value);
+            double a_ij = std::abs(*column_it);
+            max_value = std::max(max_value, a_ij);
         }
         return max_value;
     }
@@ -43,9 +43,11 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
         if (j == i)
             // skip diagonal element
             continue;
-        double matrix_value = - *column_it;
-        if (matrix_value >= max_element) {
-            // variable i has a strong dependency on variable j
+        double a_ij = - *column_it;
+        if (a_ij >= max_element) {
+            // Variable i has a strong dependency on variable j as the coupling element a_ij
+            // is large. Hence, algebraic smooth error varies slowly between i to j, and hence we
+            // want to coarsen in that "direction".
             (*Si_)(i, j) = 1.0;
 
             // variable j strongly influences variable i
@@ -56,6 +58,9 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
 
 void
 AMGStandardCoarseningStrengthPolicy::computeConnections() {
+    // TODO SS: This can be done in parallel for each fine variable i, as
+    // only S(i, j) is modified with i = const per loop iteration.
+    // Use thread private memory and at the end, assembly Si and Sit.
     for (IMatrix2D::size_type i = 0; i < m_.rows(); ++i) {
         auto max_element = computeMaxElementForRow(m_, i);
         if (max_element == 0)
