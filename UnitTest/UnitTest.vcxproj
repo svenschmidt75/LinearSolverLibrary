@@ -38,6 +38,7 @@
     <ClCompile Include="AMGStandardCoarseningTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="AMGStandardInterpolationPolicyTest.cpp" />
     <ClCompile Include="AMGStandardSplittingTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>

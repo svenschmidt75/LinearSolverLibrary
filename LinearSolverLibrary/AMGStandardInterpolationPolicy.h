@@ -20,9 +20,17 @@ namespace LinearSolverLibrary_NS {
     class VariableCategorizer;
 }
 
+class StandardInterpolationPolicyTest_TestStrongFFConnection_Test;
+
+
 namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardInterpolationPolicy {
+
+
+        friend class StandardInterpolationPolicyTest_TestStrongFFConnection_Test;
+
+
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

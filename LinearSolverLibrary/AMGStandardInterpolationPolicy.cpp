@@ -85,7 +85,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
 
 
                 double a_jj = m(j, j);
-                double fac = - 1.0 / a_jj;
+                double fac = 1.0 / a_jj;
 
                 ConstRowColumnIterator<SparseMatrix2D> j_row_it = MatrixIterators::getConstRowColumnIterator(m, j);
                 auto j_column_iterator = *j_row_it;
