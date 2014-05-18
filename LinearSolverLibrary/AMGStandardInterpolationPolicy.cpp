@@ -58,11 +58,15 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             // generate \hat{a}_{ij} set
             std::map<size_type, double> a_i_hat;
 
+            std::set<size_type> extended_neighborhood_set;
 
             // extract the a_ik from i's direct neighborhood N_i
             auto column_iterator = *row_it;
             for (; column_iterator; ++column_iterator) {
                 auto k = column_iterator.column();
+                extended_neighborhood_set.insert(k);
+                if (k != fine_variable && variable_categorizer.GetType(k) == VariableCategorizer::Type::FINE)
+                    continue;
                 double a_ik = m(fine_variable, k);
                 a_i_hat[k] = a_ik;
             }
@@ -85,12 +89,17 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
 
 
                 double a_jj = m(j, j);
-                double fac = 1.0 / a_jj;
+                double a_ij = m(fine_variable, j);
+                double fac = - a_ij / a_jj;
 
                 ConstRowColumnIterator<SparseMatrix2D> j_row_it = MatrixIterators::getConstRowColumnIterator(m, j);
                 auto j_column_iterator = *j_row_it;
                 for (; j_column_iterator; ++j_column_iterator) {
                     auto k = j_column_iterator.column();
+                    extended_neighborhood_set.insert(k);
+                    if (k == j)
+                        // skip a_jj
+                        continue;
                     double a_jk = m(j, k);
                     a_i_hat[k] += fac * a_jk;
                 }
@@ -115,12 +124,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                     b_denum += a_ik;
             }
 
-            column_iterator = *row_it;
-            for (; column_iterator; ++column_iterator) {
-                auto k = column_iterator.column();
-
-                BOOST_ASSERT_MSG(a_i_hat.find(k) != std::end(a_i_hat), "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Couldn't find matrix element");
-
+            for (auto k : extended_neighborhood_set) {
                 double a_ik = a_i_hat[k];
                 if (fine_variable == k)
                     diag += a_ik;
