@@ -17,7 +17,6 @@
 #include "LUDecompositionTest.h"
 #include "SparseMatrixColumnIteratorTest.h"
 #include "MatrixStencilTest.h"
-#include "AMGStandardCoarseningTest.h"
 #include "AMGVariableCardinalityTest.h"
 #include "InputIteratorTest.h"
 #include "VariableInfluenceAccessorTest.h"
@@ -41,7 +40,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 
 CPPUNIT_TEST_SUITE_REGISTRATION(InputIteratorTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixStencilTest);

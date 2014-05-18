@@ -218,6 +218,7 @@
   <ItemGroup>
     <ClCompile Include="AMGCoarseVariableIndexer.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
+    <ClCompile Include="AMGStandardInterpolationPolicy.cpp" />
     <ClCompile Include="AMGStandardSplitting.cpp" />
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp" />
     <ClCompile Include="AMGVCycle.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="AMGSolver.hpp" />
     <ClInclude Include="AMGMonitor.h" />
     <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h" />
+    <ClInclude Include="AMGStandardInterpolationPolicy.h" />
     <ClInclude Include="AMGStandardSplitting.h" />
     <ClInclude Include="AMGDirectInterpolationPolicy.h" />
     <ClInclude Include="AMGVCycle.h" />

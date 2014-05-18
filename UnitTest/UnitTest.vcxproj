@@ -98,7 +98,6 @@
     <ClCompile Include="VersteegMalalasekeraTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AMGStandardCoarseningTest.h" />
     <ClInclude Include="AMGStandardSplittingTest.h" />
     <ClInclude Include="AMGVariableCardinalityTest.h" />
     <ClInclude Include="bcsstk05Test.h" />

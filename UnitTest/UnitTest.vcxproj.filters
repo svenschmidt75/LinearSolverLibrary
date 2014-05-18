@@ -131,9 +131,6 @@
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="MatrixStencilTest.h" />
     <ClInclude Include="InputIteratorTest.h" />
-    <ClInclude Include="AMGStandardCoarseningTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
     <ClInclude Include="AMGVariableCardinalityTest.h">
       <Filter>AMG</Filter>
     </ClInclude>

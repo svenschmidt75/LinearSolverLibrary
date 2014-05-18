@@ -94,6 +94,9 @@
     <ClCompile Include="AMGVCycle.cpp">
       <Filter>AMG\Cycles</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStandardInterpolationPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="AMGVCycle.h">
       <Filter>AMG\Cycles</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardInterpolationPolicy.h">
+      <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
