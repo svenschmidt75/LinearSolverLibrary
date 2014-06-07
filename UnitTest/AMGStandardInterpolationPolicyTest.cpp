@@ -10,7 +10,11 @@ using namespace LinearSolverLibrary_NS;
 using namespace testing;
 
 
-TEST(StandardInterpolationPolicyTest, TestStrongFFConnection) {
+TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
+    // Example taken from "Distance-Two Interpolation for Parallel Algebraic Multigrid",
+    // H. De Sterck, R. Falgout, J. Nolting, U.M. Yang,
+    // May 10, 2007
+    // page 7 and 9, eq (4.7)
     SparseMatrix2D m{4};
 
     m(0, 0) = 2;
@@ -39,5 +43,10 @@ TEST(StandardInterpolationPolicyTest, TestStrongFFConnection) {
     VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
 
     AMGStandardInterpolationPolicy splitting_policy;
-    splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer);
+    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+
+    auto const & interpolation_operator = splitting_policy.Interpolator();
+    interpolation_operator.print();
+    ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
+    ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
 }

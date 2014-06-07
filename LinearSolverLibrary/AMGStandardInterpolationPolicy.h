@@ -20,7 +20,7 @@ namespace LinearSolverLibrary_NS {
     class VariableCategorizer;
 }
 
-class StandardInterpolationPolicyTest_TestStrongFFConnection_Test;
+class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Test;
 
 
 namespace LinearSolverLibrary_NS {
@@ -28,7 +28,7 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardInterpolationPolicy {
 
 
-        friend class StandardInterpolationPolicyTest_TestStrongFFConnection_Test;
+        friend class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Test;
 
 
     public:

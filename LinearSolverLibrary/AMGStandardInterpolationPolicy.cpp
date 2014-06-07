@@ -44,7 +44,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
         else {
             auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
             if (interpolatory_set->size() == 0) {
-                // Fine variable 'fine_variable' has no string connections to any other coarse variable.
+                // Fine variable 'fine_variable' has no strong connections to any other coarse variable.
                 // This means that it can be solved for directly as it has no dependencies on any other
                 // variables. We therefore stop coarsening at this level and solve via direct solve (LU).
                 // Alternatively, the fine variable could be removed from the system. Then, we continue
@@ -66,14 +66,16 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                 auto k = column_iterator.column();
                 extended_neighborhood_set.insert(k);
                 if (k != fine_variable && variable_categorizer.GetType(k) == VariableCategorizer::Type::FINE)
+                    // ignore all of i's (fine_variable) strong F-F neighbors for now
                     continue;
                 double a_ik = m(fine_variable, k);
                 a_i_hat[k] = a_ik;
             }
 
+            // coarse set of i and of all its strong F-F connections
             std::set<size_type> extended_coarse_variable_set;
 
-            // replace all e_j where j is a fine variable
+            // replace all e_j where j is a fine variable, with its coarse a_jk
             for (auto j : *interpolatory_set) {
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
                     if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
