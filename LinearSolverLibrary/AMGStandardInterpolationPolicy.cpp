@@ -75,7 +75,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             // coarse set of i and of all its strong F-F connections
             std::set<size_type> extended_coarse_variable_set;
 
-            // replace all e_j where j is a fine variable, with its coarse a_jk
+            // replace all e_j where j is a strong fine variable, with its coarse a_jk
             for (auto j : *interpolatory_set) {
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
                     if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)

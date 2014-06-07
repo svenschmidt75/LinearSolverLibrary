@@ -31,8 +31,6 @@
 
 // --gtest_filter=MultigridTutorialExampleTestFrameworkAMGTest.*
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
-
 #if 0
 CPPUNIT_TEST_SUITE_REGISTRATION(PriorityArrayTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);

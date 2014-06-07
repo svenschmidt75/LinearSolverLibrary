@@ -73,6 +73,7 @@
 #include "LinearSolverLibrary/AMGMonitor.h"
 #include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
 #include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
+#include "LinearSolverLibrary/AMGStandardInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardSplitting.h"
 #include "LinearSolverLibrary/AMGVCycle.h"
 #include "LinearSolverLibrary/AMGWCycle.hpp"
