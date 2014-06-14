@@ -1,16 +1,17 @@
 #include "pch.h"
 
 #include "AMGCoarseVariableIndexer.h"
+#include "IVariableCategorizer.h"
 
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGCoarseVariableIndexer::AMGCoarseVariableIndexer(VariableCategorizer const & categorizer) {
+AMGCoarseVariableIndexer::AMGCoarseVariableIndexer(IVariableCategorizer const & categorizer) {
     size_type numberOfVariables = categorizer.NumberOfVariables();
     for (size_type i{0}, count{0}; i < numberOfVariables; ++i) {
-        if (categorizer.GetType(i) == VariableCategorizer::Type::COARSE)
+        if (categorizer.GetType(i) == IVariableCategorizer::Type::COARSE)
             map_[i] = count++;
     }
 }

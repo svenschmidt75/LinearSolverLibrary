@@ -35,7 +35,7 @@ namespace LinearSolverLibrary_NS {
 
 
     private:
-        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer);
     };
 
 } // LinearSolverLibrary_NS

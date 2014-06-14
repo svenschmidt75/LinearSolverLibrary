@@ -224,5 +224,8 @@
     <ClInclude Include="AMGStandardStrengthPolicy.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="IVariableCategorizer.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

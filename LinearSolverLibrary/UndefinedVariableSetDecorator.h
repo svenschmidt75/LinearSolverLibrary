@@ -17,19 +17,20 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class VariableCategorizer;
+    // forward declarations
+    class IVariableCategorizer;
     class IVariableSet;
 
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS UndefinedVariableSetDecorator final : public VariableSetDecoratorBase {
     public:
-        UndefinedVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer);
+        UndefinedVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, IVariableCategorizer const & categorizer);
 
     protected:
         std::function<bool(size_type)> predicate() const override;
 
     private:
-        VariableCategorizer const & categorizer_;
+        IVariableCategorizer const & categorizer_;
     };
 
 } // LinearSolverLibrary_NS

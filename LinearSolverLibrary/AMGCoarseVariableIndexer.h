@@ -11,10 +11,12 @@
 #include "DeclSpec.h"
 
 
-#include "VariableCategorizer.h"
+// forward declarations
+namespace LinearSolverLibrary_NS {
+    class IVariableCategorizer;
+}
 
 
-// #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
 namespace LinearSolverLibrary_NS {
@@ -24,7 +26,7 @@ namespace LinearSolverLibrary_NS {
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        AMGCoarseVariableIndexer(VariableCategorizer const & categorizer);
+        AMGCoarseVariableIndexer(IVariableCategorizer const & categorizer);
 
         size_type Index(size_type variable_index) const;
         size_type NumberOfVariables() const;
@@ -36,4 +38,3 @@ namespace LinearSolverLibrary_NS {
 } // LinearSolverLibrary_NS
 
 #pragma warning(default:4251)
-// #pragma warning(default:4275)

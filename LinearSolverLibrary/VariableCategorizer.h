@@ -10,19 +10,17 @@
 */
 #pragma once
 
+#include "IVariableCategorizer.h"
+
 #include "DeclSpec.h"
 
 
 #pragma warning(disable:4251)
+#pragma warning(disable:4275)
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCategorizer {
-    public:
-        typedef LinAlg_NS::IMatrix2D::size_type size_type;
-
-        enum class Type : char {UNDEFINED = 'U', COARSE = 'C', FINE = 'F'};
-
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCategorizer : public IVariableCategorizer {
     public:
         VariableCategorizer(size_type numberOfVariables);
 
@@ -43,4 +41,5 @@ namespace LinearSolverLibrary_NS {
 
 } // LinearSolverLibrary_NS
 
+#pragma warning(default:4275)
 #pragma warning(default:4251)

@@ -69,7 +69,7 @@ AMGInterpolationPolicyBase::Interpolator() const {
     return interpolation_operator_;
 }
 
-VariableCategorizer const &
+IVariableCategorizer const &
 AMGInterpolationPolicyBase::GetVariableCategorizer() const {
     return *variable_categorizer_;
 }

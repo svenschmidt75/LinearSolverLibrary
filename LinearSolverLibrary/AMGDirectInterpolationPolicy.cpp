@@ -2,7 +2,7 @@
 
 #include "AMGDirectInterpolationPolicy.h"
 #include "AMGStandardStrengthPolicy.h"
-#include "VariableCategorizer.h"
+#include "IVariableCategorizer.h"
 #include "AMGCoarseVariableIndexer.h"
 
 
@@ -11,7 +11,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 bool
-AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
     Interpolation_t interpolation_op;
@@ -19,7 +19,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m);
     while (row_it) {
         auto fine_variable = row_it.row();
-        if (variable_categorizer.GetType(fine_variable) == VariableCategorizer::Type::COARSE) {
+        if (variable_categorizer.GetType(fine_variable) == IVariableCategorizer::Type::COARSE) {
             // no interpolation needed
             auto cv = indexer.Index(fine_variable);
             interpolation_op[{fine_variable, cv}] = 1;
@@ -42,7 +42,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
                 return false;
             }
             for (auto coarse_variable : *interpolatory_set) {
-                if (variable_categorizer.GetType(coarse_variable) != VariableCategorizer::Type::COARSE)
+                if (variable_categorizer.GetType(coarse_variable) != IVariableCategorizer::Type::COARSE)
                     continue;
                 double a_ik = m(fine_variable, coarse_variable);
                 if (a_ik < 0)
@@ -77,7 +77,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double pos_coeff = -beta / diag;
 
             for (auto coarse_variable : *interpolatory_set) {
-                if (variable_categorizer.GetType(coarse_variable) != VariableCategorizer::Type::COARSE)
+                if (variable_categorizer.GetType(coarse_variable) != IVariableCategorizer::Type::COARSE)
                     continue;
                 double w_ik;
                 double a_ik = m(fine_variable, coarse_variable);

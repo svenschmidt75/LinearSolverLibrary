@@ -1,10 +1,10 @@
 /*
-* Name  : AMGStandardSplitting
-* Path  : 
-* Use   : Computes
-* Author: Sven Schmidt
-* Date  : 10/19/2013
-*/
+ * Name  : AMGStandardSplitting
+ * Path  : 
+ * Use   : Computes
+ * Author: Sven Schmidt
+ * Date  : 10/19/2013
+ */
 #pragma once
 
 #include "DeclSpec.h"
@@ -15,18 +15,19 @@
 
 namespace LinearSolverLibrary_NS {
 
+    // forward declarations
     class IVariableInfluenceAccessor;
-    class VariableCategorizer;
+    class IVariableCategorizer;
 
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplitting : private boost::noncopyable {
     public:
-        typedef LinAlg_NS::IMatrix2D::size_type size_type;
+        using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
         AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
-                             VariableCategorizer & categorizer);
+                             IVariableCategorizer & categorizer);
 
         void generateSplitting();
 
@@ -43,7 +44,7 @@ namespace LinearSolverLibrary_NS {
     private:
         LinAlg_NS::SparseMatrix2D const &  m_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
-        VariableCategorizer &              categorizer_;
+        IVariableCategorizer &             categorizer_;
         Queue_t                            queue_;
     };
 

@@ -32,7 +32,7 @@ namespace LinearSolverLibrary_NS {
     public:
         template<typename AMGInterpolationPolicy>
         MatrixDecomposition Decompose(AMGInterpolationPolicy const & interpolation_policy) const {
-            VariableCategorizer const & variable_categorizer = interpolation_policy.GetVariableCategorizer();
+            IVariableCategorizer const & variable_categorizer = interpolation_policy.GetVariableCategorizer();
             MatrixDecomposition::ISO_t decomposition;
             auto count = variable_categorizer.NumberOfVariables();
             for (auto index = 0; index < count; ++index) {

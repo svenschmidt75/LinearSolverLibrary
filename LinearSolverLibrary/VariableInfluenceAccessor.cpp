@@ -9,8 +9,8 @@
 using namespace LinearSolverLibrary_NS;
 
 
-VariableInfluenceAccessor::VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer)
-    : strength_policy_(strength_policy), categorizer_(categorizer) {}
+VariableInfluenceAccessor::VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & categorizer)
+    : strength_policy_{strength_policy}, categorizer_{categorizer} {}
 
 std::unique_ptr<IVariableSet>
 VariableInfluenceAccessor::GetVariableInfluencedUndefined(size_type variable) const {
