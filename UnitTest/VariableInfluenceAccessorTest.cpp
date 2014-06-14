@@ -37,7 +37,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByCornerGridVariab
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
 
@@ -71,7 +71,7 @@ VariableInfluenceAccessorTest::TestUndefinedVariablesInfluencedByCornerGridVaria
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
 
@@ -109,7 +109,7 @@ VariableInfluenceAccessorTest::TestVariablesInfluencedByCenterVariable() {
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
 
@@ -164,7 +164,7 @@ VariableInfluenceAccessorTest::TestFineGridVariablesInfluencedByBoundaryCenterVa
     0        0        0        0       -1       -1        0       -1        8
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
 
@@ -202,7 +202,7 @@ VariableInfluenceAccessorTest::TestInfluencedByCenterVariable() {
     0        0        0        0       -1       -1        0       -1        8
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
 

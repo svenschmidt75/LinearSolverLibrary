@@ -49,9 +49,6 @@
     <ClCompile Include="internal\MultiColor.cpp">
       <Filter>MultiColor</Filter>
     </ClCompile>
-    <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
     <ClCompile Include="VariableSet.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
@@ -100,7 +97,12 @@
     <ClCompile Include="AMGInterpolationPolicyBase.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGExtendedPlusInterpolationPolicy.cpp" />
+    <ClCompile Include="AMGExtendedPlusInterpolationPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGStandardStrengthPolicy.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -135,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="internal\MultiColor_internal.h">
       <Filter>MultiColor\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="AMGStandardCoarseningStrengthPolicy.h">
-      <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="VariableSet.h">
       <Filter>AMG</Filter>
@@ -219,6 +218,11 @@
     <ClInclude Include="AMGInterpolationPolicyBase.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGExtendedPlusInterpolationPolicy.h" />
+    <ClInclude Include="AMGExtendedPlusInterpolationPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStandardStrengthPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

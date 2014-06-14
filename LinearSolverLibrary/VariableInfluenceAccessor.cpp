@@ -3,13 +3,13 @@
 #include "VariableInfluenceAccessor.h"
 #include "UndefinedVariableSetDecorator.h"
 #include "FineVariableSetDecorator.h"
-#include "AMGStandardCoarseningStrengthPolicy.h"
+#include "AMGStandardStrengthPolicy.h"
 
 
 using namespace LinearSolverLibrary_NS;
 
 
-VariableInfluenceAccessor::VariableInfluenceAccessor(AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer)
+VariableInfluenceAccessor::VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer)
     : strength_policy_(strength_policy), categorizer_(categorizer) {}
 
 std::unique_ptr<IVariableSet>

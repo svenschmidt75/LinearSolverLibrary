@@ -14,7 +14,7 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class AMGStandardCoarseningStrengthPolicy;
+    class AMGStandardStrengthPolicy;
     class VariableCategorizer;
 }
 
@@ -27,7 +27,7 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGDirectInterpolationPolicy : public AMGInterpolationPolicyBase {
     private:
-        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
     };
 
 } // LinearSolverLibrary_NS

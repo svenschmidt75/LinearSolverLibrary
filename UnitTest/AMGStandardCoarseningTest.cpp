@@ -29,7 +29,7 @@ TEST(AMGStandardCoarseningTest, TestStrongConnectionsForRowForFivePointStencil) 
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0
     auto variable_set = strength_policy.GetInfluencedByVariables(0);
@@ -66,7 +66,7 @@ TEST(AMGStandardCoarseningTest, TestStrongConnectionsForRowForNinePointStencil) 
        0        0        0        0       -1       -4        0       -4       20
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0
     auto variable_set = strength_policy.GetInfluencedByVariables(0);
@@ -120,7 +120,7 @@ TEST(AMGStandardCoarseningTest, TestStrongConnectionsForRowForNinePointStencil2)
        0        0        0        0     -0.5       -2        0       -1     7.25
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0: threshold = 2 * eps = 2 * 0.25 = 0.5
     auto variable_set = strength_policy.GetInfluencedByVariables(0);
@@ -198,7 +198,7 @@ TEST(AMGStandardCoarseningTest, TestStrongConnectionsForStrongFFConnection) {
         row 4            0            0        -1.00            0        -1.00
   */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0 (i)
     auto variable_set = strength_policy.GetInfluencedByVariables(0);

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "AMGStandardCoarseningStrengthPolicy.h"
+#include "AMGStandardStrengthPolicy.h"
 #include "VariableSet.h"
 
 
@@ -8,7 +8,7 @@ using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
 
-AMGStandardCoarseningStrengthPolicy::AMGStandardCoarseningStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m)
+AMGStandardStrengthPolicy::AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m)
     : m_(m), Si_(new SparseMatrix2D(m.cols())), Sit_(new SparseMatrix2D(m.cols())), eps_(0.25) {
 
     computeConnections();
@@ -34,7 +34,7 @@ namespace {
 }
 
 void
-AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::size_type i, double max_element) {
+AMGStandardStrengthPolicy::computeConnectionsForVariable(IMatrix2D::size_type i, double max_element) {
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m_, i);
     BOOST_ASSERT_MSG(row_it.row() == i, "Index range error");
     auto column_it = *row_it;
@@ -57,7 +57,7 @@ AMGStandardCoarseningStrengthPolicy::computeConnectionsForVariable(IMatrix2D::si
 }
 
 void
-AMGStandardCoarseningStrengthPolicy::computeConnections() {
+AMGStandardStrengthPolicy::computeConnections() {
     // TODO SS: This can be done in parallel for each fine variable i, as
     // only S(i, j) is modified with i = const per loop iteration.
     // Use thread private memory and at the end, assembly Si and Sit.
@@ -75,7 +75,7 @@ AMGStandardCoarseningStrengthPolicy::computeConnections() {
 }
 
 std::shared_ptr<IVariableSet>
-AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+AMGStandardStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that strongly influence variable 'variable'
     // TODO SS: Use std::make_unique
@@ -90,7 +90,7 @@ AMGStandardCoarseningStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix
 }
 
 std::shared_ptr<IVariableSet>
-AMGStandardCoarseningStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+AMGStandardStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that variable 'variable' strongly influences
     std::shared_ptr<VariableSet> variable_set = std::make_shared<VariableSet>();

@@ -37,7 +37,7 @@ AMGVariableCardinalityTest::TestCardinalityOfCornerGridVariable() {
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
@@ -77,7 +77,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariable() {
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
@@ -117,7 +117,7 @@ AMGVariableCardinalityTest::TestCardinalityOfBoundaryGridVariableWithUnrelatedCh
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
@@ -159,7 +159,7 @@ AMGVariableCardinalityTest::TestCardinalityOfCenterGridVariable() {
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
 
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
@@ -193,7 +193,7 @@ AMGVariableCardinalityTest::TestThatCardinalityIsSameForAllVariablesWithPeriodic
 //    m.print();
 
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     VariableCardinalityPolicy cardinalityPolicy(influence_accessor);

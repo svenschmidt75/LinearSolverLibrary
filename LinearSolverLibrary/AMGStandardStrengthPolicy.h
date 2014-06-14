@@ -1,5 +1,5 @@
 /*
-* Name  : AMGStandardCoarseningStrengthPolicy
+* Name  : AMGStandardStrengthPolicy
 * Path  :
 * Use   : Determines that strong connections of a variable on others, i.e.
           S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
@@ -20,9 +20,9 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarseningStrengthPolicy : boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardStrengthPolicy : boost::noncopyable {
     public:
-        AMGStandardCoarseningStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
+        AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
 
         std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
         std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;

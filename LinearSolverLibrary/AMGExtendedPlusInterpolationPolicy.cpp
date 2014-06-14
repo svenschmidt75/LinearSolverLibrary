@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "AMGExtendedPlusInterpolationPolicy.h"
-#include "AMGStandardCoarseningStrengthPolicy.h"
+#include "AMGStandardStrengthPolicy.h"
 #include "VariableCategorizer.h"
 #include "AMGCoarseVariableIndexer.h"
 
@@ -11,7 +11,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 bool
-AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
     Interpolation_t interpolation_op;
@@ -38,7 +38,7 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
 
             using size_type = IMatrix2D::size_type;
 
-
+            
             // contains those F variables that strongly influence i
             // F_{i}^{s}
             std::set<size_type> strong_fine_influencer;

@@ -40,7 +40,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
     variable_categorizer.SetType(2, VariableCategorizer::Type::FINE);
     variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
 
-    AMGStandardCoarseningStrengthPolicy strength_policy{m};
+    AMGStandardStrengthPolicy strength_policy{m};
     VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
 
     AMGStandardInterpolationPolicy splitting_policy;

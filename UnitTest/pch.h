@@ -71,7 +71,7 @@
 #include "LinearSolverLibrary/AMGCThenFRelaxationPolicy.hpp"
 #include "LinearSolverLibrary/AMGHierarchyBuilder.hpp"
 #include "LinearSolverLibrary/AMGMonitor.h"
-#include "LinearSolverLibrary/AMGStandardCoarseningStrengthPolicy.h"
+#include "LinearSolverLibrary/AMGStandardStrengthPolicy.h"
 #include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardSplitting.h"

@@ -38,7 +38,7 @@ AMGStandardSplittingTest::TestSplittingForSimple5ptStencil() {
       0        0        0        0        0       -1        0       -1        4
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
@@ -103,7 +103,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencil() {
        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0       -1       -1        0        0        0       -1        8      4       -1        0       -1        0        0        0        0        0
 */
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
@@ -195,7 +195,7 @@ AMGStandardSplittingTest::TestSplittingForNontrivial9ptStencil() {
        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0       -1       -4       -1        0        0        0        0        2        8        2
        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0        0       -1       -4        0        0        0        0        0        2        8*/
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);
@@ -239,7 +239,7 @@ AMGStandardSplittingTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryCo
     SparseMatrix2D const & m = stencil.generateMatrix(7 * 7);
 //    m.print();
 
-    AMGStandardCoarseningStrengthPolicy strength_policy(m);
+    AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardSplitting splitting(m, influence_accessor, variable_categorizer);

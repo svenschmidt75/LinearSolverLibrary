@@ -16,7 +16,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class AMGStandardCoarseningStrengthPolicy;
+    class AMGStandardStrengthPolicy;
     class VariableCategorizer;
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor
@@ -27,14 +27,14 @@ namespace LinearSolverLibrary_NS {
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:
-        VariableInfluenceAccessor(AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
+        VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
 
         // FROM VariableInfluenceAccessor
         std::unique_ptr<IVariableSet> GetVariableInfluencedUndefined(size_type variable) const override;
         std::unique_ptr<IVariableSet> GetVariableInfluencedFine(size_type variable) const override;
 
     private:
-        AMGStandardCoarseningStrengthPolicy const & strength_policy_;
+        AMGStandardStrengthPolicy const & strength_policy_;
         VariableCategorizer const &                 categorizer_;
     };
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "AMGInterpolationPolicyBase.h"
-#include "AMGStandardCoarseningStrengthPolicy.h"
+#include "AMGStandardStrengthPolicy.h"
 #include "VariableCategorizer.h"
 #include "VariableInfluenceAccessor.h"
 #include "AMGStandardSplitting.h"
@@ -15,7 +15,7 @@ AMGInterpolationPolicyBase::AMGInterpolationPolicyBase() {}
 
 bool
 AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m) {
-    AMGStandardCoarseningStrengthPolicy strength_policy{m};
+    AMGStandardStrengthPolicy strength_policy{m};
     variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
     VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
     AMGStandardSplitting splitting{m, influence_accessor, *variable_categorizer_};
