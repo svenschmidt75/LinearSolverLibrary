@@ -49,9 +49,13 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
             auto column_iterator = *row_it;
             for (; column_iterator; ++column_iterator) {
                 auto j = column_iterator.column();
-                if (interpolatory_set->contains(j))
+                if (j == fine_variable)
+                    continue;
+                if (interpolatory_set->contains(j)) {
                     // j strongly influences i
-                    strong_fine_influencer.insert(j);
+                    if (variable_categorizer.GetType(j) == VariableCategorizer::Type::FINE)
+                        strong_fine_influencer.insert(j);
+                }
                 else
                     // j does not strongly influence i, so the connection i-j is weak
                     weakly_connected_variable_set.insert(j);
@@ -62,15 +66,14 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
             // It contains all strong coarse i-j connections. If j is fine,
             // we add j=s strong coarse variables as well.
             // We also add i itself.
-            std::set<size_type> extended_coarse_variable_set;
-            extended_coarse_variable_set.insert(fine_variable);
+            std::set<size_type> extended_coarse_variable_set_plus;
 
             for (auto j : *interpolatory_set) {
                 // i-j connection of type F-F?
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
                     // no, i-j is F-C
                     if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
-                        extended_coarse_variable_set.insert(j);
+                        extended_coarse_variable_set_plus.insert(j);
                     continue;
                 }
 
@@ -78,9 +81,12 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
                     if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE)
-                        extended_coarse_variable_set.insert(k);
+                        extended_coarse_variable_set_plus.insert(k);
                 }
             }
+
+            std::set<size_type> extended_coarse_variable_set{extended_coarse_variable_set_plus};
+            extended_coarse_variable_set_plus.insert(fine_variable);
 
 
             // compute the sum over the weakly influencing variables
@@ -93,32 +99,35 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
             }
 
 
-            // compute the sum over the extended coarse set
-            double extended_sum = 0;
-            for (auto j : extended_coarse_variable_set) {
-                if (m(fine_variable, j)) {
-                    double a_ij = m(fine_variable, j);
-                    extended_sum += a_ij;
-                }
-            }
+            double const a_ii = m(fine_variable, fine_variable);
 
 
             // compute the sum over F_{i}^{s} in \tilde{a}_{ii}, the modified diagonal value
-            double const a_ii = m(fine_variable, fine_variable);
             double a_ii_hat = m(fine_variable, fine_variable);
             a_ii_hat += weak_sum;
             for (auto k : strong_fine_influencer) {
                 double a_ki = m(k, fine_variable);
                 if (a_ki * a_ii < 0) {
+                    // compute the sum over the extended coarse set
+                    double extended_sum = 0;
+                    for (auto l : extended_coarse_variable_set_plus) {
+                        double a_kl = m(k, l);
+                        if (a_kl * a_ii < 0) {
+                            extended_sum += a_kl;
+                        }
+                    }
+
+                    if (extended_sum == 0)
+                        throw std::runtime_error("AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Division by zero");
+
                     double a_ik = m(fine_variable, k);
-                    double value = a_ik * a_ki;
-                    value /= extended_sum;
+                    double value = a_ik * a_ki / extended_sum;
                     a_ii_hat += value;
                 }
             }
 
 
-            for (auto j : *interpolatory_set) {
+            for (auto j : extended_coarse_variable_set) {
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::COARSE)
                     continue;
 
@@ -127,6 +136,18 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                 for (auto k : strong_fine_influencer) {
                     double a_kj = m(k, j);
                     if (a_kj * a_ii < 0) {
+                        // compute the sum over the extended coarse set
+                        double extended_sum = 0;
+                        for (auto l : extended_coarse_variable_set_plus) {
+                            double a_kl = m(k, l);
+                            if (a_kl * a_ii < 0) {
+                                extended_sum += a_kl;
+                            }
+                        }
+
+                        if (extended_sum == 0)
+                            throw std::runtime_error("AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Division by zero");
+
                         double a_ik = m(fine_variable, k);
                         double value = a_ik * a_kj;
                         value /= extended_sum;
