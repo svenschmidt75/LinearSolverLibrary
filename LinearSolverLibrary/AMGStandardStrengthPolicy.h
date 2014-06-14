@@ -1,18 +1,24 @@
 /*
-* Name  : AMGStandardStrengthPolicy
-* Path  :
-* Use   : Determines that strong connections of a variable on others, i.e.
-          S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
-          The strength variable i is connected to variables j is measured
-          based on the smallest negative value a_{ij} * eps.
-* Author: Sven Schmidt
-* Date  : 10/12/2013
-*/
+ * Name  : AMGStandardStrengthPolicy
+ * Path  : IAMGStandardStrengthPolicy
+ * Use   : Determines that strong connections of a variable on others, i.e.
+           S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
+           The strength variable i is connected to variables j is measured
+           based on the smallest negative value a_{ij} * eps.
+ * Author: Sven Schmidt
+ * Date  : 10/12/2013
+ */
 #pragma once
 
 #include "DeclSpec.h"
 
-#include "IVariableSet.h"
+#include "IAMGStandardStrengthPolicy.h"
+
+
+// forward declarations
+namespace LinearSolverLibrary_NS {
+    class IVariableSet;
+}
 
 
 #pragma warning(disable:4275)
@@ -20,12 +26,14 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardStrengthPolicy : boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardStrengthPolicy : public IAMGStandardStrengthPolicy {
     public:
         AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
+        AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
+        AMGStandardStrengthPolicy & operator=(AMGStandardStrengthPolicy const &) = delete;
 
-        std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
-        std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const;
+        std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
+        std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
 
     private:
         void computeConnections();

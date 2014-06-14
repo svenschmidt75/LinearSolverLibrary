@@ -13,7 +13,7 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class AMGStandardStrengthPolicy;
+    class IAMGStandardStrengthPolicy;
     class IVariableCategorizer;
 }
 
@@ -55,7 +55,7 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::SparseMatrix2D             galerkinOperator_;
 
     private:
-        virtual bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, AMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) = 0;
+        virtual bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) = 0;
 
         void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);
         void ComputeGalerkinOperator(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);

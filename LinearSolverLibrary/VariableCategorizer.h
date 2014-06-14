@@ -1,13 +1,13 @@
 /*
-* Name  : VariableCategorizer
-* Path  :
-* Use   : Categorizes a grid node into
-          - undefined
-          - coarse
-          - fine
-* Author: Sven Schmidt
-* Date  : 10/19/2013
-*/
+ * Name  : VariableCategorizer
+ * Path  : IVariableCategorizer
+ * Use   : Categorizes a grid node into
+           - undefined
+           - coarse
+           - fine
+ * Author: Sven Schmidt
+ * Date  : 10/19/2013
+ */
 #pragma once
 
 #include "IVariableCategorizer.h"
@@ -24,10 +24,10 @@ namespace LinearSolverLibrary_NS {
     public:
         VariableCategorizer(size_type numberOfVariables);
 
-        Type      GetType(size_type variable) const;
-        void      SetType(size_type variable, Type type);
-        size_type NumberOfVariables() const;
-        void      print() const;
+        Type      GetType(size_type variable) const override;
+        void      SetType(size_type variable, Type type) override;
+        size_type NumberOfVariables() const override;
+        void      print() const override;
 
     private:
         void initializeVariablesToUndefined();

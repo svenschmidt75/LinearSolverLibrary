@@ -1,10 +1,10 @@
 /*
-* Name  : IVariableSet
-* Path  :
-* Use   : Base class containing sets of "grid" indices
-* Author: Sven Schmidt
-* Date  : 10/19/2013
-*/
+ * Name  : IVariableSet
+ * Path  :
+ * Use   : Base class containing sets of "grid" indices
+ * Author: Sven Schmidt
+ * Date  : 10/19/2013
+ */
 #pragma once
 
 #include "DeclSpec.h"
