@@ -100,6 +100,7 @@
     <ClCompile Include="AMGInterpolationPolicyBase.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGExtendedPlusInterpolationPolicy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -218,5 +219,6 @@
     <ClInclude Include="AMGInterpolationPolicyBase.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="AMGExtendedPlusInterpolationPolicy.h" />
   </ItemGroup>
 </Project>

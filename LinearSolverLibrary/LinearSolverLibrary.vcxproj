@@ -237,6 +237,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AMGCoarseVariableIndexer.cpp" />
+    <ClCompile Include="AMGExtendedPlusInterpolationPolicy.cpp" />
     <ClCompile Include="AMGInterpolationPolicyBase.cpp" />
     <ClCompile Include="AMGStandardCoarseningStrengthPolicy.cpp" />
     <ClCompile Include="AMGStandardInterpolationPolicy.cpp" />
@@ -284,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMGCThenFRelaxationPolicy.hpp" />
+    <ClInclude Include="AMGExtendedPlusInterpolationPolicy.h" />
     <ClInclude Include="AMGHierarchyBuilder.hpp" />
     <ClInclude Include="AMGInterpolationPolicyBase.h" />
     <ClInclude Include="AMGLevel.h" />

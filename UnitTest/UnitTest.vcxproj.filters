@@ -101,6 +101,9 @@
     <ClCompile Include="AMGStandardInterpolationPolicyTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGExtendedPlusInterpolationPolicyTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
