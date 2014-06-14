@@ -3,29 +3,12 @@
 #include "AMGDirectInterpolationPolicy.h"
 #include "AMGStandardCoarseningStrengthPolicy.h"
 #include "VariableCategorizer.h"
-#include "VariableInfluenceAccessor.h"
-#include "AMGStandardSplitting.h"
 #include "AMGCoarseVariableIndexer.h"
+
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
 
-
-AMGDirectInterpolationPolicy::AMGDirectInterpolationPolicy() {}
-
-bool
-AMGDirectInterpolationPolicy::Generate(SparseMatrix2D const & m) {
-    AMGStandardCoarseningStrengthPolicy strength_policy{m};
-    variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
-    VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
-    AMGStandardSplitting splitting{m, influence_accessor, *variable_categorizer_};
-    splitting.generateSplitting();
-    if (ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_) == false)
-        return false;
-    ComputeRestrictionOperator(interpolation_operator_);
-    ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
-    return true;
-}
 
 bool
 AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, AMGStandardCoarseningStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
@@ -110,51 +93,4 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
     }
     CreateInterpolationOperator(m.rows(), indexer.NumberOfVariables(), interpolation_op);
     return true;
-}
-
-void
-AMGDirectInterpolationPolicy::CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op) {
-    interpolation_operator_ = SparseMatrix2D{rows, columns};
-    for (auto const & item : interpolation_op) {
-        auto fine_variable = item.first.first;
-        auto coarse_variable = item.first.second;
-        auto value = item.second;
-        interpolation_operator_(fine_variable, coarse_variable) = value;
-    }
-    interpolation_operator_.finalize();
-//    interpolation_operator_.print();
-}
-
-void 
-AMGDirectInterpolationPolicy::ComputeRestrictionOperator(SparseMatrix2D const & interpolation_operator) {
-    restriction_operator_ = helper::transpose(interpolation_operator);
-}
-
-void 
-AMGDirectInterpolationPolicy::ComputeGalerkinOperator(SparseMatrix2D const & m, SparseMatrix2D const & interpolation_operator, SparseMatrix2D const & restriction_operator) {
-    galerkinOperator_ = helper::matrixMul(restriction_operator, helper::matrixMul(m, interpolation_operator));
-    //Matrix2D m1 = helper::SparseToDense(m);
-    //Matrix2D m2 = helper::SparseToDense(interpolation_operator);
-    //Matrix2D m3 = helper::SparseToDense(restriction_operator);
-    //galerkinOperator_ = helper::DenseToSparse(helper::matrixMul(m3, helper::matrixMul(m1, m2)));
-}
-
-SparseMatrix2D
-AMGDirectInterpolationPolicy::GalerkinOperator() const {
-    return galerkinOperator_;
-}
-
-SparseMatrix2D
-AMGDirectInterpolationPolicy::Restrictor() const {
-    return restriction_operator_;
-}
-
-SparseMatrix2D
-AMGDirectInterpolationPolicy::Interpolator() const {
-    return interpolation_operator_;
-}
-
-VariableCategorizer const &
-AMGDirectInterpolationPolicy::GetVariableCategorizer() const {
-    return *variable_categorizer_;
 }
