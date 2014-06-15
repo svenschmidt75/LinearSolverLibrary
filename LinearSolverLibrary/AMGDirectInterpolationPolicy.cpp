@@ -53,6 +53,8 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             }
 
             if (a_denum == 0)
+                // Do not throw here for now as it will cause difficulty with the tests.
+                // Maybe this should be configurable in the AMGMonitor class?
                 std::cerr << "AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable " << fine_variable <<
                 " does not have any C points in common with its strong influencers!" << std::endl <<
                 "Direct interpolation not appropriate for this problem." << std::endl;

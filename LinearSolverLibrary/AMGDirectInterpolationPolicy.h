@@ -19,6 +19,8 @@ namespace LinearSolverLibrary_NS {
 }
 
 class AMGDirectInterpolationPolicyTest_MadeUpExample_Test;
+class AMGDirectInterpolationPolicyTest_MadeUpExampleWithWeakConnections_Test;
+class AMGDirectInterpolationPolicyTest_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
 
 
 #pragma warning(disable:4275)
@@ -31,7 +33,8 @@ namespace LinearSolverLibrary_NS {
 
         
         friend class AMGDirectInterpolationPolicyTest_MadeUpExample_Test;
-
+        friend class AMGDirectInterpolationPolicyTest_MadeUpExampleWithWeakConnections_Test;
+        friend class AMGDirectInterpolationPolicyTest_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
 
     private:
         bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
