@@ -14,7 +14,7 @@
 // forward declarations
 namespace LinearSolverLibrary_NS {
     class IAMGStandardStrengthPolicy;
-    class IVariableCategorizer;
+    class VariableCategorizer;
 }
 
 
@@ -40,7 +40,7 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::SparseMatrix2D Restrictor() const;
         LinAlg_NS::SparseMatrix2D Interpolator() const;
 
-        IVariableCategorizer const & GetVariableCategorizer() const;
+        VariableCategorizer const & GetVariableCategorizer() const;
 
     protected:
         using Interpolation_t = std::map < std::pair<size_type, size_type>, double > ;
@@ -49,13 +49,13 @@ namespace LinearSolverLibrary_NS {
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
 
     protected:
-        std::unique_ptr<IVariableCategorizer> variable_categorizer_;
-        LinAlg_NS::SparseMatrix2D             interpolation_operator_;
-        LinAlg_NS::SparseMatrix2D             restriction_operator_;
-        LinAlg_NS::SparseMatrix2D             galerkinOperator_;
+        std::unique_ptr<VariableCategorizer> variable_categorizer_;
+        LinAlg_NS::SparseMatrix2D            interpolation_operator_;
+        LinAlg_NS::SparseMatrix2D            restriction_operator_;
+        LinAlg_NS::SparseMatrix2D            galerkinOperator_;
 
     private:
-        virtual bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) = 0;
+        virtual bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) = 0;
 
         void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);
         void ComputeGalerkinOperator(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::SparseMatrix2D const & interpolation_operator, LinAlg_NS::SparseMatrix2D const & restriction_operator);

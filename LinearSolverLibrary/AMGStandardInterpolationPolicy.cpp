@@ -2,7 +2,7 @@
 
 #include "AMGStandardInterpolationPolicy.h"
 #include "IAMGStandardStrengthPolicy.h"
-#include "IVariableCategorizer.h"
+#include "VariableCategorizer.h"
 #include "AMGCoarseVariableIndexer.h"
 #include "IVariableSet.h"
 
@@ -12,7 +12,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 bool
-AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) {
+AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
     Interpolation_t interpolation_op;
@@ -20,7 +20,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m);
     while (row_it) {
         auto fine_variable = row_it.row();
-        if (variable_categorizer.GetType(fine_variable) == IVariableCategorizer::Type::COARSE) {
+        if (variable_categorizer.GetType(fine_variable) == VariableCategorizer::Type::COARSE) {
             // no interpolation needed
             auto cv = indexer.Index(fine_variable);
             interpolation_op[{fine_variable, cv}] = 1;
@@ -49,7 +49,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             for (; column_iterator; ++column_iterator) {
                 auto k = column_iterator.column();
                 extended_neighborhood_set.insert(k);
-                if (k != fine_variable && variable_categorizer.GetType(k) == IVariableCategorizer::Type::FINE)
+                if (k != fine_variable && variable_categorizer.GetType(k) == VariableCategorizer::Type::FINE)
                     // ignore all of i's (fine_variable) strong F-F neighbors for now
                     continue;
                 double a_ik = m(fine_variable, k);
@@ -61,15 +61,15 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
 
             // replace all e_j where j is a strong fine variable, with its coarse a_jk
             for (auto j : *interpolatory_set) {
-                if (variable_categorizer.GetType(j) != IVariableCategorizer::Type::FINE) {
-                    if (variable_categorizer.GetType(j) == IVariableCategorizer::Type::COARSE)
+                if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
+                    if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
                         extended_coarse_variable_set.insert(j);
                     continue;
                 }
 
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
-                    if (variable_categorizer.GetType(k) == IVariableCategorizer::Type::COARSE)
+                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE)
                         extended_coarse_variable_set.insert(k);
                 }
 
@@ -99,7 +99,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             double diag = 0;
 
             for (auto coarse_variable : extended_coarse_variable_set) {
-                BOOST_ASSERT_MSG(variable_categorizer.GetType(coarse_variable) == IVariableCategorizer::Type::COARSE, "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Expected coarse variable");
+                BOOST_ASSERT_MSG(variable_categorizer.GetType(coarse_variable) == VariableCategorizer::Type::COARSE, "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Expected coarse variable");
 
                 BOOST_ASSERT_MSG(a_i_hat.find(coarse_variable) != std::end(a_i_hat), "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Couldn't find matrix element");
 
@@ -134,7 +134,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             double pos_coeff = -beta / diag;
 
             for (auto coarse_variable : extended_coarse_variable_set) {
-                BOOST_ASSERT_MSG(variable_categorizer.GetType(coarse_variable) == IVariableCategorizer::Type::COARSE, "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Expected coarse variable");
+                BOOST_ASSERT_MSG(variable_categorizer.GetType(coarse_variable) == VariableCategorizer::Type::COARSE, "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Expected coarse variable");
 
                 double w_ik;
 

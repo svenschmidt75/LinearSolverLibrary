@@ -3,7 +3,7 @@
 #include "LinAlg/MatrixStencil.hpp"
 
 #include "LinearSolverLibrary/AMGStandardInterpolationPolicy.h"
-#include "LinearSolverLibrary/IVariableCategorizer.h"
+#include "LinearSolverLibrary/VariableCategorizer.h"
 
 
 using namespace LinAlg_NS;
@@ -53,37 +53,34 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
 }
 
 TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection_Ex) {
-
-    class VariableCategorizerMock : public IVariableCategorizer {
+    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
     public:
-        Type GetType(size_type variable) const override {
-            switch (variable) {
-            case 0:
-                return IVariableCategorizer::Type::COARSE;
+        StrengthPolicyMock() {
+            variable_set_[0].add(1);
+            
+            variable_set_[1].add(0);
+            variable_set_[1].add(2);
 
-            case 1:
-                return IVariableCategorizer::Type::FINE;
+            variable_set_[2].add(1);
+            variable_set_[2].add(3);
 
-            case 2:
-                return IVariableCategorizer::Type::FINE;
-
-            case 3:
-                return IVariableCategorizer::Type::COARSE;
-
-            default:
-                throw std::invalid_argument ("AMGStandardInterpolationPolicyTest::TestStrongFFConnection_Ex");
-            }
+            variable_set_[3].add(2);
         }
 
-        void SetType(size_type variable, Type type) override {
+        std::shared_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+            return std::make_shared<VariableSet>(variable_set_[variable]);
+
         }
 
-        size_type NumberOfVariables() const override {
-            return 4;
+        std::shared_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+            return nullptr;
         }
 
-        void print() const override {}
+    private:
+        mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
+
+
 
     SparseMatrix2D m{4};
 
@@ -103,18 +100,21 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection_Ex) {
 
     m.finalize();
 
-    VariableCategorizerMock variable_categorizer;
+    VariableCategorizer variable_categorizer{4};
+    variable_categorizer.SetType(0, VariableCategorizer::Type::COARSE);
+    variable_categorizer.SetType(1, VariableCategorizer::Type::FINE);
+    variable_categorizer.SetType(2, VariableCategorizer::Type::FINE);
+    variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
 
-    //VariableCategorizer variable_categorizer{4};
-    //variable_categorizer.SetType(0, VariableCategorizer::Type::COARSE);
-    //variable_categorizer.SetType(1, VariableCategorizer::Type::FINE);
-    //variable_categorizer.SetType(2, VariableCategorizer::Type::FINE);
-    //variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
 
-//    AMGStandardStrengthPolicy strength_policy{m};
+
+
+
+    StrengthPolicyMock strength_policy;
+
 
     AMGStandardInterpolationPolicy splitting_policy;
-//    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
     interpolation_operator.print();

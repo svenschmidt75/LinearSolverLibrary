@@ -15,7 +15,7 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection) {
     // H. De Sterck, R. Falgout, J. Nolting, U.M. Yang,
     // May 10, 2007
     // page 8 and 9, eq (4.10) & (4.11)
-    // // Matrix based on fig. 4.2, page 8
+    // Matrix based on fig. 4.2, page 8
     SparseMatrix2D m{4};
 
     m(0, 0) = 2;

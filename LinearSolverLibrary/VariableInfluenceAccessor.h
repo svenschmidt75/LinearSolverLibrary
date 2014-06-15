@@ -14,21 +14,27 @@
 #include "IVariableSet.h"
 
 
+// forward declarations
 namespace LinearSolverLibrary_NS {
-
-    // forward declarations
     class AMGStandardStrengthPolicy;
-    class IVariableCategorizer;
+    class VariableCategorizer;
+}
+
+
+namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor
         :
-        public IVariableInfluenceAccessor,
-        private boost::noncopyable {
-    public:
-        typedef LinAlg_NS::IMatrix2D::size_type size_type;
+        public IVariableInfluenceAccessor {
 
     public:
-        VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & categorizer);
+        using size_type = LinAlg_NS::IMatrix2D::size_type;
+
+    public:
+        VariableInfluenceAccessor(AMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
+
+        VariableInfluenceAccessor(VariableInfluenceAccessor const &) = delete;
+        VariableInfluenceAccessor & operator=(VariableInfluenceAccessor const &) = delete;
 
         // FROM VariableInfluenceAccessor
         std::unique_ptr<IVariableSet> GetVariableInfluencedUndefined(size_type variable) const override;
@@ -36,7 +42,7 @@ namespace LinearSolverLibrary_NS {
 
     private:
         AMGStandardStrengthPolicy const & strength_policy_;
-        IVariableCategorizer const &      categorizer_;
+        VariableCategorizer const &       categorizer_;
     };
 
 } // LinearSolverLibrary_NS

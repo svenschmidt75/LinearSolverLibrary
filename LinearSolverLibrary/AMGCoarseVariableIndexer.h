@@ -13,7 +13,7 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class IVariableCategorizer;
+    class VariableCategorizer;
 }
 
 
@@ -26,7 +26,7 @@ namespace LinearSolverLibrary_NS {
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        AMGCoarseVariableIndexer(IVariableCategorizer const & categorizer);
+        AMGCoarseVariableIndexer(VariableCategorizer const & categorizer);
 
         size_type Index(size_type variable_index) const;
         size_type NumberOfVariables() const;

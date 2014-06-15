@@ -2,7 +2,7 @@
 
 #include "AMGExtendedPlusInterpolationPolicy.h"
 #include "IAMGStandardStrengthPolicy.h"
-#include "IVariableCategorizer.h"
+#include "VariableCategorizer.h"
 #include "AMGCoarseVariableIndexer.h"
 #include "IVariableSet.h"
 
@@ -12,7 +12,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 bool
-AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer) {
+AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
     Interpolation_t interpolation_op;
@@ -20,7 +20,7 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(m);
     while (row_it) {
         auto fine_variable = row_it.row();
-        if (variable_categorizer.GetType(fine_variable) == IVariableCategorizer::Type::COARSE) {
+        if (variable_categorizer.GetType(fine_variable) == VariableCategorizer::Type::COARSE) {
             // no interpolation needed
             auto cv = indexer.Index(fine_variable);
             interpolation_op[{fine_variable, cv}] = 1;
@@ -54,7 +54,7 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                     continue;
                 if (interpolatory_set->contains(j)) {
                     // j strongly influences i
-                    if (variable_categorizer.GetType(j) == IVariableCategorizer::Type::FINE)
+                    if (variable_categorizer.GetType(j) == VariableCategorizer::Type::FINE)
                         strong_fine_influencer.insert(j);
                 }
                 else
@@ -71,9 +71,9 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
 
             for (auto j : *interpolatory_set) {
                 // i-j connection of type F-F?
-                if (variable_categorizer.GetType(j) != IVariableCategorizer::Type::FINE) {
+                if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
                     // no, i-j is F-C
-                    if (variable_categorizer.GetType(j) == IVariableCategorizer::Type::COARSE)
+                    if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
                         extended_coarse_variable_set_plus.insert(j);
                     continue;
                 }
@@ -81,7 +81,7 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                 // i-j connection of type F-F
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
-                    if (variable_categorizer.GetType(k) == IVariableCategorizer::Type::COARSE)
+                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE)
                         extended_coarse_variable_set_plus.insert(k);
                 }
             }
@@ -129,7 +129,7 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
 
 
             for (auto j : extended_coarse_variable_set) {
-                if (variable_categorizer.GetType(j) != IVariableCategorizer::Type::COARSE)
+                if (variable_categorizer.GetType(j) != VariableCategorizer::Type::COARSE)
                     continue;
 
                 double w_ik = m(fine_variable, j);

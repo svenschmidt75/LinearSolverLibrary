@@ -15,7 +15,7 @@
 // forward declarations
 namespace LinearSolverLibrary_NS {
     class IAMGStandardStrengthPolicy;
-    class IVariableCategorizer;
+    class VariableCategorizer;
 }
 
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
@@ -35,7 +35,7 @@ namespace LinearSolverLibrary_NS {
 
 
     private:
-        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, IVariableCategorizer const & variable_categorizer);
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
     };
 
 } // LinearSolverLibrary_NS

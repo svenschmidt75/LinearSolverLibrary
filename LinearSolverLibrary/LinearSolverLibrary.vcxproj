@@ -302,7 +302,6 @@
     <ClInclude Include="CoarseVariableSetDecorator.h" />
     <ClInclude Include="IAMGCycle.h" />
     <ClInclude Include="IAMGStandardStrengthPolicy.h" />
-    <ClInclude Include="IVariableCategorizer.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UndefinedVariableSetDecorator.h" />

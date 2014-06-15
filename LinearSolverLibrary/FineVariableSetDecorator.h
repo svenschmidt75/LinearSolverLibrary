@@ -12,6 +12,12 @@
 #include "VariableSetDecoratorBase.h"
 
 
+// forward declarations
+namespace LinearSolverLibrary_NS {
+    class VariableCategorizer;
+}
+
+
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
@@ -24,13 +30,13 @@ namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS FineVariableSetDecorator final : public VariableSetDecoratorBase {
     public:
-        FineVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, IVariableCategorizer const & categorizer);
+        FineVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer);
 
     protected:
         std::function<bool(size_type)> predicate() const override;
 
     private:
-        IVariableCategorizer const & categorizer_;
+        VariableCategorizer const & categorizer_;
     };
 
 } // LinearSolverLibrary_NS

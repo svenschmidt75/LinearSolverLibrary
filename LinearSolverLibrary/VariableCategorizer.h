@@ -10,8 +10,6 @@
  */
 #pragma once
 
-#include "IVariableCategorizer.h"
-
 #include "DeclSpec.h"
 
 
@@ -20,14 +18,19 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCategorizer : public IVariableCategorizer {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCategorizer {
+    public:
+        using size_type = LinAlg_NS::IMatrix2D::size_type;
+
+        enum class Type : char { UNDEFINED = 'U', COARSE = 'C', FINE = 'F' };
+
     public:
         VariableCategorizer(size_type numberOfVariables);
 
-        Type      GetType(size_type variable) const override;
-        void      SetType(size_type variable, Type type) override;
-        size_type NumberOfVariables() const override;
-        void      print() const override;
+        Type      GetType(size_type variable) const;
+        void      SetType(size_type variable, Type type);
+        size_type NumberOfVariables() const;
+        void      print() const;
 
     private:
         void initializeVariablesToUndefined();

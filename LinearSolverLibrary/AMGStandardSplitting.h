@@ -10,24 +10,29 @@
 #include "DeclSpec.h"
 
 
+// forward declarations
+namespace LinearSolverLibrary_NS {
+    class IVariableInfluenceAccessor;
+    class VariableCategorizer;
+}
+
+
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
 namespace LinearSolverLibrary_NS {
 
-    // forward declarations
-    class IVariableInfluenceAccessor;
-    class IVariableCategorizer;
-
-
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplitting : private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplitting {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
         AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
-                             IVariableCategorizer & categorizer);
+                             VariableCategorizer & categorizer);
+
+        AMGStandardSplitting(AMGStandardSplitting const &) = delete;
+        AMGStandardSplitting & operator=(AMGStandardSplitting const &) = delete;
 
         void generateSplitting();
 
@@ -44,7 +49,7 @@ namespace LinearSolverLibrary_NS {
     private:
         LinAlg_NS::SparseMatrix2D const &  m_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
-        IVariableCategorizer &             categorizer_;
+        VariableCategorizer &              categorizer_;
         Queue_t                            queue_;
     };
 
