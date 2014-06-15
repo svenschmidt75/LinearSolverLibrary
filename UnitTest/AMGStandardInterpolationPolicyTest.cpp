@@ -52,7 +52,8 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
 }
 
-TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection_Ex) {
+TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
+    // same test as above, but with mocked strength policy
     class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
     public:
         StrengthPolicyMock() {
@@ -100,6 +101,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection_Ex) {
 
     m.finalize();
 
+    // set up type of variables
     VariableCategorizer variable_categorizer{4};
     variable_categorizer.SetType(0, VariableCategorizer::Type::COARSE);
     variable_categorizer.SetType(1, VariableCategorizer::Type::FINE);
@@ -107,12 +109,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection_Ex) {
     variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
 
 
-
-
-
     StrengthPolicyMock strength_policy;
-
-
     AMGStandardInterpolationPolicy splitting_policy;
     ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 

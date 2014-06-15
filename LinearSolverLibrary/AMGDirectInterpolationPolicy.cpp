@@ -52,6 +52,11 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
                     b_denum += a_ik;
             }
 
+            if (a_denum == 0)
+                std::cerr << "AMGDirectInterpolationPolicy::ComputeInterpolationOperator: Fine variable " << fine_variable <<
+                " does not have any C points in common with its strong influencers!" << std::endl <<
+                "Direct interpolation not appropriate for this problem." << std::endl;
+
             auto column_iterator = *row_it;
             for (; column_iterator; ++column_iterator) {
                 auto k = column_iterator.column();

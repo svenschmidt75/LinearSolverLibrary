@@ -19,7 +19,7 @@ namespace LinearSolverLibrary_NS {
 }
 
 class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Test;
-class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Ex_Test;
+class AMGStandardInterpolationPolicyTest_TestStrongFFConnectionWithMock_Test;
 
 
 #pragma warning(disable:4275)
@@ -33,7 +33,7 @@ namespace LinearSolverLibrary_NS {
 
 
         friend class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Test;
-        friend class AMGStandardInterpolationPolicyTest_TestStrongFFConnection_Ex_Test;
+        friend class AMGStandardInterpolationPolicyTest_TestStrongFFConnectionWithMock_Test;
 
     private:
         bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
