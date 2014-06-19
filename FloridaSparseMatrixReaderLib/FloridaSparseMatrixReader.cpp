@@ -62,7 +62,7 @@ FloridaSparseMatrixReader::read() const {
 
 
 
-    typedef boost::tokenizer<boost::char_separator<char>> TokenizerType;
+    using TokenizerType = boost::tokenizer<boost::char_separator<char>>;
 
     // read 1st line to make sure the format is correct
     // Example: %%MatrixMarket matrix coordinate real symmetric

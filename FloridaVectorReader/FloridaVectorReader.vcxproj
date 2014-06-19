@@ -87,28 +87,28 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Integration Test Release With Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,7 +129,7 @@
       <AdditionalLibraryDirectories>$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>
       </ImportLibrary>
-      <ProgramDatabaseFile>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Debug|x64'">
@@ -151,7 +151,7 @@
       <AdditionalLibraryDirectories>$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>
       </ImportLibrary>
-      <ProgramDatabaseFile>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,7 +177,7 @@
       <AdditionalLibraryDirectories>$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>
       </ImportLibrary>
-      <ProgramDatabaseFile>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IntegrationTest Release|x64'">
@@ -203,7 +203,7 @@
       <AdditionalLibraryDirectories>$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>
       </ImportLibrary>
-      <ProgramDatabaseFile>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Integration Test Release With Debug|x64'">
@@ -230,7 +230,7 @@
       <AdditionalLibraryDirectories>$(BOOST_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>
       </ImportLibrary>
-      <ProgramDatabaseFile>$(SolutionDir)\BuildArtifacts\$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)\$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
