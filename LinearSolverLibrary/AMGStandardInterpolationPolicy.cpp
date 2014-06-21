@@ -48,12 +48,15 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             auto column_iterator = *row_it;
             for (; column_iterator; ++column_iterator) {
                 auto k = column_iterator.column();
-                extended_neighborhood_set.insert(k);
-                if (k != fine_variable && variable_categorizer.GetType(k) == VariableCategorizer::Type::FINE)
-                    // ignore all of i's (fine_variable) strong F-F neighbors for now
-                    continue;
+                if (k != fine_variable && variable_categorizer.GetType(k) == VariableCategorizer::Type::FINE) {
+                    // Ignore all of i's (fine_variable) strong F-F neighbors for now, but
+                    // do include weak F-F connections.
+                    if (interpolatory_set->contains(k))
+                        continue;
+                }
                 double a_ik = m(fine_variable, k);
                 a_i_hat[k] = a_ik;
+                extended_neighborhood_set.insert(k);
             }
 
             // coarse set of i and of all its strong F-F connections
@@ -67,10 +70,24 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                     continue;
                 }
 
+                // j is a fine variable
+
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
-                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE)
-                        extended_coarse_variable_set.insert(k);
+                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE) {
+                        // If this coarse variable is also a neighbor of i,
+                        // only add it if i-k is a strong connection because
+                        // we do not interpolate from weak connections.
+                        bool add_variable = true;
+                        if (m(fine_variable, k)) {
+                            // only add it strong
+                            if (interpolatory_set->contains(k) == false)
+                                // it is a weak connection
+                                add_variable = false;
+                        }
+                        if (add_variable)
+                            extended_coarse_variable_set.insert(k);
+                    }
                 }
 
 
@@ -82,12 +99,12 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                 auto j_column_iterator = *j_row_it;
                 for (; j_column_iterator; ++j_column_iterator) {
                     auto k = j_column_iterator.column();
-                    extended_neighborhood_set.insert(k);
                     if (k == j)
                         // skip a_jj
                         continue;
                     double a_jk = m(j, k);
                     a_i_hat[k] += fac * a_jk;
+                    extended_neighborhood_set.insert(k);
                 }
             }
 
@@ -110,7 +127,11 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                     b_denum += a_ik;
             }
 
+            BOOST_ASSERT_MSG(a_i_hat.size() == extended_neighborhood_set.size(), "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Sizes should be equal");
+
             for (auto k : extended_neighborhood_set) {
+                BOOST_ASSERT_MSG(a_i_hat.find(k) != std::end(a_i_hat), "AMGStandardInterpolationPolicy::ComputeInterpolationOperator: Couldn't find matrix element");
+
                 double a_ik = a_i_hat[k];
                 if (fine_variable == k)
                     diag += a_ik;
