@@ -75,7 +75,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double beta;
 
             if (b_denum == 0) {
-                // add positive a_ik to diagonal
+                // add positive a_ik to diagonal to preserve row sums
                 diag += b_num;
                 beta = 0;
             } else

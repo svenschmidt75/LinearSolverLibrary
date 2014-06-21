@@ -47,7 +47,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
     ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
-    interpolation_operator.print();
+//    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
 }
@@ -114,7 +114,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
     ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
-    interpolation_operator.print();
+//    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
 }
