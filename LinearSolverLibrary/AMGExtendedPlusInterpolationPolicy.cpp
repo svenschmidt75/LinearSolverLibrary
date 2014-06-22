@@ -160,6 +160,9 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                     }
                 }
 
+                if (w_ik == 0)
+                    continue;
+
                 w_ik /= - a_ii_hat;
 
                 auto cv = indexer.Index(j);

@@ -93,6 +93,10 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
                     w_ik = neg_coeff * a_ik;
                 else
                     w_ik = pos_coeff * a_ik;
+
+                if (w_ik == 0)
+                    continue;
+
                 auto cv = indexer.Index(coarse_variable);
                 interpolation_op[{fine_variable, cv}] = w_ik;
             }
