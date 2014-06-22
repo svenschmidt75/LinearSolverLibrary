@@ -19,6 +19,9 @@ namespace LinearSolverLibrary_NS {
 }
 
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
+class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
+class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
+class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
 
 
 #pragma warning(disable:4275)
@@ -32,6 +35,9 @@ namespace LinearSolverLibrary_NS {
 
 
         friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
+        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
+        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
+        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
 
 
     private:

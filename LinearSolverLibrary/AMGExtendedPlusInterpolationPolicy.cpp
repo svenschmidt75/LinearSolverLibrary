@@ -100,7 +100,28 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
             }
 
 
+
             double const a_ii = m(fine_variable, fine_variable);
+
+
+
+            // compute the sum over the extended coarse set
+            using size_type = IMatrix2D::size_type;
+            std::map<size_type, double> extended_sums;
+            for (auto k : strong_fine_influencer) {
+                double extended_sum = 0;
+                for (auto l : extended_coarse_variable_set_plus) {
+                    double a_kl = m(k, l);
+                    if (a_kl * a_ii < 0)
+                        extended_sum += a_kl;
+                }
+
+                if (extended_sum == 0)
+                    throw std::runtime_error("AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Division by zero");
+
+                extended_sums[k] = extended_sum;
+            }
+
 
 
             // compute the sum over F_{i}^{s} in \tilde{a}_{ii}, the modified diagonal value
@@ -109,23 +130,15 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
             for (auto k : strong_fine_influencer) {
                 double a_ki = m(k, fine_variable);
                 if (a_ki * a_ii < 0) {
-                    // compute the sum over the extended coarse set
-                    double extended_sum = 0;
-                    for (auto l : extended_coarse_variable_set_plus) {
-                        double a_kl = m(k, l);
-                        if (a_kl * a_ii < 0) {
-                            extended_sum += a_kl;
-                        }
-                    }
-
-                    if (extended_sum == 0)
-                        throw std::runtime_error("AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Division by zero");
-
                     double a_ik = m(fine_variable, k);
-                    double value = a_ik * a_ki / extended_sum;
+
+                    BOOST_ASSERT_MSG(extended_sums.find(k) != std::end(extended_sums), "AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Couldn't find extended sum for coarse variable");
+
+                    double value = a_ik * a_ki / extended_sums[k];
                     a_ii_hat += value;
                 }
             }
+
 
 
             for (auto j : extended_coarse_variable_set) {
@@ -137,21 +150,12 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
                 for (auto k : strong_fine_influencer) {
                     double a_kj = m(k, j);
                     if (a_kj * a_ii < 0) {
-                        // compute the sum over the extended coarse set
-                        double extended_sum = 0;
-                        for (auto l : extended_coarse_variable_set_plus) {
-                            double a_kl = m(k, l);
-                            if (a_kl * a_ii < 0) {
-                                extended_sum += a_kl;
-                            }
-                        }
-
-                        if (extended_sum == 0)
-                            throw std::runtime_error("AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Division by zero");
-
                         double a_ik = m(fine_variable, k);
                         double value = a_ik * a_kj;
-                        value /= extended_sum;
+
+                        BOOST_ASSERT_MSG(extended_sums.find(k) != std::end(extended_sums), "AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator: Couldn't find extended sum for coarse variable");
+
+                        value /= extended_sums[k];
                         w_ik += value;
                     }
                 }
