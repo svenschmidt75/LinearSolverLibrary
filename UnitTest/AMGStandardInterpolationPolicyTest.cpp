@@ -241,8 +241,9 @@ TEST(AMGStandardInterpolationPolicyTest, TestComplexGraph) {
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
 //    interpolation_operator.print();
-    ASSERT_NEAR(0.304916, interpolation_operator(0, 0), 1E-7);
-    ASSERT_NEAR(0.02808437, interpolation_operator(0, 1), 1E-8);
-    ASSERT_NEAR(0.0285858785, interpolation_operator(0, 2), 1E-10);
-    ASSERT_NEAR(0.2702664871, interpolation_operator(0, 3), 1E-9);
+    ASSERT_NEAR(0.32888259464578978, interpolation_operator(0, 0), 1E-7);
+    ASSERT_NEAR(0.030291817927901688, interpolation_operator(0, 1), 1E-8);
+    ASSERT_NEAR(0.030832743248042790, interpolation_operator(0, 2), 1E-10);
+    ASSERT_NEAR(0.29150957252695003, interpolation_operator(0, 3), 1E-9);
+    ASSERT_NEAR(-0.078600513862221860, interpolation_operator(0, 4), 1E-9);
 }

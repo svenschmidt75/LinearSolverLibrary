@@ -23,6 +23,8 @@ namespace LinearSolverLibrary_NS {
         typedef std::set<size_type> Set_t;
 
     public:
+        virtual ~IVariableSet() {}
+
         virtual bool                                contains(size_type variable) const = 0;
         virtual size_type                           size() const = 0;
         virtual common_NS::InputIterator<size_type> begin() const = 0;

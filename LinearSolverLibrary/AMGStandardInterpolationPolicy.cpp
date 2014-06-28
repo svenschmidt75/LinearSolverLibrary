@@ -79,12 +79,12 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                         // only add it if i-k is a strong connection because
                         // we do not interpolate from weak connections.
                         bool add_variable = true;
-                        if (m(fine_variable, k)) {
-                            // only add it strong
-                            if (interpolatory_set->contains(k) == false)
-                                // it is a weak connection
-                                add_variable = false;
-                        }
+                        //if (m(fine_variable, k)) {
+                        //    // only add if strong
+                        //    if (interpolatory_set->contains(k) == false)
+                        //        // it is a weak connection
+                        //        add_variable = false;
+                        //}
                         if (add_variable)
                             extended_coarse_variable_set.insert(k);
                     }

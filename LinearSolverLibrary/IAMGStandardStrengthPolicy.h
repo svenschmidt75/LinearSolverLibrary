@@ -26,6 +26,8 @@ namespace LinearSolverLibrary_NS {
 
     class IAMGStandardStrengthPolicy {
     public:
+        virtual ~IAMGStandardStrengthPolicy() {}
+
         virtual std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
         virtual std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
     };
