@@ -64,25 +64,53 @@ AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D 
 
 
             // Creates the extended set of interpolatory points \hat{C}_{i}.
-            // It contains all strong coarse i-j connections. If j is fine,
-            // we add j=s strong coarse variables as well.
+            // It contains all strong coarse i - j connections. If j is fine,
+            // we add j's strong coarse variables as well with this exception:
+            // If the strong F-F i - j connection shares a common strong C node,
+            // we do not add a weak i - j connection.
             // We also add i itself.
             std::set<size_type> extended_coarse_variable_set_plus;
 
+            
             for (auto j : *interpolatory_set) {
-                // i-j connection of type F-F?
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
-                    // no, i-j is F-C
                     if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
                         extended_coarse_variable_set_plus.insert(j);
                     continue;
                 }
 
-                // i-j connection of type F-F
+                // j is a fine variable
+
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
-                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE)
-                        extended_coarse_variable_set_plus.insert(k);
+                    if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE) {
+                        // fine_variable - j is a strong F-F connections. If k is a common coarse
+                        // variable, add it so it is used in interpolation to fine_variable.
+                        bool add_variable = true;
+                        if (m(fine_variable, k)) {
+                            // only add if strong
+                            if (interpolatory_set->contains(k) == false) {
+                                // fine_variable - k is a weak F-C connection.
+                                // We still add it if the strong F-F connection fine_variable - j
+                                // have no common coarse nodes.
+                                std::vector<size_type> common_interpolation_points;
+                                std::set_intersection(
+                                    std::cbegin(*interpolatory_set),
+                                    std::cend(*interpolatory_set),
+                                    std::cbegin(*j_interpolatory_set),
+                                    std::cend(*j_interpolatory_set),
+                                    std::back_insert_iterator<std::vector<size_type>>(common_interpolation_points));
+
+                                if (common_interpolation_points.empty() == false)
+                                    // The strong F-F connection fine_variable - j have other common interpolatory
+                                    // variables, hence do not add coarse variable k to interpolate to fine_variable
+                                    // as fine_variable - k is a weak F-C connection.
+                                    add_variable = false;
+                            }
+                        }
+                        if (add_variable)
+                            extended_coarse_variable_set_plus.insert(k);
+                    }
                 }
             }
 
