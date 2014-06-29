@@ -44,7 +44,11 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
 
             std::set<size_type> extended_neighborhood_set;
 
-            // extract the a_ik from i's direct neighborhood N_i
+
+            /*****************************************************
+             * extract the a_ik from i's direct neighborhood N_i *
+             *****************************************************/
+
             auto column_iterator = *row_it;
             for (; column_iterator; ++column_iterator) {
                 auto k = column_iterator.column();
@@ -59,10 +63,20 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                 extended_neighborhood_set.insert(k);
             }
 
+
+             // Note: extended_neighborhood_set also contains fine_variable, although
+             // i is not in N_{i}.
+
+
             // coarse set of i and of all its strong F-F connections
             std::set<size_type> extended_coarse_variable_set;
 
-            // replace all e_j where j is a strong fine variable, with its coarse a_jk
+
+            /***************************************************************************
+             * Replace all e_j where j is a strong fine variable, with its coarse a_jk *
+             ***************************************************************************/
+
+
             for (auto j : *interpolatory_set) {
                 if (variable_categorizer.GetType(j) != VariableCategorizer::Type::FINE) {
                     if (variable_categorizer.GetType(j) == VariableCategorizer::Type::COARSE)
@@ -75,21 +89,39 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
                 auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
                 for (auto k : *j_interpolatory_set) {
                     if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE) {
-                        // If this coarse variable is also a neighbor of i,
-                        // only add it if i-k is a strong connection because
-                        // we do not interpolate from weak connections.
+                        // fine_variable - j is a strong F-F connections. If k is a common coarse
+                        // variable, add it so it is used in interpolation to fine_variable.
                         bool add_variable = true;
-                        //if (m(fine_variable, k)) {
-                        //    // only add if strong
-                        //    if (interpolatory_set->contains(k) == false)
-                        //        // it is a weak connection
-                        //        add_variable = false;
-                        //}
+                        if (m(fine_variable, k)) {
+                            // only add if strong
+                            if (interpolatory_set->contains(k) == false) {
+                                // fine_variable - k is a weak F-C connection.
+                                // We still add it if the strong F-F connection fine_variable - j
+                                // have no common coarse nodes.
+                                std::vector<size_type> common_interpolation_points;
+                                std::set_intersection(
+                                    std::cbegin(*interpolatory_set),
+                                    std::cend(*interpolatory_set),
+                                    std::cbegin(*j_interpolatory_set),
+                                    std::cend(*j_interpolatory_set),
+                                    std::back_insert_iterator<std::vector<size_type>>(common_interpolation_points));
+
+                                if (common_interpolation_points.empty() == false)
+                                    // The strong F-F connection fine_variable - j have other common interpolatory
+                                    // variables, hence do not add coarse variable k to interpolate to fine_variable
+                                    // as fine_variable - k is a weak F-C connection.
+                                    add_variable = false;
+                            }
+                        }
                         if (add_variable)
                             extended_coarse_variable_set.insert(k);
                     }
                 }
 
+
+                /***********************************
+                 * generation of the \hat_{a}_{ik} *
+                 ***********************************/
 
                 double a_jj = m(j, j);
                 double a_ij = m(fine_variable, j);

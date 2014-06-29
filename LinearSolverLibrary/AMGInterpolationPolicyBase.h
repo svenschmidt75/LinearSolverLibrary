@@ -35,6 +35,8 @@ namespace LinearSolverLibrary_NS {
         AMGInterpolationPolicyBase(AMGInterpolationPolicyBase const &) = delete;
         AMGInterpolationPolicyBase & operator=(AMGInterpolationPolicyBase const &) = delete;
 
+        virtual ~AMGInterpolationPolicyBase() {}
+
         bool                      Generate(LinAlg_NS::SparseMatrix2D const & m);
         LinAlg_NS::SparseMatrix2D GalerkinOperator() const;
         LinAlg_NS::SparseMatrix2D Restrictor() const;
