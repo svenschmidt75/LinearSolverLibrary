@@ -104,6 +104,7 @@
     <ClInclude Include="AMGVariableCardinalityTest.h" />
     <ClInclude Include="bcsstk05Test.h" />
     <ClInclude Include="BinaryHeapTest.h" />
+    <ClInclude Include="ComplexGraphTest.hpp" />
     <ClInclude Include="FloridaSparseMatrixReaderTest.h" />
     <ClInclude Include="FloridaVectorReaderTest.h" />
     <ClInclude Include="fs_680_1_Test.h" />

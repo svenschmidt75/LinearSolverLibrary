@@ -164,5 +164,8 @@
     <ClInclude Include="MultigridTutorialExampleTestFramework.h">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="ComplexGraphTest.hpp">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

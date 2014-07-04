@@ -18,6 +18,12 @@ namespace LinearSolverLibrary_NS {
     class VariableCategorizer;
 }
 
+namespace ComplexGraphTest_NS {
+    template<typename INTERPOLATION_POLICY>
+    class ComplexGraphTest;
+}
+
+
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
 class AMGExtendedPlusInterpolationPolicyTest_TestComplexGraph_Test;
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithNoCommonCNode_Test;
@@ -45,9 +51,10 @@ namespace LinearSolverLibrary_NS {
         friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
         friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
 
+        friend class ComplexGraphTest_NS::ComplexGraphTest<AMGExtendedPlusInterpolationPolicy>;
 
     private:
-        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) override;
     };
 
 } // LinearSolverLibrary_NS
