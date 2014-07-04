@@ -9,6 +9,8 @@
 
 #include "AMGInterpolationPolicyBase.h"
 
+#include "..\UnitTest/UnitTestForwardDeclarationHelper.h"
+
 #include "DeclSpec.h"
 
 
@@ -23,13 +25,12 @@ namespace ComplexGraphTest_NS {
     class ComplexGraphTest;
 }
 
-
-class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
-class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithNoCommonCNode_Test;
-class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithCommonCNode_Test;
-class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
-class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
-class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection);
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode);
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode);
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeakConnections);
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithPositiveOffDiagonalEntries);
+GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithStrongPositiveOffDiagonalEntries);
 
 
 #pragma warning(disable:4275)
@@ -42,12 +43,12 @@ namespace LinearSolverLibrary_NS {
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGExtendedPlusInterpolationPolicy : public AMGInterpolationPolicyBase {
 
 
-        friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithNoCommonCNode_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithCommonCNode_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection);
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode);
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode);
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeakConnections);
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithPositiveOffDiagonalEntries);
+        FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithStrongPositiveOffDiagonalEntries);
         friend class ComplexGraphTest_NS::ComplexGraphTest<AMGExtendedPlusInterpolationPolicy>;
 
     private:

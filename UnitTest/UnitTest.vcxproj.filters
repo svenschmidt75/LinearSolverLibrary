@@ -170,5 +170,6 @@
     <ClInclude Include="MultigridTutorialExampleP144Test.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="UnitTestForwardDeclarationHelper.h" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 /*
-* Name  : AMGSolver
-* Path  :
-* Use   : Generates AMG hierarchy
-* Author: Sven Schmidt
-* Date  : 01/18/2014
-*/
+ * Name  : AMGSolver
+ * Path  :
+ * Use   : Generates AMG hierarchy
+ * Author: Sven Schmidt
+ * Date  : 01/18/2014
+ */
 #pragma once
 
 #include "IAMGCycle.h"
@@ -12,10 +12,12 @@
 #include "AMGMonitor.h"
 #include "AMGHierarchyBuilder.hpp"
 
+#include "..\UnitTest/UnitTestForwardDeclarationHelper.h"
+
 
 // forward declarations
-class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
-class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
+GOOGLE_TEST(BasicAMGSolverTest, TestExpectedGridHierarchyDepth);
+GOOGLE_TEST(BasicAMGSolverTest, TestExpectedVCycleDepth);
 
 
 namespace LinearSolverLibrary_NS {
@@ -24,8 +26,8 @@ namespace LinearSolverLibrary_NS {
     class AMGSolver {
 
 
-        friend class BasicAMGSolverTest_TestExpectedGridHierarchyDepth_Test;
-        friend class BasicAMGSolverTest_TestExpectedVCycleDepth_Test;
+        FRIEND_GOOGLE_TEST(BasicAMGSolverTest, TestExpectedGridHierarchyDepth);
+        FRIEND_GOOGLE_TEST(BasicAMGSolverTest, TestExpectedVCycleDepth);
 
 
     public:

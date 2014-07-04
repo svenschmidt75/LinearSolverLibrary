@@ -17,17 +17,16 @@ namespace LinearSolverLibrary_NS {
 
 class MultigridTutorialExampleTestFramework {
 
-
-    friend class MultigridTutorialExampleTestFrameworkTest_TestExactSolutionForInnerNodes_Test;
-    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveIsConsistent_Test;
-    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveL2Error_Test;
-    friend class MultigridTutorialExampleTestFrameworkTest_TestDirectSolveLinfError_Test;
-    friend class MultigridTutorialExampleTestFrameworkAMGTest_TestAMGHierarchyBuilderWithNotCoarseningToLastLevel_Test;
+    FRIEND_GOOGLE_TEST(MultigridTutorialExampleTestFrameworkTest, TestExactSolutionForInnerNodes);
+    FRIEND_GOOGLE_TEST(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveIsConsistent);
+    FRIEND_GOOGLE_TEST(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveL2Error);
+    FRIEND_GOOGLE_TEST(MultigridTutorialExampleTestFrameworkTest, TestDirectSolveLinfError);
+    FRIEND_GOOGLE_TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestAMGHierarchyBuilderWithNotCoarseningToLastLevel);
 
 
 public:
     MultigridTutorialExampleTestFramework();
-    MultigridTutorialExampleTestFramework(int mesh_size);
+    explicit MultigridTutorialExampleTestFramework(int mesh_size);
 
     void InitializeWithStencil1();
     void InitializeWithStencil2();

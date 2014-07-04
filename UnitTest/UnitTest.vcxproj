@@ -132,6 +132,7 @@
     <ClInclude Include="FIDAP_EX5_Test.h" />
     <ClInclude Include="ParallelLinAlgOperationsTest.h" />
     <ClInclude Include="UHMatrixTest.h" />
+    <ClInclude Include="UnitTestForwardDeclarationHelper.h" />
     <ClInclude Include="UTMatrixTest.h" />
     <ClInclude Include="VariableInfluenceAccessorTest.h" />
     <ClInclude Include="VersteegMalalasekeraTest.h" />
