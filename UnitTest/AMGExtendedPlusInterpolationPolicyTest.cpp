@@ -311,10 +311,11 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestComplexGraph) {
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
 //    interpolation_operator.print();
-    ASSERT_NEAR(0.304916, interpolation_operator(0, 0), 1E-7);
-    ASSERT_NEAR(0.02808437, interpolation_operator(0, 1), 1E-8);
-    ASSERT_NEAR(0.0285858785, interpolation_operator(0, 2), 1E-10);
-    ASSERT_NEAR(0.2702664871, interpolation_operator(0, 3), 1E-9);
+    ASSERT_NEAR(0.32733836999398275, interpolation_operator(0, 0), 1E-7);
+    ASSERT_NEAR(0.031824563749414989, interpolation_operator(0, 1), 1E-8);
+    ASSERT_NEAR(0.051146620311559809, interpolation_operator(0, 2), 1E-10);
+    ASSERT_NEAR(0.30326937220030759, interpolation_operator(0, 3), 1E-9);
+    ASSERT_NEAR(-0.040917296249247843, interpolation_operator(0, 4), 1E-9);
 }
 
 TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode) {
