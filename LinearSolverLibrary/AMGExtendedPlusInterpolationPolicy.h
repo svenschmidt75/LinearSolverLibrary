@@ -25,7 +25,6 @@ namespace ComplexGraphTest_NS {
 
 
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
-class AMGExtendedPlusInterpolationPolicyTest_TestComplexGraph_Test;
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithNoCommonCNode_Test;
 class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithCommonCNode_Test;
 class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
@@ -44,13 +43,11 @@ namespace LinearSolverLibrary_NS {
 
 
         friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnection_Test;
-        friend class AMGExtendedPlusInterpolationPolicyTest_TestComplexGraph_Test;
         friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithNoCommonCNode_Test;
         friend class AMGExtendedPlusInterpolationPolicyTest_TestStrongFFConnectionWithCommonCNode_Test;
         friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithWeakConnections_Test;
         friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithPositiveOffDiagonalEntries_Test;
         friend class AMGExtendedPlusInterpolationPolicyTestFromMGTutorial_MadeUpExampleWithStrongPositiveOffDiagonalEntries_Test;
-
         friend class ComplexGraphTest_NS::ComplexGraphTest<AMGExtendedPlusInterpolationPolicy>;
 
     private:
