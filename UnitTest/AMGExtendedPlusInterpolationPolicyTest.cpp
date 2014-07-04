@@ -4,10 +4,12 @@
 
 #include "LinearSolverLibrary/AMGExtendedPlusInterpolationPolicy.h"
 #include <UnitTest/ComplexGraphTest.hpp>
+#include "UnitTest/MultigridTutorialExampleP144Test.hpp"
 
 
 using namespace LinAlg_NS;
 using namespace LinearSolverLibrary_NS;
+using namespace MultigridTutorialExampleP144Test_NS;
 using namespace testing;
 
 
@@ -53,75 +55,6 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection) {
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
 }
 
-
-
-
-
-
-
-
-namespace {
-
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
-    public:
-        StrengthPolicyMock() {
-            variable_set_[0].add(4);
-
-            variable_set_[1].add(4);
-
-            variable_set_[2].add(4);
-
-            variable_set_[3].add(4);
-
-            variable_set_[4].add(0);
-            variable_set_[4].add(1);
-            variable_set_[4].add(2);
-            variable_set_[4].add(3);
-            variable_set_[4].add(5);
-            variable_set_[4].add(7);
-
-            variable_set_[5].add(4);
-
-            variable_set_[6].add(4);
-
-            variable_set_[7].add(4);
-
-            variable_set_[8].add(4);
-        }
-
-        std::shared_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
-            return std::make_shared<VariableSet>(variable_set_[variable]);
-        }
-
-        std::shared_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
-            return nullptr;
-        }
-
-    private:
-        mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
-    };
-
-    StrengthPolicyMock GetStrengthPolicy() {
-        return StrengthPolicyMock{};
-    }
-
-    VariableCategorizer GetVariableCategorizer() {
-        // Example graph from 'Multigrid Tutorial', page 144, fig. 8.3.
-        VariableCategorizer variable_categorizer{9};
-        variable_categorizer.SetType(0, VariableCategorizer::Type::FINE);
-        variable_categorizer.SetType(1, VariableCategorizer::Type::COARSE);
-        variable_categorizer.SetType(2, VariableCategorizer::Type::FINE);
-        variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
-        variable_categorizer.SetType(4, VariableCategorizer::Type::FINE);
-        variable_categorizer.SetType(5, VariableCategorizer::Type::COARSE);
-        variable_categorizer.SetType(6, VariableCategorizer::Type::FINE);
-        variable_categorizer.SetType(7, VariableCategorizer::Type::COARSE);
-        variable_categorizer.SetType(8, VariableCategorizer::Type::FINE);
-        return variable_categorizer;
-    }
-}
-
-
 TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeakConnections) {
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1.0 / 2.0,         -2, -1.0 / 2.0,
@@ -134,7 +67,7 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeak
 
 
     AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, GetStrengthPolicy(), GetVariableCategorizer()));
+    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
 //    interpolation_operator.print();
@@ -145,7 +78,6 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeak
 }
 
 TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithPositiveOffDiagonalEntries) {
- 
     MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
     stencil << -1.0 / 2.0,         -2, -1.0 / 2.0,
                        -1, 29.0 / 4.0, -1,
@@ -157,7 +89,7 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithPosi
 
 
     AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, GetStrengthPolicy(), GetVariableCategorizer()));
+    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
 //    interpolation_operator.print();
@@ -179,7 +111,7 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithStro
 
 
     AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, GetStrengthPolicy(), GetVariableCategorizer()));
+    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
 
     auto const & interpolation_operator = splitting_policy.Interpolator();
 //    interpolation_operator.print();

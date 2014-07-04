@@ -115,6 +115,7 @@
     <ClInclude Include="LUDecompositionTest.h" />
     <ClInclude Include="MatrixStencilTest.h" />
     <ClInclude Include="MultiColorTest.h" />
+    <ClInclude Include="MultigridTutorialExampleP144Test.hpp" />
     <ClInclude Include="MultigridTutorialExampleTestFramework.h" />
     <ClCompile Include="MultigridTutorialExampleTestFrameworkAMGTest.cpp">
       <FileType>CppHeader</FileType>

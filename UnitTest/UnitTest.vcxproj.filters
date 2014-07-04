@@ -167,5 +167,8 @@
     <ClInclude Include="ComplexGraphTest.hpp">
       <Filter>AMG</Filter>
     </ClInclude>
+    <ClInclude Include="MultigridTutorialExampleP144Test.hpp">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
