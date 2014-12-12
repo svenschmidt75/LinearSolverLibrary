@@ -77,10 +77,10 @@ helper::transposeParallelNonChunked(SparseMatrix2D const & m) {
         std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
         for (size_type item_position{0}; item_position < items.size(); ++item_position) {
             TupleType_t const & item = items[item_position];
-            auto row = std::get<0>(item);
+            auto lrow = std::get<0>(item);
             auto column = std::get<1>(item);
             auto value = std::get<2>(item);
-            m_transpose(column, row) = value;
+            m_transpose(column, lrow) = value;
         }
     }
     m_transpose.finalize();
@@ -128,10 +128,10 @@ helper::transposeParallelChunked(SparseMatrix2D const & m) {
         std::vector<TupleType_t> const & items = chunkPrivateMemory[row];
         for (size_type item_position{0}; item_position < items.size(); ++item_position) {
             TupleType_t const & item = items[item_position];
-            auto row = std::get<0>(item);
+            auto lrow = std::get<0>(item);
             auto column = std::get<1>(item);
             auto value = std::get<2>(item);
-            m_transpose(column, row) = value;
+            m_transpose(column, lrow) = value;
         }
     }
     m_transpose.finalize();

@@ -38,7 +38,7 @@ Matrix2D::Matrix2D(Matrix2D && in)
     :
     rows_{in.rows_},
     cols_{in.cols_},
-    data_{std::move(in.data_)} {}
+    data_(std::move(in.data_)) {}
     
 Matrix2D &
 Matrix2D::operator=(Matrix2D && in) {

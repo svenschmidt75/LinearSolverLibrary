@@ -12,6 +12,7 @@
 #include <map>
 #include <queue>
 #include <memory>
+#include <iterator>
 
 #include <boost/math/special_functions/round.hpp>
 #include <boost/assert.hpp>

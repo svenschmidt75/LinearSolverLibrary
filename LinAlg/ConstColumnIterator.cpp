@@ -13,7 +13,7 @@ ConstColumnIterator<SparseMatrix2D>::ConstColumnIterator(SparseMatrix2D const & 
     row_{row},
     column_{0},
     index_{0},
-    column_indices_{m.getNonZeroColumnIndicesForRow(row)} {
+    column_indices_(m.getNonZeroColumnIndicesForRow(row)) {
 
 #ifdef _DEBUG
     common_NS::reporting::checkUppderBound(row_, m_.rows() - 1);

@@ -89,14 +89,14 @@ TEST_F(BasicAMGSolverTest, TestVSolve) {
 
     Vector x{b.size()};
     std::fill(std::begin(x), std::end(x), 0);
-    bool success;
-    std::tie(success, x) = amg_solver.Solve(x);
-    ASSERT_TRUE(success);
+    bool success1;
+    std::tie(success1, x) = amg_solver.Solve(x);
+    ASSERT_TRUE(success1);
 
     Vector x_ref{b.size()};
     int iterations;
-    std::tie(success, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
-    ASSERT_TRUE(success);
+    std::tie(success1, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
+    ASSERT_TRUE(success1);
 
     // compare vectors
     ASSERT_TRUE(SparseLinearSolverUtil::isVectorEqual(x, x_ref, tolerance));
@@ -127,14 +127,14 @@ TEST_F(BasicAMGSolverTest, TestWSolve) {
 
     Vector x{b.size()};
     std::fill(std::begin(x), std::end(x), 0);
-    bool success;
-    std::tie(success, x) = amg_solver.Solve(x);
-    ASSERT_TRUE(success);
+    bool success1;
+    std::tie(success1, x) = amg_solver.Solve(x);
+    ASSERT_TRUE(success1);
 
     Vector x_ref{b.size()};
     int iterations;
-    std::tie(success, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
-    ASSERT_TRUE(success);
+    std::tie(success1, x_ref, iterations) = SparseLinearSolverLibrary::SparseSOR(m_, b, 1.1, 11000);
+    ASSERT_TRUE(success1);
 
     // compare vectors
     ASSERT_TRUE(SparseLinearSolverUtil::isVectorEqual(x, x_ref, 4.5 * 1E-5));

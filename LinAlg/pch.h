@@ -1,5 +1,6 @@
 /* all common and stable header files */
 
+#pragma warning(disable:4512)
 #include <boost/assert.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/mpl/bool_fwd.hpp>
@@ -13,6 +14,7 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/format.hpp>
+#pragma warning(default:4512)
 
 #include <cassert>
 #include <stdexcept>
@@ -22,6 +24,7 @@
 #include <cmath>
 #include <algorithm>
 #include <map>
+#include <set>
 #include <vector>
 #include <cstdint>
 #include <thread>

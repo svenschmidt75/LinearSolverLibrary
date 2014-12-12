@@ -26,7 +26,7 @@ namespace common_NS {
 
     public:
         BinaryHeap() : BinaryHeap{COMPARATOR<T>{}} {}
-        BinaryHeap(COMPARATOR<T> const & comparator) : comparator_{comparator}, heaped_{false} {}
+        BinaryHeap(COMPARATOR<T> const & comparator) : heaped_(false), comparator_(comparator) {}
 
         void add(T const & element) {
             // Add element respecting the shape property, i.e.

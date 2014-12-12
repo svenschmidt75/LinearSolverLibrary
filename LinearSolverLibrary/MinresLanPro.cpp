@@ -17,24 +17,24 @@ MinresLanPro::MinresLanPro()
     w(3 + 1) {}
 
 MinresLanPro::Return_t
-MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int maxIterations, double tolerance = 1E-15) const {
+MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & rhs, int maxIterations, double tolerance = 1E-15) const {
     /* Implements the MINRES algorithm from
      *  Reference:
      *  Anne Greenbaum, Iterative Methods for Solving Linear Systems,
      *  SIAM 1997
      * Used for symmetric matrices that are not necessarily pos. def.
      */
-    double normb = VectorMath::norm(b);
+    double normb = VectorMath::norm(rhs);
 
     // initial guess x_{0} = null
-    r = Vector(b);
+    r = Vector(rhs);
     double normr = VectorMath::norm(r);
     double residual = normr / normb;
     if (residual <= tolerance)
-        return std::make_tuple(true, b, 0, residual);
+        return std::make_tuple(true, rhs, 0, residual);
 
     auto dim = A.cols();
-    BOOST_ASSERT_MSG(dim == b.size(), "MinresLanPro: Size mismatch");
+    BOOST_ASSERT_MSG(dim == rhs.size(), "MinresLanPro: Size mismatch");
 
     lanczos.init(A, (1.0 / normr) * r);
 
@@ -82,7 +82,7 @@ MinresLanPro::solve_internal(SparseMatrix2D const & A, Vector const & b, int max
         // new approximate solution
         x += s(k_current) * p[k_current];
 
-//         r = b - A * x;
+//         r = rhs - A * x;
 //         normr = VectorMath::norm(r);
 //         residual = normr / normb;
 

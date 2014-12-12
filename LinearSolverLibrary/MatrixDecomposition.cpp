@@ -8,6 +8,10 @@ using namespace LinearSolverLibrary_NS;
 
 MatrixDecomposition::MatrixDecomposition() {}
 
+MatrixDecomposition::MatrixDecomposition(MatrixDecomposition const & in)
+	:
+	iso_data_(in.iso_data_) {}
+
 MatrixDecomposition::MatrixDecomposition(ISO_t const & iso_data)
     :
     iso_data_(iso_data) {}

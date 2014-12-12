@@ -32,7 +32,7 @@ namespace LinearSolverLibrary_NS {
 
     public:
         AMGSolver(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & b, AMGMonitor & monitor)
-            :
+            : 
             m_{m},
             b_{b},
             monitor_{monitor} {

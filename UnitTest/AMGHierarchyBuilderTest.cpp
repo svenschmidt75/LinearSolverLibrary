@@ -20,7 +20,6 @@ public:
                    0, -1,  0;
         SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
-        AMGDirectInterpolationPolicy splitting_policy;
         AMGMonitor monitor;
         monitor.direct_solver_threshold = 3;
         AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
@@ -77,7 +76,7 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, Test3rdLevelInterplationOp
 }
 
 TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionFor1stLevel) {
-    auto variable_decomposition = amg_levels[0].variableDecomposition;
+    auto & variable_decomposition = amg_levels[0].variableDecomposition;
 
     // check coarse variables
     auto variables = std::find_if(std::cbegin(variable_decomposition), std::cend(variable_decomposition), [](std::pair<size_type, std::set<size_type>> const & item) -> bool {
@@ -95,7 +94,7 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecomposi
 }
 
 TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionFor2ndLevel) {
-    auto variable_decomposition = amg_levels[1].variableDecomposition;
+    auto & variable_decomposition = amg_levels[1].variableDecomposition;
 
     // check coarse variables
     auto variables = std::find_if(std::cbegin(variable_decomposition), std::cend(variable_decomposition), [](std::pair<size_type, std::set<size_type>> const & item) -> bool {
@@ -113,7 +112,7 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecomposi
 }
 
 TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecompositionForLastLevel) {
-    auto variable_decomposition = amg_levels[2].variableDecomposition;
+    auto & variable_decomposition = amg_levels[2].variableDecomposition;
     ASSERT_THAT(std::cbegin(variable_decomposition), Eq(std::cend(variable_decomposition)));
 }
 

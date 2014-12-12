@@ -81,9 +81,9 @@ FloridaSparseMatrixReader::read() const {
         line_number++;
 
         boost::trim(line);
-        TokenizerType tokens(line, sep);
+        TokenizerType inner_tokens(line, sep);
 
-        token_arr.assign(tokens.begin(), tokens.end());
+        token_arr.assign(inner_tokens.begin(), inner_tokens.end());
 
         if (!token_arr.empty()) {
             std::string const & t = *(token_arr.begin());
@@ -118,9 +118,9 @@ FloridaSparseMatrixReader::read() const {
         ++show_progress;
 
         boost::trim(line);
-        TokenizerType tokens(line, sep);
+        TokenizerType inner_tokens(line, sep);
 
-        token_arr.assign(tokens.begin(), tokens.end());
+        token_arr.assign(inner_tokens.begin(), inner_tokens.end());
 
         BOOST_ASSERT_MSG(token_arr.size() == 3ul, "FloridaSparseMatrixReader::read: File format error");
         if (token_arr.size() != 3ul) {

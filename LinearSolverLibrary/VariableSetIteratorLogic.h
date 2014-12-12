@@ -30,6 +30,7 @@ namespace LinearSolverLibrary_NS {
         // FROM IInputIteratorLogic
         size_type               get() const override;
         void                    next() override;
+        void do_work(common_NS::IInputIteratorLogic<unsigned long long> const& in, const VariableSetIteratorLogic*& other) const;
         bool                    equal(IInputIteratorLogic const & in) const override;
         std::unique_ptr<This_t> clone() const override;
 
