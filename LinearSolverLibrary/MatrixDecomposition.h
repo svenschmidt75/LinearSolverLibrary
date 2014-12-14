@@ -25,7 +25,7 @@ namespace LinearSolverLibrary_NS {
 
     public:
         MatrixDecomposition();
-		MatrixDecomposition(MatrixDecomposition const & in);
+//		MatrixDecomposition(MatrixDecomposition const & in);
 	    explicit MatrixDecomposition(ISO_t const & iso_data);
         MatrixDecomposition(MatrixDecomposition && in);
         MatrixDecomposition & operator=(MatrixDecomposition && in);

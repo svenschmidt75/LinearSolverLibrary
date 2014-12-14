@@ -33,8 +33,8 @@ namespace LinearSolverLibrary_NS {
         build(SparseMatrix2D const & m) const {
             AMGInterpolationPolicy interpolation_policy;
             AMGRelaxationPolicy relaxation_policy;
-
-            int const direct_solver_threshold = monitor_.direct_solver_threshold;
+            
+			int const direct_solver_threshold = monitor_.direct_solver_threshold;
 
             AMGLevel * current_level = CreateAMGLevel();
             current_level->m = m;
@@ -72,6 +72,9 @@ namespace LinearSolverLibrary_NS {
                 GetCurrentLevel()->interpolator = interpolator;
                 interpolator = nullptr;
             }
+
+			std::vector<AMGLevel> l1(amg_levels_);
+			std::vector<AMGLevel> l(std::move(amg_levels_));
 
             return amg_levels_;
         }
