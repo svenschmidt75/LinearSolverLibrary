@@ -73,7 +73,8 @@ namespace LinearSolverLibrary_NS {
                 interpolator = nullptr;
             }
 
-            return amg_levels_;
+            // avoid copy construction here
+            return std::move(amg_levels_);
         }
 
         AMGLevel *
