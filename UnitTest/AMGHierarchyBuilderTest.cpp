@@ -123,7 +123,6 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessTha
                    0, -1,  0;
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
-    AMGDirectInterpolationPolicy splitting_policy;
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 10;
     AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};

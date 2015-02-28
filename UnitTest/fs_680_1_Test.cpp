@@ -146,7 +146,7 @@ fs_680_1_Test::TFQMRTest() {
     double tol;
 
     {
-        HighResTimer t;
+        HighResTimer();
 
         // needs 517 iterations
         std::tie(success, x, iterations, tol) = ConjugateGradientMethods::TFQMR(m_, b_, 10000);

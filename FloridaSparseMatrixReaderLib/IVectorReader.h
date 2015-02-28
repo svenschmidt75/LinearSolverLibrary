@@ -23,8 +23,8 @@ namespace EntityReader_NS {
     public:
         virtual ~IVectorReader() {}
 
-        virtual bool                    read() const = 0;
-        virtual LinAlg_NS::Vector const get() const = 0;
+        virtual bool              read() const = 0;
+        virtual LinAlg_NS::Vector get() const = 0;
     };
 
 } // namespace EntityReader_NS

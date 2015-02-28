@@ -22,7 +22,7 @@ VectorBinaryReader::read() const {
     return file.good();
 }
 
-LinAlg_NS::Vector const
+LinAlg_NS::Vector
 VectorBinaryReader::get() const {
     return data_;
 }

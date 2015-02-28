@@ -14,8 +14,6 @@
 */
 #pragma once
 
-#include "DeclSpec.h"
-
 #include "IVariableSet.h"
 
 
@@ -23,6 +21,8 @@ namespace LinearSolverLibrary_NS {
 
     class IVariableInfluenceAccessor {
     public:
+        virtual ~IVariableInfluenceAccessor() {}
+
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 
     public:

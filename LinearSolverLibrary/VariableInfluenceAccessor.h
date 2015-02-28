@@ -21,6 +21,9 @@ namespace LinearSolverLibrary_NS {
 }
 
 
+#pragma warning(disable:4275)
+
+
 namespace LinearSolverLibrary_NS {
 
     class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableInfluenceAccessor
@@ -47,3 +50,4 @@ namespace LinearSolverLibrary_NS {
 
 } // LinearSolverLibrary_NS
 
+#pragma warning(default:4275)

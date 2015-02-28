@@ -20,9 +20,9 @@ namespace EntityReader_NS {
 
     class FLORIDASPARSEMATRIXREADERLIB_DECL_SYMBOLS FloridaVectorBuilder : public IVectorBuilder<LinAlg_NS::Vector> {
     public:
-        void     init(LinAlg_NS::Vector::size_type dim) const final;
-        void     insertVectorElement(LinAlg_NS::Vector::size_type row, double value) const final;
-        result_t result() const final;
+        void     init(LinAlg_NS::Vector::size_type dim) const override final;
+        void     insertVectorElement(LinAlg_NS::Vector::size_type row, double value) const override final;
+        result_t result() const override final;
 
     private:
         mutable result_t                     data_;

@@ -10,8 +10,8 @@ using namespace internal_NS;
 BucketElement::BucketElement(size_type element_index)
     :
     color_(0),
-    topological_index_(0),
-    prev_element_index_(element_index) {}
+    prev_element_index_(element_index),
+    topological_index_(0) {}
 
 BucketElement::const_iterator
 BucketElement::cbegin() const {

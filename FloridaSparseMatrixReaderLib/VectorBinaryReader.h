@@ -19,8 +19,8 @@ namespace EntityReader_NS {
         VectorBinaryReader(std::string const & filename);
 
         // FROM IVectorReader
-        bool                    read() const override;
-        LinAlg_NS::Vector const get() const override;
+        bool              read() const override;
+        LinAlg_NS::Vector get() const override;
 
     private:
         std::string               filename_;

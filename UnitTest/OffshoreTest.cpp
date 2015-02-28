@@ -80,7 +80,7 @@ namespace {
         HighResTimer() : start_(boost::chrono::high_resolution_clock::now()) {}
         ~HighResTimer() {
             auto end = boost::chrono::high_resolution_clock::now();
-            auto frac = (double)boost::chrono::high_resolution_clock::period::num / boost::chrono::high_resolution_clock::period::den;
+            auto frac = static_cast<double>(boost::chrono::high_resolution_clock::period::num) / boost::chrono::high_resolution_clock::period::den;
             auto d = (end - start_).count() * frac;
             std::cout << std::endl << "Duration: " << d << std::endl;
         }
