@@ -133,17 +133,17 @@ SparseMatrixTest::sparseSquareMatrixTranspose() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", expected, mTransposed.rows());
 
     {
-        auto expected = m(0, 2);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(2, 0), 1E-10);
+        auto exp = m(0, 2);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(2, 0), 1E-10);
 
-        expected = m(1, 1);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(1, 1), 1E-10);
+        exp = m(1, 1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(1, 1), 1E-10);
 
-        expected = m(1, 2);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(2, 1), 1E-10);
+        exp = m(1, 2);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(2, 1), 1E-10);
 
-        expected = m(2, 0);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(0, 2), 1E-10);
+        exp = m(2, 0);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(0, 2), 1E-10);
     }
 }
 
@@ -157,17 +157,17 @@ SparseMatrixTest::sparseNonSquareMatrixTranspose() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of columns mismatch", expected, mTransposed.rows());
 
     {
-        auto expected = m(0, 0);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(0, 0), 1E-10);
+        auto exp = m(0, 0);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(0, 0), 1E-10);
 
-        expected = m(0, 1);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(1, 0), 1E-10);
+        exp = m(0, 1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(1, 0), 1E-10);
 
-        expected = m(1, 1);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(1, 1), 1E-10);
+        exp = m(1, 1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(1, 1), 1E-10);
 
-        expected = m(2, 0);
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", expected, mTransposed(0, 2), 1E-10);
+        exp = m(2, 0);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Matrix element mismatch", exp, mTransposed(0, 2), 1E-10);
     }
 }
 

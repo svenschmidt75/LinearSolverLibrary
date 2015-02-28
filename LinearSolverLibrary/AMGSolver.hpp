@@ -211,8 +211,8 @@ namespace LinearSolverLibrary_NS {
                 }
                 else if (direction > 0) {
                     // restrict, move to next coarser level
-                    auto & amg_level = amg_levels_[grid_level];
-                    MoveDown(Vector::MakeZeroVector(amg_level.m.cols()), grid_level);
+                    auto & lvl = amg_levels_[grid_level];
+                    MoveDown(Vector::MakeZeroVector(lvl.m.cols()), grid_level);
                 } else {
                     // interpolate, i.e. move to next finer level
                     MoveUp(grid_level);

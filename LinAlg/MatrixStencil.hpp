@@ -83,10 +83,10 @@ private:
         // the center is at (1,1).
         common_NS::reporting::checkUppderBound(static_cast<decltype(values_.size())>(index), values_.size());
         common_NS::reporting::checkLowerBound(index, static_cast<decltype(index)>(index));
-        short dim = static_cast<short>(std::sqrt(values_.size()));
-        short offset = -dim / 2;
-        short x = offset + index % dim;
-        short y = offset + index / dim;
+        short dimension = static_cast<short>(std::sqrt(values_.size()));
+        short offset = -dimension / 2;
+        short x = offset + index % dimension;
+        short y = offset + index / dimension;
         return std::make_tuple(x, y);
     }
 

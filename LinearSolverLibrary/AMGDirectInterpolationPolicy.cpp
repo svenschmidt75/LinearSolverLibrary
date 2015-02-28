@@ -34,7 +34,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
 
             auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
             if (interpolatory_set->size() == 0) {
-                // Fine variable 'fine_variable' has no string connections to any other coarse variable.
+                // Fine variable 'fine_variable' has no strong connections to any other coarse variable.
                 // This means that it can be solved for directly as it has no dependencies on any other
                 // variables. We therefore stop coarsening at this level and solve via direct solve (LU).
                 // Alternatively, the fine variable could be removed from the system. Then, we continue

@@ -18,11 +18,11 @@ public:
                   -1,  4, -1,
                    0, -1,  0;
         SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
-        success = splitting_policy.Generate(m);
+        success = splitting_policy_.Generate(m);
     }
 
 public:
-    AMGDirectInterpolationPolicy splitting_policy;
+    AMGDirectInterpolationPolicy splitting_policy_;
     bool                         success;
 };
 
@@ -32,17 +32,17 @@ TEST_F(AMGDirectInterpolationPolicyTest, TestInitialization) {
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectRowDimension) {
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = splitting_policy_.Interpolator();
     EXPECT_EQ(interpolation_operator.rows(), 9);
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperatorHasCorrectColumnDimension) {
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = splitting_policy_.Interpolator();
     EXPECT_EQ(interpolation_operator.cols(), 5);
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator1stRow) {
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = splitting_policy_.Interpolator();
     std::vector<double> expected;
     for (int i{0}; i < interpolation_operator.cols(); ++i)
         expected.push_back(interpolation_operator(0, i));
@@ -51,7 +51,7 @@ TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator1stRow) {
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator2ndRow) {
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = splitting_policy_.Interpolator();
     std::vector<double> expected;
     for (int i{0}; i < interpolation_operator.cols(); ++i)
         expected.push_back(interpolation_operator(1, i));
@@ -60,7 +60,7 @@ TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator2ndRow) {
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator6thdRow) {
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = splitting_policy_.Interpolator();
     std::vector<double> expected;
     for (int i{ 0 }; i < interpolation_operator.cols(); ++i)
         expected.push_back(interpolation_operator(5, i));
@@ -69,22 +69,22 @@ TEST_F(AMGDirectInterpolationPolicyTest, TestInterpolationOperator6thdRow) {
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestProlongationOperatorHasCorrectRowDimension) {
-    auto const & prolongation_operator = splitting_policy.Restrictor();
+    auto const & prolongation_operator = splitting_policy_.Restrictor();
     EXPECT_EQ(prolongation_operator.rows(), 5);
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestProlongationOperatorHasCorrectColumnDimension) {
-    auto const & prolongation_operator = splitting_policy.Restrictor();
+    auto const & prolongation_operator = splitting_policy_.Restrictor();
     EXPECT_EQ(prolongation_operator.cols(), 9);
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectRowDimension) {
-    auto const & galerkin_operator = splitting_policy.GalerkinOperator();
+    auto const & galerkin_operator = splitting_policy_.GalerkinOperator();
     EXPECT_EQ(galerkin_operator.rows(), 5);
 }
 
 TEST_F(AMGDirectInterpolationPolicyTest, TestGalerkinMatrixHasCorrectColumnDimension) {
-    auto const & galerkin_operator = splitting_policy.GalerkinOperator();
+    auto const & galerkin_operator = splitting_policy_.GalerkinOperator();
     EXPECT_EQ(galerkin_operator.cols(), 5);
 }
 

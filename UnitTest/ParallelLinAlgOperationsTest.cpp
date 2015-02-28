@@ -359,18 +359,18 @@ ParallelLinAlgOperationsTest::testChunkedParallelMatrixVectorMultiplication() {
 
 void
 ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
-    std::string filename = R"(\Develop\SparseMatrixData\sts4098\sts4098.ar)";
-    IMatrix2D::size_type const dim = 4098;
-    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(filename);
+    std::string fn = R"(\Develop\SparseMatrixData\sts4098\sts4098.ar)";
+    IMatrix2D::size_type const dimension = 4098;
+    ISparseMatrixReader::Ptr sm_reader = SparseMatrixReaderCreator::create(fn);
     CPPUNIT_ASSERT_MESSAGE("File not found", sm_reader);
     CPPUNIT_ASSERT_MESSAGE("error reading sparse matrix data", sm_reader->read());
     SparseMatrix2D const m = sm_reader->get();
 
-    filename = R"(\Develop\SparseMatrixData\sts4098\sts4098_b.ar)";
-    IVectorReader::Ptr b_reader = VectorReaderCreator::create(filename);
+    fn = R"(\Develop\SparseMatrixData\sts4098\sts4098_b.ar)";
+    IVectorReader::Ptr b_reader = VectorReaderCreator::create(fn);
     CPPUNIT_ASSERT_MESSAGE("error reading vector data", b_reader->read());
     Vector const b = b_reader->get();
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", dim, b.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("error in vector size", dimension, b.size());
 
     // matrix-vector multiplication
     {
@@ -471,9 +471,9 @@ ParallelLinAlgOperationsTest::testParallelLargeMatrixVectorMultiplication() {
 
 void
 ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
-    IMatrix2D::size_type dim = 999130;
-    Vector v1 = createVectorOfSize(dim);
-    Vector v2 = createVectorOfSize(dim);
+    IMatrix2D::size_type dimension = 999130;
+    Vector v1 = createVectorOfSize(dimension);
+    Vector v2 = createVectorOfSize(dimension);
 
     double serial_result;
     {
@@ -493,9 +493,9 @@ ParallelLinAlgOperationsTest::testNonChunkedParallelDotProduct() {
 
 void
 ParallelLinAlgOperationsTest::testChunkedParallelDotProduct() {
-    IMatrix2D::size_type dim = 9199130;
-    Vector v1 = createVectorOfSize(dim);
-    Vector v2 = createVectorOfSize(dim);
+    IMatrix2D::size_type dimension = 9199130;
+    Vector v1 = createVectorOfSize(dimension);
+    Vector v2 = createVectorOfSize(dimension);
 
     double serial_result;
     {
@@ -963,10 +963,10 @@ ParallelLinAlgOperationsTest::testNonSquareRowsLessThanColsTransposeNonChunkedPa
 
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
-    auto dim = m.cols();
+    auto dimension = m.cols();
 
     // generate a non-square matrix form m
-    SparseMatrix2D m1{dim - dim / 2, dim};
+    SparseMatrix2D m1{dimension - dimension / 2, dimension};
     for (auto row = 0; row < m1.rows(); ++row) {
         for (auto column = 0; column < m1.cols(); ++column) {
             auto value = m(row, column);
@@ -1032,10 +1032,10 @@ ParallelLinAlgOperationsTest::testNonSquareRowsBiggerThanColsTransposeNonChunked
 
     // 25x25 square matrix
     SparseMatrix2D const & m = stencil.generateMatrix(5 * 5);
-    auto dim = m.cols();
+    auto dimension = m.cols();
 
     // generate a non-square matrix form m
-    SparseMatrix2D m1{dim, dim - dim / 2};
+    SparseMatrix2D m1{dimension, dimension - dimension / 2};
     for (auto row = 0; row < m1.rows(); ++row) {
         for (auto column = 0; column < m1.cols(); ++column) {
             auto value = m(row, column);
