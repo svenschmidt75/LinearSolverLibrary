@@ -1,5 +1,5 @@
 /*
- * Name  : AMGStandardSplitting
+ * Name  : AMGStandardCoarsening
  * Path  : 
  * Use   : Splits nodes into coarse and fine.
  * Author: Sven Schmidt
@@ -22,17 +22,17 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardSplitting {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardCoarsening {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        AMGStandardSplitting(LinAlg_NS::SparseMatrix2D const & m_,
+        AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m_,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
                              VariableCategorizer & categorizer);
 
-        AMGStandardSplitting(AMGStandardSplitting const &) = delete;
-        AMGStandardSplitting & operator=(AMGStandardSplitting const &) = delete;
+        AMGStandardCoarsening(AMGStandardCoarsening const &) = delete;
+        AMGStandardCoarsening & operator=(AMGStandardCoarsening const &) = delete;
 
         void generateSplitting();
 

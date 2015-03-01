@@ -74,7 +74,7 @@
 #include "LinearSolverLibrary/AMGStandardStrengthPolicy.h"
 #include "LinearSolverLibrary/AMGDirectInterpolationPolicy.h"
 #include "LinearSolverLibrary/AMGStandardInterpolationPolicy.h"
-#include "LinearSolverLibrary/AMGStandardSplitting.h"
+#include "LinearSolverLibrary/AMGStandardCoarsening.h"
 #include "LinearSolverLibrary/AMGVCycle.h"
 #include "LinearSolverLibrary/AMGWCycle.hpp"
 //#include "LinearSolverLibrary/AMGSolver.hpp"

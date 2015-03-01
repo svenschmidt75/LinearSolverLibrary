@@ -47,12 +47,6 @@
     <ClCompile Include="VariableInfluenceAccessorTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="AMGStandardSplittingTest.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
-    <ClCompile Include="AMGStandardCoarseningTest.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
     <ClCompile Include="SparseMatrixColumnIteratorTest.cpp" />
     <ClCompile Include="SparseMatrixRowIteratorTest.cpp" />
     <ClCompile Include="SparseMatrixTest.cpp" />
@@ -104,6 +98,12 @@
     <ClCompile Include="AMGExtendedPlusInterpolationPolicyTest.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStandardStrengthPolicyTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
+    <ClCompile Include="AMGStandardCoarseningTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
@@ -143,9 +143,6 @@
     <ClInclude Include="VariableInfluenceAccessorTest.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="AMGStandardSplittingTest.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
     <ClInclude Include="SparseMatrixColumnIteratorTest.h" />
     <ClInclude Include="SparseMatrixRowIteratorTest.h" />
     <ClInclude Include="SparseMatrixTest.h" />
@@ -171,5 +168,8 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="UnitTestForwardDeclarationHelper.h" />
+    <ClInclude Include="AMGStandardCoarseningTest.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

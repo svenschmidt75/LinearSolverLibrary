@@ -1,5 +1,5 @@
 /*
-* Name  : AMGStandardSplittingTest
+* Name  : AMGStandardCoarseningTest
 * Path  :
 * Use   :
 * Author: Sven Schmidt
@@ -10,8 +10,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 
-class AMGStandardSplittingTest : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(AMGStandardSplittingTest);
+class AMGStandardCoarseningTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(AMGStandardCoarseningTest);
     CPPUNIT_TEST(TestSplittingForSimple5ptStencil);
     CPPUNIT_TEST(TestSplittingForSimple9ptStencil);
     CPPUNIT_TEST(TestSplittingForNontrivial9ptStencil);

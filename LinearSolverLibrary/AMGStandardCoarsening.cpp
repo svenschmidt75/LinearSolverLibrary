@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "AMGStandardSplitting.h"
+#include "AMGStandardCoarsening.h"
 #include "LinearSolverLibrary/VariableCardinalityPolicy.h"
 #include "LinearSolverLibrary/VariableCategorizer.h"
 #include "LinearSolverLibrary/VariableInfluenceAccessor.h"
@@ -10,14 +10,14 @@ using namespace LinearSolverLibrary_NS;
 using namespace LinAlg_NS;
 
 
-AMGStandardSplitting::AMGStandardSplitting(SparseMatrix2D const & m, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
+AMGStandardCoarsening::AMGStandardCoarsening(SparseMatrix2D const & m, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
     :
     m_{m},
     variable_influence_accessor_{variable_influence_accessor},
     categorizer_{categorizer} {}
 
 void
-AMGStandardSplitting::generateSplitting() {
+AMGStandardCoarsening::generateSplitting() {
     queue_ = initializeVariableCardinality();
     while (queue_.empty() == false) {
         auto const item = queue_.top();
@@ -31,7 +31,7 @@ AMGStandardSplitting::generateSplitting() {
 }
 
 void
-AMGStandardSplitting::categorizeVariablesStronglyInfluencing(IMatrix2D::size_type variable) {
+AMGStandardCoarsening::categorizeVariablesStronglyInfluencing(IMatrix2D::size_type variable) {
     std::set<IMatrix2D::size_type> variables;
     auto strongInfluencers = variable_influence_accessor_.GetVariableInfluencedUndefined(variable);
     for (auto otherVariable : *strongInfluencers) {
@@ -44,7 +44,7 @@ AMGStandardSplitting::categorizeVariablesStronglyInfluencing(IMatrix2D::size_typ
 }
 
 void 
-AMGStandardSplitting::adjustCardinalityOfStrongInfluencers(std::set<IMatrix2D::size_type> const & variables) {
+AMGStandardCoarsening::adjustCardinalityOfStrongInfluencers(std::set<IMatrix2D::size_type> const & variables) {
     VariableCardinalityPolicy cardinalityPolicy(variable_influence_accessor_);
     for (auto otherVariable : variables) {
         if (categorizer_.GetType(otherVariable) == VariableCategorizer::Type::UNDEFINED) {
@@ -54,8 +54,8 @@ AMGStandardSplitting::adjustCardinalityOfStrongInfluencers(std::set<IMatrix2D::s
     }
 }
 
-AMGStandardSplitting::Queue_t
-AMGStandardSplitting::initializeVariableCardinality() {
+AMGStandardCoarsening::Queue_t
+AMGStandardCoarsening::initializeVariableCardinality() {
     Queue_t queue;
     VariableCardinalityPolicy cardinalityPolicy(variable_influence_accessor_);
     for (auto variable = 0; variable < m_.rows(); ++variable) {

@@ -20,7 +20,7 @@
 #include "AMGVariableCardinalityTest.h"
 #include "InputIteratorTest.h"
 #include "VariableInfluenceAccessorTest.h"
-#include "AMGStandardSplittingTest.h"
+#include "AMGStandardCoarseningTest.h"
 #include "SparseMatrixRowIteratorTest.h"
 #include "SparseMatrixTest.h"
 #include "OffshoreTest.h"
@@ -37,7 +37,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(BinaryHeapTest);
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ParallelLinAlgOperationsTest);
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardSplittingTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(AMGStandardCoarseningTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AMGVariableCardinalityTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(VariableInfluenceAccessorTest);
 
