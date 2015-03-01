@@ -2,7 +2,6 @@
 
 #include "VariableCardinalityPolicy.h"
 #include "IVariableInfluenceAccessor.h"
-#include "VariableCategorizer.h"
 
 
 using namespace LinearSolverLibrary_NS;

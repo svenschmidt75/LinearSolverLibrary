@@ -19,12 +19,14 @@ namespace LinearSolverLibrary_NS {
     class IVariableInfluenceAccessor;
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCardinalityPolicy : private boost::noncopyable {
+    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCardinalityPolicy {
     public:
-        typedef LinAlg_NS::IMatrix2D::size_type size_type;
+        using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
         VariableCardinalityPolicy(IVariableInfluenceAccessor const & variable_influence_accessor);
+        VariableCardinalityPolicy(VariableCardinalityPolicy const &) = delete;
+        VariableCardinalityPolicy & operator=(VariableCardinalityPolicy const &) = delete;
 
         size_t GetCardinalityForVariable(size_type variable) const;
 

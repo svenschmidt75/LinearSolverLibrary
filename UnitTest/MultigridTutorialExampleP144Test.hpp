@@ -7,7 +7,7 @@
  * Date  : 07/04/2014
  */
 #pragma once
-#include <LinearSolverLibrary/AMGExtendedPlusInterpolationPolicy.h>
+
 
 namespace MultigridTutorialExampleP144Test_NS {
 

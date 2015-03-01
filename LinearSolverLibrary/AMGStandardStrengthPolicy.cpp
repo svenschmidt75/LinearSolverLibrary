@@ -9,7 +9,11 @@ using namespace LinearSolverLibrary_NS;
 
 
 AMGStandardStrengthPolicy::AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m)
-    : m_(m), Si_(new SparseMatrix2D(m.cols())), Sit_(new SparseMatrix2D(m.cols())), eps_(0.25) {
+    :
+    Si_(new SparseMatrix2D(m.cols())),
+    Sit_(new SparseMatrix2D(m.cols())),
+    m_(m),
+    eps_(0.25) {
 
     computeConnections();
 }

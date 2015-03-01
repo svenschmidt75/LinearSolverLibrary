@@ -3,7 +3,7 @@
 #include "LinAlg/MatrixStencil.hpp"
 
 #include "LinearSolverLibrary/AMGExtendedPlusInterpolationPolicy.h"
-#include <UnitTest/ComplexGraphTest.hpp>
+#include "UnitTest/ComplexGraphTest.hpp"
 #include "UnitTest/MultigridTutorialExampleP144Test.hpp"
 
 
@@ -44,12 +44,10 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection) {
     variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
 
     AMGStandardStrengthPolicy strength_policy{m};
-    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+    AMGExtendedPlusInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
-
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
@@ -66,10 +64,10 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithWeak
 //    m.print();
 
 
-    AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
+    AMGExtendedPlusInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(4, 0));
     ASSERT_DOUBLE_EQ(33.0 / 174.0, interpolation_operator(4, 1));
@@ -88,10 +86,10 @@ TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithPosi
 //    m.print();
 
 
-    AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
+    AMGExtendedPlusInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, MultigridTutorialExampleP144Test::GetStrengthPolicy(), MultigridTutorialExampleP144Test::GetVariableCategorizer()));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(14.0 / 45.0, interpolation_operator(4, 0));
     ASSERT_DOUBLE_EQ(8.0 / 45.0, interpolation_operator(4, 1));
@@ -191,10 +189,10 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonC
 
 
     StrengthPolicyMock strength_policy;
-    AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGExtendedPlusInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_NEAR(10.0 / 14.0, interpolation_operator(2, 0), 1E-7);
     ASSERT_NEAR(9.0 / 14.0, interpolation_operator(2, 1), 1E-8);
@@ -264,10 +262,10 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNo
 
 
     StrengthPolicyMock strength_policy;
-    AMGExtendedPlusInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGExtendedPlusInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_NEAR(1.0, interpolation_operator(2, 0), 1E-7);
     ASSERT_NEAR(0.0, interpolation_operator(2, 1), 1E-7);

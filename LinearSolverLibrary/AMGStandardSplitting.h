@@ -1,7 +1,7 @@
 /*
  * Name  : AMGStandardSplitting
  * Path  : 
- * Use   : Computes
+ * Use   : Splits nodes into coarse and fine.
  * Author: Sven Schmidt
  * Date  : 10/19/2013
  */

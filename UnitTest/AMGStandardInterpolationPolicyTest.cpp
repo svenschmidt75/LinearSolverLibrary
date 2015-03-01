@@ -1,10 +1,7 @@
 #include "pch.h"
 
-#include "LinAlg/MatrixStencil.hpp"
-
 #include "LinearSolverLibrary/AMGStandardInterpolationPolicy.h"
 #include "LinearSolverLibrary/VariableCategorizer.h"
-#include <LinearSolverLibrary/AMGExtendedPlusInterpolationPolicy.h>
 #include <UnitTest/ComplexGraphTest.hpp>
 
 
@@ -45,10 +42,10 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
 
     AMGStandardStrengthPolicy strength_policy{m};
 
-    AMGStandardInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGStandardInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
@@ -112,10 +109,10 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
 
 
     StrengthPolicyMock strength_policy;
-    AMGStandardInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGStandardInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
     ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
@@ -190,10 +187,10 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
 
 
     StrengthPolicyMock strength_policy;
-    AMGStandardInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGStandardInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_NEAR(10.0 / 19.0, interpolation_operator(2, 0), 1E-7);
     ASSERT_NEAR(9.0 / 19.0, interpolation_operator(2, 1), 1E-8);
@@ -263,10 +260,10 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
 
 
     StrengthPolicyMock strength_policy;
-    AMGStandardInterpolationPolicy splitting_policy;
-    ASSERT_TRUE(splitting_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
+    AMGStandardInterpolationPolicy interpolation_policy;
+    ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    auto const & interpolation_operator = splitting_policy.Interpolator();
+    auto const & interpolation_operator = interpolation_policy.Interpolator();
 //    interpolation_operator.print();
     ASSERT_NEAR(1.0, interpolation_operator(2, 0), 1E-7);
     ASSERT_NEAR(0.0, interpolation_operator(2, 1), 1E-7);
