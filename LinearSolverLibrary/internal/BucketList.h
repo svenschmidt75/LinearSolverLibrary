@@ -19,7 +19,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace internal_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketList {
+    class DECL_SYMBOLS BucketList {
     private:
         typedef std::set<BucketElement::Ptr, BucketElement::comparitor> DataType;
 

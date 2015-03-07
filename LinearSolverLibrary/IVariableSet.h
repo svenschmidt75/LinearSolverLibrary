@@ -15,7 +15,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS IVariableSet {
+    class DECL_SYMBOLS IVariableSet {
     public:
         typedef LinAlg_NS::IMatrix2D::size_type size_type;
 

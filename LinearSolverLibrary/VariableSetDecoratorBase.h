@@ -17,7 +17,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSetDecoratorBase 
+    class DECL_SYMBOLS VariableSetDecoratorBase 
         :
         public IVariableSet,
         private boost::noncopyable {

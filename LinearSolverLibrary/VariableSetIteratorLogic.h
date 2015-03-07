@@ -18,7 +18,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableSetIteratorLogic
+    class DECL_SYMBOLS VariableSetIteratorLogic
         : public common_NS::IInputIteratorLogic<IVariableSet::size_type> {
     public:
         typedef IVariableSet::size_type size_type;

@@ -33,7 +33,7 @@ GOOGLE_TEST(AMGDirectInterpolationPolicyTestFromMGTutorial, MadeUpExampleWithStr
 namespace LinearSolverLibrary_NS {
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGDirectInterpolationPolicy : public AMGInterpolationPolicyBase {
+    class DECL_SYMBOLS AMGDirectInterpolationPolicy : public AMGInterpolationPolicyBase {
 
         
         FRIEND_GOOGLE_TEST(AMGDirectInterpolationPolicyTest, MadeUpExample);

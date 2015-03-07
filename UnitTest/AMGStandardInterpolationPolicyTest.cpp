@@ -69,7 +69,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
 
         std::shared_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
             return std::make_shared<VariableSet>(variable_set_[variable]);
-
         }
 
         std::shared_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
@@ -145,7 +144,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
 
         std::shared_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
             return std::make_shared<VariableSet>(variable_set_[variable]);
-
         }
 
         std::shared_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
@@ -216,7 +214,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
 
         std::shared_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
             return std::make_shared<VariableSet>(variable_set_[variable]);
-
         }
 
         std::shared_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {

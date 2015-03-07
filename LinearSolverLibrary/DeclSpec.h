@@ -9,9 +9,7 @@
 
 // LINALG_EXPORTS is defined by the compiler in this project only
 #ifdef LINEARSOLVERLIBRARY_EXPORTS
-#define LINEARSOLVERLIBRARY_DECL_SYMBOLS __declspec(dllexport)
-//#define EXPIMP_TEMPLATE
+#define DECL_SYMBOLS __declspec(dllexport)
 #else
-#define LINEARSOLVERLIBRARY_DECL_SYMBOLS __declspec(dllimport)
-//#define EXPIMP_TEMPLATE extern
+#define DECL_SYMBOLS __declspec(dllimport)
 #endif

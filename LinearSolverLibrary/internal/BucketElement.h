@@ -17,7 +17,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace internal_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS BucketElement {
+    class DECL_SYMBOLS BucketElement {
 
         friend class BucketList;
 

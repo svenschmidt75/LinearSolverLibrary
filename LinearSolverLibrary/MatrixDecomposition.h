@@ -16,7 +16,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS MatrixDecomposition {
+    class DECL_SYMBOLS MatrixDecomposition {
     public:
         typedef std::uint64_t color_t;
         typedef std::map<color_t, std::set<std::uint64_t>> ISO_t;

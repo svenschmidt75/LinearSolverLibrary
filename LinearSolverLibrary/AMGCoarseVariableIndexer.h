@@ -21,7 +21,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGCoarseVariableIndexer {
+    class DECL_SYMBOLS AMGCoarseVariableIndexer {
     private:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

@@ -20,7 +20,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS GCR final : boost::noncopyable {
+    class DECL_SYMBOLS GCR final : boost::noncopyable {
     public:
         /* Return type of iterative CG solvers.
          *   bool: success or failure

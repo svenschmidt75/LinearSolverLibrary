@@ -17,7 +17,7 @@ namespace LinearSolverLibrary_NS {
     struct Monitor;
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS SparseLinearSolverLibrary {
+    class DECL_SYMBOLS SparseLinearSolverLibrary {
     public:
         static std::tuple<bool, LinAlg_NS::Vector, int> SparseSOR(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & f, double omega, int max_iterations = 10000);
         static std::tuple<bool, LinAlg_NS::Vector, int> SparseSORMultiColor(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::Vector const & f, MatrixDecomposition const & mc, double omega, int max_iterations);

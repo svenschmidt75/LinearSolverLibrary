@@ -190,6 +190,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AMGSerialCLJPCoarsening.cpp" />
     <ClCompile Include="AMGCoarseVariableIndexer.cpp" />
     <ClCompile Include="AMGExtendedPlusInterpolationPolicy.cpp" />
     <ClCompile Include="AMGInterpolationPolicyBase.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="VariableSetIteratorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AMGSerialCLJPCoarsening.h" />
     <ClInclude Include="AMGCThenFRelaxationPolicy.hpp" />
     <ClInclude Include="AMGExtendedPlusInterpolationPolicy.h" />
     <ClInclude Include="AMGHierarchyBuilder.hpp" />

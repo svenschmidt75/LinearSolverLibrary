@@ -18,7 +18,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS VariableCategorizer {
+    class DECL_SYMBOLS VariableCategorizer {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

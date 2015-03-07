@@ -1,7 +1,8 @@
 /*
  * Name  : IAMGStandardStrengthPolicy
  * Path  :
- * Use   : Determines that strong connections of a variable on others, i.e.
+ * Use   : Assembles the strength matrix S.
+           Determines strong connections of a variable on others, i.e.
            S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
            The strength variable i is connected to variables j is measured
            based on the smallest negative value a_{ij} * eps.
@@ -26,8 +27,8 @@ namespace LinearSolverLibrary_NS {
     public:
         virtual ~IAMGStandardStrengthPolicy() {}
 
-        virtual std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
-        virtual std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
+        virtual std::unique_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
+        virtual std::unique_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
     };
 
 } // LinearSolverLibrary_NS

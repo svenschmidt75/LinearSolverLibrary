@@ -35,6 +35,7 @@
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
       <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessKeepComments>
     </ClCompile>
+    <ClCompile Include="AMGSerialCLJPCoarseningTest.cpp" />
     <ClCompile Include="AMGSolverTest.cpp">
       <SuppressStartupBanner Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</SuppressStartupBanner>
     </ClCompile>

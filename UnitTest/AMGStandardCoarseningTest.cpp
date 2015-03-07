@@ -41,8 +41,8 @@ AMGStandardCoarseningTest::TestSplittingForSimple5ptStencil() {
     AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.coarsen();
+    AMGStandardCoarsening coarsening(m, influence_accessor, variable_categorizer);
+    coarsening.coarsen();
 //    variable_categorizer.print();
 
 /*
@@ -106,8 +106,8 @@ AMGStandardCoarseningTest::TestSplittingForSimple9ptStencil() {
     AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.coarsen();
+    AMGStandardCoarsening coarsening(m, influence_accessor, variable_categorizer);
+    coarsening.coarsen();
 //    variable_categorizer.print();
 
 /*
@@ -198,8 +198,8 @@ AMGStandardCoarseningTest::TestSplittingForNontrivial9ptStencil() {
     AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.coarsen();
+    AMGStandardCoarsening coarsening(m, influence_accessor, variable_categorizer);
+    coarsening.coarsen();
 //   variable_categorizer.print();
 
 /*
@@ -242,8 +242,8 @@ AMGStandardCoarseningTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryC
     AMGStandardStrengthPolicy strength_policy(m);
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.coarsen();
+    AMGStandardCoarsening coarsening(m, influence_accessor, variable_categorizer);
+    coarsening.coarsen();
 //    variable_categorizer.print();
 
 /*

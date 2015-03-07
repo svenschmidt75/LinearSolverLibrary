@@ -40,7 +40,7 @@ GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTestFromMGTutorial, MadeUpExampleW
 namespace LinearSolverLibrary_NS {
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGExtendedPlusInterpolationPolicy : public AMGInterpolationPolicyBase {
+    class DECL_SYMBOLS AMGExtendedPlusInterpolationPolicy : public AMGInterpolationPolicyBase {
 
 
         FRIEND_GOOGLE_TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnection);

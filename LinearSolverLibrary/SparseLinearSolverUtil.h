@@ -22,7 +22,7 @@ namespace LinAlg_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS SparseLinearSolverUtil {
+    class DECL_SYMBOLS SparseLinearSolverUtil {
     public:
         static bool                isStrictlyDiagonallyDominant(LinAlg_NS::SparseMatrix2D const & m);
         static bool                isVectorEqual(LinAlg_NS::Vector const & v1, LinAlg_NS::Vector const & v2, double tol);

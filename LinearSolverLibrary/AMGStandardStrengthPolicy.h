@@ -26,14 +26,14 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGStandardStrengthPolicy : public IAMGStandardStrengthPolicy {
+    class DECL_SYMBOLS AMGStandardStrengthPolicy : public IAMGStandardStrengthPolicy {
     public:
         AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
         AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
         AMGStandardStrengthPolicy & operator=(AMGStandardStrengthPolicy const &) = delete;
 
-        std::shared_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
-        std::shared_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
+        std::unique_ptr<IVariableSet> GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
+        std::unique_ptr<IVariableSet> GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const override;
 
     private:
         void computeConnections();

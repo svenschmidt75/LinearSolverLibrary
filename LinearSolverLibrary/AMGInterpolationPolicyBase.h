@@ -25,7 +25,7 @@ namespace LinearSolverLibrary_NS {
 namespace LinearSolverLibrary_NS {
 
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS AMGInterpolationPolicyBase {
+    class DECL_SYMBOLS AMGInterpolationPolicyBase {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

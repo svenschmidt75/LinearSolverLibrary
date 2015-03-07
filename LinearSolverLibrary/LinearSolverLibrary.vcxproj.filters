@@ -103,6 +103,9 @@
     <ClCompile Include="AMGStandardCoarsening.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGSerialCLJPCoarsening.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -224,6 +227,9 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGStandardCoarsening.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGSerialCLJPCoarsening.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,7 +24,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class LINEARSOLVERLIBRARY_DECL_SYMBOLS UndefinedVariableSetDecorator final : public VariableSetDecoratorBase {
+    class DECL_SYMBOLS UndefinedVariableSetDecorator final : public VariableSetDecoratorBase {
     public:
         UndefinedVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer);
 

@@ -13,6 +13,7 @@
 #include <queue>
 #include <memory>
 #include <iterator>
+#include <random>
 
 #include <boost/math/special_functions/round.hpp>
 #include <boost/assert.hpp>
@@ -34,3 +35,6 @@
 #include "LinAlg/ConstColumnIterator.h"
 #include "LinAlg/VectorMath.h"
 #include "LinAlg/entity_operation_traits.hpp"
+
+#include "LinearSolverLibrary/IAMGStandardStrengthPolicy.h"
+#include "LinearSolverLibrary/IVariableSet.h"
