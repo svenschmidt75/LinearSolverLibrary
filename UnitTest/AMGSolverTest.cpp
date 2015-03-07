@@ -40,7 +40,7 @@ TEST_F(BasicAMGSolverTest, TestExpectedGridHierarchyDepth) {
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 3;
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
     ASSERT_THAT(amg_solver.amg_levels_.size(), Eq(3));
 }
@@ -50,7 +50,7 @@ TEST_F(BasicAMGSolverTest, TestExpectedVCycleDepth) {
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 3;
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
     // test all the cycle indices!
     std::vector<int> cycle_levels;
@@ -64,7 +64,7 @@ TEST_F(BasicAMGSolverTest, TestGridComplexity) {
     monitor.direct_solver_threshold = 3;
 
     Vector b{m_.cols()};
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
     ASSERT_FLOAT_EQ(amg_solver.GridComplexity(), 1.66666663f);
 }
 
@@ -73,7 +73,7 @@ TEST_F(BasicAMGSolverTest, TestOperatorComplexity) {
     monitor.direct_solver_threshold = 3;
 
     Vector b{m_.cols()};
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
     ASSERT_FLOAT_EQ(amg_solver.OperatorComplexity(), 1.66666663f);
 }
 
@@ -90,7 +90,7 @@ TEST_F(BasicAMGSolverTest, TestVSolve) {
     Vector b{m_.cols()};
     std::fill(std::begin(b), std::end(b), 1);
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b, monitor};
 
 //    m_.print();
 
@@ -128,7 +128,7 @@ TEST_F(BasicAMGSolverTest, TestWSolve) {
     Vector b{m_.cols()};
     std::fill(std::begin(b), std::end(b), 1);
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGWCycle<2>> amg_solver{m_, b, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGWCycle<2>> amg_solver{m_, b, monitor};
 
     //    m_.print();
 

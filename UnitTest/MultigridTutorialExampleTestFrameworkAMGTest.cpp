@@ -38,15 +38,8 @@ TEST(MultigridTutorialExampleTestFrameworkAMGTest, TestAMGHierarchyBuilderWithNo
     monitor.nu1 = monitor.nu2 = 1;
     monitor.verbosity = 0;
 
-    AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
-
-    AMGStandardStrengthPolicy strength_policy{framework.m_};
-    VariableCategorizer variable_categorizer{framework.m_.rows()};
-    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
-    AMGStandardCoarsening coarsening{framework.m_, influence_accessor, variable_categorizer};
-    coarsening.coarsen();
-
-    auto amg_levels = builder.build(framework.m_, strength_policy, variable_categorizer);
+    AMGHierarchyBuilder<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
+    auto amg_levels = builder.build(framework.m_);
 
     ASSERT_EQ(3, amg_levels.size());
 }

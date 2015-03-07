@@ -127,7 +127,7 @@ MultigridTutorialExampleTestFramework::SolveWithAMG(AMGMonitor & monitor) const 
     Vector rhs = CreateRHS();
     Vector x{rhs.size()};
 
-    AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, rhs, monitor};
+    AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, rhs, monitor};
 //    m_.print();
 
     bool success;

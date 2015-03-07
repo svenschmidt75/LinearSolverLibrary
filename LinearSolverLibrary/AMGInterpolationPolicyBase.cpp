@@ -1,10 +1,6 @@
 #include "pch.h"
 
 #include "AMGInterpolationPolicyBase.h"
-#include "AMGStandardStrengthPolicy.h"
-#include "VariableCategorizer.h"
-#include "VariableInfluenceAccessor.h"
-#include "AMGStandardCoarsening.h"
 
 
 using namespace LinAlg_NS;
@@ -15,11 +11,6 @@ AMGInterpolationPolicyBase::AMGInterpolationPolicyBase() {}
 
 bool
 AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
-    //AMGStandardStrengthPolicy strength_policy{m};
-    //variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
-    //VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
-    //AMGStandardCoarsening splitting{m, influence_accessor, *variable_categorizer_};
-    //splitting.generateSplitting();
     if (ComputeInterpolationOperator(m, strength_policy, variable_categorizer) == false)
         return false;
     ComputeRestrictionOperator(interpolation_operator_);
@@ -37,7 +28,7 @@ AMGInterpolationPolicyBase::CreateInterpolationOperator(size_type rows, size_typ
         interpolation_operator_(fine_variable, coarse_variable) = value;
     }
     interpolation_operator_.finalize();
-    //    interpolation_operator_.print();
+//    interpolation_operator_.print();
 }
 
 void

@@ -261,7 +261,7 @@ bcsstk05Test::AMGVCycleTest() {
     {
         HighResTimer t;
 
-        AMGSolver<AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b_, monitor};
+        AMGSolver<AMGStandardCoarsening, AMGDirectInterpolationPolicy, AMGVCycle> amg_solver{m_, b_, monitor};
 
         //    m_.print();
 

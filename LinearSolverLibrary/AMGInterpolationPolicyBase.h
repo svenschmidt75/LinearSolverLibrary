@@ -43,17 +43,18 @@ namespace LinearSolverLibrary_NS {
         LinAlg_NS::SparseMatrix2D Interpolator() const;
 
     protected:
-        using Interpolation_t = std::map < std::pair<size_type, size_type>, double > ;
+        using Interpolation_t = std::map<std::pair<size_type, size_type>, double>;
 
     protected:
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
 
     protected:
-        LinAlg_NS::SparseMatrix2D            interpolation_operator_;
-        LinAlg_NS::SparseMatrix2D            restriction_operator_;
-        LinAlg_NS::SparseMatrix2D            galerkinOperator_;
+        LinAlg_NS::SparseMatrix2D interpolation_operator_;
+        LinAlg_NS::SparseMatrix2D restriction_operator_;
+        LinAlg_NS::SparseMatrix2D galerkinOperator_;
 
     private:
+        // template method
         virtual bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) = 0;
 
         void ComputeRestrictionOperator(LinAlg_NS::SparseMatrix2D const & interpolation_operator);

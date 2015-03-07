@@ -27,7 +27,7 @@ namespace LinearSolverLibrary_NS {
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m_,
+        AMGStandardCoarsening(LinAlg_NS::SparseMatrix2D const & m,
                              IVariableInfluenceAccessor const & variable_influence_accessor,
                              VariableCategorizer & categorizer);
 

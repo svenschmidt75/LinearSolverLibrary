@@ -20,7 +20,7 @@ namespace LinearSolverLibrary_NS {
     struct AMGMonitor;
 
 
-    template<typename AMGInterpolationPolicy, typename AMGRelaxationPolicy = AMGCThenFRelaxationPolicy>
+    template<typename AMGCoarseningStrategy, typename AMGInterpolationPolicy, typename AMGRelaxationPolicy = AMGCThenFRelaxationPolicy>
     class AMGHierarchyBuilder {
     public:
         AMGHierarchyBuilder(AMGMonitor const & monitor)
@@ -32,7 +32,7 @@ namespace LinearSolverLibrary_NS {
         AMGHierarchyBuilder & operator=(AMGHierarchyBuilder const &) = delete;
 
         std::vector<AMGLevel>
-        build(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) const {
+        build(SparseMatrix2D const & m) const {
             AMGInterpolationPolicy interpolation_policy;
             AMGRelaxationPolicy relaxation_policy;
             
@@ -51,13 +51,11 @@ namespace LinearSolverLibrary_NS {
                     interpolator = nullptr;
                 }
 
-
                 // coarsen this level
-
-                AMGStandardStrengthPolicy strength_policy{ current_level->m };
-                VariableCategorizer variable_categorizer{ current_level->m.rows()};
+                AMGStandardStrengthPolicy strength_policy{current_level->m};
+                VariableCategorizer variable_categorizer{current_level->m.rows()};
                 VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
-                AMGStandardCoarsening coarsening{ current_level->m, influence_accessor, variable_categorizer};
+                AMGCoarseningStrategy coarsening{current_level->m, influence_accessor, variable_categorizer};
                 coarsening.coarsen();
 
                 if (interpolation_policy.Generate(current_level->m, strength_policy, variable_categorizer) == false) {
