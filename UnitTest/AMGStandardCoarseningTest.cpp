@@ -42,7 +42,7 @@ AMGStandardCoarseningTest::TestSplittingForSimple5ptStencil() {
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.generateSplitting();
+    splitting.coarsen();
 //    variable_categorizer.print();
 
 /*
@@ -107,7 +107,7 @@ AMGStandardCoarseningTest::TestSplittingForSimple9ptStencil() {
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.generateSplitting();
+    splitting.coarsen();
 //    variable_categorizer.print();
 
 /*
@@ -199,7 +199,7 @@ AMGStandardCoarseningTest::TestSplittingForNontrivial9ptStencil() {
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.generateSplitting();
+    splitting.coarsen();
 //   variable_categorizer.print();
 
 /*
@@ -243,7 +243,7 @@ AMGStandardCoarseningTest::TestSplittingForSimple9ptStencilWithPeriodicBoundaryC
     VariableCategorizer variable_categorizer(m.rows());
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGStandardCoarsening splitting(m, influence_accessor, variable_categorizer);
-    splitting.generateSplitting();
+    splitting.coarsen();
 //    variable_categorizer.print();
 
 /*

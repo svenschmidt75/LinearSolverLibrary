@@ -17,7 +17,7 @@ AMGStandardCoarsening::AMGStandardCoarsening(SparseMatrix2D const & m, IVariable
     categorizer_{categorizer} {}
 
 void
-AMGStandardCoarsening::generateSplitting() {
+AMGStandardCoarsening::coarsen() {
     queue_ = initializeVariableCardinality();
     while (queue_.empty() == false) {
         auto const item = queue_.top();

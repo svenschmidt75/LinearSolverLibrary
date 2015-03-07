@@ -21,12 +21,18 @@ TEST_F(AMGCThenFReleaxationPolicyTest, TestSimpleDecompositionFor3By3Matrix) {
                0, -1,  0;
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
+    AMGStandardStrengthPolicy strength_policy{m};
+    VariableCategorizer variable_categorizer{m.rows()};
+    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+    AMGStandardCoarsening coarsening{m, influence_accessor, variable_categorizer};
+    coarsening.coarsen();
+
     AMGDirectInterpolationPolicy interpolation_policy;
-    interpolation_policy.Generate(m);
+    interpolation_policy.Generate(m, strength_policy, variable_categorizer);
 
 
     AMGCThenFRelaxationPolicy relaxation_policy;
-    MatrixDecomposition decomposition = relaxation_policy.Decompose(interpolation_policy);
+    MatrixDecomposition decomposition = relaxation_policy.Decompose(variable_categorizer);
 
     // check coarse variables
     auto variables = std::find_if(std::cbegin(decomposition), std::cend(decomposition), [](std::pair<size_type, std::set<size_type>> const & item) -> bool {

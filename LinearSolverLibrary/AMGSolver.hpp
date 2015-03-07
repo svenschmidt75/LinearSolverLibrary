@@ -52,8 +52,15 @@ namespace LinearSolverLibrary_NS {
 
         void
         BuildGalerkinOperatorHierarchy() {
+            // TODO SS: make this a template parameter
+            AMGStandardStrengthPolicy strength_policy{m_};
+            VariableCategorizer variable_categorizer{m_.rows()};
+            VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+            AMGStandardCoarsening coarsening{m_, influence_accessor, variable_categorizer};
+            coarsening.coarsen();
+
             AMGHierarchyBuilder<AMGInterpolationPolicy, AMGRelaxationPolicy> amg_builder{monitor_};
-            amg_levels_ = amg_builder.build(m_);
+            amg_levels_ = amg_builder.build(m_, strength_policy, variable_categorizer);
         }
 
         void

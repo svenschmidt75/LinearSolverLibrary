@@ -23,7 +23,14 @@ public:
         AMGMonitor monitor;
         monitor.direct_solver_threshold = 3;
         AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
-        amg_levels = builder.build(m);
+
+        AMGStandardStrengthPolicy strength_policy{m};
+        VariableCategorizer variable_categorizer{m.rows()};
+        VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+        AMGStandardCoarsening coarsening{m, influence_accessor, variable_categorizer};
+        coarsening.coarsen();
+
+        amg_levels = builder.build(m, strength_policy, variable_categorizer);
     }
 
 public:
@@ -117,14 +124,21 @@ TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestCAndFVariableDecomposi
 }
 
 TEST_F(AMGHierarchyBuilderWithStandard5ptStencilTest, TestNumberOfColumnsLessThanDirectSolveThresholdWorks) {
-        MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
-        stencil << 0, -1,  0,
-                  -1,  4, -1,
-                   0, -1,  0;
+    MatrixStencil<DirichletBoundaryConditionPolicy> stencil;
+    stencil <<  0, -1,  0,
+               -1,  4, -1,
+                0, -1,  0;
     SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
 
     AMGMonitor monitor;
     monitor.direct_solver_threshold = 10;
     AMGHierarchyBuilder<AMGDirectInterpolationPolicy, AMGCThenFRelaxationPolicy> builder{monitor};
-    ASSERT_NO_THROW(builder.build(m));
+
+    AMGStandardStrengthPolicy strength_policy{m};
+    VariableCategorizer variable_categorizer{m.rows()};
+    VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+    AMGStandardCoarsening coarsening{m, influence_accessor, variable_categorizer};
+    coarsening.coarsen();
+
+    ASSERT_NO_THROW(builder.build(m, strength_policy, variable_categorizer));
 }

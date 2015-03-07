@@ -34,7 +34,7 @@ namespace LinearSolverLibrary_NS {
         AMGStandardCoarsening(AMGStandardCoarsening const &) = delete;
         AMGStandardCoarsening & operator=(AMGStandardCoarsening const &) = delete;
 
-        void generateSplitting();
+        void coarsen();
 
     private:
         // node index, priority

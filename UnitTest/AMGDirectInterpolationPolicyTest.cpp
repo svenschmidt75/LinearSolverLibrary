@@ -18,7 +18,14 @@ public:
                   -1,  4, -1,
                    0, -1,  0;
         SparseMatrix2D const & m = stencil.generateMatrix(3 * 3);
-        success = interpolation_policy_.Generate(m);
+
+        AMGStandardStrengthPolicy strength_policy{m};
+        VariableCategorizer variable_categorizer{m.rows()};
+        VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+        AMGStandardCoarsening coarsening{m, influence_accessor, variable_categorizer};
+        coarsening.coarsen();
+
+        success = interpolation_policy_.Generate(m, strength_policy, variable_categorizer);
     }
 
 public:

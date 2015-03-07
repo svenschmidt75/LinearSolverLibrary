@@ -10,8 +10,6 @@
  */
 #pragma once
 
-#include "DeclSpec.h"
-
 
 // forward declarations
 namespace LinearSolverLibrary_NS {

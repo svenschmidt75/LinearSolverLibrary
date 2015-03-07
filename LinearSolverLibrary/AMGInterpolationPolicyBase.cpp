@@ -14,13 +14,13 @@ using namespace LinearSolverLibrary_NS;
 AMGInterpolationPolicyBase::AMGInterpolationPolicyBase() {}
 
 bool
-AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m) {
-    AMGStandardStrengthPolicy strength_policy{m};
-    variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
-    VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
-    AMGStandardCoarsening splitting{m, influence_accessor, *variable_categorizer_};
-    splitting.generateSplitting();
-    if (ComputeInterpolationOperator(m, strength_policy, *variable_categorizer_) == false)
+AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+    //AMGStandardStrengthPolicy strength_policy{m};
+    //variable_categorizer_ = std::make_unique<VariableCategorizer>(m.rows());
+    //VariableInfluenceAccessor influence_accessor{strength_policy, *variable_categorizer_};
+    //AMGStandardCoarsening splitting{m, influence_accessor, *variable_categorizer_};
+    //splitting.generateSplitting();
+    if (ComputeInterpolationOperator(m, strength_policy, variable_categorizer) == false)
         return false;
     ComputeRestrictionOperator(interpolation_operator_);
     ComputeGalerkinOperator(m, interpolation_operator_, restriction_operator_);
@@ -67,9 +67,4 @@ AMGInterpolationPolicyBase::Restrictor() const {
 SparseMatrix2D
 AMGInterpolationPolicyBase::Interpolator() const {
     return interpolation_operator_;
-}
-
-VariableCategorizer const &
-AMGInterpolationPolicyBase::GetVariableCategorizer() const {
-    return *variable_categorizer_;
 }

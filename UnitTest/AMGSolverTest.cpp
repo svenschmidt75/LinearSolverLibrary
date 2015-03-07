@@ -18,7 +18,14 @@ public:
                   -1,  4, -1,
                    0, -1,  0;
         m_ = stencil.generateMatrix(3 * 3);
-        success = splitting_policy.Generate(m_);
+
+        AMGStandardStrengthPolicy strength_policy{m_};
+        VariableCategorizer variable_categorizer{m_.rows()};
+        VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+        AMGStandardCoarsening coarsening{m_, influence_accessor, variable_categorizer};
+        coarsening.coarsen();
+
+        success = splitting_policy.Generate(m_, strength_policy, variable_categorizer);
     }
 
 public:

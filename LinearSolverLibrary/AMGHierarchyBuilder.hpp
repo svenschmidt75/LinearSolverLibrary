@@ -9,6 +9,8 @@
 
 #include "AMGLevel.h"
 #include "AMGCThenFRelaxationPolicy.hpp"
+#include "LinearSolverLibrary/IAMGStandardStrengthPolicy.h"
+#include "AMGStandardCoarsening.h"
 
 
 namespace LinearSolverLibrary_NS {
@@ -30,7 +32,7 @@ namespace LinearSolverLibrary_NS {
         AMGHierarchyBuilder & operator=(AMGHierarchyBuilder const &) = delete;
 
         std::vector<AMGLevel>
-        build(SparseMatrix2D const & m) const {
+        build(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) const {
             AMGInterpolationPolicy interpolation_policy;
             AMGRelaxationPolicy relaxation_policy;
             
@@ -49,7 +51,16 @@ namespace LinearSolverLibrary_NS {
                     interpolator = nullptr;
                 }
 
-                if (interpolation_policy.Generate(current_level->m) == false) {
+
+                // coarsen this level
+
+                AMGStandardStrengthPolicy strength_policy{ current_level->m };
+                VariableCategorizer variable_categorizer{ current_level->m.rows()};
+                VariableInfluenceAccessor influence_accessor{strength_policy, variable_categorizer};
+                AMGStandardCoarsening coarsening{ current_level->m, influence_accessor, variable_categorizer};
+                coarsening.coarsen();
+
+                if (interpolation_policy.Generate(current_level->m, strength_policy, variable_categorizer) == false) {
                     // coarsening failed
                     if (monitor_.verbosity > 1)
                         std::cout << "AMGHierarchyBuilder: Cannot coarse past level " << current_level_index_ << std::endl;
@@ -57,7 +68,7 @@ namespace LinearSolverLibrary_NS {
                 }
 
                 current_level->restrictor = std::make_shared<SparseMatrix2D>(interpolation_policy.Restrictor());
-                current_level->variableDecomposition = relaxation_policy.Decompose(interpolation_policy);
+                current_level->variableDecomposition = relaxation_policy.Decompose(variable_categorizer);
 
                 AMGLevel * next_level = CreateAMGLevel();
                 next_level->m = interpolation_policy.GalerkinOperator();

@@ -37,12 +37,10 @@ namespace LinearSolverLibrary_NS {
 
         virtual ~AMGInterpolationPolicyBase() {}
 
-        bool                      Generate(LinAlg_NS::SparseMatrix2D const & m);
+        bool                      Generate(LinAlg_NS::SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer);
         LinAlg_NS::SparseMatrix2D GalerkinOperator() const;
         LinAlg_NS::SparseMatrix2D Restrictor() const;
         LinAlg_NS::SparseMatrix2D Interpolator() const;
-
-        VariableCategorizer const & GetVariableCategorizer() const;
 
     protected:
         using Interpolation_t = std::map < std::pair<size_type, size_type>, double > ;
@@ -51,7 +49,6 @@ namespace LinearSolverLibrary_NS {
         void CreateInterpolationOperator(size_type rows, size_type columns, Interpolation_t const & interpolation_op);
 
     protected:
-        std::unique_ptr<VariableCategorizer> variable_categorizer_;
         LinAlg_NS::SparseMatrix2D            interpolation_operator_;
         LinAlg_NS::SparseMatrix2D            restriction_operator_;
         LinAlg_NS::SparseMatrix2D            galerkinOperator_;
