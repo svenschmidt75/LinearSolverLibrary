@@ -1,7 +1,7 @@
 ﻿ /*
   * Name  : AMGSerialCLJPCoarsening
   * Path  :
-  * Use   :  Implements Cleary-Luby-Jones-Plassmann coarsening in serial
+  * Use   : Implements Cleary-Luby-Jones-Plassmann coarsening in serial
   * Author: 
   * Date  : 03/07/2015
   */

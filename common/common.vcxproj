@@ -41,6 +41,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PriorityArray.hpp" />
     <ClInclude Include="reporting.h" />
+    <ClInclude Include="Utility.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{04DEF9AE-5B98-47E2-9FCE-35897574EEA9}</ProjectGuid>

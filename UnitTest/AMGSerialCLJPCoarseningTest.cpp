@@ -2,6 +2,7 @@
 
 #include "LinearSolverLibrary/AMGSerialCLJPCoarsening.h"
 #include "LinearSolverLibrary/VariableCategorizer.h"
+#include "..\common/Utility.hpp"
 
 
 using namespace LinAlg_NS;
@@ -191,12 +192,12 @@ TEST(AMGSerialCLJPCoarseningTest, Test) {
 
         std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
-            VariableSet variables;
+            auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {
                 if (pair.second.contains(variable))
-                    variables.add(pair.first);
+                    variables->add(pair.first);
             }
-            return std::make_unique<IVariableSet>(variables);
+            return common_NS::convert<IVariableSet>(variables);
         }
 
     private:

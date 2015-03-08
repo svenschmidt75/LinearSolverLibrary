@@ -13,5 +13,6 @@
     <ClInclude Include="parallel.hpp" />
     <ClInclude Include="BinaryHeap.hpp" />
     <ClInclude Include="PriorityArray.hpp" />
+    <ClInclude Include="Utility.hpp" />
   </ItemGroup>
 </Project>

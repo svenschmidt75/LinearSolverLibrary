@@ -2,6 +2,7 @@
 
 #include "AMGStandardStrengthPolicy.h"
 #include "VariableSet.h"
+#include "..\common/Utility.hpp"
 
 
 using namespace LinAlg_NS;
@@ -78,15 +79,6 @@ AMGStandardStrengthPolicy::computeConnections() {
     Sit_->finalize();
 }
 
-namespace {
-    
-    template<typename U, typename T>
-    std::unique_ptr<U>
-    convert(std::unique_ptr<T> & ptr) {
-        return std::unique_ptr<U>(ptr.release());
-    }
-}
-
 std::unique_ptr<IVariableSet>
 AMGStandardStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
@@ -99,7 +91,7 @@ AMGStandardStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_t
         auto j = column_it.column();
         variable_set->add(j);
     }
-    return convert<IVariableSet>(variable_set);
+    return common_NS::convert<IVariableSet>(variable_set);
 }
 
 std::unique_ptr<IVariableSet>
@@ -113,5 +105,5 @@ AMGStandardStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_ty
         auto j = column_it.column();
         variable_set->add(j);
     }
-    return convert<IVariableSet>(variable_set);
+    return common_NS::convert<IVariableSet>(variable_set);
 }
