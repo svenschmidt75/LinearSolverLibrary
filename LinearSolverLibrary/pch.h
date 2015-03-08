@@ -38,3 +38,4 @@
 
 #include "LinearSolverLibrary/IAMGStandardStrengthPolicy.h"
 #include "LinearSolverLibrary/IVariableSet.h"
+#include "LinearSolverLibrary/VariableCategorizer.h"

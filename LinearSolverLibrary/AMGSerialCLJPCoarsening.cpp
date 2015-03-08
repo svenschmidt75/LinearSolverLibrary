@@ -49,47 +49,78 @@ AMGSerialCLJPCoarsening::selectIndependentSet() {
 }
 
 void
-AMGSerialCLJPCoarsening::updateWeights() {
+AMGSerialCLJPCoarsening::updateWeights(size_type /*variable*/) {
     
+}
+
+namespace {
+    
+    std::vector<AMGSerialCLJPCoarsening::size_type>
+    getNeighborhood(IAMGStandardStrengthPolicy const & strength_policy, AMGSerialCLJPCoarsening::size_type variable) {
+        auto influencers = strength_policy.getStrongInfluencers(variable);
+        auto influenced = strength_policy.getStronglyInfluenced(variable);
+
+        std::vector<AMGSerialCLJPCoarsening::size_type> neighborhood;
+        neighborhood.reserve(influencers->size() + influenced->size());
+
+        neighborhood.insert(std::end(neighborhood), std::begin(*influencers), std::end(*influencers));
+        neighborhood.insert(std::end(neighborhood), std::begin(*influenced), std::end(*influenced));
+
+        return neighborhood;
+    }
+
+
 }
 
 void
 AMGSerialCLJPCoarsening::split() {
-    std::forward_list<size_type> unassigned_variables(m_.cols());
-    std::iota(std::begin(unassigned_variables), std::end(unassigned_variables), 0);
+    size_type number_of_variables_left = m_.cols();
+    while (number_of_variables_left) {
+        auto independent_set = getIndependentSet();
 
-    while (unassigned_variables.empty() == false) {
-        auto current_variable = unassigned_variables.front();
-        unassigned_variables.pop_front();
+        for (auto variable : independent_set)
+            categorizer_.SetType(variable, VariableCategorizer::Type::COARSE);
 
-        auto independent_set = getIndependentSet(current_variable);
+        number_of_variables_left -= independent_set.size();
 
+        for (auto j : independent_set) {
+            updateWeights(j);
 
-
+            auto neighborhood = getNeighborhood(strength_policy_, j);
+            for (auto k : neighborhood) {
+                if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
+                    if (weights_[k] < 1) {
+                        categorizer_.SetType(k, VariableCategorizer::Type::FINE);
+                        --number_of_variables_left;
+                    }
+                }
+            }
+        }
     }
-
-
-
-
 }
 
 std::vector<AMGSerialCLJPCoarsening::size_type>
-AMGSerialCLJPCoarsening::getIndependentSet(size_type current_variable) const {
+AMGSerialCLJPCoarsening::getIndependentSet() const {
+    // If a variable has greater weight than any of its neighbors, it is
+    // added to the independent_set, as it is a candidate for becoming a
+    // coarse node as a high weight indicates it influences many other
+    // variables.
     std::vector<size_type> independent_set;
     for (size_type i = 0; i < m_.cols(); ++i) {
-        auto weight = weights_.at(current_variable);
+        auto weight = weights_.at(i);
 
-        auto influencers = strength_policy_.getStrongInfluencers(i);
-        auto influenced = strength_policy_.getStronglyInfluenced(i);
+        auto ncnt = 0;
 
-        for (auto const & item : *influencers) {
-            auto other_variable = item;
+        auto neighborhood = getNeighborhood(strength_policy_, i);
+        for (auto j : neighborhood) {
+            auto other_weight = weights_.at(j);
+            if (weight > other_weight)
+                ++ncnt;
         }
 
-
-
+        if (ncnt == neighborhood.size())
+            independent_set.push_back(i);
     }
-
 
     return independent_set;
 }

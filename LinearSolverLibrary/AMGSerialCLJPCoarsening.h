@@ -21,6 +21,7 @@ namespace LinearSolverLibrary_NS {
 
 // foward-declare test methods to avoid ambiguous symbols
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
 
 
 
@@ -34,6 +35,7 @@ namespace LinearSolverLibrary_NS {
 
         // make tests friends
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
 
 
     public:
@@ -53,9 +55,9 @@ namespace LinearSolverLibrary_NS {
     private:
         void                   initialWeightInitialization();
         std::vector<size_type> selectIndependentSet();
-        void                   updateWeights();
+        void                   updateWeights(size_type variable);
         void                   split();
-        std::vector<size_type> getIndependentSet(size_type current_variable) const;
+        std::vector<size_type> getIndependentSet() const;
 
     private:
         using Weight_t = std::map<size_type, double>;

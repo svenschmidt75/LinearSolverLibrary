@@ -214,34 +214,34 @@ public:
 
 public:
     void SetUp() override {
-        SparseMatrix2D m{ 30 };
+        m_ = SparseMatrix2D{30};
+        m_(0, 0) = 2;
+        m_(0, 1) = -1;
 
-        m(0, 0) = 2;
-        m(0, 1) = -1;
+        m_(1, 0) = -1;
+        m_(1, 1) = 2;
+        m_(1, 2) = -1;
 
-        m(1, 0) = -1;
-        m(1, 1) = 2;
-        m(1, 2) = -1;
+        m_(2, 1) = -1;
+        m_(2, 2) = 2;
+        m_(2, 3) = -1;
 
-        m(2, 1) = -1;
-        m(2, 2) = 2;
-        m(2, 3) = -1;
+        m_(3, 2) = -1;
+        m_(3, 3) = 2;
 
-        m(3, 2) = -1;
-        m(3, 3) = 2;
-
-        m.finalize();
-
+        m_.finalize();
 
 
-        variable_categorizer_.reset(new VariableCategorizer(m.rows()));
+
+        variable_categorizer_.reset(new VariableCategorizer(m_.rows()));
         VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
-        coarsening_.reset(new AMGSerialCLJPCoarsening(m, strength_policy_, influence_accessor, *variable_categorizer_));
+        coarsening_.reset(new AMGSerialCLJPCoarsening(m_, strength_policy_, influence_accessor, *variable_categorizer_));
         coarsening_->coarsen();
     }
 
 public:
-    StrengthPolicyMock strength_policy_;
+    SparseMatrix2D                       m_;
+    StrengthPolicyMock                   strength_policy_;
     std::unique_ptr<VariableCategorizer> variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
 };
@@ -285,3 +285,13 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestInitialWeights) {
     ASSERT_TRUE(pred(3, coarsening_->weights_[29]));
 }
 
+TEST_F(AMGSerialCLJPCoarseningTest, TestIndependentSet) {
+    auto independent_set = coarsening_->getIndependentSet();
+    EXPECT_THAT(independent_set, Contains(9));
+    EXPECT_THAT(independent_set, Contains(20));
+    EXPECT_THAT(independent_set, Contains(22));
+
+    // depending on the random numbers, element 10 might also be in here
+    ASSERT_GE(independent_set.size(), 3);
+    ASSERT_LE(independent_set.size(), 4);
+}
