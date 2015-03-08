@@ -9,6 +9,8 @@
 
 #include "DeclSpec.h"
 
+#include "..\UnitTest/UnitTestForwardDeclarationHelper.h"
+
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
@@ -17,6 +19,10 @@ namespace LinearSolverLibrary_NS {
     class VariableCategorizer;
 }
 
+// foward-declare test methods to avoid ambiguous symbols
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
+
+
 
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
@@ -24,6 +30,12 @@ namespace LinearSolverLibrary_NS {
 namespace LinearSolverLibrary_NS {
 
     class DECL_SYMBOLS AMGSerialCLJPCoarsening {
+
+
+        // make tests friends
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
+
+
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

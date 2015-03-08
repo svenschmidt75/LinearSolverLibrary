@@ -10,7 +10,9 @@ using namespace LinearSolverLibrary_NS;
 using namespace testing;
 
 
-TEST(AMGSerialCLJPCoarseningTest, Test) {
+
+namespace {
+    
     class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
     public:
         StrengthPolicyMock() {
@@ -18,8 +20,8 @@ TEST(AMGSerialCLJPCoarseningTest, Test) {
             // David M. Alber, PhD Thesis, 2007
             // page 25, fig. 3.6
             variable_set_[0].add(1);
-            variable_set_[0].add(7);
-            variable_set_[0].add(9);
+            variable_set_[0].add(6);
+            variable_set_[0].add(8);
 
             variable_set_[1].add(0);
             variable_set_[1].add(2);
@@ -115,7 +117,7 @@ TEST(AMGSerialCLJPCoarseningTest, Test) {
 
             variable_set_[17].add(13);
             variable_set_[17].add(10);
-            variable_set_[17].add(11);
+            variable_set_[17].add(16);
             variable_set_[17].add(18);
             variable_set_[17].add(22);
             variable_set_[17].add(23);
@@ -178,7 +180,7 @@ TEST(AMGSerialCLJPCoarseningTest, Test) {
             variable_set_[27].add(28);
 
             variable_set_[28].add(27);
-            variable_set_[28].add(23);
+            variable_set_[28].add(22);
             variable_set_[28].add(29);
 
             variable_set_[29].add(28);
@@ -204,69 +206,86 @@ TEST(AMGSerialCLJPCoarseningTest, Test) {
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
 
+}
 
+class AMGSerialCLJPCoarseningTest : public Test {
+public:
+    using size_type = IMatrix2D::size_type;
 
-    SparseMatrix2D m{30};
+public:
+    void SetUp() override {
+        SparseMatrix2D m{ 30 };
 
-    m(0, 0) = 2;
-    m(0, 1) = -1;
+        m(0, 0) = 2;
+        m(0, 1) = -1;
 
-    m(1, 0) = -1;
-    m(1, 1) = 2;
-    m(1, 2) = -1;
+        m(1, 0) = -1;
+        m(1, 1) = 2;
+        m(1, 2) = -1;
 
-    m(2, 1) = -1;
-    m(2, 2) = 2;
-    m(2, 3) = -1;
+        m(2, 1) = -1;
+        m(2, 2) = 2;
+        m(2, 3) = -1;
 
-    m(3, 2) = -1;
-    m(3, 3) = 2;
+        m(3, 2) = -1;
+        m(3, 3) = 2;
 
-    m.finalize();
-
-    StrengthPolicyMock strength_policy;
-    VariableCategorizer variable_categorizer(m.rows());
-    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
-    AMGSerialCLJPCoarsening coarsening(m, strength_policy, influence_accessor, variable_categorizer);
-    coarsening.coarsen();
-
-    variable_categorizer.print();
-
-    /*
-    C F C
-    F C F
-    C F C
-    */
-
-    //for (auto variable : { 0, 2, 4, 6, 8 }) {
-    //    auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
-    //    auto expected = static_cast<char>(VariableCategorizer::Type::COARSE);
-    //    CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
-    //}
-
-    //for (auto variable : { 1, 3, 5, 7 }) {
-    //    auto variable_type = static_cast<char>(variable_categorizer.GetType(variable));
-    //    auto expected = static_cast<char>(VariableCategorizer::Type::FINE);
-    //    CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong variable type", expected, variable_type);
-    //}
+        m.finalize();
 
 
 
+        variable_categorizer_.reset(new VariableCategorizer(m.rows()));
+        VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
+        coarsening_.reset(new AMGSerialCLJPCoarsening(m, strength_policy_, influence_accessor, *variable_categorizer_));
+        coarsening_->coarsen();
+    }
 
-    //// set up type of variables
-    //VariableCategorizer variable_categorizer{m.cols()};
-    //variable_categorizer.SetType(0, VariableCategorizer::Type::COARSE);
-    //variable_categorizer.SetType(1, VariableCategorizer::Type::FINE);
-    //variable_categorizer.SetType(2, VariableCategorizer::Type::FINE);
-    //variable_categorizer.SetType(3, VariableCategorizer::Type::COARSE);
+public:
+    StrengthPolicyMock strength_policy_;
+    std::unique_ptr<VariableCategorizer> variable_categorizer_;
+    std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
+};
 
 
-    //StrengthPolicyMock strength_policy;
-    //AMGStandardInterpolationPolicy interpolation_policy;
-    //ASSERT_TRUE(interpolation_policy.ComputeInterpolationOperator(m, strength_policy, variable_categorizer));
 
-    //auto const & interpolation_operator = interpolation_policy.Interpolator();
-    ////    interpolation_operator.print();
-    //ASSERT_DOUBLE_EQ(2.0 / 3.0, interpolation_operator(1, 0));
-    //ASSERT_DOUBLE_EQ(1.0 / 3.0, interpolation_operator(1, 1));
+TEST_F(AMGSerialCLJPCoarseningTest, TestInitialWeights) {
+    auto pred = [](auto expected, auto weight) {
+        return weight >= expected && weight < expected + 1;
+    };
+
+    ASSERT_TRUE(pred(3, coarsening_->weights_[0]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[1]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[2]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[3]));
+    ASSERT_TRUE(pred(5, coarsening_->weights_[4]));
+    ASSERT_TRUE(pred(2, coarsening_->weights_[5]));
+    ASSERT_TRUE(pred(5, coarsening_->weights_[6]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[7]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[8]));
+    ASSERT_TRUE(pred(7, coarsening_->weights_[9]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[10]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[11]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[12]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[13]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[14]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[15]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[16]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[17]));
+    ASSERT_TRUE(pred(5, coarsening_->weights_[18]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[19]));
+    ASSERT_TRUE(pred(8, coarsening_->weights_[20]));
+    ASSERT_TRUE(pred(6, coarsening_->weights_[21]));
+    ASSERT_TRUE(pred(7, coarsening_->weights_[22]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[23]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[24]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[25]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[26]));
+    ASSERT_TRUE(pred(4, coarsening_->weights_[27]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[28]));
+    ASSERT_TRUE(pred(3, coarsening_->weights_[29]));
+
+
+
+
+
 }
