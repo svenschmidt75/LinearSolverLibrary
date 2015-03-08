@@ -200,6 +200,7 @@
     <ClCompile Include="AMGDirectInterpolationPolicy.cpp" />
     <ClCompile Include="AMGVCycle.cpp" />
     <ClCompile Include="CoarseVariableSetDecorator.cpp" />
+    <ClCompile Include="GraphHelper.cpp" />
     <ClCompile Include="UndefinedVariableSetDecorator.cpp" />
     <ClCompile Include="VariableSetDecoratorIteratorLogic.cpp" />
     <ClCompile Include="FineVariableSetDecorator.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="AMGWCycle.hpp" />
     <ClInclude Include="AMGCoarseVariableIndexer.h" />
     <ClInclude Include="CoarseVariableSetDecorator.h" />
+    <ClInclude Include="GraphHelper.h" />
     <ClInclude Include="IAMGCycle.h" />
     <ClInclude Include="IAMGStandardStrengthPolicy.h" />
     <ClInclude Include="Monitor.h" />

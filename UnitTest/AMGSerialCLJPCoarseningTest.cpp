@@ -215,34 +215,18 @@ public:
 public:
     void SetUp() override {
         m_ = SparseMatrix2D{30};
-        m_(0, 0) = 2;
-        m_(0, 1) = -1;
-
-        m_(1, 0) = -1;
-        m_(1, 1) = 2;
-        m_(1, 2) = -1;
-
-        m_(2, 1) = -1;
-        m_(2, 2) = 2;
-        m_(2, 3) = -1;
-
-        m_(3, 2) = -1;
-        m_(3, 3) = 2;
-
         m_.finalize();
-
-
 
         variable_categorizer_.reset(new VariableCategorizer(m_.rows()));
         VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
         coarsening_.reset(new AMGSerialCLJPCoarsening(m_, strength_policy_, influence_accessor, *variable_categorizer_));
-        coarsening_->coarsen();
+        //coarsening_->coarsen();
     }
 
 public:
-    SparseMatrix2D                       m_;
-    StrengthPolicyMock                   strength_policy_;
-    std::unique_ptr<VariableCategorizer> variable_categorizer_;
+    SparseMatrix2D                           m_;
+    StrengthPolicyMock                       strength_policy_;
+    std::unique_ptr<VariableCategorizer>     variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
 };
 
@@ -286,7 +270,7 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestInitialWeights) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestIndependentSet) {
-    auto independent_set = coarsening_->getIndependentSet();
+    auto independent_set = coarsening_->selectIndependentSet();
     EXPECT_THAT(independent_set, Contains(9));
     EXPECT_THAT(independent_set, Contains(20));
     EXPECT_THAT(independent_set, Contains(22));
@@ -294,4 +278,153 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestIndependentSet) {
     // depending on the random numbers, element 10 might also be in here
     ASSERT_GE(independent_set.size(), 3);
     ASSERT_LE(independent_set.size(), 4);
+}
+
+TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdate) {
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 12));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 15));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 21));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 26));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 25));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 24));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 19));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 14));
+
+    variable_categorizer_->SetType(20, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(20);
+
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 12));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 15));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 21));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 26));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 25));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 24));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 19));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 14));
+}
+
+TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
+    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    public:
+        StrengthPolicyMock() {
+            // from "Efficient Setup Algorithms for parallel Algebraic Multigrid",
+            // David M. Alber, PhD Thesis, 2007
+            // page 24, fig. 3.5 (a)
+
+            // node k
+            variable_set_[0].add(1);
+
+            // node i does not depend on k
+            variable_set_[1].add(2);
+        }
+
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+            return std::make_unique<VariableSet>(variable_set_[variable]);
+        }
+
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            // find all variables that 'variable' strongly influences
+            auto variables = std::make_unique<VariableSet>();
+            for (auto const & pair : variable_set_) {
+                if (pair.second.contains(variable))
+                    variables->add(pair.first);
+            }
+            return common_NS::convert<IVariableSet>(variables);
+        }
+
+    private:
+        mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
+    };
+
+
+    SparseMatrix2D m{2};
+    m.finalize();
+
+    StrengthPolicyMock strength_policy;
+
+    VariableCategorizer variable_categorizer{m.rows()};
+    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+    AMGSerialCLJPCoarsening coarsening{m, strength_policy, influence_accessor, variable_categorizer};
+
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(0, 1));
+
+    // weight of undefined node i
+    auto weight = coarsening.weights_[1];
+
+    coarsening.updateWeights(0);
+
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(0, 1));
+
+    // assert weight of undefined node i is reduced by 1
+    ASSERT_NEAR(weight - 1.0, coarsening.weights_[1], 1E-6);
+}
+
+TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
+    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    public:
+        StrengthPolicyMock() {
+            // from "Efficient Setup Algorithms for parallel Algebraic Multigrid",
+            // David M. Alber, PhD Thesis, 2007
+            // page 24, fig. 3.5 (b)
+
+            // node k
+            variable_set_[0].add(3);
+
+            // node i depends on k and j
+            variable_set_[1].add(0);
+            variable_set_[1].add(2);
+
+            // node j depends on k
+            variable_set_[2].add(0);
+        }
+
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+            return std::make_unique<VariableSet>(variable_set_[variable]);
+        }
+
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            // find all variables that 'variable' strongly influences
+            auto variables = std::make_unique<VariableSet>();
+            for (auto const & pair : variable_set_) {
+                if (pair.second.contains(variable))
+                    variables->add(pair.first);
+            }
+            return common_NS::convert<IVariableSet>(variables);
+        }
+
+    private:
+        mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
+    };
+
+
+    SparseMatrix2D m{4};
+    m.finalize();
+
+    StrengthPolicyMock strength_policy;
+
+    VariableCategorizer variable_categorizer{m.rows()};
+    VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
+    AMGSerialCLJPCoarsening coarsening{m, strength_policy, influence_accessor, variable_categorizer};
+
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(1, 0));
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(2, 0));
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(1, 2));
+
+    // weight of undefined node i
+    auto weight_i = coarsening.weights_[1];
+
+    // weight of undefined node j
+    auto weight_j = coarsening.weights_[2];
+
+    coarsening.updateWeights(0);
+
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(1, 0));
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(2, 0));
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(1, 2));
+
+    // assert weight of undefined node j is reduced by 1
+    ASSERT_NEAR(weight_j - 1.0, coarsening.weights_[2], 1E-6);
+
+    // assert weight of undefined node i is unchanged
+    ASSERT_NEAR(weight_i, coarsening.weights_[1], 1E-6);
 }

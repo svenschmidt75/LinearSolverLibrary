@@ -15,46 +15,14 @@ AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, IAMGS
     m_{m},
     strength_policy_{strength_policy},
     variable_influence_accessor_{variable_influence_accessor},
-    categorizer_{categorizer} {}
+    categorizer_{categorizer},
+    strength_matrix_graph_{strength_policy} {
 
-void
-AMGSerialCLJPCoarsening::coarsen() {
     initialWeightInitialization();
-    split();
-}
-
-void
-AMGSerialCLJPCoarsening::initialWeightInitialization() {
-    std::random_device rd;
-    std::mt19937 random_number_generator(rd());
-    std::uniform_real_distribution<> distribution(0, 1);
-
-    for (size_type i = 0; i < m_.cols(); ++i) {
-        // Get the number of variables that variable i strongly influences.
-        // The more there are, the more likely i is to become a coarse variable.
-        auto strongly_influenced = strength_policy_.getStronglyInfluenced(i);
-
-        // generate a random number, so no two variables with the same number of
-        // other variables that they influence, end up with the same weight
-        auto rnd = distribution(random_number_generator);
-
-        weights_[i] = strongly_influenced->size() + rnd;
-    }
-}
-
-std::vector<AMGSerialCLJPCoarsening::size_type>
-AMGSerialCLJPCoarsening::selectIndependentSet() {
-    std::vector<size_type> independent_set;
-    return independent_set;
-}
-
-void
-AMGSerialCLJPCoarsening::updateWeights(size_type /*variable*/) {
-    
 }
 
 namespace {
-    
+
     std::vector<AMGSerialCLJPCoarsening::size_type>
     getNeighborhood(IAMGStandardStrengthPolicy const & strength_policy, AMGSerialCLJPCoarsening::size_type variable) {
         auto influencers = strength_policy.getStrongInfluencers(variable);
@@ -63,20 +31,19 @@ namespace {
         std::vector<AMGSerialCLJPCoarsening::size_type> neighborhood;
         neighborhood.reserve(influencers->size() + influenced->size());
 
-        neighborhood.insert(std::end(neighborhood), std::begin(*influencers), std::end(*influencers));
-        neighborhood.insert(std::end(neighborhood), std::begin(*influenced), std::end(*influenced));
+        neighborhood.insert(std::end(neighborhood), std::cbegin(*influencers), std::cend(*influencers));
+        neighborhood.insert(std::end(neighborhood), std::cbegin(*influenced), std::cend(*influenced));
 
         return neighborhood;
     }
 
-
 }
 
 void
-AMGSerialCLJPCoarsening::split() {
+AMGSerialCLJPCoarsening::coarsen() {
     size_type number_of_variables_left = m_.cols();
     while (number_of_variables_left) {
-        auto independent_set = getIndependentSet();
+        auto independent_set = selectIndependentSet();
 
         for (auto variable : independent_set)
             categorizer_.SetType(variable, VariableCategorizer::Type::COARSE);
@@ -99,8 +66,77 @@ AMGSerialCLJPCoarsening::split() {
     }
 }
 
+void
+AMGSerialCLJPCoarsening::initialWeightInitialization() {
+    std::random_device rd;
+    std::mt19937 random_number_generator(rd());
+    std::uniform_real_distribution<> distribution(0, 1);
+
+    for (size_type i = 0; i < m_.cols(); ++i) {
+        // Get the number of variables that variable i strongly influences.
+        // The more there are, the more likely i is to become a coarse variable.
+        auto strongly_influenced = strength_policy_.getStronglyInfluenced(i);
+
+
+
+
+
+
+
+
+
+        // TODO SS: What about if a variable is not influenced by any variable?
+        // => FINE
+
+
+
+
+
+
+
+
+        // generate a random number, so no two variables with the same number of
+        // other variables that they influence, end up with the same weight
+        auto rnd = distribution(random_number_generator);
+
+        weights_[i] = strongly_influenced->size() + rnd;
+    }
+}
+
+void
+AMGSerialCLJPCoarsening::updateWeights(size_type k) {
+    common_NS::reporting::checkUppderBound(k, m_.cols() - 1);
+
+    // iterator over non-removed edges!
+
+    // Heuristic 1
+    auto const & influencers = strength_policy_.getStrongInfluencers(k);
+    for (auto j : *influencers) {
+        if (strength_matrix_graph_.hasEdge(k, j)) {
+            --weights_[j];
+            strength_matrix_graph_.removeEdge(k, j);
+        }
+    }
+
+    // Heuristic 2
+    auto const & influenced = strength_policy_.getStronglyInfluenced(k);
+    for (auto j : *influenced) {
+        if (strength_matrix_graph_.hasEdge(j, k)) {
+            strength_matrix_graph_.removeEdge(j, k);
+
+            auto const & j_influences = strength_policy_.getStronglyInfluenced(j);
+            for (auto i : *j_influences) {
+                if (strength_matrix_graph_.hasEdge(i, k)) {
+                    strength_matrix_graph_.removeEdge(i, j);
+                    --weights_[j];
+                }
+            }
+        }
+    }
+}
+
 std::vector<AMGSerialCLJPCoarsening::size_type>
-AMGSerialCLJPCoarsening::getIndependentSet() const {
+AMGSerialCLJPCoarsening::selectIndependentSet() const {
     // If a variable has greater weight than any of its neighbors, it is
     // added to the independent_set, as it is a candidate for becoming a
     // coarse node as a high weight indicates it influences many other

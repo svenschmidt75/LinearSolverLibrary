@@ -10,6 +10,7 @@
 #include "DeclSpec.h"
 
 #include "..\UnitTest/UnitTestForwardDeclarationHelper.h"
+#include "GraphHelper.h"
 
 
 // forward declarations
@@ -22,6 +23,9 @@ namespace LinearSolverLibrary_NS {
 // foward-declare test methods to avoid ambiguous symbols
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
 
 
 
@@ -36,6 +40,9 @@ namespace LinearSolverLibrary_NS {
         // make tests friends
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestInitialWeights);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
 
 
     public:
@@ -54,10 +61,8 @@ namespace LinearSolverLibrary_NS {
 
     private:
         void                   initialWeightInitialization();
-        std::vector<size_type> selectIndependentSet();
         void                   updateWeights(size_type variable);
-        void                   split();
-        std::vector<size_type> getIndependentSet() const;
+        std::vector<size_type> selectIndependentSet() const;
 
     private:
         using Weight_t = std::map<size_type, double>;
@@ -67,6 +72,7 @@ namespace LinearSolverLibrary_NS {
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer &              categorizer_;
         Weight_t                           weights_;
+        GraphHelper                        strength_matrix_graph_;
     };
 
 } // LinearSolverLibrary_NS

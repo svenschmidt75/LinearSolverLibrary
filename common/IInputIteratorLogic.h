@@ -1,11 +1,11 @@
 /*
-* Name  : IForwardIteratorLogic
-* Path  :
-* Use   : Helper functions that know about the internals of the data structure being
-          iterated over. Used to implement ForwardIterator with.
-* Author: Sven Schmidt
-* Date  : 10/26/2013
-*/
+ * Name  : IForwardIteratorLogic
+ * Path  :
+ * Use   : Helper functions that know about the internals of the data structure being
+           iterated over. Used to implement InputIterator with.
+ * Author: Sven Schmidt
+ * Date  : 10/26/2013
+ */
 #pragma once
 
 #include <memory>
