@@ -26,7 +26,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
             interpolation_op[{fine_variable, cv}] = 1;
         }
         else {
-            auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
+            auto interpolatory_set = strength_policy.getStrongInfluencers(fine_variable);
             if (interpolatory_set->size() == 0) {
                 // Fine variable 'fine_variable' has no strong connections to any other coarse variable.
                 // This means that it can be solved for directly as it has no dependencies on any other
@@ -86,7 +86,7 @@ AMGStandardInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D cons
 
                 // j is a fine variable
 
-                auto j_interpolatory_set = strength_policy.GetInfluencedByVariables(j);
+                auto j_interpolatory_set = strength_policy.getStrongInfluencers(j);
                 for (auto k : *j_interpolatory_set) {
                     if (variable_categorizer.GetType(k) == VariableCategorizer::Type::COARSE) {
                         // fine_variable - j is a strong F-F connections. If k is a common coarse

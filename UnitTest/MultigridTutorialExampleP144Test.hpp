@@ -41,12 +41,12 @@ namespace MultigridTutorialExampleP144Test_NS {
             }
 
             std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
-            GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+            getStrongInfluencers(IMatrix2D::size_type variable) const override {
                 return std::make_unique<LinearSolverLibrary_NS::VariableSet>(variable_set_[variable]);
             }
 
             std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
-            GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+            getStronglyInfluenced(IMatrix2D::size_type variable) const override {
                 return nullptr;
             }
 

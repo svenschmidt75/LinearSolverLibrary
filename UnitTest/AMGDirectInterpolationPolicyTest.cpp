@@ -140,11 +140,11 @@ TEST_F(AMGDirectInterpolationPolicyTest, MadeUpExample) {
             variable_set_[9].add(4);
         }
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

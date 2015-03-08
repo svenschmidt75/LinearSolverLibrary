@@ -188,11 +188,11 @@ namespace {
             variable_set_[29].add(23);
         }
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
             auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {
@@ -283,9 +283,5 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestInitialWeights) {
     ASSERT_TRUE(pred(4, coarsening_->weights_[27]));
     ASSERT_TRUE(pred(3, coarsening_->weights_[28]));
     ASSERT_TRUE(pred(3, coarsening_->weights_[29]));
-
-
-
-
-
 }
+

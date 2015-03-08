@@ -54,6 +54,8 @@ namespace LinearSolverLibrary_NS {
         void                   initialWeightInitialization();
         std::vector<size_type> selectIndependentSet();
         void                   updateWeights();
+        void                   split();
+        std::vector<size_type> getIndependentSet(size_type current_variable) const;
 
     private:
         using Weight_t = std::map<size_type, double>;

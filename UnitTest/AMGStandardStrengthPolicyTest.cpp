@@ -32,13 +32,13 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForFivePointStenc
     AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0
-    auto variable_set = strength_policy.GetInfluencedByVariables(0);
+    auto variable_set = strength_policy.getStrongInfluencers(0);
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 0 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 0 should not have a strong connection to variable 3";
     ASSERT_TRUE(variable_set->size() == 2) << "Variable 0 should not have a strong connection on itself";
 
     // row 3
-    variable_set = strength_policy.GetInfluencedByVariables(3);
+    variable_set = strength_policy.getStrongInfluencers(3);
     ASSERT_TRUE(variable_set->contains(0)) << "Variable 3 should not have a strong connection to variable 0";
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 3 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->contains(6)) << "Variable 3 should not have a strong connection to variable 6";
@@ -69,14 +69,14 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForNinePointStenc
     AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0
-    auto variable_set = strength_policy.GetInfluencedByVariables(0);
+    auto variable_set = strength_policy.getStrongInfluencers(0);
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 0 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 0 should not have a strong connection to variable 3";
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 0 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->size() == 3) << "Variable 0 should not have a strong connection on itself";
 
     // row 1
-    variable_set = strength_policy.GetInfluencedByVariables(1);
+    variable_set = strength_policy.getStrongInfluencers(1);
     ASSERT_TRUE(variable_set->contains(0)) << "Variable 1 should not have a strong connection to variable 0";
     ASSERT_TRUE(variable_set->contains(2)) << "Variable 1 should not have a strong connection to variable 2";
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 1 should not have a strong connection to variable 3";
@@ -85,7 +85,7 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForNinePointStenc
     ASSERT_TRUE(variable_set->size() == 5) << "Variable 1 should not have a strong connection on itself";
 
     // row 4
-    variable_set = strength_policy.GetInfluencedByVariables(4);
+    variable_set = strength_policy.getStrongInfluencers(4);
     ASSERT_TRUE(variable_set->contains(0)) << "Variable 4 should not have a strong connection to variable 0";
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 4 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(2)) << "Variable 4 should not have a strong connection to variable 2";
@@ -123,20 +123,20 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForNinePointStenc
     AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0: threshold = 2 * eps = 2 * 0.25 = 0.5
-    auto variable_set = strength_policy.GetInfluencedByVariables(0);
+    auto variable_set = strength_policy.getStrongInfluencers(0);
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 0 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 0 should not have a strong connection to variable 3";
     ASSERT_TRUE(variable_set->size() == 2) << "Variable 0 should not have a strong connection on itself";
 
     // row 1: threshold = 2 * eps = 2 * 0.25 = 0.5
-    variable_set = strength_policy.GetInfluencedByVariables(1);
+    variable_set = strength_policy.getStrongInfluencers(1);
     ASSERT_TRUE(variable_set->contains(0)) << "Variable 1 should not have a strong connection to variable 0";
     ASSERT_TRUE(variable_set->contains(2)) << "Variable 1 should not have a strong connection to variable 2";
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 1 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->size() == 3) << "Variable 1 should not have a strong connection on itself";
 
     // row 3: threshold = 2 * eps = 2 * 0.25 = 0.5
-    variable_set = strength_policy.GetInfluencedByVariables(3);
+    variable_set = strength_policy.getStrongInfluencers(3);
     ASSERT_TRUE(variable_set->contains(0)) << "Variable 3 should not have a strong connection to variable 0";
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 3 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 3 should not have a strong connection to variable 4";
@@ -144,7 +144,7 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForNinePointStenc
     ASSERT_TRUE(variable_set->size() == 4) << "Variable 1 should not have a strong connection on itself";
 
     // row 7: threshold = 2 * eps = 2 * 0.25 = 0.5
-    variable_set = strength_policy.GetInfluencedByVariables(7);
+    variable_set = strength_policy.getStrongInfluencers(7);
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 7 should not have a strong connection to variable 3";
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 7 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->contains(5)) << "Variable 7 should not have a strong connection to variable 5";
@@ -153,7 +153,7 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForRowForNinePointStenc
     ASSERT_TRUE(variable_set->size() == 5) << "Variable 7 should not have a strong connection on itself";
 
     // row 8: threshold = 2 * eps = 2 * 0.25 = 0.5
-    variable_set = strength_policy.GetInfluencedByVariables(8);
+    variable_set = strength_policy.getStrongInfluencers(8);
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 8 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->contains(5)) << "Variable 8 should not have a strong connection to variable 5";
     ASSERT_TRUE(variable_set->contains(7)) << "Variable 8 should not have a strong connection to variable 7";
@@ -201,28 +201,28 @@ TEST(AMGStandardStrengthPolicyTest, TestStrongConnectionsForStrongFFConnection) 
     AMGStandardStrengthPolicy strength_policy(m);
 
     // row 0 (i)
-    auto variable_set = strength_policy.GetInfluencedByVariables(0);
+    auto variable_set = strength_policy.getStrongInfluencers(0);
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 0 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->contains(2)) << "Variable 0 should not have a strong connection to variable 2";
     ASSERT_TRUE(variable_set->size() == 2) << "Variable 0 should not have a strong connection on itself";
 
     // row 1 (k)
-    variable_set = strength_policy.GetInfluencedByVariables(1);
+    variable_set = strength_policy.getStrongInfluencers(1);
     ASSERT_TRUE(variable_set->contains(3)) << "Variable 1 should not have a strong connection to variable 3";
     ASSERT_TRUE(variable_set->size() == 1) << "Variable 1 should not have a strong connection on itself";
 
     // row 2 (l)
-    variable_set = strength_policy.GetInfluencedByVariables(2);
+    variable_set = strength_policy.getStrongInfluencers(2);
     ASSERT_TRUE(variable_set->contains(4)) << "Variable 2 should not have a strong connection to variable 4";
     ASSERT_TRUE(variable_set->size() == 1) << "Variable 2 should not have a strong connection on itself";
 
     // row 3 (m)
-    variable_set = strength_policy.GetInfluencedByVariables(3);
+    variable_set = strength_policy.getStrongInfluencers(3);
     ASSERT_TRUE(variable_set->contains(1)) << "Variable 3 should not have a strong connection to variable 1";
     ASSERT_TRUE(variable_set->size() == 1) << "Variable 3 should not have a strong connection on itself";
 
     // row 4 (n)
-    variable_set = strength_policy.GetInfluencedByVariables(4);
+    variable_set = strength_policy.getStrongInfluencers(4);
     ASSERT_TRUE(variable_set->contains(2)) << "Variable 4 should not have a strong connection to variable 2";
     ASSERT_TRUE(variable_set->size() == 1) << "Variable 4 should not have a strong connection on itself";
 }

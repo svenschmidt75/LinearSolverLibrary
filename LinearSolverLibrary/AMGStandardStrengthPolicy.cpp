@@ -80,10 +80,9 @@ AMGStandardStrengthPolicy::computeConnections() {
 }
 
 std::unique_ptr<IVariableSet>
-AMGStandardStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+AMGStandardStrengthPolicy::getStrongInfluencers(IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that strongly influence variable 'variable'
-    // TODO SS: Use std::make_unique
     auto variable_set = std::make_unique<VariableSet>();
     ConstRowColumnIterator<SparseMatrix2D> row_it = MatrixIterators::getConstRowColumnIterator(*Si_, variable);
     auto column_it = *row_it;
@@ -95,7 +94,7 @@ AMGStandardStrengthPolicy::GetInfluencedByVariables(LinAlg_NS::IMatrix2D::size_t
 }
 
 std::unique_ptr<IVariableSet>
-AMGStandardStrengthPolicy::GetDependentOnVariables(LinAlg_NS::IMatrix2D::size_type variable) const {
+AMGStandardStrengthPolicy::getStronglyInfluenced(IMatrix2D::size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, m_.rows());
     // return the variables that variable 'variable' strongly influences
     auto variable_set = std::make_unique<VariableSet>();

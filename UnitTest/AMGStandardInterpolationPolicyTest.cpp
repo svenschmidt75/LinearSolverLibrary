@@ -67,11 +67,11 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
             variable_set_[3].add(2);
         }
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -142,11 +142,11 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
             variable_set_[3].add(1);
         }
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -212,11 +212,11 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
             variable_set_[3].add(2);
         }
 
-        std::unique_ptr<IVariableSet> GetInfluencedByVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> GetDependentOnVariables(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

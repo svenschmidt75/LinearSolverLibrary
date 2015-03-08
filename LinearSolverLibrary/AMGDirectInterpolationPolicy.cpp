@@ -32,7 +32,7 @@ AMGDirectInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const 
             double b_denum = 0;
             double diag = 0;
 
-            auto interpolatory_set = strength_policy.GetInfluencedByVariables(fine_variable);
+            auto interpolatory_set = strength_policy.getStrongInfluencers(fine_variable);
             if (interpolatory_set->size() == 0) {
                 // Fine variable 'fine_variable' has no strong connections to any other coarse variable.
                 // This means that it can be solved for directly as it has no dependencies on any other
