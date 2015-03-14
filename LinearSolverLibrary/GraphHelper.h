@@ -33,8 +33,10 @@ namespace LinearSolverLibrary_NS {
         GraphHelper(GraphHelper const &) = delete;
         GraphHelper & operator=(GraphHelper const &) = delete;
 
-        bool hasEdge(size_type v1, size_type v2) const;
-        void removeEdge(size_type v1, size_type v2);
+        bool      hasEdge(size_type v1, size_type v2) const;
+        void      removeEdge(size_type v1, size_type v2);
+        size_type nEdgesRemoved(size_type v) const;
+        bool      hasEdges(size_type v) const;
 
     private:
         using IndexMapping_t = std::map<size_type, std::set<size_type>>;

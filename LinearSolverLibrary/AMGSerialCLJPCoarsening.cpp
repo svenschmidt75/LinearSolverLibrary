@@ -21,24 +21,6 @@ AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, IAMGS
     initialWeightInitialization();
 }
 
-namespace {
-
-    std::vector<AMGSerialCLJPCoarsening::size_type>
-    getNeighborhood(IAMGStandardStrengthPolicy const & strength_policy, AMGSerialCLJPCoarsening::size_type variable) {
-        auto influencers = strength_policy.getStrongInfluencers(variable);
-        auto influenced = strength_policy.getStronglyInfluenced(variable);
-
-        std::vector<AMGSerialCLJPCoarsening::size_type> neighborhood;
-        neighborhood.reserve(influencers->size() + influenced->size());
-
-        neighborhood.insert(std::end(neighborhood), std::cbegin(*influencers), std::cend(*influencers));
-        neighborhood.insert(std::end(neighborhood), std::cbegin(*influenced), std::cend(*influenced));
-
-        return neighborhood;
-    }
-
-}
-
 void
 AMGSerialCLJPCoarsening::coarsen() {
     size_type number_of_variables_left = m_.cols();
@@ -53,8 +35,8 @@ AMGSerialCLJPCoarsening::coarsen() {
         for (auto j : independent_set) {
             updateWeights(j);
 
-            auto neighborhood = getNeighborhood(strength_policy_, j);
-            for (auto k : neighborhood) {
+            auto neighborhood = strength_policy_.getNeighborhood(j);
+            for (auto k : *neighborhood) {
                 if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
                     if (weights_[k] < 1) {
                         categorizer_.SetType(k, VariableCategorizer::Type::FINE);
@@ -148,13 +130,13 @@ AMGSerialCLJPCoarsening::selectIndependentSet() const {
     for (size_type i = 0; i < m_.cols(); ++i) {
         auto weight = weights_.at(i);
         auto ncnt = 0;
-        auto neighborhood = getNeighborhood(strength_policy_, i);
-        for (auto j : neighborhood) {
+        auto neighborhood = strength_policy_.getNeighborhood(i);
+        for (auto j : *neighborhood) {
             auto other_weight = weights_.at(j);
             if (weight > other_weight)
                 ++ncnt;
         }
-        if (ncnt == neighborhood.size())
+        if (ncnt == neighborhood->size())
             independent_set.push_back(i);
     }
     return independent_set;

@@ -32,8 +32,11 @@ namespace LinearSolverLibrary_NS {
         AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
         AMGStandardStrengthPolicy & operator=(AMGStandardStrengthPolicy const &) = delete;
 
+        // FROM IAMGStandardStrengthPolicy
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
+
+        static std::unique_ptr<IVariableSet> getNeighborhood(LinAlg_NS::IMatrix2D::size_type variable);
 
     private:
         void computeConnections();

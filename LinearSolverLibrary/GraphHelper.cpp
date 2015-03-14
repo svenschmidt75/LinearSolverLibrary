@@ -30,3 +30,26 @@ GraphHelper::removeEdge(size_type v1, size_type v2) {
     removed_edges_[v1].insert(v2);
     removed_edges_[v2].insert(v1);
 }
+
+GraphHelper::size_type
+GraphHelper::nEdgesRemoved(size_type v) const {
+    auto const & edges_it = removed_edges_.find(v);
+    return edges_it == std::cend(removed_edges_) ? 0 : edges_it->second.size();
+}
+
+bool
+GraphHelper::hasEdges(size_type v) const {
+    auto influencers = strength_policy_.getStrongInfluencers(v);
+    auto influenced = strength_policy_.getStronglyInfluenced(v);
+
+    // SS: Use set here because we do not want duplicate nodes!
+    std::set<size_type> neighborhood;
+    neighborhood.insert(std::cbegin(*influencers), std::cend(*influencers));
+    neighborhood.insert(std::cbegin(*influenced), std::cend(*influenced));
+
+    return false;
+
+
+    //auto const & edges_it = removed_edges_.find(v);
+    //return edges_it == std::cend(removed_edges_) ? 0 : edges_it->second.size();
+}

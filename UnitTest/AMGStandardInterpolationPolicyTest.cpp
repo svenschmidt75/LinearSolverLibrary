@@ -75,6 +75,11 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
             return nullptr;
         }
 
+        std::unique_ptr<IVariableSet>
+            getNeighborhood(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -142,11 +147,18 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
             variable_set_[3].add(1);
         }
 
-        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -217,6 +229,11 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
         }
 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

@@ -26,6 +26,7 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
+GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestForAlberDissPage25Fig36);
 
 
 
@@ -43,6 +44,7 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestForAlberDissPage25Fig36);
 
 
     public:

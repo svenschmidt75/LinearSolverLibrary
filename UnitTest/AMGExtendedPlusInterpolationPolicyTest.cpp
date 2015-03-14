@@ -145,11 +145,18 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonC
             variable_set_[3].add(1);
         }
 
-        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+        
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -220,6 +227,11 @@ TEST(AMGExtendedPlusInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNo
         }
 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

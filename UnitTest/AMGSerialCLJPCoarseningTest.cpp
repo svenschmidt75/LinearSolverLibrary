@@ -188,11 +188,13 @@ namespace {
             variable_set_[29].add(23);
         }
 
-        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
             auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {
@@ -200,6 +202,10 @@ namespace {
                     variables->add(pair.first);
             }
             return common_NS::convert<IVariableSet>(variables);
+        }
+
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
         }
 
     private:
@@ -278,6 +284,9 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestIndependentSet) {
     // depending on the random numbers, element 10 might also be in here
     ASSERT_GE(independent_set.size(), 3);
     ASSERT_LE(independent_set.size(), 4);
+
+    if (independent_set.size() == 4)
+        EXPECT_THAT(independent_set, Contains(10));
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdate) {
@@ -330,6 +339,11 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
                     variables->add(pair.first);
             }
             return common_NS::convert<IVariableSet>(variables);
+        }
+
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
+            return nullptr;
         }
 
     private:
@@ -392,6 +406,11 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
             return common_NS::convert<IVariableSet>(variables);
         }
 
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -435,4 +454,86 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
 
     // assert weight of undefined node i is unchanged
     ASSERT_NEAR(weight_i, coarsening.weights_[1], 1E-6);
+}
+
+TEST_F(AMGSerialCLJPCoarseningTest, TestForAlberDissPage25Fig36) {
+    SparseMatrix2D m{30};
+    m.finalize();
+    
+    coarsening_->weights_[0] = 3.4;
+    coarsening_->weights_[1] = 4.7;
+    coarsening_->weights_[2] = 4.1;
+    coarsening_->weights_[3] = 3.0;
+    coarsening_->weights_[4] = 5.3;
+    coarsening_->weights_[5] = 2.9;
+    coarsening_->weights_[6] = 5.6;
+    coarsening_->weights_[7] = 6.7;
+    coarsening_->weights_[8] = 4.8;
+    coarsening_->weights_[9] = 7.2;
+    coarsening_->weights_[10] = 6.8;
+    coarsening_->weights_[11] = 4.4;
+    coarsening_->weights_[12] = 6.1;
+    coarsening_->weights_[13] = 6.5;
+    coarsening_->weights_[14] = 4.6;
+    coarsening_->weights_[15] = 6.4;
+    coarsening_->weights_[16] = 4.1;
+    coarsening_->weights_[17] = 6.3;
+    coarsening_->weights_[18] = 5.7;
+    coarsening_->weights_[19] = 3.9;
+    coarsening_->weights_[20] = 8.3;
+    coarsening_->weights_[21] = 6.5;
+    coarsening_->weights_[22] = 7.0;
+    coarsening_->weights_[23] = 4.6;
+    coarsening_->weights_[24] = 3.2;
+    coarsening_->weights_[25] = 3.6;
+    coarsening_->weights_[26] = 4.8;
+    coarsening_->weights_[27] = 4.2;
+    coarsening_->weights_[28] = 3.7;
+    coarsening_->weights_[29] = 3.5;
+
+    auto independent_set = coarsening_->selectIndependentSet();
+    ASSERT_THAT(independent_set, Contains(9));
+    ASSERT_THAT(independent_set, Contains(10));
+    ASSERT_THAT(independent_set, Contains(20));
+    ASSERT_THAT(independent_set, Contains(22));
+    ASSERT_EQ(4, independent_set.size());
+
+    // update weights of node 9
+    coarsening_->updateWeights(9);
+
+    // node 9 should have no more edges to other nodes, or node 9 should
+    // be detached from the strength graph.
+    // Basically, the number of edges removed == weight(9) (ignoreing the random number part)
+    ASSERT_EQ(7, coarsening_->strength_matrix_graph_.nEdgesRemoved(9));
+
+
+
+
+
+    //ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::k));
+    //ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::j, Node_t::k));
+    //ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
+
+    //// weight of undefined node i
+    //auto weight_i = coarsening.weights_[Node_t::i];
+
+    //// weight of undefined node 3
+    //auto weight_3 = coarsening.weights_[3];
+
+    //// update weights for node k
+    //coarsening.updateWeights(Node_t::k);
+
+    //// only edges to and from node k are removed
+    //ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::i));
+    //ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::j));
+    //ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, 3));
+
+    //// edges other than from/to node k should be intact
+    //ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
+
+    //// assert weight of undefined node 3 is reduced by 1
+    //ASSERT_NEAR(weight_3 - 1.0, coarsening.weights_[3], 1E-6);
+
+    //// assert weight of undefined node i is unchanged
+    //ASSERT_NEAR(weight_i, coarsening.weights_[1], 1E-6);
 }

@@ -50,6 +50,11 @@ namespace MultigridTutorialExampleP144Test_NS {
                 return nullptr;
             }
 
+            std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
+            getNeighborhood(LinAlg_NS::IMatrix2D::size_type variable) const override {
+                return nullptr;
+            }
+
         private:
             mutable std::map<IMatrix2D::size_type, LinearSolverLibrary_NS::VariableSet> variable_set_;
         };

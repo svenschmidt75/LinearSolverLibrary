@@ -148,6 +148,11 @@ TEST_F(AMGDirectInterpolationPolicyTest, MadeUpExample) {
             return nullptr;
         }
 
+        std::unique_ptr<IVariableSet>
+        getNeighborhood(IMatrix2D::size_type variable) const override {
+            return nullptr;
+        }
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };

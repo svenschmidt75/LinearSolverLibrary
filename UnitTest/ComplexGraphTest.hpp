@@ -6,7 +6,7 @@
  * Date  : 07/04/2014
  */
 #pragma once
-#include <LinearSolverLibrary/AMGExtendedPlusInterpolationPolicy.h>
+
 
 namespace ComplexGraphTest_NS {
 
@@ -50,11 +50,18 @@ namespace ComplexGraphTest_NS {
                     variable_set_[9].add(5);
                 }
 
-                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
+                getStrongInfluencers(IMatrix2D::size_type variable) const override {
                     return std::make_unique<LinearSolverLibrary_NS::VariableSet>(variable_set_[variable]);
                 }
 
-                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
+                getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+                    return nullptr;
+                }
+
+                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
+                getNeighborhood(IMatrix2D::size_type variable) const override {
                     return nullptr;
                 }
 
