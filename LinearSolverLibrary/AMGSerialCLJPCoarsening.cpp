@@ -107,7 +107,7 @@ void
 AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     common_NS::reporting::checkUppderBound(k, m_.cols() - 1);
 
-    // iterator over non-removed edges!
+    // iterate over non-removed edges!
 
     // Heuristic 1
     auto const & influencers = strength_policy_.getStrongInfluencers(k);
@@ -121,15 +121,12 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     // Heuristic 2
     auto const & influenced = strength_policy_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
-        if (strength_matrix_graph_.hasEdge(j, k)) {
-            strength_matrix_graph_.removeEdge(j, k);
-
-            auto const & j_influences = strength_policy_.getStronglyInfluenced(j);
-            for (auto i : *j_influences) {
-                if (strength_matrix_graph_.hasEdge(i, k)) {
-                    strength_matrix_graph_.removeEdge(i, j);
-                    --weights_[j];
-                }
+        strength_matrix_graph_.removeEdge(j, k);
+        auto const & j_influences = strength_policy_.getStronglyInfluenced(j);
+        for (auto i : *j_influences) {
+            if (strength_matrix_graph_.hasEdge(i, k)) {
+                strength_matrix_graph_.removeEdge(i, j);
+                --weights_[j];
             }
         }
     }
@@ -137,26 +134,28 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
 
 std::vector<AMGSerialCLJPCoarsening::size_type>
 AMGSerialCLJPCoarsening::selectIndependentSet() const {
-    // If a variable has greater weight than any of its neighbors, it is
-    // added to the independent_set, as it is a candidate for becoming a
-    // coarse node as a high weight indicates it influences many other
-    // variables.
+    /* If a variable has greater weight than any of its neighbors, it is
+       added to the independent_set, as it is a candidate for becoming a
+       coarse node as a high weight indicates it influences many other
+       variables.
+
+       Each two nodes in the independent set are separated by at least
+       one node!
+       Because the set contains more than one element, these nodes can
+       be processed concurrently.
+     */
     std::vector<size_type> independent_set;
     for (size_type i = 0; i < m_.cols(); ++i) {
         auto weight = weights_.at(i);
-
         auto ncnt = 0;
-
         auto neighborhood = getNeighborhood(strength_policy_, i);
         for (auto j : neighborhood) {
             auto other_weight = weights_.at(j);
             if (weight > other_weight)
                 ++ncnt;
         }
-
         if (ncnt == neighborhood.size())
             independent_set.push_back(i);
     }
-
     return independent_set;
 }

@@ -14,7 +14,7 @@ bool
 GraphHelper::hasEdge(size_type v1, size_type v2) const {
     auto const & influencers = strength_policy_.getStrongInfluencers(v1);
     if (influencers->contains(v2)) {
-        // v1 stringly depends on v2, or v2 strongly influences v1
+        // v1 strongly depends on v2, or v2 strongly influences v1
         auto const & edges_it = removed_edges_.find(v1);
         if (edges_it == std::cend(removed_edges_))
             return true;

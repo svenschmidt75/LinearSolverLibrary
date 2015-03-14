@@ -397,6 +397,9 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
     };
 
 
+    enum Node_t : size_type { k = 0, i, j };
+
+
     SparseMatrix2D m{4};
     m.finalize();
 
@@ -406,24 +409,29 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGSerialCLJPCoarsening coarsening{m, strength_policy, influence_accessor, variable_categorizer};
 
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(1, 0));
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(2, 0));
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(1, 2));
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::k));
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::j, Node_t::k));
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
 
     // weight of undefined node i
-    auto weight_i = coarsening.weights_[1];
+    auto weight_i = coarsening.weights_[Node_t::i];
 
-    // weight of undefined node j
-    auto weight_j = coarsening.weights_[2];
+    // weight of undefined node 3
+    auto weight_3 = coarsening.weights_[3];
 
-    coarsening.updateWeights(0);
+    // update weights for node k
+    coarsening.updateWeights(Node_t::k);
 
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(1, 0));
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(2, 0));
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(1, 2));
+    // only edges to and from node k are removed
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::i));
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::j));
+    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, 3));
 
-    // assert weight of undefined node j is reduced by 1
-    ASSERT_NEAR(weight_j - 1.0, coarsening.weights_[2], 1E-6);
+    // edges other than from/to node k should be intact
+    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
+
+    // assert weight of undefined node 3 is reduced by 1
+    ASSERT_NEAR(weight_3 - 1.0, coarsening.weights_[3], 1E-6);
 
     // assert weight of undefined node i is unchanged
     ASSERT_NEAR(weight_i, coarsening.weights_[1], 1E-6);
