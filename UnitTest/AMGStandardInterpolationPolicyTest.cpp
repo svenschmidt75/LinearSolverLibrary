@@ -53,7 +53,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection) {
 
 TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
     // same test as above, but with mocked strength policy
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public IAMGStrengthPolicy {
     public:
         StrengthPolicyMock() {
             variable_set_[0].add(1);
@@ -72,11 +72,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
         }
 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-            return nullptr;
-        }
-
-        std::unique_ptr<IVariableSet>
-            getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -132,7 +127,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestComplexGraph) {
 }
 
 TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode) {
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public IAMGStrengthPolicy {
     public:
         StrengthPolicyMock() {
             variable_set_[0].add(2);
@@ -154,11 +149,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
 
         std::unique_ptr<IVariableSet>
         getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-            return nullptr;
-        }
-
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 
@@ -207,7 +197,7 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
 }
 
 TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) {
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public IAMGStrengthPolicy {
     public:
         StrengthPolicyMock() {
             variable_set_[0].add(2);
@@ -229,11 +219,6 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
         }
 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-            return nullptr;
-        }
-
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

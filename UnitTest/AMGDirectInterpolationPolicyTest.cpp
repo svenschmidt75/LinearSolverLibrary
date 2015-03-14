@@ -106,7 +106,7 @@ TEST_F(AMGDirectInterpolationPolicyTest, MadeUpExample) {
     // - all connections are strong
     // - there are strong F-F connections
 
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public IAMGStrengthPolicy {
     public:
         StrengthPolicyMock() {
             variable_set_[0].add(1);
@@ -145,11 +145,6 @@ TEST_F(AMGDirectInterpolationPolicyTest, MadeUpExample) {
         }
 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-            return nullptr;
-        }
-
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
 

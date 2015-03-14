@@ -36,6 +36,6 @@
 #include "LinAlg/VectorMath.h"
 #include "LinAlg/entity_operation_traits.hpp"
 
-#include "LinearSolverLibrary/IAMGStandardStrengthPolicy.h"
+#include "LinearSolverLibrary/AMGStrengthPolicyImpl.h"
 #include "LinearSolverLibrary/IVariableSet.h"
 #include "LinearSolverLibrary/VariableCategorizer.h"

@@ -3,13 +3,13 @@
 #include "VariableInfluenceAccessor.h"
 #include "UndefinedVariableSetDecorator.h"
 #include "FineVariableSetDecorator.h"
-#include "IAMGStandardStrengthPolicy.h"
+#include "IAMGStrengthPolicy.h"
 
 
 using namespace LinearSolverLibrary_NS;
 
 
-VariableInfluenceAccessor::VariableInfluenceAccessor(IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer)
+VariableInfluenceAccessor::VariableInfluenceAccessor(IAMGStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer)
     :
     strength_policy_{strength_policy},
     categorizer_{categorizer} {}

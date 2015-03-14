@@ -6,7 +6,7 @@
 using namespace LinearSolverLibrary_NS;
 
 
-GraphHelper::GraphHelper(IAMGStandardStrengthPolicy const & strength_policy)
+GraphHelper::GraphHelper(AMGStrengthPolicyImpl const & strength_policy)
     :
     strength_policy_{strength_policy} {}
 

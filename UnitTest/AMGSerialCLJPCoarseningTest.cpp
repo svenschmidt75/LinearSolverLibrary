@@ -13,7 +13,7 @@ using namespace testing;
 
 namespace {
     
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public AMGStrengthPolicyImpl {
     public:
         StrengthPolicyMock() {
             // from "Efficient Setup Algorithms for parallel Algebraic Multigrid",
@@ -204,10 +204,6 @@ namespace {
             return common_NS::convert<IVariableSet>(variables);
         }
 
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
-        }
-
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -313,7 +309,7 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdate) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public AMGStrengthPolicyImpl {
     public:
         StrengthPolicyMock() {
             // from "Efficient Setup Algorithms for parallel Algebraic Multigrid",
@@ -339,11 +335,6 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
                     variables->add(pair.first);
             }
             return common_NS::convert<IVariableSet>(variables);
-        }
-
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
-            return nullptr;
         }
 
     private:
@@ -374,7 +365,7 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
-    class StrengthPolicyMock : public IAMGStandardStrengthPolicy {
+    class StrengthPolicyMock : public AMGStrengthPolicyImpl {
     public:
         StrengthPolicyMock() {
             // from "Efficient Setup Algorithms for parallel Algebraic Multigrid",
@@ -404,11 +395,6 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
                     variables->add(pair.first);
             }
             return common_NS::convert<IVariableSet>(variables);
-        }
-
-        std::unique_ptr<IVariableSet>
-        getNeighborhood(IMatrix2D::size_type variable) const override {
-            return nullptr;
         }
 
     private:

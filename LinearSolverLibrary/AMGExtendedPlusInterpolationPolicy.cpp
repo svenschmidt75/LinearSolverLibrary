@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "AMGExtendedPlusInterpolationPolicy.h"
-#include "IAMGStandardStrengthPolicy.h"
+#include "IAMGStrengthPolicy.h"
 #include "VariableCategorizer.h"
 #include "AMGCoarseVariableIndexer.h"
 #include "IVariableSet.h"
@@ -12,7 +12,7 @@ using namespace LinearSolverLibrary_NS;
 
 
 bool
-AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+AMGExtendedPlusInterpolationPolicy::ComputeInterpolationOperator(SparseMatrix2D const & m, IAMGStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     // The interpolation operator has one row for each variable (i.e. both
     // fine and coarse) and one column for each coarse variable.
     Interpolation_t interpolation_op;

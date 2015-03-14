@@ -1,5 +1,5 @@
 /*
- * Name  : IAMGStandardStrengthPolicy
+ * Name  : IAMGStrengthPolicy
  * Path  :
  * Use   : Assembles the strength matrix S.
            Determines strong connections of a variable on others, i.e.
@@ -23,9 +23,9 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class IAMGStandardStrengthPolicy {
+    class IAMGStrengthPolicy {
     public:
-        virtual ~IAMGStandardStrengthPolicy() {}
+        virtual ~IAMGStrengthPolicy() {}
 
         virtual std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
         virtual std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const = 0;

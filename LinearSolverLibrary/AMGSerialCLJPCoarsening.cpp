@@ -3,14 +3,14 @@
 #include "AMGSerialCLJPCoarsening.h"
 
 namespace LinearSolverLibrary_NS{
-class IAMGStandardStrengthPolicy;
+class IAMGStrengthPolicy;
 }
 
 using namespace LinearSolverLibrary_NS;
 using namespace LinAlg_NS;
 
 
-AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
+AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, AMGStrengthPolicyImpl const & strength_policy, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
     :
     m_{m},
     strength_policy_{strength_policy},

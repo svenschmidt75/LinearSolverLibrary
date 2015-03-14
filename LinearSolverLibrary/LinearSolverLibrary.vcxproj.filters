@@ -109,6 +109,9 @@
     <ClCompile Include="GraphHelper.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStrengthPolicyImpl.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -226,9 +229,6 @@
     <ClInclude Include="AMGStandardStrengthPolicy.h">
       <Filter>AMG</Filter>
     </ClInclude>
-    <ClInclude Include="IAMGStandardStrengthPolicy.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
     <ClInclude Include="AMGStandardCoarsening.h">
       <Filter>AMG</Filter>
     </ClInclude>
@@ -236,6 +236,12 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="GraphHelper.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="IAMGStrengthPolicy.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStrengthPolicyImpl.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>

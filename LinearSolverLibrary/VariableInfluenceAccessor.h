@@ -16,7 +16,7 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class IAMGStandardStrengthPolicy;
+    class IAMGStrengthPolicy;
     class AMGStandardStrengthPolicy;
     class VariableCategorizer;
 }
@@ -33,7 +33,7 @@ namespace LinearSolverLibrary_NS {
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        VariableInfluenceAccessor(IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
+        VariableInfluenceAccessor(IAMGStrengthPolicy const & strength_policy, VariableCategorizer const & categorizer);
 
         VariableInfluenceAccessor(VariableInfluenceAccessor const &) = delete;
         VariableInfluenceAccessor & operator=(VariableInfluenceAccessor const &) = delete;
@@ -43,7 +43,7 @@ namespace LinearSolverLibrary_NS {
         std::unique_ptr<IVariableSet> GetVariableInfluencedFine(size_type variable) const override;
 
     private:
-        IAMGStandardStrengthPolicy const & strength_policy_;
+        IAMGStrengthPolicy const & strength_policy_;
         VariableCategorizer const &        categorizer_;
     };
 

@@ -1,6 +1,6 @@
 /*
  * Name  : AMGStandardStrengthPolicy
- * Path  : IAMGStandardStrengthPolicy
+ * Path  : IAMGStrengthPolicy
  * Use   : Determines that strong connections of a variable on others, i.e.
            S_{i} and S_{i}^{T}, see Trottenberg, page 473, 474.
            The strength variable i is connected to variables j is measured
@@ -12,7 +12,7 @@
 
 #include "DeclSpec.h"
 
-#include "IAMGStandardStrengthPolicy.h"
+#include "AMGStrengthPolicyImpl.h"
 
 
 // forward declarations
@@ -26,17 +26,15 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS AMGStandardStrengthPolicy : public IAMGStandardStrengthPolicy {
+    class DECL_SYMBOLS AMGStandardStrengthPolicy : public AMGStrengthPolicyImpl {
     public:
         AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
         AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
         AMGStandardStrengthPolicy & operator=(AMGStandardStrengthPolicy const &) = delete;
 
-        // FROM IAMGStandardStrengthPolicy
+        // FROM IAMGStrengthPolicy
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
-
-        static std::unique_ptr<IVariableSet> getNeighborhood(LinAlg_NS::IMatrix2D::size_type variable);
 
     private:
         void computeConnections();

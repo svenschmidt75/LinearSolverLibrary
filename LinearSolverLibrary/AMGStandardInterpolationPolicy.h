@@ -16,7 +16,7 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class IAMGStandardStrengthPolicy;
+    class IAMGStrengthPolicy;
     class VariableCategorizer;
 }
 
@@ -49,7 +49,7 @@ namespace LinearSolverLibrary_NS {
 
 
     private:
-        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) override;
+        bool ComputeInterpolationOperator(LinAlg_NS::SparseMatrix2D const & m_, IAMGStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) override;
     };
 
 } // LinearSolverLibrary_NS

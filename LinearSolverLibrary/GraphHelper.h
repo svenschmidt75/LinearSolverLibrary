@@ -29,7 +29,7 @@ namespace LinearSolverLibrary_NS {
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
     public:
-        explicit GraphHelper(IAMGStandardStrengthPolicy const & strength_policy);
+        explicit GraphHelper(AMGStrengthPolicyImpl const & strength_policy);
         GraphHelper(GraphHelper const &) = delete;
         GraphHelper & operator=(GraphHelper const &) = delete;
 
@@ -42,8 +42,8 @@ namespace LinearSolverLibrary_NS {
         using IndexMapping_t = std::map<size_type, std::set<size_type>>;
 
     private:
-        IAMGStandardStrengthPolicy const & strength_policy_;
-        IndexMapping_t                     removed_edges_;
+        AMGStrengthPolicyImpl const & strength_policy_;
+        IndexMapping_t                removed_edges_;
     };
 
 } // LinearSolverLibrary_NS

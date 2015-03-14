@@ -14,7 +14,7 @@ namespace ComplexGraphTest_NS {
     class ComplexGraphTest {
     public:
         ComplexGraphTest() {
-            class StrengthPolicyMock : public LinearSolverLibrary_NS::IAMGStandardStrengthPolicy {
+            class StrengthPolicyMock : public LinearSolverLibrary_NS::IAMGStrengthPolicy {
             public:
                 StrengthPolicyMock() {
                     variable_set_[0].add(2);
@@ -57,11 +57,6 @@ namespace ComplexGraphTest_NS {
 
                 std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
                 getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-                    return nullptr;
-                }
-
-                std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
-                getNeighborhood(IMatrix2D::size_type variable) const override {
                     return nullptr;
                 }
 

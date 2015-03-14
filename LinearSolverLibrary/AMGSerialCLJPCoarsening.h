@@ -15,7 +15,8 @@
 
 // forward declarations
 namespace LinearSolverLibrary_NS {
-    class IAMGStandardStrengthPolicy;
+    class AMGStrengthPolicyImpl;
+    class IAMGStrengthPolicy;
     class IVariableInfluenceAccessor;
     class VariableCategorizer;
 }
@@ -52,7 +53,7 @@ namespace LinearSolverLibrary_NS {
 
     public:
         AMGSerialCLJPCoarsening(LinAlg_NS::SparseMatrix2D const & m,
-            IAMGStandardStrengthPolicy const & strength_policy,
+            AMGStrengthPolicyImpl const & strength_policy,
             IVariableInfluenceAccessor const & variable_influence_accessor,
             VariableCategorizer & categorizer);
 
@@ -70,7 +71,7 @@ namespace LinearSolverLibrary_NS {
         using Weight_t = std::map<size_type, double>;
 
         LinAlg_NS::SparseMatrix2D const &  m_;
-        IAMGStandardStrengthPolicy const & strength_policy_;
+        AMGStrengthPolicyImpl const &      strength_policy_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer &              categorizer_;
         Weight_t                           weights_;

@@ -13,7 +13,7 @@ namespace MultigridTutorialExampleP144Test_NS {
 
     class MultigridTutorialExampleP144Test {
     public:
-        class StrengthPolicyMock : public LinearSolverLibrary_NS::IAMGStandardStrengthPolicy {
+        class StrengthPolicyMock : public LinearSolverLibrary_NS::IAMGStrengthPolicy {
         public:
             StrengthPolicyMock() {
                 variable_set_[0].add(4);
@@ -47,11 +47,6 @@ namespace MultigridTutorialExampleP144Test_NS {
 
             std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
             getStronglyInfluenced(IMatrix2D::size_type variable) const override {
-                return nullptr;
-            }
-
-            std::unique_ptr<LinearSolverLibrary_NS::IVariableSet>
-            getNeighborhood(LinAlg_NS::IMatrix2D::size_type variable) const override {
                 return nullptr;
             }
 

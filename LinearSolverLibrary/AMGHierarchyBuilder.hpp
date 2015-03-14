@@ -9,7 +9,7 @@
 
 #include "AMGLevel.h"
 #include "AMGCThenFRelaxationPolicy.hpp"
-#include "LinearSolverLibrary/IAMGStandardStrengthPolicy.h"
+#include "LinearSolverLibrary/IAMGStrengthPolicy.h"
 #include "AMGStandardCoarsening.h"
 
 

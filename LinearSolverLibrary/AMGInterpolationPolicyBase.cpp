@@ -10,7 +10,7 @@ using namespace LinearSolverLibrary_NS;
 AMGInterpolationPolicyBase::AMGInterpolationPolicyBase() {}
 
 bool
-AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m, IAMGStandardStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
+AMGInterpolationPolicyBase::Generate(SparseMatrix2D const & m, IAMGStrengthPolicy const & strength_policy, VariableCategorizer const & variable_categorizer) {
     if (ComputeInterpolationOperator(m, strength_policy, variable_categorizer) == false)
         return false;
     ComputeRestrictionOperator(interpolation_operator_);

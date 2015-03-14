@@ -106,20 +106,3 @@ AMGStandardStrengthPolicy::getStronglyInfluenced(IMatrix2D::size_type variable) 
     }
     return common_NS::convert<IVariableSet>(variable_set);
 }
-
-std::unique_ptr<IVariableSet>
-AMGStandardStrengthPolicy::getNeighborhood(IMatrix2D::size_type variable) {
-    common_NS::reporting::checkUppderBound(variable, m_.rows());
-
-    auto variable_set = std::make_unique<VariableSet>();
-
-    auto influencers = getStrongInfluencers(variable);
-    for (auto node : *influencers)
-        variable_set->add(node);
-
-    auto influenced = getStronglyInfluenced(variable);
-    for (auto node : *influencers)
-        variable_set->add(node);
-
-    return common_NS::convert<IVariableSet>(variable_set);
-}
