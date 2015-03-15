@@ -38,10 +38,10 @@ namespace LinearSolverLibrary_NS {
         void            add(size_type variable);
 
     protected:
-        typedef Set_t::const_iterator DataIterator_t;
+        typedef IVariableSet::Set_t::const_iterator DataIterator_t;
 
     private:
-        Set_t data_;
+        IVariableSet::Set_t data_;
     };
 
 } // LinearSolverLibrary_NS

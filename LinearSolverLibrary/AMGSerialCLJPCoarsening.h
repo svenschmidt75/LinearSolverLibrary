@@ -13,6 +13,8 @@
 #include "GraphHelper.h"
 
 
+class AMGSerialCLJPCoarseningAlberDissPage25Test;
+
 // forward declarations
 namespace LinearSolverLibrary_NS {
     class AMGStrengthPolicyImpl;
@@ -27,7 +29,17 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestIndependentSet);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
 GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
-GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestForAlberDissPage25Fig36);
+class AMGSerialCLJPCoarseningAlberDissPage25Test;
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestInitialIndependentSet);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode9);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode10);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode20);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode22);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode10);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
 
 
 
@@ -45,7 +57,17 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdate);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2);
-        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningTest, TestForAlberDissPage25Fig36);
+        friend class AMGSerialCLJPCoarseningAlberDissPage25Test;
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestInitialIndependentSet);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode9);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode10);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode20);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode22);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode10);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
 
 
     public:
