@@ -39,6 +39,8 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode10);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20And22);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
 
 
@@ -67,6 +69,8 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode10);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20And22);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
 
 

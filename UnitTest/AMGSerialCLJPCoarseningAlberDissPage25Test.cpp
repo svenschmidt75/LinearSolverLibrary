@@ -349,6 +349,41 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22) {
     ASSERT_NEAR(0.5, coarsening_->weights_[29], 1E-8);
 }
 
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10) {
+    coarsening_->updateWeights(9);
+    coarsening_->updateWeights(10);
+    ASSERT_NEAR(1.7, coarsening_->weights_[1], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[2], 1E-8);
+    ASSERT_NEAR(3.0, coarsening_->weights_[3], 1E-8);
+    ASSERT_NEAR(2.3, coarsening_->weights_[4], 1E-8);
+    ASSERT_NEAR(0.7, coarsening_->weights_[7], 1E-8);
+    ASSERT_NEAR(1.4, coarsening_->weights_[11], 1E-8);
+    ASSERT_NEAR(3.1, coarsening_->weights_[12], 1E-8);
+    ASSERT_NEAR(0.5, coarsening_->weights_[13], 1E-8);
+    ASSERT_NEAR(3.4, coarsening_->weights_[15], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[16], 1E-8);
+    ASSERT_NEAR(3.3, coarsening_->weights_[17], 1E-8);
+}
+
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20And22) {
+    coarsening_->updateWeights(20);
+    coarsening_->updateWeights(22);
+    ASSERT_NEAR(3.1, coarsening_->weights_[12], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[14], 1E-8);
+    ASSERT_NEAR(3.4, coarsening_->weights_[15], 1E-8);
+    ASSERT_NEAR(3.3, coarsening_->weights_[17], 1E-8);
+    ASSERT_NEAR(2.7, coarsening_->weights_[18], 1E-8);
+    ASSERT_NEAR(0.9, coarsening_->weights_[19], 1E-8);
+    ASSERT_NEAR(0.5, coarsening_->weights_[21], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[23], 1E-8);
+    ASSERT_NEAR(0.2, coarsening_->weights_[24], 1E-8);
+    ASSERT_NEAR(0.6, coarsening_->weights_[25], 1E-8);
+    ASSERT_NEAR(1.8, coarsening_->weights_[26], 1E-8);
+    ASSERT_NEAR(1.2, coarsening_->weights_[27], 1E-8);
+    ASSERT_NEAR(0.7, coarsening_->weights_[28], 1E-8);
+    ASSERT_NEAR(0.5, coarsening_->weights_[29], 1E-8);
+}
+
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18) {
     coarsening_->updateWeights(9);
     coarsening_->updateWeights(10);
@@ -361,4 +396,10 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18) {
     //ASSERT_GE(independent_set.size(), 3);
     //ASSERT_LE(independent_set.size(), 4);
 
+}
+
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFullCoarsening) {
+    coarsening_->coarsen();
+
+    variable_categorizer_->print();
 }

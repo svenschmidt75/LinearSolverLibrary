@@ -23,14 +23,24 @@ AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, AMGSt
 
 void
 AMGSerialCLJPCoarsening::coarsen() {
-    size_type number_of_variables_left = m_.cols();
-    while (number_of_variables_left) {
+
+    std::cout << std::endl;
+
+    for (;;) {
         auto independent_set = selectIndependentSet();
 
-        for (auto variable : independent_set)
-            categorizer_.SetType(variable, VariableCategorizer::Type::COARSE);
+        size_type n_coarse = 0;
 
-        number_of_variables_left -= independent_set.size();
+        for (auto variable : independent_set) {
+            if (categorizer_.GetType(variable) == VariableCategorizer::Type::UNDEFINED) {
+                categorizer_.SetType(variable, VariableCategorizer::Type::COARSE);
+                ++n_coarse;
+                std::cout << variable << " = C" << std::endl;
+            }
+        }
+
+        if (n_coarse == 0)
+            break;
 
         for (auto j : independent_set) {
             updateWeights(j);
@@ -39,8 +49,8 @@ AMGSerialCLJPCoarsening::coarsen() {
             for (auto k : *neighborhood) {
                 if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
                     if (weights_[k] < 1) {
+                        std::cout << k << " = F" << std::endl;
                         categorizer_.SetType(k, VariableCategorizer::Type::FINE);
-                        --number_of_variables_left;
                     }
                 }
             }
@@ -91,7 +101,7 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
 
     // iterate over non-removed edges!
 
-    // Heuristic 1
+    // Heuristic 1: deals with the nodes that k strongly depends upon
     auto const & influencers = strength_policy_.getStrongInfluencers(k);
     for (auto j : *influencers) {
         if (strength_matrix_graph_.hasEdge(k, j)) {
@@ -100,7 +110,7 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
         }
     }
 
-    // Heuristic 2
+    // Heuristic 2: deals with the nodes that k strongly influences
     auto const & influenced = strength_policy_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
         strength_matrix_graph_.removeEdge(j, k);
