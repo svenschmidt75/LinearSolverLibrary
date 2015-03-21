@@ -63,6 +63,23 @@ AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
 }
 
 void
+AMGSerialCLJPCoarsening::printWeights() const {
+    int const chunk_size = 4;
+    auto chunks = weights_.size() / chunk_size;
+    for (size_t i = 0; i < chunks; ++i) {
+        for (size_t col = 0; col < chunk_size; ++col) {
+            auto index = i * chunk_size + col;
+            std::cout << boost::format(" %2i: %2.2f --  ") % index % weights_.at(index);
+        }
+        std::cout << std::endl;
+    }
+    chunks = weights_.size() % chunk_size;
+    auto index = weights_.size() - chunks;
+    for (size_t col = 0; col < chunks; ++col)
+        std::cout << boost::format(" %2i: %2.2f --  ") % index % weights_.at(index);
+}
+
+void
 AMGSerialCLJPCoarsening::initialWeightInitialization() {
     std::random_device rd;
     std::mt19937 random_number_generator(rd());
@@ -117,12 +134,16 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     // Heuristic 2: deals with the nodes that k strongly influences
     auto const & influenced = strength_policy_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
+        if (strength_matrix_graph_.hasEdge(j, k) == false)
+            continue;
         strength_matrix_graph_.removeEdge(j, k);
         auto const & j_influences = strength_policy_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
-            if (influenced->contains(i)) {
-                strength_matrix_graph_.removeEdge(i, j);
-                --weights_[j];
+            if (strength_matrix_graph_.hasEdge(i, j)) {
+                if (influenced->contains(i)) {
+                    --weights_[j];
+                    strength_matrix_graph_.removeEdge(i, j);
+                }
             }
         }
     }
@@ -142,15 +163,24 @@ AMGSerialCLJPCoarsening::selectIndependentSet() const {
      */
     std::vector<size_type> independent_set;
     for (size_type i = 0; i < m_.cols(); ++i) {
+        if (categorizer_.GetType(i) != VariableCategorizer::Type::UNDEFINED)
+            continue;
         auto weight = weights_.at(i);
         auto ncnt = 0;
+        auto nremovedEdges = 0;
         auto neighborhood = strength_policy_.getNeighborhood(i);
         for (auto j : *neighborhood) {
+            if (strength_matrix_graph_.hasEdge(i, j) == false) {
+                if (strength_matrix_graph_.hasEdge(j, i) == false) {
+                    ++nremovedEdges;
+                    continue;
+                }
+            }
             auto other_weight = weights_.at(j);
             if (weight > other_weight)
                 ++ncnt;
         }
-        if (ncnt == neighborhood->size())
+        if (ncnt == neighborhood->size() - nremovedEdges)
             independent_set.push_back(i);
     }
     return independent_set;

@@ -42,16 +42,17 @@ VariableCategorizer::print() const {
     std::cout << std::endl;
     int row_size = static_cast<int>(std::sqrt(data_.size()));
     if (row_size * row_size != data_.size()) {
+        int const chunk_size = 4;
         // data is not square
-        auto chunks = data_.size() / 4;
+        auto chunks = data_.size() / chunk_size;
         for (size_t i = 0; i < chunks; ++i) {
-            for (size_t col = 0; col < 4; ++col) {
-                auto index = i * 4 + col;
+            for (size_t col = 0; col < chunk_size; ++col) {
+                auto index = i * chunk_size + col;
                 std::cout << boost::format(" %2i: %s --  ") % index % static_cast<char>(data_[index]);
             }
             std::cout << std::endl;
         }
-        chunks = data_.size() % 4;
+        chunks = data_.size() % chunk_size;
         auto index = data_.size() - chunks;
         for (size_t col = 0; col < chunks; ++col)
             std::cout << boost::format(" %2i: %s --  ") % (index + col) % static_cast<char>(data_[index + col]);

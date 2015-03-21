@@ -412,17 +412,33 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
 
+    coarsening_->printWeights();
+
+
+
+
     auto independent_set = coarsening_->selectIndependentSet();
-    ASSERT_THAT(independent_set, ElementsAre(3, 5, 8, 9, 10, 20, 22));
+    ASSERT_THAT(independent_set, ElementsAre(3, 5, 8, 18, 23, 26));
     coarsening_->categorizer_.SetType(3, VariableCategorizer::Type::COARSE);
     coarsening_->categorizer_.SetType(5, VariableCategorizer::Type::COARSE);
     coarsening_->categorizer_.SetType(8, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(18, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(23, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(26, VariableCategorizer::Type::COARSE);
     coarsening_->updateWeights(3);
     coarsening_->setFineNodes(3);
     coarsening_->updateWeights(5);
     coarsening_->setFineNodes(5);
     coarsening_->updateWeights(8);
     coarsening_->setFineNodes(8);
+    coarsening_->updateWeights(18);
+    coarsening_->setFineNodes(18);
+    coarsening_->updateWeights(23);
+    coarsening_->setFineNodes(23);
+    coarsening_->updateWeights(26);
+    coarsening_->setFineNodes(26);
+
+    coarsening_->printWeights();
 
     independent_set = coarsening_->selectIndependentSet();
 

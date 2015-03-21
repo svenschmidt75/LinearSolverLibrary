@@ -89,12 +89,13 @@ namespace LinearSolverLibrary_NS {
         AMGSerialCLJPCoarsening & operator=(AMGSerialCLJPCoarsening const &) = delete;
 
         void coarsen();
-        void setFineNodes(size_type j);
 
     private:
         void                   initialWeightInitialization();
         void                   updateWeights(size_type variable);
         std::vector<size_type> selectIndependentSet() const;
+        void                   setFineNodes(size_type j);
+        void                   printWeights() const;
 
     private:
         using Weight_t = std::map<size_type, double>;
