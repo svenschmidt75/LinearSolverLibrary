@@ -249,7 +249,7 @@
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <PreprocessKeepComments>false</PreprocessKeepComments>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalOptions>/d2Zi+ -Zm141 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/d2Zi+ -Zm157</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -268,7 +268,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;INTEGRATION_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)\..;$(BOOST_DIR);$(CPPUNIT_DIR)/cppunit/include;$(ProjectDir);$(GMOCK_DIR)\include;$(GMOCK_DIR)\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalOptions>/d2Zi+ -Zm141 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/d2Zi+ -Zm157</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -290,7 +290,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\..;$(BOOST_DIR);$(CPPUNIT_DIR)/cppunit/include;$(ProjectDir);$(GMOCK_DIR)\include;$(GMOCK_DIR)\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalOptions>/d2Zi+ -Zm141 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/d2Zi+ -Zm157</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -316,7 +316,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;INTEGRATION_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)\..;$(BOOST_DIR);$(CPPUNIT_DIR)/cppunit/include;$(ProjectDir);$(GMOCK_DIR)\include;$(GMOCK_DIR)\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalOptions>/d2Zi+ -Zm141 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/d2Zi+ -Zm157</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -339,7 +339,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;INTEGRATION_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)\..;$(BOOST_DIR);$(CPPUNIT_DIR)/cppunit/include;$(ProjectDir);$(GMOCK_DIR)\include;$(GMOCK_DIR)\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalOptions>/d2Zi+ -Zm141 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/d2Zi+ -Zm157</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

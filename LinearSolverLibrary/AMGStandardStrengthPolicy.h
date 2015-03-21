@@ -38,23 +38,18 @@ namespace LinearSolverLibrary_NS {
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
 
     private:
-        void computeConnections();
-        void computeConnectionsForVariable(LinAlg_NS::IMatrix2D::size_type i, double max_element);
+        using Graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;
 
     private:
-        /* Each row contains the strong dependencies, i.e.
-           Si_(row, col) != 0 means that variable 'row' is strongly negatively coupled to variable 'col'.
+        void computeConnections(LinAlg_NS::SparseMatrix2D const & m);
+        void computeConnectionsForVariable(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::IMatrix2D::size_type i, double max_element);
+
+    private:
+        /* The graph contains edge e(i, j) if node i stringly depends on node j.
            see Trottenberg, p. 473.
         */
-        std::unique_ptr<LinAlg_NS::SparseMatrix2D> Si_;
-
-        /* Each row in Sit_ contains which other variables are strongly influenced, i.e.
-           Sit_(row, col) != 0 means that variable 'row' strongly influences variable 'col'.
-           see Trottenberg, p. 474.
-        */
-        std::unique_ptr<LinAlg_NS::SparseMatrix2D> Sit_;
-        LinAlg_NS::SparseMatrix2D const &          m_;
-        double const                               eps_;
+        Graph_t      g;
+        double const eps_;
     };
 
 } // LinearSolverLibrary_NS

@@ -25,6 +25,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/chrono.hpp>
 #include <boost/format.hpp>
+#include <boost/graph/adjacency_list.hpp>
 
 #include <ppl.h>
 

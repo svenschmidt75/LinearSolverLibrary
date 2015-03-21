@@ -18,6 +18,7 @@
 #include <boost/math/special_functions/round.hpp>
 #include <boost/assert.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/graph/adjacency_list.hpp>
 
 /* stable headers in other projects */
 
