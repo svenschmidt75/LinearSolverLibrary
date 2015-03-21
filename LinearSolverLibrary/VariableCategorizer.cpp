@@ -33,15 +33,30 @@ VariableCategorizer::NumberOfVariables() const {
     return data_.size();
 }
 
+//// Fill with whitespace, right align
+//ss << format("#1.0 %4i %4i %4in") % year % month % day;
+//// Output: #1.0 2011    3   11
+
 void
 VariableCategorizer::print() const {
     std::cout << std::endl;
     int row_size = static_cast<int>(std::sqrt(data_.size()));
     if (row_size * row_size != data_.size()) {
         // data is not square
-        for (size_t i = 0; i < data_.size(); ++i)
-            std::cout << std::setw(2) << static_cast<char>(data_[i]);
-    } else {
+        auto chunks = data_.size() / 4;
+        for (size_t i = 0; i < chunks; ++i) {
+            for (size_t col = 0; col < 4; ++col) {
+                auto index = i * 4 + col;
+                std::cout << boost::format(" %2i: %s --  ") % index % static_cast<char>(data_[index]);
+            }
+            std::cout << std::endl;
+        }
+        chunks = data_.size() % 4;
+        auto index = data_.size() - chunks;
+        for (size_t col = 0; col < chunks; ++col)
+            std::cout << boost::format(" %2i: %s --  ") % (index + col) % static_cast<char>(data_[index + col]);
+    }
+    else {
         for (size_t row = 0; row < row_size; ++row) {
             std::cout << std::endl;
             for (size_t col = 0; col < row_size; ++col) {

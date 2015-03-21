@@ -44,15 +44,19 @@ AMGSerialCLJPCoarsening::coarsen() {
 
         for (auto j : independent_set) {
             updateWeights(j);
+            setFineNodes(j);
+        }
+    }
+}
 
-            auto neighborhood = strength_policy_.getNeighborhood(j);
-            for (auto k : *neighborhood) {
-                if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
-                    if (weights_[k] < 1) {
-                        std::cout << k << " = F" << std::endl;
-                        categorizer_.SetType(k, VariableCategorizer::Type::FINE);
-                    }
-                }
+void
+AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
+    auto neighborhood = strength_policy_.getNeighborhood(j);
+    for (auto k : *neighborhood) {
+        if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
+            if (weights_[k] < 1) {
+                std::cout << k << " = F" << std::endl;
+                categorizer_.SetType(k, VariableCategorizer::Type::FINE);
             }
         }
     }

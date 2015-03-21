@@ -389,12 +389,49 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18) {
     coarsening_->updateWeights(10);
     coarsening_->updateWeights(20);
     coarsening_->updateWeights(22);
-//    ASSERT_NEAR(1.0, coarsening_->weights_[18], 1E-2);
+    ASSERT_EQ(3, coarsening_->strength_matrix_graph_.nEdgesRemoved(18));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 17));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 20));
+    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 21));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(18, 13));
+    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(18, 15));
+}
 
-    //ASSERT_EQ(7, coarsening_->strength_matrix_graph_.nEdgesRemoved(18));
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
+    // create the state after one application of CLJP
+    coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(10, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(20, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(22, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(9);
+    coarsening_->setFineNodes(9);
+    coarsening_->updateWeights(10);
+    coarsening_->setFineNodes(10);
+    coarsening_->updateWeights(20);
+    coarsening_->setFineNodes(20);
+    coarsening_->updateWeights(22);
+    coarsening_->setFineNodes(22);
 
-    //ASSERT_GE(independent_set.size(), 3);
-    //ASSERT_LE(independent_set.size(), 4);
+    auto independent_set = coarsening_->selectIndependentSet();
+    ASSERT_THAT(independent_set, ElementsAre(3, 5, 8, 9, 10, 20, 22));
+    coarsening_->categorizer_.SetType(3, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(5, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(8, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(3);
+    coarsening_->setFineNodes(3);
+    coarsening_->updateWeights(5);
+    coarsening_->setFineNodes(5);
+    coarsening_->updateWeights(8);
+    coarsening_->setFineNodes(8);
+
+    independent_set = coarsening_->selectIndependentSet();
+
+
+
+
+    variable_categorizer_->print();
+
+
 
 }
 
