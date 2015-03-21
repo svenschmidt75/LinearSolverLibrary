@@ -24,6 +24,7 @@ namespace LinearSolverLibrary_NS {
 #pragma warning(disable:4275)
 #pragma warning(disable:4251)
 
+
 namespace LinearSolverLibrary_NS {
 
     class DECL_SYMBOLS AMGStandardStrengthPolicy : public AMGStrengthPolicyImpl {

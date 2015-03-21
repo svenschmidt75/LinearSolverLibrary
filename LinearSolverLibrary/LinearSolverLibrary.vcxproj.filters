@@ -112,6 +112,9 @@
     <ClCompile Include="AMGStrengthPolicyImpl.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStrengthGraph.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal\MultiColor.h">
@@ -242,6 +245,9 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGStrengthPolicyImpl.h">
+      <Filter>AMG</Filter>
+    </ClInclude>
+    <ClInclude Include="AMGStrengthGraph.h">
       <Filter>AMG</Filter>
     </ClInclude>
   </ItemGroup>
