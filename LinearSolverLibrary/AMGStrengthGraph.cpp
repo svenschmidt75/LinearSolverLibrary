@@ -53,25 +53,35 @@ AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable
 }
 
 bool
+AMGStrengthGraph::canEdgeBeRemoved(size_type v1, size_type v2) const {
+    auto const & influencers = strength_policy_.getStrongInfluencers(v1);
+    return influencers->contains(v2) == true;
+}
+
+bool
 AMGStrengthGraph::hasEdge(size_type v1, size_type v2) const {
+    // check whether the original strength graph contains this edge
     auto const & influencers = strength_policy_.getStrongInfluencers(v1);
     if (influencers->contains(v2) == false)
-        return false;
-    if (boost::num_vertices(g_) < std::max(v1, v2))
+    	return false;
+    // check whether this edge has been removed
+    if (boost::num_vertices(g_) <= std::max(v1, v2))
         return true;
-    boost::graph_traits<Graph_t>::adjacency_iterator neighbour_it, neighbour_it_end;
-    boost::tie(neighbour_it, neighbour_it_end) = boost::adjacent_vertices(v1, g_);
-    //return std::find(neighbour_it, neighbour_it_end, [v2](auto vi) {
-    //    return *vi == v2;
-    //});
-    return std::find(neighbour_it, neighbour_it_end, [v2](auto vi) {
-        return *vi == v2;
-    });
+    if (!boost::out_degree(v1, g_))
+    	// edge has not been removed
+    	return true;
+    auto ei = boost::edge(v1, v2, g_);
+    return ei.second == false;
 }
 
 void
 AMGStrengthGraph::removeEdge(size_type v1, size_type v2) {
     // Remove 'node v1 strongly depends on node v2'
+    if (canEdgeBeRemoved(v1, v2) == false) {
+        std::ostringstream stream;
+        stream << boost::format("AMGStrengthGraph::removeEdge: Node %s does not have a strong dependency on node %s") % v1 % v2;
+        throw std::runtime_error(stream.str());
+    }
     if (hasEdge(v1, v2) == false) {
         std::ostringstream stream;
         stream << boost::format("AMGStrengthGraph::removeEdge: Node %s does not have a strong dependency on node %s") % v1 % v2;
@@ -82,29 +92,18 @@ AMGStrengthGraph::removeEdge(size_type v1, size_type v2) {
 
 AMGStrengthGraph::size_type
 AMGStrengthGraph::nEdgesRemoved(size_type v) const {
-    boost::graph_traits<Graph_t>::out_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::out_edges(v, g_);
-    return std::distance(ei, ei_end);
+    if (boost::num_vertices(g_) <= v)
+        return 0;
+    if (!boost::out_degree(v, g_))
+    	return 0;
+    return boost::out_degree(v, g_);
 }
 
 bool
 AMGStrengthGraph::hasEdges(size_type v) const {
-
-
-
-    // Use this instead?
-    /*MyGraph::adjacency_iterator neighbourIt, neighbourEnd;
-    boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(vertexIdOfc, graph);
-*/
-
-
-
-	// if the number of out and in edges == number of nodes in
-	// node's v neighborhood, than it has no more connections, i.e.
-	// it is completely detached from the graph.
     auto neighborhood = strength_policy_.getNeighborhood(v);
     auto neighborhood_size = neighborhood->size();
-    if (boost::num_vertices(g_) < v)
+    if (boost::num_vertices(g_) <= v)
         return neighborhood_size > 0;
     std::set<size_type> nodes;
     boost::graph_traits<Graph_t>::out_edge_iterator ei_out, ei_out_end;

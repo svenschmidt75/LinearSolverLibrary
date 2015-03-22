@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <LinearSolverLibrary/AMGSerialCLJPCoarsening.h>
+
 #include <common/Utility.hpp>
 #include <LinearSolverLibrary/AMGStrengthGraph.h>
 
@@ -269,8 +269,8 @@ TEST_F(AMGStrengthGraphTest, TestGetStrongInfluencers) {
 
 TEST_F(AMGStrengthGraphTest, TestGetStrongInfluencersWithNoEdgesRemoved) {
     auto influencers = strength_graph_->getStrongInfluencers(20);
-    ASSERT_EQ(7, influencers->size());
-    ASSERT_FALSE(influencers->contains(12));
+    ASSERT_EQ(8, influencers->size());
+    ASSERT_TRUE(influencers->contains(12));
     ASSERT_TRUE(influencers->contains(14));
     ASSERT_TRUE(influencers->contains(15));
     ASSERT_TRUE(influencers->contains(19));
