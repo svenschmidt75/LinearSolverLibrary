@@ -2,9 +2,6 @@
 
 #include "AMGSerialCLJPCoarsening.h"
 
-namespace LinearSolverLibrary_NS{
-class IAMGStrengthPolicy;
-}
 
 using namespace LinearSolverLibrary_NS;
 using namespace LinAlg_NS;
@@ -13,10 +10,9 @@ using namespace LinAlg_NS;
 AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, AMGStrengthPolicyImpl const & strength_policy, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
     :
     m_{m},
-    strength_policy_{strength_policy},
+    strength_graph_{strength_policy},
     variable_influence_accessor_{variable_influence_accessor},
-    categorizer_{categorizer},
-    strength_matrix_graph_{strength_policy} {
+    categorizer_{categorizer} {
 
     initialWeightInitialization();
 }
@@ -51,7 +47,7 @@ AMGSerialCLJPCoarsening::coarsen() {
 
 void
 AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
-    auto neighborhood = strength_policy_.getNeighborhood(j);
+    auto neighborhood = strength_graph_.getNeighborhood(j);
     for (auto k : *neighborhood) {
         if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
             if (weights_[k] < 1) {
@@ -88,7 +84,7 @@ AMGSerialCLJPCoarsening::initialWeightInitialization() {
     for (size_type i = 0; i < m_.cols(); ++i) {
         // Get the number of variables that variable i strongly influences.
         // The more there are, the more likely i is to become a coarse variable.
-        auto strongly_influenced = strength_policy_.getStronglyInfluenced(i);
+        auto strongly_influenced = strength_graph_.getStronglyInfluenced(i);
 
 
 
@@ -123,26 +119,24 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     // iterate over non-removed edges!
 
     // Heuristic 1: deals with the nodes that k strongly depends upon
-    auto const & influencers = strength_policy_.getStrongInfluencers(k);
+    auto const & influencers = strength_graph_.getStrongInfluencers(k);
     for (auto j : *influencers) {
-        if (strength_matrix_graph_.hasEdge(k, j)) {
-            --weights_[j];
-            strength_matrix_graph_.removeEdge(k, j);
-        }
+        --weights_[j];
+        strength_graph_.removeEdge(k, j);
     }
 
     // Heuristic 2: deals with the nodes that k strongly influences
-    auto const & influenced = strength_policy_.getStronglyInfluenced(k);
+    auto const & influenced = strength_graph_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
-        if (strength_matrix_graph_.hasEdge(j, k) == false)
+        if (strength_graph_.hasEdge(j, k) == false)
             continue;
-        strength_matrix_graph_.removeEdge(j, k);
-        auto const & j_influences = strength_policy_.getStronglyInfluenced(j);
+        strength_graph_.removeEdge(j, k);
+        auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
-            if (strength_matrix_graph_.hasEdge(i, j)) {
-                if (strength_matrix_graph_.hasEdge(i, k)) {
+            if (strength_graph_.hasEdge(i, j)) {
+                if (strength_graph_.hasEdge(i, k)) {
                     --weights_[j];
-                    strength_matrix_graph_.removeEdge(i, j);
+                    strength_graph_.removeEdge(i, j);
                 }
             }
         }
@@ -168,10 +162,10 @@ AMGSerialCLJPCoarsening::selectIndependentSet() const {
         auto weight = weights_.at(i);
         auto ncnt = 0;
         auto nremovedEdges = 0;
-        auto neighborhood = strength_policy_.getNeighborhood(i);
+        auto neighborhood = strength_graph_.getNeighborhood(i);
         for (auto j : *neighborhood) {
-            if (strength_matrix_graph_.hasEdge(i, j) == false) {
-                if (strength_matrix_graph_.hasEdge(j, i) == false) {
+            if (strength_graph_.hasEdge(i, j) == false) {
+                if (strength_graph_.hasEdge(j, i) == false) {
                     ++nremovedEdges;
                     continue;
                 }

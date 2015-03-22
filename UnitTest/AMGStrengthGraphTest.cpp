@@ -267,11 +267,37 @@ TEST_F(AMGStrengthGraphTest, TestGetStrongInfluencers) {
     ASSERT_TRUE(influencers->contains(26));
 }
 
-TEST_F(AMGStrengthGraphTest, TestGetStrongInfluenced) {
+TEST_F(AMGStrengthGraphTest, TestGetStrongInfluencersWithNoEdgesRemoved) {
+    auto influencers = strength_graph_->getStrongInfluencers(20);
+    ASSERT_EQ(7, influencers->size());
+    ASSERT_FALSE(influencers->contains(12));
+    ASSERT_TRUE(influencers->contains(14));
+    ASSERT_TRUE(influencers->contains(15));
+    ASSERT_TRUE(influencers->contains(19));
+    ASSERT_TRUE(influencers->contains(21));
+    ASSERT_TRUE(influencers->contains(24));
+    ASSERT_TRUE(influencers->contains(25));
+    ASSERT_TRUE(influencers->contains(26));
+}
+
+TEST_F(AMGStrengthGraphTest, TestGetStronglyInfluenced) {
     strength_graph_->removeEdge(12, 20);
     auto influenced = strength_graph_->getStronglyInfluenced(20);
     ASSERT_EQ(7, influenced->size());
     ASSERT_FALSE(influenced->contains(12));
+    ASSERT_TRUE(influenced->contains(14));
+    ASSERT_TRUE(influenced->contains(15));
+    ASSERT_TRUE(influenced->contains(19));
+    ASSERT_TRUE(influenced->contains(21));
+    ASSERT_TRUE(influenced->contains(24));
+    ASSERT_TRUE(influenced->contains(25));
+    ASSERT_TRUE(influenced->contains(26));
+}
+
+TEST_F(AMGStrengthGraphTest, TestGetStronglyInfluencedWithNoEdgesRemoved) {
+    auto influenced = strength_graph_->getStronglyInfluenced(20);
+    ASSERT_EQ(8, influenced->size());
+    ASSERT_TRUE(influenced->contains(12));
     ASSERT_TRUE(influenced->contains(14));
     ASSERT_TRUE(influenced->contains(15));
     ASSERT_TRUE(influenced->contains(19));

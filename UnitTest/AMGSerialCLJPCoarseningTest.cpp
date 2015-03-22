@@ -285,26 +285,26 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestIndependentSet) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdate) {
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 12));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 15));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 21));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 26));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 25));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 24));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 19));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(20, 14));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 12));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 15));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 21));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 26));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 25));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 24));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 19));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(20, 14));
 
     variable_categorizer_->SetType(20, VariableCategorizer::Type::COARSE);
     coarsening_->updateWeights(20);
 
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 12));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 15));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 21));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 26));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 25));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 24));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 19));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(20, 14));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 12));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 15));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 21));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 26));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 25));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 24));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 19));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(20, 14));
 }
 
 TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
@@ -352,14 +352,14 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGSerialCLJPCoarsening coarsening{m, strength_policy, influence_accessor, variable_categorizer};
 
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(0, 1));
+    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(0, 1));
 
     // weight of undefined node i
     auto weight = coarsening.weights_[1];
 
     coarsening.updateWeights(0);
 
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(0, 1));
+    ASSERT_FALSE(coarsening.strength_graph_.hasEdge(0, 1));
 
     // assert weight of undefined node i is reduced by 1
     ASSERT_NEAR(weight - 1.0, coarsening.weights_[1], 1E-6);
@@ -417,9 +417,9 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
     VariableInfluenceAccessor influence_accessor(strength_policy, variable_categorizer);
     AMGSerialCLJPCoarsening coarsening{m, strength_policy, influence_accessor, variable_categorizer};
 
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::k));
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::j, Node_t::k));
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
+    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(Node_t::i, Node_t::k));
+    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(Node_t::j, Node_t::k));
+    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(Node_t::i, Node_t::j));
 
     // weight of undefined node i
     auto weight_i = coarsening.weights_[Node_t::i];
@@ -431,12 +431,12 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
     coarsening.updateWeights(Node_t::k);
 
     // only edges to and from node k are removed
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::i));
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, Node_t::j));
-    ASSERT_FALSE(coarsening.strength_matrix_graph_.hasEdge(Node_t::k, 3));
+    ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::k, Node_t::i));
+    ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::k, Node_t::j));
+    ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::k, 3));
 
     // edges other than from/to node k should be intact
-    ASSERT_TRUE(coarsening.strength_matrix_graph_.hasEdge(Node_t::i, Node_t::j));
+    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(Node_t::i, Node_t::j));
 
     // assert weight of undefined node 3 is reduced by 1
     ASSERT_NEAR(weight_3 - 1.0, coarsening.weights_[3], 1E-6);

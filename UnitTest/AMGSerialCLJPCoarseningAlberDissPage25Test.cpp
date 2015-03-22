@@ -3,6 +3,7 @@
 #include "LinearSolverLibrary/AMGSerialCLJPCoarsening.h"
 #include "LinearSolverLibrary/VariableCategorizer.h"
 #include "..\common/Utility.hpp"
+#include <LinearSolverLibrary/AMGStrengthGraph.h>
 
 
 using namespace LinAlg_NS;
@@ -216,12 +217,13 @@ public:
 
 public:
     void SetUp() override {
-        SparseMatrix2D m{30};
-        m.finalize();
+        m_ = SparseMatrix2D{30};
+        m_.finalize();
 
-        variable_categorizer_.reset(new VariableCategorizer(m.rows()));
-        VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
-        coarsening_.reset(new AMGSerialCLJPCoarsening(m, strength_policy_, influence_accessor, *variable_categorizer_));
+        variable_categorizer_.reset(new VariableCategorizer(m_.rows()));
+        strength_graph_.reset(new AMGStrengthGraph(strength_policy_mock_));
+        VariableInfluenceAccessor influence_accessor(*strength_graph_, *variable_categorizer_);
+        coarsening_.reset(new AMGSerialCLJPCoarsening(m_, *strength_graph_, influence_accessor, *variable_categorizer_));
 
         coarsening_->weights_[0] = 3.4;
         coarsening_->weights_[1] = 4.7;
@@ -256,7 +258,9 @@ public:
     }
 
 public:
-    StrengthPolicyMock                       strength_policy_;
+    SparseMatrix2D                    m_;
+    StrengthPolicyMock                strength_policy_mock_;
+    std::unique_ptr<AMGStrengthGraph> strength_graph_;
     std::unique_ptr<VariableCategorizer>     variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
 };
@@ -278,29 +282,29 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode9) {
     // node 9 should have no more edges to other nodes, or node 9 should
     // be detached from the strength graph.
     // Basically, the number of edges removed == weight(9) (ignoring the random number part)
-    ASSERT_EQ(7, coarsening_->strength_matrix_graph_.nEdgesRemoved(9));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdges(9));
+    ASSERT_EQ(7, coarsening_->strength_graph_.nEdgesRemoved(9));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdges(9));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode10) {
     // update weights of node 10
     coarsening_->updateWeights(10);
-    ASSERT_EQ(6, coarsening_->strength_matrix_graph_.nEdgesRemoved(10));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdges(10));
+    ASSERT_EQ(6, coarsening_->strength_graph_.nEdgesRemoved(10));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdges(10));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode20) {
     // update weights of node 20
     coarsening_->updateWeights(20);
-    ASSERT_EQ(8, coarsening_->strength_matrix_graph_.nEdgesRemoved(20));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdges(20));
+    ASSERT_EQ(8, coarsening_->strength_graph_.nEdgesRemoved(20));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdges(20));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode22) {
     // update weights of node 22
     coarsening_->updateWeights(22);
-    ASSERT_EQ(7, coarsening_->strength_matrix_graph_.nEdgesRemoved(22));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdges(22));
+    ASSERT_EQ(7, coarsening_->strength_graph_.nEdgesRemoved(22));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdges(22));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9) {
@@ -388,12 +392,12 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18) {
     coarsening_->updateWeights(10);
     coarsening_->updateWeights(20);
     coarsening_->updateWeights(22);
-    ASSERT_EQ(3, coarsening_->strength_matrix_graph_.nEdgesRemoved(18));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 17));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 20));
-    ASSERT_FALSE(coarsening_->strength_matrix_graph_.hasEdge(18, 21));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(18, 13));
-    ASSERT_TRUE(coarsening_->strength_matrix_graph_.hasEdge(18, 15));
+    ASSERT_EQ(3, coarsening_->strength_graph_.nEdgesRemoved(18));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(18, 17));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(18, 20));
+    ASSERT_FALSE(coarsening_->strength_graph_.hasEdge(18, 21));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(18, 13));
+    ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(18, 15));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {

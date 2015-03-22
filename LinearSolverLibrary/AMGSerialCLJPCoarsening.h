@@ -10,7 +10,7 @@
 #include "DeclSpec.h"
 
 #include "..\UnitTest/UnitTestForwardDeclarationHelper.h"
-#include "GraphHelper.h"
+#include "AMGStrengthGraph.h"
 
 
 class AMGSerialCLJPCoarseningAlberDissPage25Test;
@@ -101,11 +101,10 @@ namespace LinearSolverLibrary_NS {
         using Weight_t = std::map<size_type, double>;
 
         LinAlg_NS::SparseMatrix2D const &  m_;
-        AMGStrengthPolicyImpl const &      strength_policy_;
+        AMGStrengthGraph                   strength_graph_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer &              categorizer_;
         Weight_t                           weights_;
-        GraphHelper                        strength_matrix_graph_;
     };
 
 } // LinearSolverLibrary_NS

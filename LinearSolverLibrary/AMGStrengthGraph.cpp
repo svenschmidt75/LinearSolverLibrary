@@ -16,12 +16,14 @@ std::unique_ptr<IVariableSet>
 AMGStrengthGraph::getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const {
     auto influencers = strength_policy_.getStrongInfluencers(variable);
     std::set<size_type> deleted_nodes;
-	boost::graph_traits<Graph_t>::out_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::out_edges(variable, g_);
-    for (; ei != ei_end; ++ei) {
-        auto source_node = boost::target(*ei, g_);
-        deleted_nodes.insert(source_node);
-    }
+    if (boost::num_vertices(g_) > variable) {
+		boost::graph_traits<Graph_t>::out_edge_iterator ei, ei_end;
+    	boost::tie(ei, ei_end) = boost::out_edges(variable, g_);
+	    for (; ei != ei_end; ++ei) {
+	        auto source_node = boost::target(*ei, g_);
+	        deleted_nodes.insert(source_node);
+	    }
+	}
     auto variable_set = std::make_unique<VariableSet>();
     for (auto influencer : *influencers) {
         if (deleted_nodes.find(influencer) == std::end(deleted_nodes))
@@ -34,11 +36,13 @@ std::unique_ptr<IVariableSet>
 AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const {
     auto influenced = strength_policy_.getStronglyInfluenced(variable);
     std::set<size_type> deleted_nodes;
-	boost::graph_traits<Graph_t>::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(variable, g_);
-    for (; ei != ei_end; ++ei) {
-        auto source_node = boost::source(*ei, g_);
-        deleted_nodes.insert(source_node);
+    if (boost::num_vertices(g_) > variable) {
+        boost::graph_traits<Graph_t>::in_edge_iterator ei, ei_end;
+        boost::tie(ei, ei_end) = boost::in_edges(variable, g_);
+        for (; ei != ei_end; ++ei) {
+            auto source_node = boost::source(*ei, g_);
+            deleted_nodes.insert(source_node);
+        }
     }
     auto variable_set = std::make_unique<VariableSet>();
     for (auto node : *influenced) {
@@ -55,8 +59,14 @@ AMGStrengthGraph::hasEdge(size_type v1, size_type v2) const {
         return false;
     if (boost::num_vertices(g_) < std::max(v1, v2))
         return true;
-    auto ei = boost::edge(v1, v2, g_);
-    return ei.second == false;
+    boost::graph_traits<Graph_t>::adjacency_iterator neighbour_it, neighbour_it_end;
+    boost::tie(neighbour_it, neighbour_it_end) = boost::adjacent_vertices(v1, g_);
+    //return std::find(neighbour_it, neighbour_it_end, [v2](auto vi) {
+    //    return *vi == v2;
+    //});
+    return std::find(neighbour_it, neighbour_it_end, [v2](auto vi) {
+        return *vi == v2;
+    });
 }
 
 void
@@ -79,6 +89,16 @@ AMGStrengthGraph::nEdgesRemoved(size_type v) const {
 
 bool
 AMGStrengthGraph::hasEdges(size_type v) const {
+
+
+
+    // Use this instead?
+    /*MyGraph::adjacency_iterator neighbourIt, neighbourEnd;
+    boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(vertexIdOfc, graph);
+*/
+
+
+
 	// if the number of out and in edges == number of nodes in
 	// node's v neighborhood, than it has no more connections, i.e.
 	// it is completely detached from the graph.
