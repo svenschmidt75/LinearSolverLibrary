@@ -33,17 +33,21 @@ namespace LinearSolverLibrary_NS {
         AMGStrengthGraph(AMGStrengthGraph const &) = delete;
         AMGStrengthGraph & operator=(AMGStrengthGraph const &) = delete;
 
+        // FROM IAMGStrengthPolicy
+        std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
+        std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
+
         bool      hasEdge(size_type v1, size_type v2) const;
         void      removeEdge(size_type v1, size_type v2);
         size_type nEdgesRemoved(size_type v) const;
         bool      hasEdges(size_type v) const;
 
     private:
-        using IndexMapping_t = std::map<size_type, std::set<size_type>>;
+        using Graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;
 
     private:
         AMGStrengthPolicyImpl const & strength_policy_;
-        IndexMapping_t                removed_edges_;
+        Graph_t                       g_;
     };
 
 } // LinearSolverLibrary_NS

@@ -47,7 +47,7 @@ AMGStandardStrengthPolicy::computeConnectionsForVariable(SparseMatrix2D const & 
             continue;
         double a_ij = - *column_it;
         if (a_ij >= max_element)
-            boost::add_edge(i, j, g);
+            boost::add_edge(i, j, g_);
     }
 }
 
@@ -57,7 +57,7 @@ AMGStandardStrengthPolicy::computeConnections(SparseMatrix2D const & m) {
     // only S(i, j) is modified with i = const per loop iteration.
     // Use thread private memory and at the end, assembly Si and Sit.
     for (IMatrix2D::size_type i = 0; i < m.rows(); ++i) {
-        boost::add_vertex(g);
+        boost::add_vertex(g_);
         auto max_element = computeMaxElementForRow(m, i);
         if (max_element == 0)
             // Variable i has no strong connections to other variables,
@@ -70,13 +70,13 @@ AMGStandardStrengthPolicy::computeConnections(SparseMatrix2D const & m) {
 
 std::unique_ptr<IVariableSet>
 AMGStandardStrengthPolicy::getStrongInfluencers(IMatrix2D::size_type variable) const {
-    common_NS::reporting::checkConditional(variable < boost::num_vertices(g));
+    common_NS::reporting::checkConditional(variable < boost::num_vertices(g_));
     // return the variables that strongly influence variable 'variable'
     auto variable_set = std::make_unique<VariableSet>();
-    Graph_t::out_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::out_edges(variable, g);
+    boost::graph_traits<Graph_t>::out_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::out_edges(variable, g_);
     for (; ei != ei_end; ++ei) {
-        auto source_node = boost::target(*ei, g);
+        auto source_node = boost::target(*ei, g_);
         variable_set->add(source_node);
     }
     return common_NS::convert<IVariableSet>(variable_set);
@@ -84,13 +84,13 @@ AMGStandardStrengthPolicy::getStrongInfluencers(IMatrix2D::size_type variable) c
 
 std::unique_ptr<IVariableSet>
 AMGStandardStrengthPolicy::getStronglyInfluenced(IMatrix2D::size_type variable) const {
-    common_NS::reporting::checkConditional(variable < boost::num_vertices(g));
+    common_NS::reporting::checkConditional(variable < boost::num_vertices(g_));
     // return the variables that strongly influence variable 'variable'
     auto variable_set = std::make_unique<VariableSet>();
-    Graph_t::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(variable, g);
+    boost::graph_traits<Graph_t>::in_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(variable, g_);
     for (; ei != ei_end; ++ei) {
-        auto source_node = boost::source(*ei, g);
+        auto source_node = boost::source(*ei, g_);
         variable_set->add(source_node);
     }
     return common_NS::convert<IVariableSet>(variable_set);

@@ -216,17 +216,16 @@ public:
 
 public:
     void SetUp() override {
-        m_ = SparseMatrix2D{30};
-        m_.finalize();
+        SparseMatrix2D m{30};
+        m.finalize();
 
-        variable_categorizer_.reset(new VariableCategorizer(m_.rows()));
+        variable_categorizer_.reset(new VariableCategorizer(m.rows()));
         VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
-        coarsening_.reset(new AMGSerialCLJPCoarsening(m_, strength_policy_, influence_accessor, *variable_categorizer_));
+        coarsening_.reset(new AMGSerialCLJPCoarsening(m, strength_policy_, influence_accessor, *variable_categorizer_));
         //coarsening_->coarsen();
     }
 
 public:
-    SparseMatrix2D                           m_;
     StrengthPolicyMock                       strength_policy_;
     std::unique_ptr<VariableCategorizer>     variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
@@ -323,11 +322,13 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
             variable_set_[1].add(2);
         }
 
-        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
             auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {
@@ -383,11 +384,13 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
             variable_set_[2].add(0);
         }
 
-        std::unique_ptr<IVariableSet> getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
-        std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        std::unique_ptr<IVariableSet>
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
             auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {

@@ -17,7 +17,7 @@ VariableCategorizer::initializeVariablesToUndefined() {
 }
 
 VariableCategorizer::Type
-LinearSolverLibrary_NS::VariableCategorizer::GetType(size_type variable) const {
+VariableCategorizer::GetType(size_type variable) const {
     common_NS::reporting::checkUppderBound(variable, data_.size());
     return data_[variable];
 }
@@ -32,10 +32,6 @@ VariableCategorizer::size_type
 VariableCategorizer::NumberOfVariables() const {
     return data_.size();
 }
-
-//// Fill with whitespace, right align
-//ss << format("#1.0 %4i %4i %4in") % year % month % day;
-//// Output: #1.0 2011    3   11
 
 void
 VariableCategorizer::print() const {

@@ -29,7 +29,7 @@ namespace LinearSolverLibrary_NS {
 
     class DECL_SYMBOLS AMGStandardStrengthPolicy : public AMGStrengthPolicyImpl {
     public:
-        AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
+        explicit AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
         AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
         AMGStandardStrengthPolicy & operator=(AMGStandardStrengthPolicy const &) = delete;
 
@@ -45,10 +45,10 @@ namespace LinearSolverLibrary_NS {
         void computeConnectionsForVariable(LinAlg_NS::SparseMatrix2D const & m, LinAlg_NS::IMatrix2D::size_type i, double max_element);
 
     private:
-        /* The graph contains edge e(i, j) if node i stringly depends on node j.
+        /* The graph contains edge e(i, j) if node i strongly depends on node j.
            see Trottenberg, p. 473.
         */
-        Graph_t      g;
+        Graph_t      g_;
         double const eps_;
     };
 

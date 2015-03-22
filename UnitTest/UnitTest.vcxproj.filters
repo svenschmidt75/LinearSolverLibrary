@@ -110,6 +110,9 @@
     <ClCompile Include="AMGSerialCLJPCoarseningAlberDissPage25Test.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
+    <ClCompile Include="AMGStrengthGraphTest.cpp">
+      <Filter>AMG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VersteegMalalasekeraTest.h">
