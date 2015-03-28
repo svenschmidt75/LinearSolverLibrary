@@ -137,8 +137,7 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
         strength_graph_.removeEdge(j, k);
         auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
-            auto const & influenced2 = strength_policy_.getStronglyInfluenced(k);
-            if (influenced2->contains(i)) {
+            if (influenced->contains(i)) {
                 --weights_[j];
                 strength_graph_.removeEdge(i, j);
             }

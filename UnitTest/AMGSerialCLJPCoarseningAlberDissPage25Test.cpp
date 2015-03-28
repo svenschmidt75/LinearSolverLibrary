@@ -524,12 +524,12 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
 
     ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(0));
     ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(1));
-//    ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(6));
+    ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(6));
 
 
     ASSERT_NEAR(2.4, coarsening_->weights_[0], 1E-8);
     ASSERT_NEAR(1.7, coarsening_->weights_[1], 1E-8);
-//    ASSERT_NEAR(1.1, coarsening_->weights_[6], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[6], 1E-8);
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
