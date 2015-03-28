@@ -14,7 +14,6 @@ AMGStrengthGraph::AMGStrengthGraph(AMGStrengthPolicyImpl const & strength_policy
 
 std::unique_ptr<IVariableSet>
 AMGStrengthGraph::getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const {
-    auto influencers = strength_policy_.getStrongInfluencers(variable);
     std::set<size_type> deleted_nodes;
     if (boost::num_vertices(g_) > variable) {
 		boost::graph_traits<Graph_t>::out_edge_iterator ei, ei_end;
@@ -25,6 +24,7 @@ AMGStrengthGraph::getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable)
 	    }
 	}
     auto variable_set = std::make_unique<VariableSet>();
+    auto influencers = strength_policy_.getStrongInfluencers(variable);
     for (auto influencer : *influencers) {
         if (deleted_nodes.find(influencer) == std::end(deleted_nodes))
             variable_set->add(influencer);
@@ -34,7 +34,6 @@ AMGStrengthGraph::getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable)
 
 std::unique_ptr<IVariableSet>
 AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const {
-    auto influenced = strength_policy_.getStronglyInfluenced(variable);
     std::set<size_type> deleted_nodes;
     if (boost::num_vertices(g_) > variable) {
         boost::graph_traits<Graph_t>::in_edge_iterator ei, ei_end;
@@ -45,11 +44,18 @@ AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable
         }
     }
     auto variable_set = std::make_unique<VariableSet>();
+    auto influenced = strength_policy_.getStronglyInfluenced(variable);
     for (auto node : *influenced) {
         if (deleted_nodes.find(node) == std::end(deleted_nodes))
             variable_set->add(node);
     }
     return common_NS::convert<IVariableSet>(variable_set);
+}
+
+std::unique_ptr<IVariableSet>
+AMGStrengthGraph::getStronglyInfluenced2(LinAlg_NS::IMatrix2D::size_type variable) const {
+    auto influenced = strength_policy_.getStronglyInfluenced(variable);
+    return influenced;
 }
 
 bool
@@ -112,7 +118,6 @@ AMGStrengthGraph::hasEdges(size_type v) const {
         auto target_node = boost::target(edge, g_);
         nodes.insert(target_node);
     });
-    size_type nout_edges = std::distance(ei_out, ei_out_end);
     boost::graph_traits<Graph_t>::in_edge_iterator ei_in, ei_in_end;
     boost::tie(ei_in, ei_in_end) = boost::in_edges(v, g_);
     std::for_each(ei_in, ei_in_end, [&nodes, this](auto edge) {

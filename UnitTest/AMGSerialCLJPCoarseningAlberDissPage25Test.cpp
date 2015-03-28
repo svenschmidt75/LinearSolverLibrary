@@ -359,10 +359,10 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10) 
     ASSERT_NEAR(1.1, coarsening_->weights_[2], 1E-8);
     ASSERT_NEAR(3.0, coarsening_->weights_[3], 1E-8);
     ASSERT_NEAR(2.3, coarsening_->weights_[4], 1E-8);
-    ASSERT_NEAR(0.7, coarsening_->weights_[7], 1E-8);
+    ASSERT_NEAR(1.7, coarsening_->weights_[7], 1E-8);
     ASSERT_NEAR(1.4, coarsening_->weights_[11], 1E-8);
     ASSERT_NEAR(3.1, coarsening_->weights_[12], 1E-8);
-    ASSERT_NEAR(0.5, coarsening_->weights_[13], 1E-8);
+    ASSERT_NEAR(1.5, coarsening_->weights_[13], 1E-8);
     ASSERT_NEAR(3.4, coarsening_->weights_[15], 1E-8);
     ASSERT_NEAR(1.1, coarsening_->weights_[16], 1E-8);
     ASSERT_NEAR(3.3, coarsening_->weights_[17], 1E-8);

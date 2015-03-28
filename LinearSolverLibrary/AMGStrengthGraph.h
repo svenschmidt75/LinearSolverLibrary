@@ -37,6 +37,8 @@ namespace LinearSolverLibrary_NS {
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
 
+        std::unique_ptr<IVariableSet> getStronglyInfluenced2(LinAlg_NS::IMatrix2D::size_type variable) const;
+
         bool      canEdgeBeRemoved(size_type v1, size_type v2) const;
         bool      hasEdge(size_type v1, size_type v2) const;
         void      removeEdge(size_type v1, size_type v2);

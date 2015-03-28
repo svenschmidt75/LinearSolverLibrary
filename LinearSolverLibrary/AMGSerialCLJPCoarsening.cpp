@@ -126,18 +126,19 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     }
 
     // Heuristic 2: deals with the nodes that k strongly influences
-    auto const & influenced = strength_graph_.getStronglyInfluenced(k);
+    auto const & influenced = strength_graph_.getStronglyInfluenced2(k);
     for (auto j : *influenced) {
-        if (strength_graph_.hasEdge(j, k) == false)
-            continue;
         strength_graph_.removeEdge(j, k);
         auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
-            if (strength_graph_.hasEdge(i, j)) {
-                if (strength_graph_.hasEdge(i, k)) {
-                    --weights_[j];
-                    strength_graph_.removeEdge(i, j);
-                }
+//            if (strength_graph_.hasEdge(i, k)) {
+
+                auto const & influenced2 = strength_graph_.getStronglyInfluenced2(k);
+                if (influenced2->contains(i)) {
+
+
+                --weights_[j];
+                strength_graph_.removeEdge(i, j);
             }
         }
     }
