@@ -10,6 +10,7 @@ using namespace LinAlg_NS;
 AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, AMGStrengthPolicyImpl const & strength_policy, IVariableInfluenceAccessor const & variable_influence_accessor, VariableCategorizer & categorizer)
     :
     m_{m},
+    strength_policy_(strength_policy),
     strength_graph_{strength_policy},
     variable_influence_accessor_{variable_influence_accessor},
     categorizer_{categorizer} {
@@ -47,7 +48,7 @@ AMGSerialCLJPCoarsening::coarsen() {
 
 void
 AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
-    auto neighborhood = strength_graph_.getNeighborhood(j);
+    auto neighborhood = strength_policy_.getNeighborhood(j);
     for (auto k : *neighborhood) {
         if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
             if (weights_[k] < 1) {
@@ -126,17 +127,18 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     }
 
     // Heuristic 2: deals with the nodes that k strongly influences
-    auto const & influenced = strength_graph_.getStronglyInfluenced2(k);
+    auto const & influenced = strength_policy_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
+        if (strength_graph_.hasEdge(j, k) == false) {
+            auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
+            common_NS::reporting::checkConditional(j_influences->size() == 0);
+            continue;
+        }
         strength_graph_.removeEdge(j, k);
         auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
-//            if (strength_graph_.hasEdge(i, k)) {
-
-                auto const & influenced2 = strength_graph_.getStronglyInfluenced2(k);
-                if (influenced2->contains(i)) {
-
-
+            auto const & influenced2 = strength_policy_.getStronglyInfluenced(k);
+            if (influenced2->contains(i)) {
                 --weights_[j];
                 strength_graph_.removeEdge(i, j);
             }

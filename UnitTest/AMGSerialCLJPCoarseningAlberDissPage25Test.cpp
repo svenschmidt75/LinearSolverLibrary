@@ -400,6 +400,23 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18) {
     ASSERT_TRUE(coarsening_->strength_graph_.hasEdge(18, 15));
 }
 
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode20) {
+    // update weights of node 20
+    coarsening_->updateWeights(20);
+    coarsening_->setFineNodes(20);
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(24));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(25));
+}
+
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode22) {
+    // update weights of node 22
+    coarsening_->updateWeights(22);
+    coarsening_->setFineNodes(22);
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(28));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(29));
+}
+
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
     // create the state after one application of CLJP
     coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
@@ -414,6 +431,79 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
     coarsening_->setFineNodes(20);
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
+
+    // from node 20
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(24));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(25));
+
+    // from node 22
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(28));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(29));
+
+    // from nodes 20 and 22
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(21));
+
+    // from nodes 10 and 22
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(17));
+
+
+    ASSERT_NEAR(3.4, coarsening_->weights_[0], 1E-8);
+    ASSERT_NEAR(1.7, coarsening_->weights_[1], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[2], 1E-8);
+    ASSERT_NEAR(3.0, coarsening_->weights_[3], 1E-8);
+    ASSERT_NEAR(2.3, coarsening_->weights_[4], 1E-8);
+    ASSERT_NEAR(2.9, coarsening_->weights_[5], 1E-8);
+    ASSERT_NEAR(2.6, coarsening_->weights_[6], 1E-8);
+    ASSERT_NEAR(1.7, coarsening_->weights_[7], 1E-8);
+    ASSERT_NEAR(4.8, coarsening_->weights_[8], 1E-8);
+    ASSERT_NEAR(1.4, coarsening_->weights_[11], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[12], 1E-8);
+    ASSERT_NEAR(1.5, coarsening_->weights_[13], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[14], 1E-8);
+    ASSERT_NEAR(1.4, coarsening_->weights_[15], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[16], 1E-8);
+    ASSERT_NEAR(2.7, coarsening_->weights_[18], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[23], 1E-8);
+    ASSERT_NEAR(1.8, coarsening_->weights_[26], 1E-8);
+    ASSERT_NEAR(1.2, coarsening_->weights_[27], 1E-8);
+
+
+    coarsening_->printWeights();
+}
+
+TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
+    // create the state after one application of CLJP
+    coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(10, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(20, VariableCategorizer::Type::COARSE);
+    coarsening_->categorizer_.SetType(22, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(9);
+    coarsening_->setFineNodes(9);
+    coarsening_->updateWeights(10);
+    coarsening_->setFineNodes(10);
+    coarsening_->updateWeights(20);
+    coarsening_->setFineNodes(20);
+    coarsening_->updateWeights(22);
+    coarsening_->setFineNodes(22);
+
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+
+    ASSERT_NEAR(3.4, coarsening_->weights_[0], 1E-8);
+    ASSERT_NEAR(1.7, coarsening_->weights_[1], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[2], 1E-8);
+    ASSERT_NEAR(3.0, coarsening_->weights_[3], 1E-8);
+    ASSERT_NEAR(2.3, coarsening_->weights_[4], 1E-8);
+    ASSERT_NEAR(2.9, coarsening_->weights_[5], 1E-8);
+    ASSERT_NEAR(2.6, coarsening_->weights_[6], 1E-8);
+    ASSERT_NEAR(1.7, coarsening_->weights_[7], 1E-8);
+    ASSERT_NEAR(4.8, coarsening_->weights_[8], 1E-8);
+    ASSERT_NEAR(1.4, coarsening_->weights_[11], 1E-8);
+    ASSERT_NEAR(1.1, coarsening_->weights_[12], 1E-8);
+    ASSERT_NEAR(1.5, coarsening_->weights_[13], 1E-8);
+    ASSERT_NEAR(1.6, coarsening_->weights_[14], 1E-8);
+
 
     coarsening_->printWeights();
 
@@ -443,15 +533,15 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
 
     coarsening_->printWeights();
 
+
+
     independent_set = coarsening_->selectIndependentSet();
-
-
-
+    ASSERT_THAT(independent_set, ElementsAre(0));
+    coarsening_->categorizer_.SetType(1, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(1);
+    coarsening_->setFineNodes(1);
 
     variable_categorizer_->print();
-
-
-
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFullCoarsening) {

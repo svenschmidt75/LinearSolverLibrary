@@ -18,7 +18,6 @@ class AMGSerialCLJPCoarseningAlberDissPage25Test;
 // forward declarations
 namespace LinearSolverLibrary_NS {
     class AMGStrengthPolicyImpl;
-    class IAMGStrengthPolicy;
     class IVariableInfluenceAccessor;
     class VariableCategorizer;
 }
@@ -42,7 +41,10 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode22)
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20And22);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode20);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode22);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
 
 
 
@@ -73,7 +75,10 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode9And10);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightsAroundNode20And22);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestEdgesOfNode18);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode20);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode22);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
 
 
     public:
@@ -101,6 +106,7 @@ namespace LinearSolverLibrary_NS {
         using Weight_t = std::map<size_type, double>;
 
         LinAlg_NS::SparseMatrix2D const &  m_;
+        AMGStrengthPolicyImpl const &      strength_policy_;
         AMGStrengthGraph                   strength_graph_;
         IVariableInfluenceAccessor const & variable_influence_accessor_;
         VariableCategorizer &              categorizer_;

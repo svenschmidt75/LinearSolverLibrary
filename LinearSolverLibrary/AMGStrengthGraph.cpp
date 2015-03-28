@@ -52,12 +52,6 @@ AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable
     return common_NS::convert<IVariableSet>(variable_set);
 }
 
-std::unique_ptr<IVariableSet>
-AMGStrengthGraph::getStronglyInfluenced2(LinAlg_NS::IMatrix2D::size_type variable) const {
-    auto influenced = strength_policy_.getStronglyInfluenced(variable);
-    return influenced;
-}
-
 bool
 AMGStrengthGraph::canEdgeBeRemoved(size_type v1, size_type v2) const {
     auto const & influencers = strength_policy_.getStrongInfluencers(v1);
