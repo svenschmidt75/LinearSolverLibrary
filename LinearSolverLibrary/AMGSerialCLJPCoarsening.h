@@ -45,6 +45,7 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForN
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode22);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
+GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3);
 
 
 
@@ -79,6 +80,7 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFineNodestUpdateForNode22);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3);
 
 
     public:

@@ -216,16 +216,17 @@ public:
 
 public:
     void SetUp() override {
-        SparseMatrix2D m{30};
-        m.finalize();
+        m_ = SparseMatrix2D{30};
+        m_.finalize();
 
-        variable_categorizer_.reset(new VariableCategorizer(m.rows()));
+        variable_categorizer_.reset(new VariableCategorizer(m_.rows()));
         VariableInfluenceAccessor influence_accessor(strength_policy_, *variable_categorizer_);
-        coarsening_.reset(new AMGSerialCLJPCoarsening(m, strength_policy_, influence_accessor, *variable_categorizer_));
+        coarsening_.reset(new AMGSerialCLJPCoarsening(m_, strength_policy_, influence_accessor, *variable_categorizer_));
         //coarsening_->coarsen();
     }
 
 public:
+    SparseMatrix2D                           m_;
     StrengthPolicyMock                       strength_policy_;
     std::unique_ptr<VariableCategorizer>     variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
@@ -435,8 +436,8 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
     ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::k, Node_t::j));
     ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::k, 3));
 
-    // edges other than from/to node k should be intact
-    ASSERT_TRUE(coarsening.strength_graph_.hasEdge(Node_t::i, Node_t::j));
+    // edge between i and j should be removed
+    ASSERT_FALSE(coarsening.strength_graph_.hasEdge(Node_t::i, Node_t::j));
 
     // assert weight of undefined node 3 is reduced by 1
     ASSERT_NEAR(weight_3 - 1.0, coarsening.weights_[3], 1E-6);
