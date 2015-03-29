@@ -27,7 +27,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS VariableInfluenceAccessor : public IVariableInfluenceAccessor {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS VariableInfluenceAccessor : public IVariableInfluenceAccessor {
 
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;

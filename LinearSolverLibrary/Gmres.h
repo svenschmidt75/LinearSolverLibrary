@@ -17,7 +17,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS Gmres final {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS Gmres final {
     public:
         /* Return type of iterative CG solvers.
          *   bool: success or failure

@@ -38,7 +38,7 @@ GOOGLE_TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommon
 namespace LinearSolverLibrary_NS {
 
 
-    class DECL_SYMBOLS AMGStandardInterpolationPolicy : public AMGInterpolationPolicyBase {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS AMGStandardInterpolationPolicy : public AMGInterpolationPolicyBase {
 
 
         FRIEND_GOOGLE_TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnection);

@@ -121,7 +121,9 @@ void
 AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     common_NS::reporting::checkUppderBound(k, m_.cols() - 1);
 
-    // iterate over non-removed edges!
+    // "Coarse-grid Selection for Parallel Algebraic Multigrid",
+    // Cleary, Falgout, Henson, Jones,
+    // page 7, paragraph 4.2
 
     // Heuristic 1: deals with the nodes that k strongly depends upon
     auto const & influencers = strength_graph_.getStrongInfluencers(k);

@@ -204,20 +204,6 @@ namespace {
             return common_NS::convert<IVariableSet>(variables);
         }
 
-        void
-        exportToGraphviz() const override {
-            std::cout << std::endl;
-            std::cout << std::endl;
-            std::cout << "digraph G {" << std::endl;
-            for (IMatrix2D::size_type i = 0; i < variable_set_.size(); ++i) {
-                auto vertices = getStrongInfluencers(i);
-                for (auto target_index : *vertices)
-                    std::cout << "  " << i << " -> " << target_index << std::endl;
-            }
-            std::cout << "}" << std::endl;
-            std::cout << std::endl;
-        }
-
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -353,20 +339,6 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic1) {
             return common_NS::convert<IVariableSet>(variables);
         }
 
-        void
-        exportToGraphviz() const override {
-            std::cout << std::endl;
-            std::cout << std::endl;
-            std::cout << "digraph G {" << std::endl;
-            for (IMatrix2D::size_type i = 0; i < variable_set_.size(); ++i) {
-                auto vertices = getStrongInfluencers(i);
-                for (auto target_index : *vertices)
-                    std::cout << "  " << i << " -> " << target_index << std::endl;
-            }
-            std::cout << "}" << std::endl;
-            std::cout << std::endl;
-        }
-
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -428,9 +400,6 @@ TEST_F(AMGSerialCLJPCoarseningTest, TestWeightUpdateHeuristic2) {
             }
             return common_NS::convert<IVariableSet>(variables);
         }
-
-        void
-        exportToGraphviz() const override {}
 
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;

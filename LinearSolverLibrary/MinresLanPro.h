@@ -19,7 +19,7 @@
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS MinresLanPro final {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS MinresLanPro final {
     public:
         /* Return type of iterative CG solvers.
          *   bool: success or failure

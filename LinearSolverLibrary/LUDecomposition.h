@@ -23,7 +23,7 @@ class LUDecompositionTest;
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS LUDecomposition final {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS LUDecomposition final {
 
         friend class LUDecompositionTest;
 

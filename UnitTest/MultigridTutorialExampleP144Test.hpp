@@ -50,9 +50,6 @@ namespace MultigridTutorialExampleP144Test_NS {
                 return nullptr;
             }
 
-            void
-            exportToGraphviz() const override {}
-
         private:
             mutable std::map<IMatrix2D::size_type, LinearSolverLibrary_NS::VariableSet> variable_set_;
         };

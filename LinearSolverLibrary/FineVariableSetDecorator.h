@@ -28,7 +28,7 @@ namespace LinearSolverLibrary_NS {
     class IVariableSet;
 
 
-    class DECL_SYMBOLS FineVariableSetDecorator final : public VariableSetDecoratorBase {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS FineVariableSetDecorator final : public VariableSetDecoratorBase {
     public:
         FineVariableSetDecorator(std::shared_ptr<IVariableSet> const & variable_set, VariableCategorizer const & categorizer);
 

@@ -18,7 +18,7 @@
 namespace LinearSolverLibrary_NS {
 
 
-    class DECL_SYMBOLS AMGVCycle : public AMGVWCycleBase<1> {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS AMGVCycle : public AMGVWCycleBase<1> {
     public:
         AMGVCycle();
     };

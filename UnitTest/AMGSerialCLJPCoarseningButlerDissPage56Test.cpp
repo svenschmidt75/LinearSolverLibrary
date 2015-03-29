@@ -104,20 +104,6 @@ namespace {
             return common_NS::convert<IVariableSet>(variables);
         }
 
-        void
-        exportToGraphviz() const override {
-            std::cout << std::endl;
-            std::cout << std::endl;
-            std::cout << "digraph G {" << std::endl;
-            for (IMatrix2D::size_type i = 0; i < variable_set_.size(); ++i) {
-                auto vertices = getStrongInfluencers(i);
-                for (auto target_index : *vertices)
-                    std::cout << "  " << i << " -> " << target_index << std::endl;
-            }
-            std::cout << "}" << std::endl;
-            std::cout << std::endl;
-        }
-
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -204,7 +190,7 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestInitialIndependentSet) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5) {
-    strength_policy_mock_.exportToGraphviz();
+    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_);
 
 
     coarsening_->categorizer_.SetType(12, VariableCategorizer::Type::COARSE);

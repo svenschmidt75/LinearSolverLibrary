@@ -27,7 +27,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS AMGStandardStrengthPolicy : public AMGStrengthPolicyImpl {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS AMGStandardStrengthPolicy : public AMGStrengthPolicyImpl {
     public:
         explicit AMGStandardStrengthPolicy(LinAlg_NS::SparseMatrix2D const & m);
         AMGStandardStrengthPolicy(AMGStandardStrengthPolicy const &) = delete;
@@ -36,7 +36,6 @@ namespace LinearSolverLibrary_NS {
         // FROM IAMGStrengthPolicy
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
-        void                          exportToGraphviz() const override;
 
     private:
         using Graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;

@@ -19,7 +19,7 @@ namespace LinearSolverLibrary_NS {
     class IVariableInfluenceAccessor;
 
 
-    class DECL_SYMBOLS VariableCardinalityPolicy {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS VariableCardinalityPolicy {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 

@@ -24,7 +24,7 @@ namespace LinAlg_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS AMGStrengthGraph : public AMGStrengthPolicyImpl {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS AMGStrengthGraph : public AMGStrengthPolicyImpl {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
@@ -36,7 +36,6 @@ namespace LinearSolverLibrary_NS {
         // FROM IAMGStrengthPolicy
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
-        void                          exportToGraphviz() const override;
 
         bool      canEdgeBeRemoved(size_type v1, size_type v2) const;
         bool      hasEdge(size_type v1, size_type v2) const;

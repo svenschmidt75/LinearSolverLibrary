@@ -1,6 +1,7 @@
 /* all common and stable header files */
 
 #include <iostream>
+#include <fstream>
 #include <tuple>
 #include <stdexcept>
 #include <algorithm>

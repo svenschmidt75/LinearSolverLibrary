@@ -79,4 +79,4 @@
 #include "LinearSolverLibrary/AMGStandardCoarsening.h"
 #include "LinearSolverLibrary/AMGVCycle.h"
 #include "LinearSolverLibrary/AMGWCycle.hpp"
-//#include "LinearSolverLibrary/AMGSolver.hpp"
+#include "LinearSolverLibrary/GraphvizHelper.h"

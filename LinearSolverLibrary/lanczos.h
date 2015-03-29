@@ -32,7 +32,7 @@ namespace LinAlg_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS Lanczos final : boost::noncopyable {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS Lanczos final : boost::noncopyable {
     public:
         void init(LinAlg_NS::SparseMatrix2D const & A, LinAlg_NS::Vector const & q0) const;
 

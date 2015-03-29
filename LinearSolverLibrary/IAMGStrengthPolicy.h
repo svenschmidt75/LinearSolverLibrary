@@ -29,7 +29,6 @@ namespace LinearSolverLibrary_NS {
 
         virtual std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
         virtual std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const = 0;
-        virtual void                          exportToGraphviz() const = 0;
     };
 
 } // LinearSolverLibrary_NS

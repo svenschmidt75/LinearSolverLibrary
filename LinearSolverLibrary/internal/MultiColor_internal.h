@@ -24,7 +24,7 @@ namespace internal_NS {
     class BucketList;
 
 
-    class DECL_SYMBOLS MultiColor_internal {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS MultiColor_internal {
 
         friend class MultiColorTest;
 

@@ -22,7 +22,7 @@ namespace LinearSolverLibrary_NS {
 
 namespace LinearSolverLibrary_NS {
 
-    class DECL_SYMBOLS AMGStandardCoarsening {
+    class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS AMGStandardCoarsening {
     public:
         using size_type = LinAlg_NS::IMatrix2D::size_type;
 
