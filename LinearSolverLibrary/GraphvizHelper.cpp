@@ -10,8 +10,8 @@ using namespace LinearSolverLibrary_NS;
 
 
 void
-GraphvizHelper::exportToGraphviz(IMatrix2D::size_type nvertices, IAMGStrengthPolicy const & strength_policy) {
-    std::ofstream stream(R"(D:\Develop\Ideas\LinearSolverLibrary\graph.log)");
+GraphvizHelper::exportToGraphviz(IMatrix2D::size_type nvertices, IAMGStrengthPolicy const & strength_policy, std::string filename = "graph.log") {
+    std::ofstream stream(R"(D:\Develop\Ideas\LinearSolverLibrary\)" + filename);
     stream << std::endl;
     stream << std::endl;
     stream << "digraph G {" << std::endl;

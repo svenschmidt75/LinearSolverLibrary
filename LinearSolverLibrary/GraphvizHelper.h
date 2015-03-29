@@ -20,7 +20,7 @@ namespace LinearSolverLibrary_NS {
 
     class LINEAR_SOLVER_LIBRARY_DECL_SYMBOLS GraphvizHelper {
     public:
-        static void exportToGraphviz(LinAlg_NS::IMatrix2D::size_type nvertices, IAMGStrengthPolicy const & strength_policy);
+        static void exportToGraphviz(LinAlg_NS::IMatrix2D::size_type nvertices, IAMGStrengthPolicy const & strength_policy, std::string filename);
     };
 
 } // LinearSolverLibrary_NS

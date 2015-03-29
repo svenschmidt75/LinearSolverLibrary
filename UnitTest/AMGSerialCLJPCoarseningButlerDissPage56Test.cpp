@@ -190,9 +190,6 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestInitialIndependentSet) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5) {
-    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_);
-
-
     coarsening_->categorizer_.SetType(12, VariableCategorizer::Type::COARSE);
     coarsening_->updateWeights(12);
     coarsening_->setFineNodes(12);

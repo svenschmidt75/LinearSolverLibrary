@@ -531,6 +531,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     // create the state after two application of CLJP
 
+    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_, "phase0");
+
     // phase 1
     coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
     coarsening_->categorizer_.SetType(10, VariableCategorizer::Type::COARSE);
@@ -544,6 +546,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     coarsening_->setFineNodes(20);
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
+
+    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_, "phase1");
 
     // phase 2
     auto independent_set = coarsening_->selectIndependentSet();
@@ -567,6 +571,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     coarsening_->updateWeights(26);
     coarsening_->setFineNodes(26);
 
+    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_, "phase2");
+
     // phase 3
     independent_set = coarsening_->selectIndependentSet();
     ASSERT_THAT(independent_set, ElementsAre(0));
@@ -578,6 +584,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(6));
 
     coarsening_->printWeights();
+
+    GraphvizHelper::exportToGraphviz(m_.cols(), strength_policy_mock_, "phase3");
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFullCoarsening) {
