@@ -51,6 +51,29 @@ AMGSerialCLJPCoarsening::coarsen() {
 }
 
 void
+AMGSerialCLJPCoarsening::exportToGraphviz(std::string const & filename) const {
+    std::ofstream stream(R"(D:\Develop\Ideas\LinearSolverLibrary\)" + filename);
+    stream << std::endl;
+    stream << std::endl;
+    stream << "digraph G {" << std::endl;
+    for (IMatrix2D::size_type i = 0; i < m_.cols(); ++i) {
+        auto weight = weights_.at(i);
+        stream << i << R"([)";
+        if (categorizer_.GetType(i) == VariableCategorizer::Type::FINE)
+            stream << R"(style = filled, fillcolor = yellow)";
+        else if (categorizer_.GetType(i) == VariableCategorizer::Type::COARSE)
+            stream << R"(style = filled, fillcolor = green)";
+        stream << R"( label=<<FONT COLOR="blue" POINT-SIZE = "20">)" << i << R"(</FONT><BR/>)";
+        stream << R"(<FONT COLOR="red" POINT-SIZE = "16">)" << weight << R"(</FONT>>];)" << std::endl;
+        auto vertices = strength_graph_.getStrongInfluencers(i);
+        for (auto target_index : *vertices)
+            stream << "  " << i << " -> " << target_index << std::endl;
+    }
+    stream << "}" << std::endl;
+    stream << std::endl;
+}
+
+void
 AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
     auto neighborhood = strength_policy_.getNeighborhood(j);
     for (auto k : *neighborhood) {

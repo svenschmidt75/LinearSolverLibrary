@@ -113,6 +113,8 @@ namespace LinearSolverLibrary_NS {
 
         void coarsen();
 
+        void exportToGraphviz(std::string const & filename) const;
+
     private:
         void                   initialWeightInitialization();
         void                   updateWeights(size_type variable);
