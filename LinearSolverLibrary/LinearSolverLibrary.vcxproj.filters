@@ -106,9 +106,6 @@
     <ClCompile Include="AMGSerialCLJPCoarsening.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
-    <ClCompile Include="GraphHelper.cpp">
-      <Filter>AMG</Filter>
-    </ClCompile>
     <ClCompile Include="AMGStrengthPolicyImpl.cpp">
       <Filter>AMG</Filter>
     </ClCompile>
@@ -236,9 +233,6 @@
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="AMGSerialCLJPCoarsening.h">
-      <Filter>AMG</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphHelper.h">
       <Filter>AMG</Filter>
     </ClInclude>
     <ClInclude Include="IAMGStrengthPolicy.h">

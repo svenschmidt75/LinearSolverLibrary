@@ -268,11 +268,7 @@ public:
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestInitialIndependentSet) {
     auto independent_set = coarsening_->selectIndependentSet();
-    ASSERT_THAT(independent_set, Contains(9));
-    ASSERT_THAT(independent_set, Contains(10));
-    ASSERT_THAT(independent_set, Contains(20));
-    ASSERT_THAT(independent_set, Contains(22));
-    ASSERT_EQ(4, independent_set.size());
+    ASSERT_THAT(independent_set, ElementsAre(9, 10, 20, 22));
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestWeightUpdateForNode9) {

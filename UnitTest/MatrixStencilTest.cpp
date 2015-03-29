@@ -2,8 +2,6 @@
 
 #include "MatrixStencilTest.h"
 
-#include "LinAlg/MatrixStencil.hpp"
-
 
 using namespace LinAlg_NS;
 

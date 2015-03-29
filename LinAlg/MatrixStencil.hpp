@@ -23,10 +23,15 @@
 #pragma warning(disable:4275)
 
 
+// forward declarations
+class MatrixStencilTest;
+
+
 namespace LinAlg_NS {
 
 template<typename BOUNDARY_CONDITION_POLICY>
 class MatrixStencil {
+
 
     friend class MatrixStencilTest;
 

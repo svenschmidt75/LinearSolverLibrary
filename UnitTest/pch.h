@@ -52,6 +52,7 @@
 #include "LinAlg/ConstColumnIteratorGeneric.hpp"
 #include "LinAlg/UHMatrix.h"
 #include "LinAlg/UTMatrix.h"
+#include "LinAlg/MatrixStencil.hpp"
 
 #include "FloridaSparseMatrixReaderLib/SparseMatrixReaderCreator.h"
 #include "FloridaSparseMatrixReaderLib/VectorReaderCreator.h"

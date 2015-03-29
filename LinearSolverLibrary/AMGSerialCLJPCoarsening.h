@@ -47,6 +47,13 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
 GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3);
 
+class AMGSerialCLJPCoarseningButlerDissPage56Test;
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestInitialIndependentSet);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep1);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep2);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3);
+
 
 
 #pragma warning(disable:4275)
@@ -81,6 +88,15 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3);
+
+        friend class AMGSerialCLJPCoarseningButlerDissPage56Test;
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestInitialIndependentSet);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep1);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep2);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3);
+
+
 
 
     public:

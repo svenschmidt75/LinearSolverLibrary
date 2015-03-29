@@ -24,6 +24,8 @@ AMGSerialCLJPCoarsening::coarsen() {
     std::cout << std::endl;
 
     for (;;) {
+        printWeights();
+
         auto independent_set = selectIndependentSet();
 
         size_type n_coarse = 0;
@@ -44,6 +46,8 @@ AMGSerialCLJPCoarsening::coarsen() {
             setFineNodes(j);
         }
     }
+
+    // TODO SS: set all undefined nodes to fine nodes
 }
 
 void
@@ -127,13 +131,8 @@ AMGSerialCLJPCoarsening::updateWeights(size_type k) {
     }
 
     // Heuristic 2: deals with the nodes that k strongly influences
-    auto const & influenced = strength_policy_.getStronglyInfluenced(k);
+    auto const & influenced = strength_graph_.getStronglyInfluenced(k);
     for (auto j : *influenced) {
-        if (strength_graph_.hasEdge(j, k) == false) {
-            auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
-            common_NS::reporting::checkConditional(j_influences->size() == 0);
-            continue;
-        }
         strength_graph_.removeEdge(j, k);
         auto const & j_influences = strength_graph_.getStronglyInfluenced(j);
         for (auto i : *j_influences) {
@@ -163,20 +162,15 @@ AMGSerialCLJPCoarsening::selectIndependentSet() const {
             continue;
         auto weight = weights_.at(i);
         auto ncnt = 0;
-        auto nremovedEdges = 0;
         auto neighborhood = strength_graph_.getNeighborhood(i);
         for (auto j : *neighborhood) {
-            if (strength_graph_.hasEdge(i, j) == false) {
-                if (strength_graph_.hasEdge(j, i) == false) {
-                    ++nremovedEdges;
-                    continue;
-                }
-            }
+            if (categorizer_.GetType(j) != VariableCategorizer::Type::UNDEFINED)
+                continue;
             auto other_weight = weights_.at(j);
             if (weight > other_weight)
                 ++ncnt;
         }
-        if (ncnt == neighborhood->size() - nremovedEdges)
+        if (ncnt && ncnt == neighborhood->size())
             independent_set.push_back(i);
     }
     return independent_set;
