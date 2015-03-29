@@ -241,6 +241,9 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep2) {
 TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3) {
     // create the state after one application of CLJP
 
+    coarsening_->exportToGraphviz("lphase0");
+
+
     // phase 1
     coarsening_->categorizer_.SetType(12, VariableCategorizer::Type::COARSE);
     coarsening_->categorizer_.SetType(17, VariableCategorizer::Type::COARSE);
@@ -256,6 +259,8 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3) {
     coarsening_->setFineNodes(40);
 
     coarsening_->printWeights();
+
+    coarsening_->exportToGraphviz("lphase1");
 
     // phase 2
     auto independent_set = coarsening_->selectIndependentSet();
@@ -275,9 +280,13 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3) {
 
     coarsening_->printWeights();
 
+    coarsening_->exportToGraphviz("lphase2");
+
     // phase 3
     independent_set = coarsening_->selectIndependentSet();
     ASSERT_THAT(independent_set, ElementsAre(8, 24));
+
+    coarsening_->exportToGraphviz("lphase3");
 }
 
 TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestFullCoarsening) {
