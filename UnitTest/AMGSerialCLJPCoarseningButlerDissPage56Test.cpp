@@ -89,12 +89,12 @@ namespace {
         }
 
         std::unique_ptr<IVariableSet>
-            getStrongInfluencers(IMatrix2D::size_type variable) const override {
+        getStrongInfluencers(IMatrix2D::size_type variable) const override {
             return std::make_unique<VariableSet>(variable_set_[variable]);
         }
 
         std::unique_ptr<IVariableSet>
-            getStronglyInfluenced(IMatrix2D::size_type variable) const override {
+        getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             // find all variables that 'variable' strongly influences
             auto variables = std::make_unique<VariableSet>();
             for (auto const & pair : variable_set_) {
@@ -102,6 +102,20 @@ namespace {
                     variables->add(pair.first);
             }
             return common_NS::convert<IVariableSet>(variables);
+        }
+
+        void
+        exportToGraphviz() const override {
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << "digraph G {" << std::endl;
+            for (IMatrix2D::size_type i = 0; i < variable_set_.size(); ++i) {
+                auto vertices = getStrongInfluencers(i);
+                for (auto target_index : *vertices)
+                    std::cout << "  " << i << " -> " << target_index << std::endl;
+            }
+            std::cout << "}" << std::endl;
+            std::cout << std::endl;
         }
 
     private:
@@ -190,6 +204,9 @@ TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestInitialIndependentSet) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5) {
+    strength_policy_mock_.exportToGraphviz();
+
+
     coarsening_->categorizer_.SetType(12, VariableCategorizer::Type::COARSE);
     coarsening_->updateWeights(12);
     coarsening_->setFineNodes(12);

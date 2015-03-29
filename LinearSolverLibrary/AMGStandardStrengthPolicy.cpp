@@ -95,3 +95,17 @@ AMGStandardStrengthPolicy::getStronglyInfluenced(IMatrix2D::size_type variable) 
     }
     return common_NS::convert<IVariableSet>(variable_set);
 }
+
+void
+AMGStandardStrengthPolicy::exportToGraphviz() const {
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "digraph G {" << std::endl;
+    auto edges = boost::edges(g_);
+    auto ei = edges.first;
+    auto eend = edges.second;
+    for (; ei != eend; ++ei)
+        std::cout << "  " << boost::source(*ei, g_) << " -> " << boost::target(*ei, g_) << std::endl;
+    std::cout << "}" << std::endl;
+    std::cout << std::endl;
+}

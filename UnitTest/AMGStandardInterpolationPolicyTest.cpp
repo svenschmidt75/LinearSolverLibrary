@@ -77,6 +77,9 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithMock) {
             return nullptr;
         }
 
+        void
+        exportToGraphviz() const override {}
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -154,6 +157,9 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithNoCommonCNode
             return nullptr;
         }
 
+        void
+        exportToGraphviz() const override {}
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
@@ -223,6 +229,9 @@ TEST(AMGStandardInterpolationPolicyTest, TestStrongFFConnectionWithCommonCNode) 
         std::unique_ptr<IVariableSet> getStronglyInfluenced(IMatrix2D::size_type variable) const override {
             return nullptr;
         }
+
+        void
+        exportToGraphviz() const override {}
 
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;

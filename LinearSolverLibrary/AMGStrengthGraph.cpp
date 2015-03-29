@@ -52,6 +52,20 @@ AMGStrengthGraph::getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable
     return common_NS::convert<IVariableSet>(variable_set);
 }
 
+void
+AMGStrengthGraph::exportToGraphviz() const {
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "digraph G {" << std::endl;
+    auto edges = boost::edges(g_);
+    auto ei = edges.first;
+    auto eend = edges.second;
+    for (; ei != eend; ++ei)
+        std::cout << "  " << boost::source(*ei, g_) << " -> " << boost::target(*ei, g_) << std::endl;
+    std::cout << "}" << std::endl;
+    std::cout << std::endl;
+}
+
 bool
 AMGStrengthGraph::canEdgeBeRemoved(size_type v1, size_type v2) const {
     auto const & influencers = strength_policy_.getStrongInfluencers(v1);

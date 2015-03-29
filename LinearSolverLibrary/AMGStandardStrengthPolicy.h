@@ -36,6 +36,7 @@ namespace LinearSolverLibrary_NS {
         // FROM IAMGStrengthPolicy
         std::unique_ptr<IVariableSet> getStrongInfluencers(LinAlg_NS::IMatrix2D::size_type variable) const override;
         std::unique_ptr<IVariableSet> getStronglyInfluenced(LinAlg_NS::IMatrix2D::size_type variable) const override;
+        void                          exportToGraphviz() const override;
 
     private:
         using Graph_t = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;

@@ -150,6 +150,9 @@ TEST_F(AMGDirectInterpolationPolicyTest, MadeUpExample) {
             return nullptr;
         }
 
+        void
+        exportToGraphviz() const override {}
+
     private:
         mutable std::map<IMatrix2D::size_type, VariableSet> variable_set_;
     };
