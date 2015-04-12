@@ -428,7 +428,7 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
 
-    coarsening_->printWeights();
+//    coarsening_->printWeights();
 
     // from node 20
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
@@ -484,6 +484,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
 
+//    coarsening_->exportToGraphviz("phase1");
+
     // phase 2
     auto independent_set = coarsening_->selectIndependentSet();
     ASSERT_THAT(independent_set, ElementsAre(3, 5, 8, 18, 23, 26));
@@ -506,7 +508,8 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
     coarsening_->updateWeights(26);
     coarsening_->setFineNodes(26);
 
-    coarsening_->printWeights();
+//    coarsening_->printWeights();
+//    coarsening_->exportToGraphviz("phase2");
 
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(2));
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(4));
@@ -517,21 +520,30 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(14));
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(15));
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(16));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(17));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(21));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(24));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(25));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(27));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(28));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(29));
 
     ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(0));
     ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(1));
-    ASSERT_EQ(VariableCategorizer::Type::UNDEFINED, coarsening_->categorizer_.GetType(6));
 
+    // Note: There is a discrepancy here with the diss. According to fig. 3.6 (c), page 25, node
+    // 6 should have weight 1.6. However, when node 8 becomes coarse, node 6 is reduced by 2,
+    // i.e. from weight 2.6 to 0.6, and hence, it becomes a fine node.
 
-    ASSERT_NEAR(2.4, coarsening_->weights_[0], 1E-8);
+    ASSERT_NEAR(1.4, coarsening_->weights_[0], 1E-8);
     ASSERT_NEAR(1.7, coarsening_->weights_[1], 1E-8);
-    ASSERT_NEAR(1.6, coarsening_->weights_[6], 1E-8);
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
-    // create the state after two application of CLJP
+    // create the state after three application of CLJP
 
-    coarsening_->exportToGraphviz("phase0");
+//    coarsening_->exportToGraphviz("phase0");
 
     // phase 1
     coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
@@ -547,7 +559,7 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     coarsening_->updateWeights(22);
     coarsening_->setFineNodes(22);
 
-    coarsening_->exportToGraphviz("phase1");
+//    coarsening_->exportToGraphviz("phase1");
 
     // phase 2
     auto independent_set = coarsening_->selectIndependentSet();
@@ -571,25 +583,55 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     coarsening_->updateWeights(26);
     coarsening_->setFineNodes(26);
 
-    coarsening_->exportToGraphviz("phase2");
+//    coarsening_->exportToGraphviz("phase2");
 
     // phase 3
     independent_set = coarsening_->selectIndependentSet();
-    ASSERT_THAT(independent_set, ElementsAre(0));
-    coarsening_->categorizer_.SetType(0, VariableCategorizer::Type::COARSE);
-    coarsening_->updateWeights(0);
-    coarsening_->setFineNodes(0);
+    ASSERT_THAT(independent_set, ElementsAre(1));
+    coarsening_->categorizer_.SetType(1, VariableCategorizer::Type::COARSE);
+    coarsening_->updateWeights(1);
+    coarsening_->setFineNodes(1);
 
-    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(1));
-    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(6));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(0));
 
-    coarsening_->printWeights();
+//    coarsening_->printWeights();
 
-    coarsening_->exportToGraphviz("phase3");
+//    coarsening_->exportToGraphviz("phase3");
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFullCoarsening) {
     coarsening_->coarsen();
+//    variable_categorizer_->print();
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(0));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(2));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(4));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(6));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(7));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(11));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(12));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(13));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(14));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(15));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(16));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(17));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(19));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(21));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(24));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(25));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(27));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(28));
+    ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(29));
 
-    variable_categorizer_->print();
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(1));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(3));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(5));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(8));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(9));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(10));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(18));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(20));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(22));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(23));
+    ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(26));
+
 }

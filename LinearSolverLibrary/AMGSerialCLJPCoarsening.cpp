@@ -20,27 +20,19 @@ AMGSerialCLJPCoarsening::AMGSerialCLJPCoarsening(SparseMatrix2D const & m, AMGSt
 
 void
 AMGSerialCLJPCoarsening::coarsen() {
-
-    std::cout << std::endl;
-
     for (;;) {
-        printWeights();
-
+//        printWeights();
         auto independent_set = selectIndependentSet();
-
         size_type n_coarse = 0;
-
         for (auto variable : independent_set) {
             if (categorizer_.GetType(variable) == VariableCategorizer::Type::UNDEFINED) {
                 categorizer_.SetType(variable, VariableCategorizer::Type::COARSE);
                 ++n_coarse;
-                std::cout << variable << " = C" << std::endl;
+//                std::cout << variable << " = C" << std::endl;
             }
         }
-
         if (n_coarse == 0)
             break;
-
         for (auto j : independent_set) {
             updateWeights(j);
             setFineNodes(j);
@@ -79,7 +71,7 @@ AMGSerialCLJPCoarsening::setFineNodes(size_type j) {
     for (auto k : *neighborhood) {
         if (categorizer_.GetType(k) == VariableCategorizer::Type::UNDEFINED) {
             if (weights_[k] < 1) {
-                std::cout << k << " = F" << std::endl;
+//                std::cout << k << " = F" << std::endl;
                 categorizer_.SetType(k, VariableCategorizer::Type::FINE);
             }
         }
