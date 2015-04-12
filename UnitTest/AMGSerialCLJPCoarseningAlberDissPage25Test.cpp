@@ -258,9 +258,9 @@ public:
     }
 
 public:
-    SparseMatrix2D                    m_;
-    StrengthPolicyMock                strength_policy_mock_;
-    std::unique_ptr<AMGStrengthGraph> strength_graph_;
+    SparseMatrix2D                           m_;
+    StrengthPolicyMock                       strength_policy_mock_;
+    std::unique_ptr<AMGStrengthGraph>        strength_graph_;
     std::unique_ptr<VariableCategorizer>     variable_categorizer_;
     std::unique_ptr<AMGSerialCLJPCoarsening> coarsening_;
 };
@@ -468,7 +468,7 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep1) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
-    // create the state after two application of CLJP
+    // create the state after two applications of CLJP
 
     // phase 1
     coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
@@ -541,9 +541,9 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep2) {
 }
 
 TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
-    // create the state after three application of CLJP
+    // create the state after three applications of CLJP
 
-//    coarsening_->exportToGraphviz("phase0");
+    coarsening_->exportToGraphviz("phase0");
 
     // phase 1
     coarsening_->categorizer_.SetType(9, VariableCategorizer::Type::COARSE);
@@ -583,7 +583,7 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     coarsening_->updateWeights(26);
     coarsening_->setFineNodes(26);
 
-//    coarsening_->exportToGraphviz("phase2");
+    coarsening_->exportToGraphviz("phase2");
 
     // phase 3
     independent_set = coarsening_->selectIndependentSet();
@@ -595,7 +595,6 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestAfterStep3) {
     ASSERT_EQ(VariableCategorizer::Type::FINE, coarsening_->categorizer_.GetType(0));
 
 //    coarsening_->printWeights();
-
 //    coarsening_->exportToGraphviz("phase3");
 }
 
@@ -633,5 +632,5 @@ TEST_F(AMGSerialCLJPCoarseningAlberDissPage25Test, TestFullCoarsening) {
     ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(22));
     ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(23));
     ASSERT_EQ(VariableCategorizer::Type::COARSE, coarsening_->categorizer_.GetType(26));
-
+    //    coarsening_->exportToGraphviz("phase3_final");
 }

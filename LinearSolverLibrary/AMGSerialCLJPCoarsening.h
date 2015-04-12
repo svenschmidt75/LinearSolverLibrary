@@ -54,6 +54,8 @@ GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestEdgesOfNode5);
 GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep1);
 GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep2);
 GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep4);
+GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestFullCoarsening);
 
 
 
@@ -97,6 +99,8 @@ namespace LinearSolverLibrary_NS {
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep1);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep2);
         FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep3);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestAfterStep4);
+        FRIEND_GOOGLE_TEST(AMGSerialCLJPCoarseningButlerDissPage56Test, TestFullCoarsening);
 
 
 

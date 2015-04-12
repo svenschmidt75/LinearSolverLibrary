@@ -57,9 +57,17 @@ AMGSerialCLJPCoarsening::exportToGraphviz(std::string const & filename) const {
             stream << R"(style = filled, fillcolor = green)";
         stream << R"( label=<<FONT COLOR="blue" POINT-SIZE = "20">)" << i << R"(</FONT><BR/>)";
         stream << R"(<FONT COLOR="red" POINT-SIZE = "16">)" << weight << R"(</FONT>>];)" << std::endl;
+
         auto vertices = strength_graph_.getStrongInfluencers(i);
-        for (auto target_index : *vertices)
-            stream << "  " << i << " -> " << target_index << std::endl;
+        auto vertices_with_all_edges = strength_policy_.getStrongInfluencers(i);
+        for (auto target_index : *vertices_with_all_edges) {
+            stream << "  " << i << " -> " << target_index;
+            if (vertices->contains(target_index) == false)
+                // Note: Preserve removed edges, otherwise, Graphviz will mess up the plot.
+                // removed edges appear in gray
+                stream << "  [color=gray];";
+            stream << std::endl;
+        }
     }
     stream << "}" << std::endl;
     stream << std::endl;
