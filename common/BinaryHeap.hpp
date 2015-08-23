@@ -163,8 +163,7 @@ namespace common_NS {
             size_type parent_node_index = (node_index - 1) / 2;
 
             // as long as the child node is bigger/smaller than its parent
-            while (node_index > 0 && comparator_(key(node_index), key(parent_node_index)))
-            {
+            while (node_index > 0 && comparator_(key(node_index), key(parent_node_index))) {
                 // swap child with parent
                 std::swap(heap_[parent_node_index], heap_[node_index]);
                 node_index = parent_node_index;

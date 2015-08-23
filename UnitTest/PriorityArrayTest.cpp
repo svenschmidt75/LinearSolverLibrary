@@ -21,7 +21,7 @@ namespace {
     };
 
     template<typename T>
-    class Comparartor {
+    class Comparator {
     public:
         bool operator()(T const & lhs, T const & rhs) const {
             return lhs.priority > rhs.priority;
@@ -31,15 +31,15 @@ namespace {
 
 void
 PriorityArrayTest::TestPop1() {
-    PriorityArray<NonTrivialType, Comparartor> priority_array;
+    PriorityArray<NonTrivialType, Comparator> priority_array;
      /*
      *           25
      *          /  \
      *         39  22
      */
-    priority_array.add(struct NonTrivialType{25});
-    priority_array.add(struct NonTrivialType{39});
-    priority_array.add(struct NonTrivialType{22});
+    priority_array.add(NonTrivialType{25});
+    priority_array.add(NonTrivialType{39});
+    priority_array.add(NonTrivialType{22});
 
     /*
      *           39
@@ -105,9 +105,9 @@ PriorityArrayTest::TestUpdatePriority() {
      *          /  \
      *         39  22
      */
-    priority_array.add(struct NonTrivialType2{0});
-    priority_array.add(struct NonTrivialType2{1});
-    priority_array.add(struct NonTrivialType2{2});
+    priority_array.add(NonTrivialType2{0});
+    priority_array.add(NonTrivialType2{1});
+    priority_array.add(NonTrivialType2{2});
 
     /*
      *           39
@@ -160,13 +160,13 @@ PriorityArrayTest::TestUpdatePrioritiesInDifferentOrders() {
      */
 
     // insert node 0 with priority 25
-    priority_array.add(struct NonTrivialType2{0});
+    priority_array.add(NonTrivialType2{0});
 
     // insert node 1 with priority 39
-    priority_array.add(struct NonTrivialType2{1});
+    priority_array.add(NonTrivialType2{1});
 
     // insert node 2 with priority 22
-    priority_array.add(struct NonTrivialType2{2});
+    priority_array.add(NonTrivialType2{2});
 
     /*
      *          1: 39

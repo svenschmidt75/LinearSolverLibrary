@@ -115,7 +115,7 @@ namespace {
     };
 
     template<typename T>
-    struct Comparartor {
+    struct Comparator {
         bool operator()(struct NonTrivialType const & lhs, struct NonTrivialType const & rhs) const {
             return lhs.x > rhs.x;
         }
@@ -125,7 +125,7 @@ namespace {
 
 void
 BinaryHeapTest::TestBuildHeap5() {
-    BinaryHeap<NonTrivialType, Comparartor> binary_heap;
+    BinaryHeap<NonTrivialType, Comparator> binary_heap;
     /*
      *           22
      *          /  \
