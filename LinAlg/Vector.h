@@ -14,6 +14,8 @@
 
 #include "DeclSpec.h"
 
+#include "internal/entity_traits.h"
+
 
 namespace boost {
     namespace serialization {
